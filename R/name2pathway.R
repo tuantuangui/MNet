@@ -1,0 +1,89 @@
+
+#' seek the metabolits' name's pathway
+#'
+#' @param name the metabolites' name
+#'
+#' @return test
+#' @export
+#'
+#' @examples
+#' name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt")
+#' result_all <- name2pathway(name)
+#' result <- result_all$name2pathway
+#' pathway <- result_all$pathway
+#' kegg_name <- result_all$kegg_name
+name2pathway <- function(name) {
+
+  kegg_id <- pathway_type <- NAME <- ENTRY <- NULL
+  library(dplyr)
+  name_kegg_temp <- name2keggid(name) %>%
+    dplyr::distinct(name,.keep_all=TRUE)
+
+  name_kegg_print <- name_kegg_temp %>%
+    tidyr::separate_rows(kegg_id,sep=";")
+#    tidyr::separate(kegg_id,sep=";","kegg_id_first",remove=FALSE)
+
+  name_kegg_correspondence <- name_kegg_temp %>%
+    tidyr::separate_rows(kegg_id,sep=";") %>%
+#    tidyr::separate(kegg_id,sep=";","kegg_id") %>%
+    dplyr::filter(!is.na(kegg_id))
+
+  kegg_id_need <- name_kegg_correspondence %>%
+    dplyr::pull(kegg_id)
+
+  kegg_pathway_filter <- kegg_pathway %>%
+    dplyr::filter(!is.na(pathway_type)) %>%
+    dplyr::select(c("ENTRY","PATHWAY"))
+
+  name_pathway <- name_kegg_correspondence %>%
+    dplyr::inner_join(kegg_pathway_filter,by=c("kegg_id"="ENTRY"))
+  pathwayid <- pathway2pathwayid(name_pathway$PATHWAY)
+
+  name_pathway <- name_pathway %>%
+    dplyr::inner_join(pathwayid,by="PATHWAY")
+
+  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)
+  result <- xgr_result$output
+
+  kegg2refmet <- function(keggid) {
+
+    kegg_name <- kegg_pathway %>%
+      tidyr::separate(NAME,sep=";///","name") %>%
+      dplyr::select(c("ENTRY","name")) %>%
+      unique()
+    keggid_split<- strsplit(keggid,split=", ")[[1]]
+    result_temp <- c()
+    for (i in seq(1,length(keggid_split))){
+      if (keggid_split[i] %in% name_kegg_correspondence$kegg_id) {
+        result_1 <- name_kegg_correspondence %>%
+          dplyr::filter(kegg_id==keggid_split[i])%>%
+          dplyr::pull(name)
+      }else {
+        result_1 <- kegg_name %>%
+          dplyr::filter(ENTRY==keggid_split[i]) %>%
+          dplyr::pull(name)
+      }
+      result_temp <- c(result_temp,result_1)
+    }
+    result <- paste(result_temp,collapse=";")
+    return(result)
+  }
+
+  members_Overlap_name <- c()
+  for (i in seq(1,length(result$members_Overlap))) {
+    temp <- kegg2refmet(result$members_Overlap[i])
+    members_Overlap_name <- c(members_Overlap_name,temp)
+  }
+  result$members_Overlap_name <- members_Overlap_name
+
+  members_Anno_name <- c()
+  for (i in seq(1,length(result$members_Anno))) {
+    temp <- kegg2refmet(result$members_Anno[i])
+    members_Anno_name <- c(members_Anno_name,temp)
+  }
+  result$members_Anno_name <- members_Anno_name
+
+  result_print <- list(name2pathway=name_pathway,pathway=result,kegg_name=name_kegg_print)
+  return(result_print)
+
+}

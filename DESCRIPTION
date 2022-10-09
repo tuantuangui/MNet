@@ -1,0 +1,61 @@
+Package: MNet
+Type: Package
+Title: MNet
+Version: 0.1.0
+Authors@R: c(
+       person("Tuantuan","Gui",email="guituantuan@sjtu.edu.cn",role=c("aut","cre")),
+       person("Hai","Fang",email="fh12355@rjh.com.cn",role="aut"))
+Maintainer: Tuantuan Gui <guituantuan@sjtu.edu.cn>
+Description: The package is designed to provide a collection of functionalities aiding in metabolome data interpretation together with clinical data and gene expression data. It not only supports the routine analyses and visualisations in terms of metabolomic datasets (including but not limited to: differential metabolites analyses/visualisations/feature selection), the differential abundance analyses which is designed to detect which pathways are differentially abundant between two conditions, but also is capable of carrying out integrated analysis of metabolic and clinical data (such as ggcor package), integrated analysis of metabolic and gene expression data (the metabolite and gene pathway analyses and the subnetwork analyses of metabolite-gene network analyses). Also supported is the time series analysis with the help of other packages (mFuzz package and supraHex package).
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 4.0)
+Imports:
+    ggplot2,
+    limma,
+    dplyr,
+    XGR,
+    stats,
+    pathview,
+    survival,
+    Mfuzz,
+    supraHex,
+    igraph,
+    dnet,
+    caret,
+    xgboost,
+    graphite,
+    Biobase,
+    e1071,
+    magrittr,
+    vegan
+Suggests: knitr,
+    stringr,
+    survminer,
+    ropls,
+    pheatmap,
+    pROC,
+    randomForest,
+    jsonlite,
+    tibble,
+    utils,
+    KEGGREST,
+    tidyr,
+    grDevices,
+    ggpubr,
+    graph,
+    ggrepel,
+    Boruta,
+    methods,
+    reshape2,
+    tidyselect,
+    AnnotationDbi,
+    rmarkdown,
+    BiocStyle,
+    RUnit,
+    BiocGenerics
+VignetteBuilder: knitr
+RoxygenNote: 7.2.1
+biocViews: Metabolomics
