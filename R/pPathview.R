@@ -18,8 +18,6 @@
 
 pPathview <- function(cpd.data,gene.data=NULL) {
 
-
-  library(dplyr)
   utils::data("bods", package = "pathview")
 
 #  value <- value

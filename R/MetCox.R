@@ -10,7 +10,6 @@
 #' @examples
 #' result <- MetCox(dat)
 MetCox <- function(dat) {
-  library(dplyr)
   metabolite_name <- names(dat)[3:ncol(dat)]
   univ_formulas <- lapply(metabolite_name,function(x) stats::as.formula(paste('survival::Surv(time, status)~', x)))
 

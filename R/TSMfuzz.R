@@ -11,9 +11,6 @@
 #' TSMfuzz(mydata,out_dir="./",range=c(4,12))
 TSMfuzz <- function(mydata,out_dir="time_series_mfuzz/",range=c(4,12)) {
   
-  library(dplyr)
-  require(Biobase)
-  require(e1071)
   dir.create(out_dir,recursive = TRUE)
 
   mydata <- mydata %>%

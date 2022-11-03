@@ -18,7 +18,7 @@ survMet <- function(dat,metabolites,cluster_method="mean",out_dir="survival/meta
    
   metabolite_mean_median <- NULL
 
-  library(dplyr)
+
   dir.create(out_dir,recursive = TRUE)
   for (metabolite in metabolites) {
 

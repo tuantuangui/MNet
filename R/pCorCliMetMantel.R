@@ -15,7 +15,7 @@
 pCorCliMetMantel <- function(clinical_data,metabolite_data) {
 
   r <- `p.value` <- NULL
-  library(dplyr)
+
   tt <- as.list(seq(1,ncol(clinical_data)))
 
   for (i in seq(1,length(tt))){

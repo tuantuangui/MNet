@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' p_heatmap <- pHeatmap(mydata,group)
-pHeatmap <- function(mydata_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="complete",clustering_distance_cols="correlation") {
+pHeatmap <- function(mydata_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="complete",clustering_distance_cols="correlation",tumor_color="#d53e4f",normal_color="#7FC8A9") {
 
 #  mydata_diff <- mydata[which(rownames(mydata) %in% metabolites_diff$name),]
 
@@ -29,11 +29,11 @@ pHeatmap <- function(mydata_diff,group,fontsize_row=5,fontsize_col=4,clustering_
   rownames(annotation_column) <- names(mydata_diff)
 
   annotation_colors = list(
-    group=c(tumor="#d53e4f",normal="#7FC8A9")
+    group=c(tumor=tumor_color,normal=normal_color)
   )
   p <- pheatmap::pheatmap(mydata_dif_norm,color=color,fontsize_row = fontsize_row,fontsize_col=fontsize_col,
                           annotation_col = annotation_column,annotation_colors=annotation_colors,clustering_distance_cols=clustering_distance_cols,
-                          clustering_method = clustering_method)
+                          clustering_method = clustering_method,show_colnames = F)
 
   return(p)
 

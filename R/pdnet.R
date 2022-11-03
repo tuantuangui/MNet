@@ -20,10 +20,10 @@
 pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_threshold=0,nsize=10) {
 
   keggId <- gene <- logFC <- type <- cor_result <- NULL
-#  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
-#    as.data.frame() %>%
-#    dplyr::select(-"subsystems") %>%
-#    unique()
+  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
+    as.data.frame() %>%
+    dplyr::select(-c("subsystems","pathway_type")) %>%
+    unique()
   gene_metabolite_filter1 <- gene_metabolite_1 %>%
     dplyr::filter(keggId %in% rownames(metabolite_data)) %>%
     dplyr::filter(gene %in% rownames(metabolite_data))
@@ -33,24 +33,6 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   
   gene_metabolite_filter <- rbind(gene_metabolite_filter1,gene_metabolite_filter2)
   
-  hh2 <- apply(gene_metabolite_filter2,1,function(x){pCorCliMet(gene_data,metabolite_data,x[4],x[2],method=cor_method)$cor_result})
-  cor_result2 <- data.frame(matrix(unlist(hh2),nrow=nrow(gene_metabolite_filter2),byrow=T))
-  names(cor_result2) <- c("metabolite","other_marker","cor_result","pvalue")
-  if(nrow(gene_metabolite_filter1)>0) {
-
-    hh1 <- apply(gene_metabolite_filter1,1,function(x){pCorCliMet(metabolite_data,metabolite_data,x[4],x[2],method=cor_method)$cor_result})
-    cor_result1 <- data.frame(matrix(unlist(hh1),nrow=nrow(gene_metabolite_filter1),byrow=T))
-    names(cor_result1) <- c("metabolite","other_marker","cor_result","pvalue")
-    cor_result <- rbind(cor_result1,cor_result2)
-  } else {
-    cor_result <- cor_result1
-  }
-  cor_result$cor_result[which(is.na(cor_result$cor_result))] <- 0
-  cor_result$cor_result <- as.numeric(cor_result$cor_result)
-  
-  cor_result <- cor_result %>%
-    dplyr::left_join(gene_metabolite_filter,by=c("metabolite"="keggId","other_marker"="gene")) %>%
-    unique()
   
   #nodes <- rbind(data.frame(name=unique(cor_result$metabolite),type="metabolite"),
   #               data.frame(name=unique(cor_result$other_marker),type="gene"))
@@ -62,16 +44,14 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
     unique() %>%
     dplyr::rename("type"="src_type","name"="keggId")
   
-  nodes <- data.frame(name=unique(c(cor_result$metabolite,cor_result$other_marker))) %>%
-    dplyr::left_join(name_all,by="name")
+  nodes <- name_all %>%
+    dplyr::select(c("name","type"))
   
-  cor_result_filter <- cor_result %>%
-    dplyr::filter(abs(cor_result) >= cor_threshold)
-  network <- igraph::graph_from_data_frame(d=cor_result_filter,vertices=nodes, directed=F)
-  cor_all <- 100*igraph::E(network)$cor_result**2
-  substystem_all <- igraph::E(network)$pathway_type
-  edge1 <- cbind(data.frame(igraph::get.edgelist(network)),cor_all,substystem_all)
-  
+  relation <- gene_metabolite_filter %>%
+    dplyr::select(c("keggId","gene"))
+  network <- igraph::graph_from_data_frame(d=relation,vertices=nodes, directed=F)
+  #cor_all <- 100*igraph::E(network)$cor_result**2
+
   p <- diff_info$P.Value
   names(p) <- diff_info$name
   
@@ -108,23 +88,14 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   #计算每个节点的数量
   deg <- igraph::degree(g, mode="all")
   
-  edge_g <- data.frame(igraph::get.edgelist(g))
-  edge_g1 <- unique(edge_g) %>%
-    dplyr::left_join(edge1,by=c("X1","X2"))
   
-  edge_color <- grDevices::rainbow(length(unique(edge_g1$substystem_all)))
-  edge_color_1 <- edge_color[as.numeric(as.factor(edge_g1$substystem_all))]
-  edge_g1$colors <- edge_color_1
   
   #  pdf("~/Desktop/test_2.pdf",width=15,height=15)
   
  # pdf("~/Desktop/test_1.pdf",width=8,height=8)
   plot(g,vertex.color=name$colors,vertex.shape=my_shape,vertex.size=2*deg**0.5,
-       vertex.label.cex=0.7,edge.width=0.3*edge_g1$cor_all,edge.color=edge_g1$colors)
+       vertex.label.cex=0.7)
   #legend(x=-0.5, y=-0.5,legend=unique(edge_g1$substystem_all),pch=21,
-  graphics::legend("topleft",legend=unique(edge_g1$substystem_all),pch="-",col=unique(edge_g1$color),
-         pt.cex=.6,cex=.4,
-         pt.bg=unique(edge_g1$color))
   off.sets=col.key(limit=gene_limits,bins=10,cex=0.7,graph.size = c(1,1),off.sets=c(x=0,y=0))
   off.sets=col.key(limit=meta_limits,bins=10,cex=0.7,low="blue", mid="gray", high="yellow",
                    off.sets=c(x=0,y=0),graph.size = c(1,0.9))
@@ -135,8 +106,6 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   
   node_result <- data.frame(name=igraph::V(g)$name) %>%
     dplyr::left_join(node_color,by="name")
-  edge_result <- cbind(data.frame(igraph::get.edgelist(g)),data.frame(cor=igraph::get.edge.attribute(g)$cor_result),
-                       data.frame(pathway_type=igraph::get.edge.attribute(g)$pathway_type))
-  result=list(node_result=node_result,edge_result=edge_result)
-  return(result)
+  
+  return(node_result)
 }

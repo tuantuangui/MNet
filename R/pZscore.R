@@ -9,8 +9,7 @@
 #'
 #' @examples
 #' plot_zscore <- pZscore(mydata,group)
-pZscore <- function(mydata,group) {
-  library(dplyr)
+pZscore <- function(mydata,group,tumor_color="#d53e4f",normal_color="#7FC8A9",shape_size=3,ysize=5) {
 
   label <- value <- ave <- NULL
   clinical <- data.frame(sample=names(mydata),group=group)
@@ -33,14 +32,15 @@ pZscore <- function(mydata,group) {
   mydata_melt_group$label <- factor(mydata_melt_group$label,levels=mydata_melt_sort$label)
 
   p <- ggplot2::ggplot(mydata_melt_group,ggplot2::aes(label,value,color=group))+
-    ggplot2::geom_point(shape="|",size=2)+
-    ggplot2::scale_color_manual(values=c("#7FC8A9","#d53e4f"))+
+    ggplot2::geom_point(shape="|",size=shape_size)+
+    ggplot2::scale_color_manual(values=c(normal_color,tumor_color))+
     ggplot2::labs(y="z-score")+
     ggplot2::coord_flip()+
     ggplot2::geom_hline(yintercept=0, linetype = 'dashed')+
     ggplot2::theme_bw()+
+    labs(x=NULL,y=NULL)+
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
-          axis.text.y = ggplot2::element_text( hjust = 1,size = 4))
+          axis.text.y = ggplot2::element_text( hjust = 1,size = ysize))
 
   return(p)
 

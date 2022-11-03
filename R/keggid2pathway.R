@@ -9,7 +9,6 @@
 #' keggid <- c("C05984","C02494")
 #' kegg_result <- keggid2pathway(keggid)
 keggid2pathway <- function(keggid) {
-  library(dplyr)
   ENTRY <- NULL
   result <- kegg_pathway %>%
     dplyr::filter(ENTRY %in% keggid)

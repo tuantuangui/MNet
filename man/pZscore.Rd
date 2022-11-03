@@ -4,7 +4,14 @@
 \alias{pZscore}
 \title{Plot the z-score figure}
 \usage{
-pZscore(mydata, group)
+pZscore(
+  mydata,
+  group,
+  tumor_color = "#d53e4f",
+  normal_color = "#7FC8A9",
+  shape_size = 3,
+  ysize = 5
+)
 }
 \arguments{
 \item{mydata}{the row is the metabolites, and the column is the sample}

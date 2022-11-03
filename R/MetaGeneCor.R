@@ -33,7 +33,6 @@ MetaGeneCor <- function(metadata,genedata,pathwayid) {
 
   symbol <- keggid <- NULL
 
-  library(dplyr)
   result <- pathwayinfo(pathwayid)
   gene_filter <- result$gene_info %>%
     dplyr::filter(symbol %in% rownames(genedata))

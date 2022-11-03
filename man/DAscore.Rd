@@ -5,24 +5,25 @@
 \title{Calculate the differential abundance (DA) score and show the DA figure}
 \usage{
 DAscore(
-  increase_metabolites,
-  decrease_metabolites,
-  all_metabolites,
+  increase_members,
+  decrease_members,
+  all_members,
   sort_plot = NA,
-  min_measured_num = 2
+  min_measured_num = 2,
+  out = "extended"
 )
 }
 \arguments{
-\item{increase_metabolites}{the increased metabolites  that needed kegg id}
+\item{increase_members}{the increased members that needed kegg id}
 
-\item{decrease_metabolites}{the decreased metabolites that needed kegg id}
+\item{decrease_members}{the decreased members that needed kegg id}
 
-\item{all_metabolites}{the all metabolites that kegg id}
+\item{all_members}{the all members that kegg id}
 
 \item{sort_plot}{the method of pathway rank in the plot,Default rank by DA score.
 if value is classification, then rank by pathway classification}
 
-\item{min_measured_num}{the minimum measured metabolites that be ploted in a pathway,
+\item{min_measured_num}{the minimum measured members that be ploted in a pathway,
 Default the value is 2.}
 }
 \value{
@@ -32,10 +33,10 @@ Calculate the differential abundance (DA) score and show the DA figure
 Calculate the differential abundance (DA) score and show the DA figure
 }
 \examples{
-name <- c("C00022","C00024","C00031")
-test <- DAscore(name[1],name[2],name,min_measured_num = 0,sort_plot = "classification")
-test$result
-test$p
+name <- c("C00022","C00024","C00031","B4GALT2","AGPAT3","FHIT")
+DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "classification")
+DAscore_result$result
+DAscore_result$p
 
 
 }

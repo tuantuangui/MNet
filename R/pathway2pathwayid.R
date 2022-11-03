@@ -10,7 +10,6 @@
 #' pathwayid <- pathway2pathwayid("Glycolysis / Gluconeogenesis")
 pathway2pathwayid <- function(pathwayname) {
    #pathway2pathwayid("Glycolysis / Gluconeogenesis")
-    library(dplyr)
 
   PATHWAY <- V2 <- NULL
   result <- kegg_pathway %>%

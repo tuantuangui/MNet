@@ -10,7 +10,9 @@ pHeatmap(
   fontsize_row = 5,
   fontsize_col = 4,
   clustering_method = "complete",
-  clustering_distance_cols = "correlation"
+  clustering_distance_cols = "correlation",
+  tumor_color = "#d53e4f",
+  normal_color = "#7FC8A9"
 )
 }
 \arguments{

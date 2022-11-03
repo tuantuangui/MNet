@@ -28,6 +28,6 @@ mlimma <- function(dat,group) {
   deg$logP <- -log10(deg$adj.P.Val)
   
   deg$name <- rownames(deg)
-  return(deg)
+  return(as_tibble(deg))
 
 }

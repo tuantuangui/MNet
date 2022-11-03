@@ -12,7 +12,6 @@
 #' p <- pVolcano(result)
 
 pVolcano <- function(mydata,foldchange_threshold=1.5) {
-    library(dplyr)
 
   Condition <- name <- fold_change <- fdr_wilcox <- label <- NULL
 
