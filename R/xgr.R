@@ -25,7 +25,7 @@ xgr <- function(metabolites_keggid,database) {
   output <- eTerm %>%
     XGR::xEnrichViewer(details=TRUE,top_num=100) %>%
     dplyr::filter(nOverlap>0) %>%
-    as_tibble()
+    tibble::as_tibble()
 
   # plot
   gp <- XGR::xEnrichLadder(eTerm,FDR.cutoff = 1,top_num=nrow(output))

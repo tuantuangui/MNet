@@ -13,6 +13,7 @@ NULL
 #' if value is classification, then rank by pathway classification
 #' @param min_measured_num the minimum measured members that be ploted in a pathway,
 #' Default the value is 2.
+#' @param out the analysis type,default "extended", other choice is "gene" or "metabolite"
 #'
 #' @return Calculate the differential abundance (DA) score and show the DA figure
 #'
@@ -99,7 +100,7 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
     unique() %>%
     dplyr::arrange(da_score) %>%
     dplyr::rename("pathway classification"="kegg_category") %>%
-    as_tibble()
+    tibble::as_tibble()
 
 
     result_filter <- result %>%

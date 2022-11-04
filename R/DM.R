@@ -58,7 +58,7 @@ DM <- function(mydata,group) {
   result <- fold_change_result %>%
     dplyr::left_join(p_value_result,by="name") %>%
     dplyr::left_join(vip_result,by="name") %>%
-    as_tibble()
+    tibble::as_tibble()
 
   return(result)
 }
