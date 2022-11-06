@@ -4,7 +4,7 @@
 \alias{PathwayAnalysis}
 \title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
 \usage{
-PathwayAnalysis(name, out = "gene_metabolite")
+PathwayAnalysis(name, out = "Extended")
 }
 \arguments{
 \item{name}{The genes' or the metabolites' names which to analysis pathway}
@@ -19,7 +19,7 @@ the KEGG pathway analysis which includes the extended pathway analysis of gene a
 }
 \examples{
 name <- c("C15973","C16254","MDH1")
-result <- PathwayAnalysis(name)
+result <- PathwayAnalysis(name,out="Extended")
 name <- "C15973"
 result <- PathwayAnalysis(name,out="metabolite")
 name <- "MDH1"

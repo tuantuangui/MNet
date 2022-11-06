@@ -40,7 +40,8 @@ name2pathway <- function(name) {
   pathwayid <- pathway2pathwayid(name_pathway$PATHWAY)
 
   name_pathway <- name_pathway %>%
-    dplyr::inner_join(pathwayid,by="PATHWAY")
+    dplyr::inner_join(pathwayid,by="PATHWAY") %>%
+    tibble::as_tibble()
 
   xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)
   result <- xgr_result$output
@@ -83,7 +84,7 @@ name2pathway <- function(name) {
   }
   result$members_Anno_name <- members_Anno_name
 
-  result_print <- list(name2pathway=name_pathway,pathway=result,kegg_name=name_kegg_print)
+  result_print <- list(name2pathway=name_pathway,pathway=result,kegg_id=name_kegg_print)
   return(result_print)
 
 }

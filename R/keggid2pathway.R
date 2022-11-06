@@ -11,6 +11,7 @@
 keggid2pathway <- function(keggid) {
   ENTRY <- NULL
   result <- kegg_pathway %>%
-    dplyr::filter(ENTRY %in% keggid)
+    dplyr::filter(ENTRY %in% keggid) %>%
+    tibble::as_tibble()
   return(result)
 }

@@ -8,13 +8,13 @@
 #'
 #' @examples
 #' name <- c("C15973","C16254","MDH1")
-#' result <- PathwayAnalysis(name)
+#' result <- PathwayAnalysis(name,out="Extended")
 #' name <- "C15973"
 #' result <- PathwayAnalysis(name,out="metabolite")
 #' name <- "MDH1"
 #' result <- PathwayAnalysis(name,out="gene")
-PathwayAnalysis <- function(name,out="gene_metabolite") {
-  if (out=="gene_metabolite") {
+PathwayAnalysis <- function(name,out="Extended") {
+  if (out=="Extended") {
       PathwayExtendData <- PathwayExtendData %>%
         dplyr::select(c("name","kegg_pathwayname"))
       result <- xgr(name,PathwayExtendData)

@@ -30,6 +30,6 @@ The metabolites' survival plot
 automatic classify the samples by each selected metabolites by mean or median, and then plot the survival
 }
 \examples{
-metabolites <- c("MT.ND4","MT.ND4L","MT.ND6")
-survMet(dat,metabolites,cluster_method="mean",out_dir="survival/metabolites/")
+metabolites <- c("C03819","C02918","C03916")
+survMet(dat,metabolites,cluster_method="mean",out_dir="result/survival/metabolites/")
 }

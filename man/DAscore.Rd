@@ -25,6 +25,8 @@ if value is classification, then rank by pathway classification}
 
 \item{min_measured_num}{the minimum measured members that be ploted in a pathway,
 Default the value is 2.}
+
+\item{out}{the analysis type,default "extended", other choice is "gene" or "metabolite"}
 }
 \value{
 Calculate the differential abundance (DA) score and show the DA figure

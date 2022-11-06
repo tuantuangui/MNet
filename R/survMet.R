@@ -12,8 +12,9 @@
 #' @export
 #'
 #' @examples
-#' metabolites <- c("MT.ND4","MT.ND4L","MT.ND6")
-#' survMet(dat,metabolites,cluster_method="mean",out_dir="survival/metabolites/")
+#' metabolites <- c("C03819","C02918","C03916")
+#' survMet(dat,metabolites,cluster_method="mean",out_dir="result/survival/metabolites/")
+
 survMet <- function(dat,metabolites,cluster_method="mean",out_dir="survival/metabolites/") {
    
   metabolite_mean_median <- NULL
@@ -42,9 +43,12 @@ survMet <- function(dat,metabolites,cluster_method="mean",out_dir="survival/meta
 
     fit_cluster <- survival::survfit(survival::Surv(time = time, event = status) ~ cluster,data=mydata_cluster)
     p1 <- survminer::ggsurvplot(fit_cluster, data = mydata_cluster, pval = TRUE,title=metabolite)
-
     grDevices::pdf(paste0(out_dir,"/",metabolite,".survival.pdf"),width=8,height=8)
     print(p1)
     grDevices::dev.off()
+    grDevices::png(paste0(out_dir,"/",metabolite,".survival.png"))
+    print(p1)
+    grDevices::dev.off()
+
   }
 }
