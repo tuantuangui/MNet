@@ -20,7 +20,8 @@
 pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_threshold=0,nsize=10) {
 
   keggId <- gene <- logFC <- type <- cor_result <- NULL
-  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
+#  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
+  gene_metabolite_1 <- gene_metabolite %>%
     as.data.frame() %>%
     dplyr::select(-c("subsystems","pathway_type")) %>%
     unique()
