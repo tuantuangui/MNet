@@ -1,5 +1,19 @@
-#library(caret)
-
+#' feature selection in lasso or elastic network
+#'
+#' @param mydata the data
+#' @param method the feature selection method,default is "lasso", "elastic" is optional
+#'
+#' @return test
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' mydata_t <- mydata %>%
+#'   t() %>%
+#'   as.data.frame()
+#' # the group information must be tumor and normal
+#' mydata_t$group <- group
+#' result <- ML_alpha(mydata_t)
 
 ML_alpha <- function(mydata,method="lasso"){
 

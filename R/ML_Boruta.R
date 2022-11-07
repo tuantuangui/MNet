@@ -1,3 +1,18 @@
+#' feature selection in Boruta
+#'
+#' @param mydata the data
+#'
+#' @return test
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' mydata_t <- mydata %>%
+#'   t() %>%
+#'   as.data.frame()
+#' # the group information must be tumor and normal
+#' mydata_t$group <- group
+#' result <- ML_Boruta(mydata_t)
 
 
 ML_Boruta <- function(mydata) {

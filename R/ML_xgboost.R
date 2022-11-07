@@ -1,3 +1,20 @@
+#' feature selection in XGBoost
+#'
+#' @param mydata the data
+#'
+#' @return test
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' mydata_t <- mydata %>%
+#'   t() %>%
+#'   as.data.frame()
+#' # the group information must be tumor and normal
+#' mydata_t$group <- group
+#' result <- ML_xgboost(mydata_t)
+
+
 ML_xgboost <- function(mydata) {
   test_rmse <- iter <- Feature <- Importance <- NULL
   parts = caret::createDataPartition(mydata$group, p = .8, list = F)
