@@ -2,8 +2,11 @@
 
 export(DAscore)
 export(DM)
+export(ML_Boruta)
 export(ML_RF)
+export(ML_alpha)
 export(ML_logistic)
+export(ML_xgboost)
 export(MetCox)
 export(MetaGeneCor)
 export(PathwayAnalysis)
