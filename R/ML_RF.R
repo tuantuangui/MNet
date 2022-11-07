@@ -38,6 +38,7 @@ ML_RF <- function(mydata,ylim_min=0,seed=NULL) {
 
   rf_model_accuracy$raw <- factor(rf_model_accuracy$raw,levels = rev(rf_model_accuracy$raw))
 
+  
   p1 <- ggplot2::ggplot(rf_model_accuracy,ggplot2::aes(raw,MeanDecreaseAccuracy))+
     ggplot2::geom_point(shape=19,color="blue")+
     ggplot2::theme_bw()+
@@ -47,7 +48,7 @@ ML_RF <- function(mydata,ylim_min=0,seed=NULL) {
 #  plot(rf_model)
 #  varImpPlot(rf_model)
 
-  result <- list(feature_result=rf_model_accuracy,p=p1)
+  result <- list(feature_result=tibble::as_tibble(rf_model_accuracy),p=p1)
   return(result)
 }
 
