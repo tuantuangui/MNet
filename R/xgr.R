@@ -1,4 +1,4 @@
-#' Plot the figure using XGR
+' Plot the figure using XGR
 #'
 #' @param metabolites_keggid the metabolites's keggid
 #' @param database the database used
@@ -10,7 +10,7 @@
 #' library(dplyr)
 #' kegg_pathway_filter <- kegg_pathway %>%
 #' dplyr::filter(!is.na(pathway_type)) %>%
-#'   dplyr::select(c("ENTRY","PATHWAY"))
+#'   dplyr::select(ENTRY,PATHWAY)
 #'
 #' kegg_id_need <- c("C05984","C02494")
 #' xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)

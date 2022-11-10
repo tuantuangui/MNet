@@ -33,7 +33,7 @@ name2pathway <- function(name) {
 
   kegg_pathway_filter <- kegg_pathway %>%
     dplyr::filter(!is.na(pathway_type)) %>%
-    dplyr::select(c("ENTRY","PATHWAY"))
+    dplyr::select(ENTRY,PATHWAY)
 
   name_pathway <- name_kegg_correspondence %>%
     dplyr::inner_join(kegg_pathway_filter,by=c("kegg_id"="ENTRY"))
@@ -50,7 +50,7 @@ name2pathway <- function(name) {
 
     kegg_name <- kegg_pathway %>%
       tidyr::separate(NAME,sep=";///","name") %>%
-      dplyr::select(c("ENTRY","name")) %>%
+      dplyr::select(ENTRY,name) %>%
       unique()
     keggid_split<- strsplit(keggid,split=", ")[[1]]
     result_temp <- c()

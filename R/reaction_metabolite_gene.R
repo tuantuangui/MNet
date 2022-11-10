@@ -19,6 +19,6 @@ reaction_metabolite_gene <- function(genesymbol,metabolite) {
 
   dat <- gene_filter %>%
     dplyr::inner_join(metabolite_filter,by="reaction") %>%
-    dplyr::select(c("reaction","description","formula","subsystem","gene","abbreviation","keggId","hmdb","score"))
+    dplyr::select(reaction,description,formula,subsystem,gene,abbreviation,keggId,hmdb,score)
   return(dat)
 }

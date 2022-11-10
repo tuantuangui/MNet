@@ -96,10 +96,10 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
                        measured_members_num=all_members_num,increase_member_result=increase_member_result,
                        decrease_member_result=decrease_member_result,measure_member_result=measure_member_result) %>%
     dplyr::left_join(pathway_data,by=c("pathway"="kegg_pathwayname")) %>%
-    dplyr::select(-c("name","type")) %>%
+    dplyr::select(-name,-type) %>%
     unique() %>%
     dplyr::arrange(da_score) %>%
-    dplyr::rename("pathway classification"="kegg_category") %>%
+    dplyr::rename(`pathway classification`=`kegg_category`) %>%
     tibble::as_tibble()
 
 

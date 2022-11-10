@@ -21,12 +21,12 @@
 #'   dplyr::left_join(metadata,by=c("name"="label"))
 #'
 #' metadata <- result_keggid %>%
-#'   dplyr::select(-"name") %>%
-#'   tibble::column_to_rownames("kegg_id")
+#'   dplyr::select(-name) %>%
+#'   tibble::column_to_rownames(kegg_id)
 #'
 #' genedata <- readRDS("/Users/guituantuan/Desktop/projects/RNA-seq/ALL/result_v0612/11_key_metabolites/20220612_RNA_ALL_VST_coding_filter.rds") %>%
 #'   as.data.frame() %>%
-#'   tibble::column_to_rownames("gene_id")
+#'   tibble::column_to_rownames(gene_id)
 #'
 #' result <- MetaGeneCor(metadata,genedata,"hsa00630")
 MetaGeneCor <- function(metadata,genedata,pathwayid) {
@@ -55,6 +55,6 @@ MetaGeneCor <- function(metadata,genedata,pathwayid) {
     }
   }
   cor_result <- cor_result %>%
-    dplyr::select(c("compound_name","enzyme","hsa","pathname","other_marker","geneid","metabolite","cor","p"))
+    dplyr::select(compound_name,enzyme,hsa,pathname,other_marker,geneid,metabolite,cor,p)
   return(cor_result)
 }

@@ -23,7 +23,7 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
 #  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
   gene_metabolite_1 <- gene_metabolite %>%
     as.data.frame() %>%
-    dplyr::select(-c("subsystems","pathway_type")) %>%
+    dplyr::select(-subsystems,-pathway_type) %>%
     unique()
   gene_metabolite_filter1 <- gene_metabolite_1 %>%
     dplyr::filter(keggId %in% rownames(metabolite_data)) %>%
@@ -43,13 +43,13 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   names(name_2) <- names(name_1)
   name_all <- rbind(name_1,name_2) %>%
     unique() %>%
-    dplyr::rename("type"="src_type","name"="keggId")
+    dplyr::rename(type=src_type,name=keggId)
   
   nodes <- name_all %>%
-    dplyr::select(c("name","type"))
+    dplyr::select(name,type)
   
   relation <- gene_metabolite_filter %>%
-    dplyr::select(c("keggId","gene"))
+    dplyr::select(keggId,gene)
   network <- igraph::graph_from_data_frame(d=relation,vertices=nodes, directed=F)
   #cor_all <- 100*igraph::E(network)$cor_result**2
 
@@ -80,8 +80,8 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   name_all <- rbind(name_meta,name_gene)
   name <- name %>%
     dplyr::left_join(name_all,by="name") %>%
-    dplyr::select(c("name","colors","type.x")) %>%
-    dplyr::rename("type"="type.x")
+    dplyr::select(name,colors,type.x) %>%
+    dplyr::rename(type=type.x)
   
   shape1=c("square","circle")
   my_shape <- shape1[as.numeric(as.factor(name$type))]

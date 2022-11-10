@@ -24,12 +24,12 @@ pathwayinfo <- function(pathwayid) {
     tidyr::separate_rows(enzyme,sep=" ") %>%
     dplyr::mutate(pathid=pathwayid) %>%
     dplyr::mutate(pathname=pathwayname) %>%
-    dplyr::rename("geneid"="V1")
+    dplyr::rename(geneid=V1)
 
   compound_info <- infos[[1]]$COMPOUND %>%
     as.data.frame() %>%
     tibble::rownames_to_column(var="keggid") %>%
-    dplyr::rename("compound_name"=".")
+    dplyr::rename(compound_name=`.`)
 
   result <- list(gene_info=gene_info_en,compound_info=compound_info)
   return(result)

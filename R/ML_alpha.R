@@ -19,7 +19,7 @@ ML_alpha <- function(mydata,method="lasso"){
 
   s1 <- feature <- NULL
   mydata1 <- mydata %>%
-    dplyr::select(-"group") %>%
+    dplyr::select(-group) %>%
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), as.numeric))
   mydata1$group <- mydata$group
   mydata <- mydata1
