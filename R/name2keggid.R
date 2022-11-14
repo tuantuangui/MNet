@@ -53,7 +53,7 @@ name2keggid <- function(compound_name) {
 
   #对这些compound name 转化为refmet name
   name_na_2refmet <- name2refmet(name_na) %>%
-    dplyr::select(Input name,refmet_name) %>%
+    dplyr::select(`Input name`,refmet_name) %>%
     dplyr::rename(name=Input name)
 
   ##对refmet转化为keggid
