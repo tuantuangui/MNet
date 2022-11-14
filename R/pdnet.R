@@ -3,8 +3,6 @@
 #' @param metabolite_data the row is the metabolite's kegg id, and the column is the sample
 #' @param gene_data the row is the gene symbol, and the column is the sample
 #' @param diff_info the differential genes and metabolites information
-#' @param cor_method the correlation method
-#' @param cor_threshold the correlation threshold 
 #' @param nsize the desired number of nodes constrained to the resulting subgraph
 #'
 #' @return a figure
@@ -17,13 +15,12 @@
 #' dev.off()
 
 
-pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_threshold=0,nsize=10) {
+pdnet <- function(metabolite_data,gene_data,diff_info,nsize=10) {
 
   keggId <- gene <- logFC <- type <- cor_result <- NULL
 #  gene_metabolite_1 <- data.table::fread("/Users/guituantuan/Desktop/projects/database/gene-metabolite/gene-metabolite_BiGG_graphite_uniq.txt") %>%
   gene_metabolite_1 <- gene_metabolite %>%
     as.data.frame() %>%
-    dplyr::select(-subsystems,-pathway_type) %>%
     unique()
   gene_metabolite_filter1 <- gene_metabolite_1 %>%
     dplyr::filter(keggId %in% rownames(metabolite_data)) %>%
@@ -89,19 +86,11 @@ pdnet <- function(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_t
   #计算每个节点的数量
   deg <- igraph::degree(g, mode="all")
   
-  
-  
-  #  pdf("~/Desktop/test_2.pdf",width=15,height=15)
-  
- # pdf("~/Desktop/test_1.pdf",width=8,height=8)
   plot(g,vertex.color=name$colors,vertex.shape=my_shape,vertex.size=2*deg**0.5,
        vertex.label.cex=0.7)
-  #legend(x=-0.5, y=-0.5,legend=unique(edge_g1$substystem_all),pch=21,
   off.sets=col.key(limit=gene_limits,bins=10,cex=0.7,graph.size = c(1,1),off.sets=c(x=0,y=0))
   off.sets=col.key(limit=meta_limits,bins=10,cex=0.7,low="blue", mid="gray", high="yellow",
                    off.sets=c(x=0,y=0),graph.size = c(1,0.9))
-  
-#  dev.off()
   
   node_color <- rbind(name_gene,name_meta)
   
