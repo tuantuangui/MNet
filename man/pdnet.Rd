@@ -4,14 +4,7 @@
 \alias{pdnet}
 \title{The important network of the metabolite and the gene expression}
 \usage{
-pdnet(
-  metabolite_data,
-  gene_data,
-  diff_info,
-  cor_method = "kendall",
-  cor_threshold = 0,
-  nsize = 10
-)
+pdnet(metabolite_data, gene_data, diff_info, nsize = 10)
 }
 \arguments{
 \item{metabolite_data}{the row is the metabolite's kegg id, and the column is the sample}
@@ -19,10 +12,6 @@ pdnet(
 \item{gene_data}{the row is the gene symbol, and the column is the sample}
 
 \item{diff_info}{the differential genes and metabolites information}
-
-\item{cor_method}{the correlation method}
-
-\item{cor_threshold}{the correlation threshold}
 
 \item{nsize}{the desired number of nodes constrained to the resulting subgraph}
 }
