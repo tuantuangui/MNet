@@ -11,7 +11,7 @@
 #' @examples
 #' load("/Users/guituantuan/Desktop/R_packages/MNet/R/test.data")
 #' pdf("test.pdf")
-#' pdnet(metabolite_data,gene_data,diff_info,cor_method="kendall",cor_threshold=0,nsize=10)
+#' pdnet(metabolite_data,gene_data,diff_info,nsize=10)
 #' dev.off()
 
 
