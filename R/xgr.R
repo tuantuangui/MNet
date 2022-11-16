@@ -1,4 +1,4 @@
-' Plot the figure using XGR
+#' Plot the figure using XGR
 #'
 #' @param metabolites_keggid the metabolites's keggid
 #' @param database the database used
