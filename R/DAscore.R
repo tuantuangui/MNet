@@ -53,25 +53,33 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
   
   
   for (pathway in pathway_all) {
-    increase_members_num <- pathway_data %>%
-      dplyr::filter(name %in% increase_members) %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      nrow()
-    increase_members_pathway <- pathway_data %>%
-      dplyr::filter(name %in% increase_members) %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      dplyr::pull(name) %>%
-      paste(collapse=";")
+    if (length(increase_members)>0){
+      increase_members_num <- pathway_data %>%
+        dplyr::filter(name %in% increase_members) %>%
+        dplyr::filter(kegg_pathwayname==pathway) %>%
+        nrow()
+      increase_members_pathway <- pathway_data %>%
+        dplyr::filter(name %in% increase_members) %>%
+        dplyr::filter(kegg_pathwayname==pathway) %>%
+        dplyr::pull(name) %>%
+        paste(collapse=";")
+    }else {
+      increase_members_num = 0
+    }
     
-    decrease_members_num <- pathway_data %>%
-      dplyr::filter(name %in% decrease_members) %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      nrow()
-    decrease_members_pathway <- pathway_data %>%
-      dplyr::filter(name %in% decrease_members) %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      dplyr::pull(name) %>%
-      paste(collapse=";")
+    if (length(decrease_members)>0) {
+      decrease_members_num <- pathway_data %>%
+        dplyr::filter(name %in% decrease_members) %>%
+        dplyr::filter(kegg_pathwayname==pathway) %>%
+        nrow()
+      decrease_members_pathway <- pathway_data %>%
+        dplyr::filter(name %in% decrease_members) %>%
+        dplyr::filter(kegg_pathwayname==pathway) %>%
+        dplyr::pull(name) %>%
+        paste(collapse=";")
+    } else {
+      decrease_members_num = 0
+    }
     
     measure_members_num <- pathway_data %>%
       dplyr::filter(kegg_pathwayname==pathway) %>%
