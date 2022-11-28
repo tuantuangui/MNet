@@ -45,93 +45,97 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
     dplyr::pull(kegg_pathwayname) %>%
     unique()
 
-  DA_score_result <- c()
-  all_members_num <- c()
-  increase_member_result <- c()
-  decrease_member_result <- c()
-  measure_member_result <- c()
-  
-  
-  for (pathway in pathway_all) {
-    if (length(increase_members)>0){
-      increase_members_num <- pathway_data %>%
-        dplyr::filter(name %in% increase_members) %>%
+  if (length(pathway_all)==0) {
+    return(NA)
+  } else {
+    DA_score_result <- c()
+    all_members_num <- c()
+    increase_member_result <- c()
+    decrease_member_result <- c()
+    measure_member_result <- c()
+    
+    
+    for (pathway in pathway_all) {
+      if (length(increase_members)>0){
+        increase_members_num <- pathway_data %>%
+          dplyr::filter(name %in% increase_members) %>%
+          dplyr::filter(kegg_pathwayname==pathway) %>%
+          nrow()
+        increase_members_pathway <- pathway_data %>%
+          dplyr::filter(name %in% increase_members) %>%
+          dplyr::filter(kegg_pathwayname==pathway) %>%
+          dplyr::pull(name) %>%
+          paste(collapse=";")
+      }else {
+        increase_members_num = 0
+      }
+      
+      if (length(decrease_members)>0) {
+        decrease_members_num <- pathway_data %>%
+          dplyr::filter(name %in% decrease_members) %>%
+          dplyr::filter(kegg_pathwayname==pathway) %>%
+          nrow()
+        decrease_members_pathway <- pathway_data %>%
+          dplyr::filter(name %in% decrease_members) %>%
+          dplyr::filter(kegg_pathwayname==pathway) %>%
+          dplyr::pull(name) %>%
+          paste(collapse=";")
+      } else {
+        decrease_members_num = 0
+      }
+      
+      measure_members_num <- pathway_data %>%
         dplyr::filter(kegg_pathwayname==pathway) %>%
+        dplyr::filter(name %in% all_members) %>%
         nrow()
-      increase_members_pathway <- pathway_data %>%
-        dplyr::filter(name %in% increase_members) %>%
+      measure_members_pathway <- pathway_data %>%
         dplyr::filter(kegg_pathwayname==pathway) %>%
+        dplyr::filter(name %in% all_members) %>%
         dplyr::pull(name) %>%
         paste(collapse=";")
-    }else {
-      increase_members_num = 0
+  
+      da_score <- (increase_members_num-decrease_members_num)/measure_members_num
+      DA_score_result <- c(DA_score_result,da_score)
+      all_members_num <- c(all_members_num,measure_members_num)
+      increase_member_result <- c(increase_member_result,increase_members_pathway)
+      decrease_member_result <- c(decrease_member_result,decrease_members_pathway)
+      measure_member_result <- c(measure_member_result,measure_members_pathway)
+      
     }
-    
-    if (length(decrease_members)>0) {
-      decrease_members_num <- pathway_data %>%
-        dplyr::filter(name %in% decrease_members) %>%
-        dplyr::filter(kegg_pathwayname==pathway) %>%
-        nrow()
-      decrease_members_pathway <- pathway_data %>%
-        dplyr::filter(name %in% decrease_members) %>%
-        dplyr::filter(kegg_pathwayname==pathway) %>%
-        dplyr::pull(name) %>%
-        paste(collapse=";")
-    } else {
-      decrease_members_num = 0
+    result <- data.frame(pathway=pathway_all,da_score=DA_score_result,increase_members_num=increase_members_num,
+                         decrease_members_num=decrease_members_num,
+                         measured_members_num=all_members_num,increase_member_result=increase_member_result,
+                         decrease_member_result=decrease_member_result,measure_member_result=measure_member_result) %>%
+      dplyr::left_join(pathway_data,by=c("pathway"="kegg_pathwayname")) %>%
+      dplyr::select(-name,-type) %>%
+      unique() %>%
+      dplyr::arrange(da_score) %>%
+      dplyr::rename(`pathway classification`=`kegg_category`) %>%
+      tibble::as_tibble()
+  
+  
+      result_filter <- result %>%
+        dplyr::filter(measured_members_num>=min_measured_num)
+  
+  
+    if (is.na(sort_plot)) {
+      result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
+    }else if (sort_plot=="classification") {
+      result_filter <- result_filter %>%
+        dplyr::arrange(`pathway classification`)
+  
+      result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
     }
-    
-    measure_members_num <- pathway_data %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      dplyr::filter(name %in% all_members) %>%
-      nrow()
-    measure_members_pathway <- pathway_data %>%
-      dplyr::filter(kegg_pathwayname==pathway) %>%
-      dplyr::filter(name %in% all_members) %>%
-      dplyr::pull(name) %>%
-      paste(collapse=";")
-
-    da_score <- (increase_members_num-decrease_members_num)/measure_members_num
-    DA_score_result <- c(DA_score_result,da_score)
-    all_members_num <- c(all_members_num,measure_members_num)
-    increase_member_result <- c(increase_member_result,increase_members_pathway)
-    decrease_member_result <- c(decrease_member_result,decrease_members_pathway)
-    measure_member_result <- c(measure_member_result,measure_members_pathway)
-    
+  
+    p <- ggplot2::ggplot(result_filter)+
+      ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`pathway classification`))+
+      ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`pathway classification`))+
+      ggplot2::coord_flip()+
+      ggplot2::ylab("DA score")+
+      ggplot2::xlab(NULL)+
+      ggplot2::theme_bw()
+  
+    result_1 <- list(result=result,p=p)
+    return(result_1)
   }
-  result <- data.frame(pathway=pathway_all,da_score=DA_score_result,increase_members_num=increase_members_num,
-                       decrease_members_num=decrease_members_num,
-                       measured_members_num=all_members_num,increase_member_result=increase_member_result,
-                       decrease_member_result=decrease_member_result,measure_member_result=measure_member_result) %>%
-    dplyr::left_join(pathway_data,by=c("pathway"="kegg_pathwayname")) %>%
-    dplyr::select(-name,-type) %>%
-    unique() %>%
-    dplyr::arrange(da_score) %>%
-    dplyr::rename(`pathway classification`=`kegg_category`) %>%
-    tibble::as_tibble()
-
-
-    result_filter <- result %>%
-      dplyr::filter(measured_members_num>=min_measured_num)
-
-
-  if (is.na(sort_plot)) {
-    result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
-  }else if (sort_plot=="classification") {
-    result_filter <- result_filter %>%
-      dplyr::arrange(`pathway classification`)
-
-    result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
-  }
-
-  p <- ggplot2::ggplot(result_filter)+
-    ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`pathway classification`))+
-    ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`pathway classification`))+
-    ggplot2::coord_flip()+
-    ggplot2::ylab("DA score")+
-    ggplot2::xlab(NULL)+
-    ggplot2::theme_bw()
-
-  result_1 <- list(result=result,p=p)
-  return(result_1)
 }
