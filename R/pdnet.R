@@ -54,6 +54,8 @@ pdnet <- function(metabolite_data,gene_data,diff_info,nsize=10) {
   names(p) <- diff_info$name
   
   g <- dnet::dNetPipeline(network,pval=p,nsize=nsize)
+
+  edge_g <- data.frame(igraph::get.edgelist(g))
   
   name <- data.frame(name=igraph::V(g)$name) %>%
     dplyr::left_join(nodes,by="name") %>%
@@ -96,6 +98,7 @@ pdnet <- function(metabolite_data,gene_data,diff_info,nsize=10) {
   
   node_result <- data.frame(name=igraph::V(g)$name) %>%
     dplyr::left_join(node_color,by="name")
-  
-  return(node_result)
+
+  result <- list(node_resut=node_result,edge_result=edge_g)  
+  return(result)
 }
