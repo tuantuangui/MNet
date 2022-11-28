@@ -99,6 +99,6 @@ pdnet <- function(metabolite_data,gene_data,diff_info,nsize=10) {
   node_result <- data.frame(name=igraph::V(g)$name) %>%
     dplyr::left_join(node_color,by="name")
 
-  result <- list(node_resut=node_result,edge_result=edge_g)  
+  result <- list(node_result=node_result,edge_result=edge_g)  
   return(result)
 }
