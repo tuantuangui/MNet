@@ -2,6 +2,7 @@
 #'
 #' @param metabolites_keggid the metabolites's keggid
 #' @param database the database used
+#' @param fdr FDR_cutoff used to declare the significant terms. By default, it is set to 0.1
 #'
 #' @return test
 #' @export
@@ -16,7 +17,7 @@
 #' xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)
 #' xgr_result$output
 #' xgr_result$gp
-xgr <- function(metabolites_keggid,database) {
+xgr <- function(metabolites_keggid,database,FDR_cutoff=0.1) {
 
   nOverlap <- NULL
   eTerm <- XGR::xEnricherYours(metabolites_keggid,database, min.overlap=0, test='fisher')
@@ -28,7 +29,7 @@ xgr <- function(metabolites_keggid,database) {
     tibble::as_tibble()
 
   # plot
-  gp <- XGR::xEnrichLadder(eTerm,FDR.cutoff = 1,top_num=nrow(output))
+  gp <- XGR::xEnrichLadder(eTerm,FDR.cutoff = FDR_cutoff)
 
   result <- list(gp=gp,output=output)
   class(result) <- "eLadder"
