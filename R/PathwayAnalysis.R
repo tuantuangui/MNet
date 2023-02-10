@@ -17,17 +17,17 @@
 PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05) {
   if (out=="Extended") {
       PathwayExtendData <- PathwayExtendData %>%
-        dplyr::select(name,kegg_pathwayname)
+        dplyr::select(name,kegg_pathwayname,kegg_category)
       result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
   }else if (out=="gene") {
     PathwayExtendData <- PathwayExtendData %>%
       dplyr::filter(type=="gene") %>%
-      dplyr::select(name,kegg_pathwayname)
+      dplyr::select(name,kegg_pathwayname,kegg_category)
     result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
   }else if (out=="metabolite") {
     PathwayExtendData <- PathwayExtendData %>%
       dplyr::filter(type=="metabolite") %>%
-      dplyr::select(name,kegg_pathwayname)
+      dplyr::select(name,kegg_pathwayname,kegg_category)
     result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
   }
   
