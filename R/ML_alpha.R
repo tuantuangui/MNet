@@ -50,7 +50,7 @@ ML_alpha <- function(mydata,method="lasso"){
     # Model coefficients
     coef_ridge <- as.matrix(stats::coef(ridge$finalModel, ridge$bestTune$lambda)) %>%
       as.data.frame() %>%
-      dplyr::filter(s1>0) %>%
+      dplyr::filter(s1 != 0) %>%
       tibble::rownames_to_column(var="feature") %>%
       dplyr::filter(feature != "(Intercept)")
     

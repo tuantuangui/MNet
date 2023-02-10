@@ -13,7 +13,7 @@ NULL
 #' if value is classification, then rank by pathway classification
 #' @param min_measured_num the minimum measured members that be ploted in a pathway,
 #' Default the value is 2.
-#' @param out the analysis type,default "extended", other choice is "gene" or "metabolite"
+#' @param out the analysis type,default "metabolite", other choice is "gene"
 #'
 #' @return Calculate the differential abundance (DA) score and show the DA figure
 #'
@@ -27,12 +27,10 @@ NULL
 #' @export
 
 DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
-                    min_measured_num=2,out="extended") {
+                    min_measured_num=2,out="metabolite") {
   name <- kegg_pathwayname <- pathway_type <- measured_members_num <- type <- `pathway classification` <- NULL
 
-  if (out=="extended") {
-    pathway_data <- PathwayExtendData
-  }else if (out == "gene") {
+  if (out == "gene") {
     pathway_data <- PathwayExtendData %>%
       dplyr::filter(type=="gene")
   }else if (out == "metabolite") {
@@ -53,8 +51,10 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
     increase_member_result <- c()
     decrease_member_result <- c()
     measure_member_result <- c()
-    
-    
+
+    increase_members_num_result <- c() 
+    decrease_members_num_result <- c()
+
     for (pathway in pathway_all) {
       if (length(increase_members)>0){
         increase_members_num <- pathway_data %>%
@@ -97,13 +97,26 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
       da_score <- (increase_members_num-decrease_members_num)/measure_members_num
       DA_score_result <- c(DA_score_result,da_score)
       all_members_num <- c(all_members_num,measure_members_num)
-      increase_member_result <- c(increase_member_result,increase_members_pathway)
-      decrease_member_result <- c(decrease_member_result,decrease_members_pathway)
+      if (length(increase_members)>0) {
+        increase_member_result <- c(increase_member_result,increase_members_pathway)
+      }else{
+#        increase_member_result <- increase_member_result
+        increase_member_result <- NA
+      }
+
+      if (length(decrease_members)>0) {
+        decrease_member_result <- c(decrease_member_result,decrease_members_pathway)
+      }else {
+#        decrease_member_result <- decrease_member_result
+        decrease_member_result <- NA
+      }
       measure_member_result <- c(measure_member_result,measure_members_pathway)
-      
+
+      increase_members_num_result <- c(increase_members_num_result,increase_members_num)      
+      decrease_members_num_result <- c(decrease_members_num_result,decrease_members_num) 
     }
-    result <- data.frame(pathway=pathway_all,da_score=DA_score_result,increase_members_num=increase_members_num,
-                         decrease_members_num=decrease_members_num,
+    result <- data.frame(pathway=pathway_all,da_score=DA_score_result,increase_members_num=increase_members_num_result,
+                         decrease_members_num=decrease_members_num_result,
                          measured_members_num=all_members_num,increase_member_result=increase_member_result,
                          decrease_member_result=decrease_member_result,measure_member_result=measure_member_result) %>%
       dplyr::left_join(pathway_data,by=c("pathway"="kegg_pathwayname")) %>%
