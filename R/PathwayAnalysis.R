@@ -56,6 +56,29 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05) {
     dplyr::summarise(members_Anno=paste(NAME,collapse=", "))
 
   result$output <- result_final
+
+  kegg_pathway_uniq <- PathwayExtendData %>%
+  dplyr::select(kegg_pathwayname,kegg_category) %>%
+  dplyr::rename("PATHWAY"="kegg_pathwayname") %>%
+  dplyr::rename("pathway_type"="kegg_category") %>%
+  unique()
+
+  result_1 <- result$output %>%
+    dplyr::filter(pvalue < p_cutoff) %>%
+    dplyr::arrange(pvalue) %>%
+    dplyr::left_join(kegg_pathway_uniq,by=c("name"="PATHWAY"))
+
+  result_1$name <- factor(result_1$name,levels = rev(result_1$name))
+  result_1$pathway_type <- factor(result_1$pathway_type,levels=unique(kegg_pathway_uniq$pathway_type))
+
+  p1 <- ggplot(result_1,aes(name,-log10(pvalue)))+
+    geom_bar(stat="identity",aes(fill=pathway_type))+
+    scale_fill_manual(values=brewer.pal(11, "Set3"),
+                      breaks=unique(kegg_pathway_uniq$pathway_type))+
+    coord_flip()+
+    theme_bw()+
+    labs(x=NULL)
+  result$p_barplot <- p1
   return(result)
 }
 
