@@ -73,7 +73,7 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05) {
 
   p1 <- ggplot(result_1,aes(name,-log10(pvalue)))+
     geom_bar(stat="identity",aes(fill=pathway_type))+
-    scale_fill_manual(values=brewer.pal(11, "Set3"),
+    scale_fill_manual(values=RColorBrewer::brewer.pal(11, "Set3"),
                       breaks=unique(kegg_pathway_uniq$pathway_type))+
     coord_flip()+
     theme_bw()+
