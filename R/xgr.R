@@ -20,7 +20,7 @@
 xgr <- function(metabolites_keggid,database,p_cutoff=0.05) {
 
   nOverlap <- NULL
-  eTerm <- XGR::xEnricherYours(metabolites_keggid,database, min.overlap=0, test='fisher')
+  eTerm <- XGR::xEnricherYours(metabolites_keggid,database, min.overlap=0, test='fisher',size.range=c(1,2000))
 
   # output
   output <- eTerm %>%

@@ -9,11 +9,11 @@
 #'
 #' @examples
 #' name <- c("C15973","C16254","MDH1")
-#' result <- PathwayAnalysis(name,out="Extended")
+#' result <- PathwayAnalysis(name,out="Extended",p_cutoff=0.05)
 #' name <- "C15973"
-#' result <- PathwayAnalysis(name,out="metabolite")
+#' result <- PathwayAnalysis(name,out="metabolite",p_cutoff=0.05)
 #' name <- "MDH1"
-#' result <- PathwayAnalysis(name,out="gene")
+#' result <- PathwayAnalysis(name,out="gene",p_cutoff=0.05)
 PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05) {
   if (out=="Extended") {
       PathwayExtendData <- PathwayExtendData %>%
