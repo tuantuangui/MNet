@@ -3,32 +3,33 @@
 #' @param name The genes' or the metabolites' names which to analysis pathway
 #' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is extended pathway
 #' @param p_cutoff p_cutoff used to declare the significant terms. By default, it is set to 0.05
+#' @param noverlap_cutoff noverlap_cutoff used to declare the number of overlap. By default, it is set to 0
 #'
 #' @return test
 #' @export
 #'
 #' @examples
 #' name <- c("C15973","C16254","MDH1")
-#' result <- PathwayAnalysis(name,out="Extended",p_cutoff=0.05)
+#' result <- PathwayAnalysis(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0)
 #' name <- "C15973"
-#' result <- PathwayAnalysis(name,out="metabolite",p_cutoff=0.05)
+#' result <- PathwayAnalysis(name,out="metabolite",p_cutoff=0.05,noverlap_cutoff=0)
 #' name <- "MDH1"
-#' result <- PathwayAnalysis(name,out="gene",p_cutoff=0.05)
-PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05) {
+#' result <- PathwayAnalysis(name,out="gene",p_cutoff=0.05,noverlap_cutoff=0)
+PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0) {
   if (out=="Extended") {
       PathwayExtendData <- PathwayExtendData %>%
         dplyr::select(name,kegg_pathwayname,kegg_category)
-      result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
+      result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff,noverlap_cutoff=0)
   }else if (out=="gene") {
     PathwayExtendData <- PathwayExtendData %>%
       dplyr::filter(type=="gene") %>%
       dplyr::select(name,kegg_pathwayname,kegg_category)
-    result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
+    result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff,noverlap_cutoff=0)
   }else if (out=="metabolite") {
     PathwayExtendData <- PathwayExtendData %>%
       dplyr::filter(type=="metabolite") %>%
       dplyr::select(name,kegg_pathwayname,kegg_category)
-    result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff)
+    result <- xgr(name,PathwayExtendData,p_cutoff=p_cutoff,noverlap_cutoff=0)
   }
   
   result_temp <- result$output
