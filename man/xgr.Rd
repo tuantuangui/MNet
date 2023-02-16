@@ -4,12 +4,16 @@
 \alias{xgr}
 \title{Plot the figure using XGR}
 \usage{
-xgr(metabolites_keggid, database)
+xgr(metabolites_keggid, database, p_cutoff = 0.05, noverlap_cutoff = 0)
 }
 \arguments{
 \item{metabolites_keggid}{the metabolites's keggid}
 
 \item{database}{the database used}
+
+\item{p_cutoff}{p_cutoff used to declare the significant terms. By default, it is set to 0.05}
+
+\item{noverlap_cutoff}{noverlap_cutoff used to declare the number of overlap. By default, it is set to 0}
 }
 \value{
 test

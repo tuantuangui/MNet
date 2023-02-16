@@ -4,12 +4,16 @@
 \alias{PathwayAnalysis}
 \title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
 \usage{
-PathwayAnalysis(name, out = "Extended")
+PathwayAnalysis(name, out = "Extended", p_cutoff = 0.05, noverlap_cutoff = 0)
 }
 \arguments{
 \item{name}{The genes' or the metabolites' names which to analysis pathway}
 
 \item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is extended pathway}
+
+\item{p_cutoff}{p_cutoff used to declare the significant terms. By default, it is set to 0.05}
+
+\item{noverlap_cutoff}{noverlap_cutoff used to declare the number of overlap. By default, it is set to 0}
 }
 \value{
 test
@@ -19,9 +23,9 @@ the KEGG pathway analysis which includes the extended pathway analysis of gene a
 }
 \examples{
 name <- c("C15973","C16254","MDH1")
-result <- PathwayAnalysis(name,out="Extended")
+result <- PathwayAnalysis(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0)
 name <- "C15973"
-result <- PathwayAnalysis(name,out="metabolite")
+result <- PathwayAnalysis(name,out="metabolite",p_cutoff=0.05,noverlap_cutoff=0)
 name <- "MDH1"
-result <- PathwayAnalysis(name,out="gene")
+result <- PathwayAnalysis(name,out="gene",p_cutoff=0.05,noverlap_cutoff=0)
 }
