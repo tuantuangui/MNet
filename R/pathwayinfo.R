@@ -1,36 +1,25 @@
 #' get the gene and the enzyme in the pathway
 #'
-#' @param pathwayid the pathway kegg id
+#' @param pathwayid the pathway id, hsa or name
 #'
 #' @return test
 #' @export
 #'
 #' @examples
 #' result <- pathwayinfo("hsa00630")
+#' result <- pathwayinfo("Glyoxylate and dicarboxylate metabolism")
 pathwayinfo <- function(pathwayid) {
 
   GENE <- V2 <- tt <- A <- enzyme <- pathid <- pathname <- NULL
 
-  infos=KEGGREST::keggGet(pathwayid)
-  gene_info =matrix(infos[[1]]$GENE,ncol =2,byrow =T)
+  dat <- PathwayExtendData %>%
+	dplyr::filter(kegg_pathwayname == pathwayid | kegg_pathwayid ==pathwayid)
 
-  pathwayname <- infos[[1]]$NAME
+  gene_info <- dat %>%
+	dplyr::filter(type=="gene")
+  compound_info <- dat %>%
+	dplyr::filter(type=="metabolite")
 
-  gene_info_en <- gene_info %>%
-    as.data.frame() %>%
-    tidyr::separate(V2,sep=";",c("symbol","tt")) %>%
-    tidyr::separate(tt,sep="EC:",c(NA,"A")) %>%
-    tidyr::separate(A,sep="]","enzyme") %>%
-    tidyr::separate_rows(enzyme,sep=" ") %>%
-    dplyr::mutate(pathid=pathwayid) %>%
-    dplyr::mutate(pathname=pathwayname) %>%
-    dplyr::rename(geneid=V1)
-
-  compound_info <- infos[[1]]$COMPOUND %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column(var="keggid") %>%
-    dplyr::rename(compound_name=`.`)
-
-  result <- list(gene_info=gene_info_en,compound_info=compound_info)
+  result <- list(gene_info=gene_info,compound_info=compound_info)
   return(result)
 }
