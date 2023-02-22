@@ -7,7 +7,7 @@
 pathwayinfo(pathwayid)
 }
 \arguments{
-\item{pathwayid}{the pathway kegg id}
+\item{pathwayid}{the pathway id, hsa or name}
 }
 \value{
 test
@@ -17,4 +17,5 @@ get the gene and the enzyme in the pathway
 }
 \examples{
 result <- pathwayinfo("hsa00630")
+result <- pathwayinfo("Glyoxylate and dicarboxylate metabolism")
 }
