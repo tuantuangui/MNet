@@ -43,7 +43,7 @@ name2pathway <- function(name) {
     dplyr::inner_join(pathwayid,by="PATHWAY") %>%
     tibble::as_tibble()
 
-  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)
+  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
   result <- xgr_result$output
 
   kegg2refmet <- function(keggid) {
