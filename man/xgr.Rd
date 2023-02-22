@@ -28,7 +28,7 @@ dplyr::filter(!is.na(pathway_type)) \%>\%
   dplyr::select(ENTRY,PATHWAY)
 
 kegg_id_need <- c("C05984","C02494")
-xgr_result <- xgr(kegg_id_need,kegg_pathway_filter)
+xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
 xgr_result$output
 xgr_result$gp
 }
