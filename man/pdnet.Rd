@@ -4,14 +4,12 @@
 \alias{pdnet}
 \title{The important network of the metabolite and the gene expression}
 \usage{
-pdnet(metabolite_data, gene_data, diff_info, nsize = 10)
+pdnet(diff_metabolite, diff_gene, nsize = 10)
 }
 \arguments{
-\item{metabolite_data}{the row is the metabolite's kegg id, and the column is the sample}
+\item{diff_metabolite}{the differential metabolite information, the name 's kegg id}
 
-\item{gene_data}{the row is the gene symbol, and the column is the sample}
-
-\item{diff_info}{the differential genes and metabolites information}
+\item{diff_gene}{the differential genes information}
 
 \item{nsize}{the desired number of nodes constrained to the resulting subgraph}
 }
@@ -24,6 +22,6 @@ The important network of the metabolite and the gene expression
 \examples{
 load("/Users/guituantuan/Desktop/R_packages/MNet/R/test.data")
 pdf("test.pdf")
-pdnet(metabolite_data,gene_data,diff_info,nsize=10)
+pdnet(diff_metabolite,diff_gene,nsize=10)
 dev.off()
 }
