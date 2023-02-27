@@ -47,6 +47,7 @@
 #' \item{"Notes": the order of the number of significant terms is: "none" > "lea" > "elim" > "pc".}
 #' }
 #' @export
+#' @import igraph
 #' @seealso \code{\link{xDAGanno}}
 #' @include xEnricher.r
 #' @examples
