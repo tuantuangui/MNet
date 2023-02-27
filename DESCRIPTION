@@ -96,6 +96,7 @@ Collate:
     'reaction_metabolite_gene.R'
     'survCli.R'
     'survMet.R'
+    'xDAGanno.r'
     'xEnrichViewer.r'
     'xEnricher.r'
     'xEnricherYours.r'
