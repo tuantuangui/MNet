@@ -97,5 +97,6 @@ Collate:
     'survCli.R'
     'survMet.R'
     'xEnrichViewer.r'
+    'xEnricher.r'
     'xEnricherYours.r'
     'xgr.R'
