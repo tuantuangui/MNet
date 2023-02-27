@@ -137,7 +137,7 @@ xEnricher <- function(data, annotation, g, background=NULL, size.range=c(10,2000
 		}
     	
     	# obtain the induced subgraph according to the input annotation data based on shortest paths (i.e. the most concise subgraph induced)
-		subg <- xDAGanno(g=ig, annotation=annotation, path.mode=path.mode, true.path.rule=true.path.rule, verbose=verbose)
+		subg <- MNet::xDAGanno(g=ig, annotation=annotation, path.mode=path.mode, true.path.rule=true.path.rule, verbose=verbose)
 
     	gs <- V(subg)$anno
     	names(gs) <- V(subg)$name
