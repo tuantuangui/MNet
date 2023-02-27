@@ -192,7 +192,7 @@ xEnricherYours <- function(data.file, annotation.file, background.file=NULL, siz
         message(sprintf("'xEnricher' is being called (%s):", as.character(now)), appendLF=T)
         message(sprintf("#######################################################", appendLF=T))
     }
-    eTerm <- xEnricher(data=data, annotation=anno, g=g, background=background, size.range=size.range, min.overlap=min.overlap, test=test, background.annotatable.only=background.annotatable.only, p.tail=p.tail, p.adjust.method=p.adjust.method, ontology.algorithm="none",true.path.rule=F, verbose=verbose)
+    eTerm <- MNet::xEnricher(data=data, annotation=anno, g=g, background=background, size.range=size.range, min.overlap=min.overlap, test=test, background.annotatable.only=background.annotatable.only, p.tail=p.tail, p.adjust.method=p.adjust.method, ontology.algorithm="none",true.path.rule=F, verbose=verbose)
 	
 	if(verbose){
         now <- Sys.time()
