@@ -8,7 +8,7 @@
 #'
 #' @return test
 #' @export
-#'
+#' @import ggplot2
 #' @examples
 #' library(dplyr)
 #' kegg_pathway_filter <- kegg_pathway %>%
