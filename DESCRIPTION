@@ -16,7 +16,6 @@ Imports:
     ggplot2,
     limma,
     dplyr,
-    XGR,
     stats,
     pathview,
     survival,
