@@ -238,7 +238,9 @@ name2refmet <- function(metabolites_name) {
   }
   result[which(is.na(result$refmet_name)),2] <- result[which(is.na(result$refmet_name)),1]
   result[which(result$refmet_name=="-"),"refmet_name"] <- result[which(result$refmet_name=="-"),"Input name"]
-
+  
+  result <- result %>%
+    dplyr::select(-class_index,-exactmass)
   return(result)
 }
 
