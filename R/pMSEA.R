@@ -36,7 +36,7 @@ pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, ticksSize
   statsAdj <- statsAdj/max(abs(statsAdj))
   pathway <- unname(as.vector(na.omit(match(pathway, names(statsAdj)))))
   pathway <- sort(pathway)
-  gseaRes <- calcGseaStat(statsAdj, selectedStats = pathway, 
+  gseaRes <- fgsea::calcGseaStat(statsAdj, selectedStats = pathway, 
                           returnAllExtremes = TRUE)
   bottoms <- gseaRes$bottoms
   tops <- gseaRes$tops
