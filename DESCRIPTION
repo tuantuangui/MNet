@@ -53,7 +53,8 @@ Suggests: knitr,
     rmarkdown,
     BiocStyle,
     RUnit,
-    BiocGenerics
+    BiocGenerics,
+    fgsea
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1
 biocViews: Metabolomics
@@ -66,6 +67,7 @@ Collate:
     'ML_alpha.R'
     'ML_logistic.R'
     'ML_xgboost.R'
+    'MSEA.R'
     'MetCox.R'
     'MetaGeneCor.R'
     'PathwayAnalysis.R'
@@ -74,6 +76,7 @@ Collate:
     'TSSupraHex.R'
     'col.key.R'
     'colorpanel2.R'
+    'impute.R'
     'keggid2pathway.R'
     'mlimma.R'
     'myscale.R'
@@ -85,6 +88,7 @@ Collate:
     'pCorCliMet.R'
     'pCorCliMetMantel.R'
     'pHeatmap.R'
+    'pMSEA.R'
     'pPCA.R'
     'pPathview.R'
     'pVolcano.R'
