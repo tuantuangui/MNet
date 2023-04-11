@@ -14,8 +14,8 @@ name2refmet <- function(metabolites_name) {
 
   `Input name` <- NULL
   #数据库中已经有的代谢物名称
-  standardized_1 <- refmet_database %>%
-    dplyr::filter(`Input name` %in% metabolites_name)
+  standardized_1 <- refmet_database
+#    dplyr::filter(`Input name` %in% metabolites_name)
 
   #数据库中没有的代谢物名称
   metabolites_to_standardized <- metabolites_name[which(!metabolites_name %in% refmet_database$`Input name`)]
