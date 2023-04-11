@@ -12,13 +12,16 @@ name2refmet <- function(metabolites_name) {
   #refmet_database <- data.table::fread("../data/refmet_database_v0211.txt") %>%
   #  as.data.frame()
 
-  `Input name` <- NULL
+ # `Input name` <- NULL
   #数据库中已经有的代谢物名称
-  standardized_1 <- refmet_database
+#  standardized_1 <- refmet_database
 #    dplyr::filter(`Input name` %in% metabolites_name)
 
   #数据库中没有的代谢物名称
-  metabolites_to_standardized <- metabolites_name[which(!metabolites_name %in% refmet_database$`Input name`)]
+  metabolites_to_standardized <- metabolites_name
+
+#[which(!metabolites_name %in% refmet_database$`Input name`)]
+
   metabolites_to_standardized_temp <- gsub(" |[)]|[(]|[/]|[?]","",metabolites_to_standardized)
 
   if (length(metabolites_to_standardized_temp)!=0){
@@ -232,9 +235,11 @@ name2refmet <- function(metabolites_name) {
       standardized_2 <- rbind(standardized_2,aa)
       file.remove(ref)
     }
-    result <- rbind(standardized_1,standardized_2)
+#    result <- rbind(standardized_1,standardized_2)
+    result <- standardized_2
   }else {
-    result <- standardized_1
+#    result <- standardized_1
+    result <- NULL
   }
   result[which(is.na(result$refmet_name)),2] <- result[which(is.na(result$refmet_name)),1]
   result[which(result$refmet_name=="-"),"refmet_name"] <- result[which(result$refmet_name=="-"),"Input name"]
