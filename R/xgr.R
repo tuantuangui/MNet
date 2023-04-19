@@ -38,7 +38,7 @@ xgr <- function(metabolites_keggid,database,p_cutoff=0.05,noverlap_cutoff=0,test
 
   dat <- output %>%
   tidyr::separate_rows(members_Overlap) %>%
-  dplyr::left_join(database,by=c("members_Overlap"="name")) %>%
+  dplyr::left_join(database,by=c("members_Overlap"="ENTRY")) %>%
   dplyr::select(name,members_Overlap,type)
 
   Data1 <- data.frame(Var1=rep(unique(dat$members_Overlap),time=length(unique(dat$name))),
