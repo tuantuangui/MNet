@@ -35,7 +35,8 @@ MetCox <- function(dat) {
                          })
   res <- t(as.data.frame(univ_results, check.names = FALSE))
   result <- as.data.frame(res)
-  result <- result[which(result$p.value<0.01),] %>%
+#  result <- result[which(result$p.value<0.01),] %>%
+  result <- result %>%
     tibble::rownames_to_column(var="gene_id") %>%
     tibble::as_tibble()
   return(result)
