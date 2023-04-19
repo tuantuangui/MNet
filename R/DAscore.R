@@ -13,7 +13,7 @@ NULL
 #' if value is classification, then rank by pathway classification
 #' @param min_measured_num the minimum measured members that be ploted in a pathway,
 #' Default the value is 2.
-#' @param out the analysis type,default "metabolite", other choice is "gene"
+#' @param out the analysis type,default "metabolite", alternative is "gene" and "Extended"
 #'
 #' @return Calculate the differential abundance (DA) score and show the DA figure
 #'
@@ -36,6 +36,8 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
   }else if (out == "metabolite") {
     pathway_data <- PathwayExtendData %>%
       dplyr::filter(type=="metabolite")
+  }else if (out == "Extended") {
+    pathway_data <- PathwayExtendData
   }
 
   pathway_all <- pathway_data %>%
@@ -144,10 +146,15 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
       ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`pathway classification`))+
       ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`pathway classification`))+
       ggplot2::coord_flip()+
-      ggplot2::ylab("DA score")+
+#      ggplot2::ylab("DA score")+
       ggplot2::xlab(NULL)+
       ggplot2::theme_bw()
   
+    if (out=="Extended") {
+      p <- p + ggplot2::ylab("EDA score")
+    }else {
+      p <- p + ggplot2::ylab("DA score")
+    }
     result_1 <- list(result=result,p=p)
     return(result_1)
   }
