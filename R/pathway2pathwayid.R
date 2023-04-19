@@ -1,4 +1,3 @@
-
 #' Change the pathway name to pathway id
 #'
 #' @param pathwayname the pathway name,such as "Glycolysis / Gluconeogenesis"

@@ -34,6 +34,8 @@ name2pathway <- function(name) {
   kegg_pathway_filter <- kegg_pathway %>%
     dplyr::filter(!is.na(pathway_type)) %>%
     dplyr::select(ENTRY,PATHWAY,pathway_type)
+#    dplyr::rename("name"="ENTRY") %>%
+#    dplyr::mutate(type="metabolite")
 
   name_pathway <- name_kegg_correspondence %>%
     dplyr::inner_join(kegg_pathway_filter,by=c("kegg_id"="ENTRY"))
@@ -43,7 +45,11 @@ name2pathway <- function(name) {
     dplyr::inner_join(pathwayid,by="PATHWAY") %>%
     tibble::as_tibble()
 
-  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
+  db <- kegg_pathway_filter %>%
+    dplyr::rename("name"="ENTRY") %>%
+    dplyr::mutate(type="metabolite")
+#  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
+  xgr_result <- xgr(kegg_id_need,db,p_cutoff=1.1,noverlap_cutoff=0)
   result <- xgr_result$output
 
   kegg2refmet <- function(keggid) {

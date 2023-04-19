@@ -30,7 +30,7 @@ pPathview <- function(cpd.data,gene.data=NULL,outdir="./") {
 		     out.suffix="pathview.metabolite")
    }else {
     pathview::pathview(gene.data=gene.data,
-                     cpd.data=cpd.data,
+                     cpd.data=cpd.data,gene.idtype ="symbol",
                      pathway.id=pathway_id_1,
                      out.suffix="pathview.gene.metabolite")
   }
