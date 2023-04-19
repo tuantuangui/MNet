@@ -13,7 +13,7 @@
 #' library(dplyr)
 #' kegg_pathway_filter <- kegg_pathway %>%
 #' dplyr::filter(!is.na(pathway_type)) %>%
-#'   dplyr::select(ENTRY,PATHWAY)
+#'   dplyr::select(ENTRY,PATHWAY,pathway_type)
 #'
 #' kegg_id_need <- c("C05984","C02494")
 #' xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
@@ -39,13 +39,13 @@ xgr <- function(metabolites_keggid,database,p_cutoff=0.05,noverlap_cutoff=0,test
   dat <- output %>%
   tidyr::separate_rows(members_Overlap) %>%
   dplyr::left_join(database,by=c("members_Overlap"="ENTRY")) %>%
-  dplyr::select(name,members_Overlap,type)
+  dplyr::select(name,members_Overlap,pathway_type)
 
   Data1 <- data.frame(Var1=rep(unique(dat$members_Overlap),time=length(unique(dat$name))),
                       Var2=rep(unique(dat$name),each=length(unique(dat$members_Overlap))))
 
   p1 <- ggplot(dat,aes(x=members_Overlap,y=name))+
-    geom_point(aes(color=type),size=10)+
+    geom_point(aes(color=pathway_type),size=10)+
     geom_tile(data=Data1,aes(x=Var1,y=Var2),fill=NA,color="black",size=0.3)+
     scale_y_discrete(position = "right")+
     scale_x_discrete(position="top")+
