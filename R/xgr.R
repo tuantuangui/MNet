@@ -23,7 +23,7 @@ xgr <- function(metabolites_keggid,database,p_cutoff=0.05,noverlap_cutoff=0,test
 
   nOverlap <- NULL
 
-#  test <- match.arg(test)
+  test <- match.arg(test)
   eTerm <- MNet::xEnricherYours(metabolites_keggid,database, min.overlap=0, test=test,size.range=c(1,2000))
 
   # output
