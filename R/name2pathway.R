@@ -33,7 +33,7 @@ name2pathway <- function(name) {
 
   kegg_pathway_filter <- kegg_pathway %>%
     dplyr::filter(!is.na(pathway_type)) %>%
-    dplyr::select(ENTRY,PATHWAY)
+    dplyr::select(ENTRY,PATHWAY,pathway_type)
 
   name_pathway <- name_kegg_correspondence %>%
     dplyr::inner_join(kegg_pathway_filter,by=c("kegg_id"="ENTRY"))
