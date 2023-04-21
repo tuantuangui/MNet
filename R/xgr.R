@@ -45,11 +45,11 @@ xgr <- function(metabolites_keggid,database,p_cutoff=0.05,noverlap_cutoff=0,test
                       Var2=rep(unique(dat$name),each=length(unique(dat$members_Overlap))))
 
   p1 <- ggplot(dat,aes(x=members_Overlap,y=name))+
-    geom_point(aes(color=type),size=10)+
+    geom_point(aes(color=type))+
     geom_tile(data=Data1,aes(x=Var1,y=Var2),fill=NA,color="black",size=0.3)+
     scale_y_discrete(position = "right")+
     scale_x_discrete(position="top")+
-    theme(panel.background = element_rect(fill="white",color=NA),
+    theme(panel.background = element_rect(fill="white",color=NA),axis.text.x = element_text(angle = 90, hjust = 0),
           panel.grid = element_blank(),axis.ticks = element_blank(),
           legend.position = "none")+
     labs(x=NULL,y=NULL) 
