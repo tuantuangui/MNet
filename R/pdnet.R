@@ -14,7 +14,7 @@
 #' dev.off()
 
 
-pdnet1 <- function(diff_metabolite,diff_gene,nsize=10) {
+pdnet <- function(diff_metabolite,diff_gene,nsize=10) {
 
   keggId <- gene <- logFC <- type <- cor_result <- NULL
   gene_metabolite_1 <- gene_metabolite %>%
