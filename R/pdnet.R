@@ -14,7 +14,7 @@
 #' dev.off()
 
 
-pdnet <- function(diff_metabolite,diff_gene,nsize=10) {
+pdnet1 <- function(diff_metabolite,diff_gene,nsize=10) {
 
   keggId <- gene <- logFC <- type <- cor_result <- NULL
   gene_metabolite_1 <- gene_metabolite %>%
@@ -95,12 +95,12 @@ pdnet <- function(diff_metabolite,diff_gene,nsize=10) {
     #计算每个节点的数量
     deg <- igraph::degree(g, mode="all")
     
-    plot(g,vertex.color=name$colors,vertex.shape=my_shape,vertex.size=2*deg**0.5,
-         vertex.label.cex=0.7)
+    plot(g,vertex.color=name$colors,vertex.shape=my_shape,vertex.size=9,
+         vertex.label.cex=0.5)
     
     if ("logFC" %in% names(diff_info)) {
-      off.sets=col.key(limit=gene_limits,bins=10,cex=0.7,graph.size = c(1,1),off.sets=c(x=0,y=0))
-      off.sets=col.key(limit=meta_limits,bins=10,cex=0.7,low="blue", mid="gray", high="yellow",
+      off.sets=col.key(limit=gene_limits,bins=10,cex=0.5,graph.size = c(1,1),off.sets=c(x=0,y=0))
+      off.sets=col.key(limit=meta_limits,bins=10,cex=0.5,low="blue", mid="gray", high="yellow",
                        off.sets=c(x=0,y=0),graph.size = c(1,0.9))
     }
     node_color <- rbind(name_gene,name_meta)
@@ -125,8 +125,8 @@ pdnet <- function(diff_metabolite,diff_gene,nsize=10) {
     
     deg <- igraph::degree(network, mode="all")
     
-    plot(network,vertex.color=name$color,vertex.shape=name$shape1,vertex.size=2*deg**0.5,
-         vertex.label.cex=0.7)
+    plot(network,vertex.color=name$color,vertex.shape=name$shape1,vertex.size=9,
+         vertex.label.cex=0.5)
     edge_g <- data.frame(igraph::get.edgelist(network))
     return(edge_g)
   }
