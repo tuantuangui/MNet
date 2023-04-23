@@ -27,8 +27,9 @@ MetCox <- function(dat) {
                            HR.confint.upper <- signif(x$conf.int[,"upper .95"],2)
                            HR <- paste0(HR, " (",
                                         HR.confint.lower, "-", HR.confint.upper, ")")
-                           res<-c(beta, HR, wald.test, p.value)
-                           names(res)<-c("beta", "HR (95% CI for HR)", "wald.test",
+			   name <- rownames(x$coefficients)
+                           res<-c(name,beta, HR, wald.test, p.value)
+                           names(res)<-c("name","beta", "HR (95% CI for HR)", "wald.test",
                                          "p.value")
                            return(res)
                            #return(exp(cbind(coef(x),confint(x))))
@@ -37,7 +38,6 @@ MetCox <- function(dat) {
   result <- as.data.frame(res)
 #  result <- result[which(result$p.value<0.01),] %>%
   result <- result %>%
-    tibble::rownames_to_column(var="gene_id") %>%
     tibble::as_tibble()
   return(result)
 }
