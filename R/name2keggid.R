@@ -51,7 +51,7 @@ name2keggid <- function(compound_name) {
     dplyr::filter(is.na(kegg_id)) %>%
     dplyr::pull(name)
 
-  if (is.na(name_na)) {
+  if (length(name_na)==0) {
     result <- name_keggid
   } else {
     #对这些compound name 转化为refmet name
