@@ -51,31 +51,35 @@ name2keggid <- function(compound_name) {
     dplyr::filter(is.na(kegg_id)) %>%
     dplyr::pull(name)
 
-  #对这些compound name 转化为refmet name
-  name_na_2refmet <- name2refmet(name_na) %>%
-    dplyr::select(`Input name`,refmet_name) %>%
-    dplyr::rename(name=`Input name`)
+  if (is.na(name_na)) {
+    result <- name_keggid
+  } else {
+    #对这些compound name 转化为refmet name
+    name_na_2refmet <- name2refmet(name_na) %>%
+      dplyr::select(`Input name`,refmet_name) %>%
+      dplyr::rename(name=`Input name`)
 
-  ##对refmet转化为keggid
-  refmet_keggid <- data.frame(name=name_na_2refmet$refmet_name) %>%
-    as.data.frame() %>%
-    dplyr::mutate(name_new=toupper(name)) %>%
-    dplyr::left_join(kegg,by="name_new") %>%
-    dplyr::rename(KEGG_ENTRY=ENTRY) %>%
-    dplyr::left_join(compound,by="name_new") %>%
-    dplyr::rename(Compound_ENTRY=ENTRY) %>%
-    dplyr::left_join(synonyms,by="name_new") %>%
-    dplyr::rename(Synonyms_ENTRY=ENTRY) %>%
-    dplyr::select(-name_new,-NAME.x,-NAME.y,-NAME) %>%
-    dplyr::mutate(kegg_id=ifelse(!is.na(KEGG_ENTRY),KEGG_ENTRY,
-                                 ifelse(!is.na(Compound_ENTRY),Compound_ENTRY,Synonyms_ENTRY))) %>%
-    dplyr::select(-KEGG_ENTRY,-Compound_ENTRY,-Synonyms_ENTRY) %>%
-    dplyr::rename(refmet_name=name) %>%
-    dplyr::left_join(name_na_2refmet,by="refmet_name") %>%
-    dplyr::select(name,kegg_id)
+    ##对refmet转化为keggid
+    refmet_keggid <- data.frame(name=name_na_2refmet$refmet_name) %>%
+      as.data.frame() %>%
+      dplyr::mutate(name_new=toupper(name)) %>%
+      dplyr::left_join(kegg,by="name_new") %>%
+      dplyr::rename(KEGG_ENTRY=ENTRY) %>%
+      dplyr::left_join(compound,by="name_new") %>%
+      dplyr::rename(Compound_ENTRY=ENTRY) %>%
+      dplyr::left_join(synonyms,by="name_new") %>%
+      dplyr::rename(Synonyms_ENTRY=ENTRY) %>%
+      dplyr::select(-name_new,-NAME.x,-NAME.y,-NAME) %>%
+      dplyr::mutate(kegg_id=ifelse(!is.na(KEGG_ENTRY),KEGG_ENTRY,
+                                   ifelse(!is.na(Compound_ENTRY),Compound_ENTRY,Synonyms_ENTRY))) %>%
+      dplyr::select(-KEGG_ENTRY,-Compound_ENTRY,-Synonyms_ENTRY) %>%
+      dplyr::rename(refmet_name=name) %>%
+      dplyr::left_join(name_na_2refmet,by="refmet_name") %>%
+      dplyr::select(name,kegg_id)
 
-  #print("jj")
-  result <- rbind(name_keggid,refmet_keggid)
+    #print("jj")
+    result <- rbind(name_keggid,refmet_keggid)
+  }
   return(result)
 
 }
