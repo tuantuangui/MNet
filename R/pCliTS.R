@@ -2,13 +2,12 @@
 #'
 #' @param clinical the clinical marker of different time, and need included "time","group",maker;
 #' "high"and "low" are alternative.
-#' @param marker the marker in the clinical info
 #'
 #' @return test
 #' @export
 #'
 #' @examples
-#' time_series_ALT <- pCliTS(clinical_index,"ALT")
+#' time_series_ALT <- pCliTS(clinical_index)
 #'
 pCliTS <- function(clinical,marker) {
   if (!"low" %in% names(clinical)) {
@@ -18,6 +17,7 @@ pCliTS <- function(clinical,marker) {
   }
 
   group <- time <- NULL
+  marker <- names(clinical)[3]
   name_raw <- names(clinical)[which(names(clinical)==marker)]
   names(clinical)[which(names(clinical)==marker)] <- "marker"
   p <- ggplot2::ggplot(clinical,ggplot2::aes(time, marker)) +
