@@ -3,6 +3,7 @@
 #'
 #' @param cpd.data character vector,the metabolites' value, log2(fold change)
 #' @param gene.data default is NULL, the gene expression data, log2(fold change)
+#' @param hsaid default is NULL, the hsa pathway id wanted to plot
 #' @param outdir the output directory
 #'
 #' @return test
@@ -15,26 +16,40 @@
 #' cpd.data <- value
 #' pPathview(cpd.data,outdir="test")
 
-pPathview <- function(cpd.data,gene.data=NULL,outdir="./") {
+pPathview <- function(cpd.data,gene.data=NULL,hsaid=NULL,outdir="./") {
 
   utils::data("bods", package = "pathview")
 
   kegg_id <- names(cpd.data)
   pathway_id <- unique(keggid2pathway(kegg_id)$V2)
 
-  for (pathway_id_1 in pathway_id) {
-   if (is.null(gene.data)){
-    pathview::pathview(gene.data=gene.data,
-                     cpd.data=cpd.data,
-                     pathway.id=pathway_id_1,
-		     out.suffix="pathview.metabolite")
-   }else {
-    pathview::pathview(gene.data=gene.data,
-                     cpd.data=cpd.data,gene.idtype ="symbol",
-                     pathway.id=pathway_id_1,
-                     out.suffix="pathview.gene.metabolite")
-  }
-  }
+  if (is.null(hsaid)) {
+    for (pathway_id_1 in pathway_id) {
+     if (is.null(gene.data)){
+      pathview::pathview(gene.data=gene.data,
+                       cpd.data=cpd.data,
+                       pathway.id=pathway_id_1,
+	       	     out.suffix="pathview.metabolite")
+     }else {
+      pathview::pathview(gene.data=gene.data,
+                       cpd.data=cpd.data,gene.idtype ="symbol",
+                       pathway.id=pathway_id_1,
+                       out.suffix="pathview.gene.metabolite")
+    }
+    }
+  } else {
+    if (is.null(gene.data)) {
+      pathview::pathview(gene.data=gene.data,
+                       cpd.data=cpd.data,
+                       pathway.id=hsaid,
+                       out.suffix="pathview.metabolite")
+    }else {
+      pathview::pathview(gene.data=gene.data,
+                       cpd.data=cpd.data,gene.idtype ="symbol",
+                       pathway.id=hsaid,
+                       out.suffix="pathview.gene.metabolite")
+    }
+  } 
   dir.create(outdir,recursive =TRUE)
   filenames1 <- dir(getwd(), pattern = ".png", full.names = TRUE, ignore.case = TRUE)
   filesstrings::file.move(filenames1,outdir,overwrite = TRUE)
