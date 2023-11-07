@@ -12,7 +12,7 @@
 #' result <- DM(mydata,group)
 #' p <- pVolcano(result)
 
-pVolcano1 <- function(mydata,foldchange_threshold = 1.5,p_threshold = 0.05) {
+pVolcano <- function(mydata,foldchange_threshold = 1.5,p_threshold = 0.05) {
 
   Condition <- name <- fold_change <- fdr_wilcox <- label <- NULL
 
