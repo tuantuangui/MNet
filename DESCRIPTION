@@ -19,8 +19,6 @@ Imports:
     stats,
     pathview,
     survival,
-    Mfuzz,
-    supraHex,
     igraph,
     dnet,
     caret,
@@ -46,6 +44,7 @@ Suggests: knitr,
     graph,
     ggrepel,
     Boruta,
+    filesstrings,
     methods,
     reshape2,
     tidyselect,
@@ -56,12 +55,11 @@ Suggests: knitr,
     BiocGenerics,
     fgsea
 VignetteBuilder: knitr
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 biocViews: Metabolomics
 Collate: 
     'DAscore.R'
     'DM.R'
-    'ExtendDAscore.R'
     'ML_Boruta.R'
     'ML_RF.R'
     'ML_alpha.R'
