@@ -2,7 +2,6 @@
 
 export(DAscore)
 export(DM)
-export(ExtendDAscore)
 export(ML_Boruta)
 export(ML_RF)
 export(ML_alpha)
