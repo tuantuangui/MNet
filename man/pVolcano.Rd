@@ -4,13 +4,15 @@
 \alias{pVolcano}
 \title{Plot the volcano figure}
 \usage{
-pVolcano(mydata, foldchange_threshold = 1.5)
+pVolcano(mydata, foldchange_threshold = 1.5, p_threshold = 0.05)
 }
 \arguments{
 \item{mydata}{the result of function "differential_metabolites",have column "name","fold_change",
 "fdr_wilcox"}
 
 \item{foldchange_threshold}{the fold change, default is 1.5,1/1.5}
+
+\item{p_threshold}{the p value cutoff, default is 0.05}
 }
 \value{
 test
