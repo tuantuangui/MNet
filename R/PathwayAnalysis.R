@@ -1,8 +1,8 @@
 #' KEGG pathway analysis
 #'
-#' the KEGG pathway analysis which not only includes gene or metabolites pathway analysis alone, but also includes the extended pathway analysis including genes and metabolites
+#' the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
 #'
-#' @param name a vector of genes' or the metabolites' names
+#' @param name The genes' or the metabolites' names which to analysis pathway
 #' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "extended",alternative is "metabolite" and "gene"
 #' @param p_cutoff p_cutoff used to declare the significant terms. By default, it is set to 0.05
 #' @param noverlap_cutoff noverlap_cutoff used to declare the number of overlap. By default, it is set to 0
@@ -63,10 +63,10 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
   result$output <- result_final
 
   kegg_pathway_uniq <- PathwayExtendData %>%
-    dplyr::select(kegg_pathwayname,kegg_category) %>%
-    dplyr::rename("PATHWAY"="kegg_pathwayname") %>%
-    dplyr::rename("Pathway_Category"="kegg_category") %>%
-    unique()
+  dplyr::select(kegg_pathwayname,kegg_category) %>%
+  dplyr::rename("PATHWAY"="kegg_pathwayname") %>%
+  dplyr::rename("Pathway_Category"="kegg_category") %>%
+  unique()
 
   result_1 <- result$output %>%
     dplyr::filter(pvalue < p_cutoff) %>%
