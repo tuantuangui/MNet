@@ -18,7 +18,7 @@ Visualization of PCA
 Plot the PCA (Principal Component Analysis)
 }
 \examples{
-p_PCA <- pPCA(meta_dat,group)
+#p_PCA <- pPCA(meta_dat,group)
 #p_PCA$p1
 #p_PCA$p2
 #p_PCA$p3
