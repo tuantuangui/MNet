@@ -14,7 +14,7 @@
 #' kegg_name <- result_all$kegg_name
 name2pathway <- function(name) {
 
-  Kegg_id <- kegg_id <- Pathway_type <- pathway_type <- NAME <- ENTRY <- NULL
+  Kegg_id <- kegg_id <- Pathway_category <- pathway_type <- NAME <- ENTRY <- NULL
   library(dplyr)
   name_kegg_temp <- name2keggid(name) %>%
     dplyr::distinct(Name,.keep_all=TRUE)
@@ -40,7 +40,7 @@ name2pathway <- function(name) {
   name_pathway <- name_pathway %>%
     dplyr::inner_join(pathwayid,by="PATHWAY") %>%
     dplyr::rename("Pathway"="PATHWAY") %>%
-    dplyr::rename("Pathway_type"="pathway_type") %>%
+    dplyr::rename("Pathway_category"="pathway_type") %>%
     dplyr::rename("Pathway_id"="pathwayid") %>%
     tibble::as_tibble()
 
