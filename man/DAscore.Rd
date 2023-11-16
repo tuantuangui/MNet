@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAscore.R
 \name{DAscore}
 \alias{DAscore}
-\title{Calculate the differential abundance (DA) score and show the DA figure}
+\title{Differential abundance (DA) score}
 \usage{
 DAscore(
   increase_members,
@@ -10,35 +10,36 @@ DAscore(
   all_members,
   sort_plot = NA,
   min_measured_num = 2,
-  out = "extended"
+  out = "metabolite"
 )
 }
 \arguments{
-\item{increase_members}{the increased members that needed kegg id}
+\item{increase_members}{the increased gene symbols and (or) metabolites' kegg id}
 
-\item{decrease_members}{the decreased members that needed kegg id}
+\item{decrease_members}{the decreased gene symbols and (or) metabolites' kegg id}
 
-\item{all_members}{the all members that kegg id}
+\item{all_members}{the all measured gene symbols and (or) metabolites' kegg id}
 
 \item{sort_plot}{the method of pathway rank in the plot,Default rank by DA score.
-if value is classification, then rank by pathway classification}
+if value is category, then rank by pathway category}
 
 \item{min_measured_num}{the minimum measured members that be ploted in a pathway,
 Default the value is 2.}
 
-\item{out}{the analysis type,default "extended", other choice is "gene" or "metabolite"}
+\item{out}{the analysis type,default "metabolite", alternative is "gene" and "Extended"}
 }
 \value{
-Calculate the differential abundance (DA) score and show the DA figure
+Calculate the differential abundance (DA) score and visualization of the DA score
 }
 \description{
-Calculate the differential abundance (DA) score and show the DA figure
+Calculate the differential abundance (DA) score and visualization the DA score
 }
 \examples{
 name <- c("C00022","C00024","C00031","B4GALT2","AGPAT3","FHIT")
-DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "classification")
+DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "category")
 DAscore_result$result
-DAscore_result$p
+## the figure not run ##
+# DAscore_result$p
 
 
 }
