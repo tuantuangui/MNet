@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{PathwayAnalysis}
 \alias{PathwayAnalysis}
-\title{KEGG pathway analysis}
+\title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
 \usage{
 PathwayAnalysis(
   name,
