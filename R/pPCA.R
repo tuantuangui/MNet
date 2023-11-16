@@ -14,7 +14,7 @@
 #' #p_PCA$p3
 pPCA <- function(object,group) {
 
-  PC1 <- PC2 <- label <- NULL
+  PC1 <- PC2 <- label <- group <- NULL
   filter_out <- c()
   for (i in seq(1,nrow(object))) {
     nn=unique(as.numeric(object[i,]))
