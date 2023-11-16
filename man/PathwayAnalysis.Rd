@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{PathwayAnalysis}
 \alias{PathwayAnalysis}
-\title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
+\title{KEGG pathway analysis}
 \usage{
 PathwayAnalysis(
   name,
@@ -24,7 +24,7 @@ PathwayAnalysis(
 \item{test}{the test statistic used. It can be "fisher" for using fisher's exact test, "hypergeo" for using hypergeometric test, or "binomial" for using binomial test. Fisher's exact test is to test the independence between gene group (genes belonging to a group or not) and gene annotation (genes annotated by a term or not), and thus compare sampling to the left part of background (after sampling without replacement). Hypergeometric test is to sample at random (without replacement) from the background containing annotated and non-annotated genes, and thus compare sampling to background. Unlike hypergeometric test, binomial test is to sample at random (with replacement) from the background with the constant probability. In terms of the ease of finding the significance, they are in order: hypergeometric test > fisher's exact test > binomial test. In other words, in terms of the calculated p-value, hypergeometric test < fisher's exact test < binomial test}
 }
 \value{
-test
+result
 }
 \description{
 the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
