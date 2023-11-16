@@ -7,7 +7,7 @@
 #' @param test the test statistic used. It can be "fisher" for using fisher's exact test, "hypergeo" for using hypergeometric test, or "binomial" for using binomial test. Fisher's exact test is to test the independence between gene group (genes belonging to a group or not) and gene annotation (genes annotated by a term or not), and thus compare sampling to the left part of background (after sampling without replacement). Hypergeometric test is to sample at random (without replacement) from the background containing annotated and non-annotated genes, and thus compare sampling to background. Unlike hypergeometric test, binomial test is to sample at random (with replacement) from the background with the constant probability. In terms of the ease of finding the significance, they are in order: hypergeometric test > fisher's exact test > binomial test. In other words, in terms of the calculated p-value, hypergeometric test < fisher's exact test < binomial test
 #'
 #'
-#' @return result
+#' @return test
 #' @export
 #'
 #' @examples
@@ -63,7 +63,7 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
   kegg_pathway_uniq <- PathwayExtendData %>%
   dplyr::select(kegg_pathwayname,kegg_category) %>%
   dplyr::rename("PATHWAY"="kegg_pathwayname") %>%
-  dplyr::rename("Pathway_Category"="kegg_category") %>%
+  dplyr::rename("pathway_type"="kegg_category") %>%
   unique()
 
   result_1 <- result$output %>%
@@ -72,12 +72,12 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
     dplyr::left_join(kegg_pathway_uniq,by=c("name"="PATHWAY"))
 
   result_1$name <- factor(result_1$name,levels = rev(result_1$name))
-  result_1$Pathway_Category <- factor(result_1$Pathway_Category,levels=unique(kegg_pathway_uniq$Pathway_Category))
+  result_1$pathway_type <- factor(result_1$pathway_type,levels=unique(kegg_pathway_uniq$pathway_type))
 
   p1 <- ggplot(result_1,aes(name,-log10(pvalue)))+
-    geom_bar(stat="identity",aes(fill=Pathway_Category))+
-    scale_fill_manual(values=RColorBrewer::brewer.pal(11, "Set3"),
-                      breaks=unique(kegg_pathway_uniq$Pathway_Category))+
+    geom_bar(stat="identity",aes(fill=pathway_type))+
+    scale_fill_manual(values=RColorBrewer::brewer.pal(11, "Set3"),name="Pathway Category",
+                      breaks=unique(kegg_pathway_uniq$pathway_type))+
     coord_flip()+
     theme_bw()+
     labs(x=NULL)
