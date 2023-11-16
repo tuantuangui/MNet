@@ -1,5 +1,3 @@
-#' KEGG pathway analysis
-#'
 #' the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
 #'
 #' @param name The genes' or the metabolites' names which to analysis pathway
