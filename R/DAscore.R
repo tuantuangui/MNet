@@ -4,31 +4,34 @@
 #' @import e1071
 NULL
 
-#' Calculate the differential abundance (DA) score and show the DA figure
+#' Differential abundance (DA) score
 #'
-#' @param increase_members the increased members that needed kegg id
-#' @param decrease_members the decreased members that needed kegg id
-#' @param all_members the all members that kegg id
+#' Calculate the differential abundance (DA) score and visualization the DA score
+#'
+#' @param increase_members the increased gene symbols and (or) metabolites' kegg id
+#' @param decrease_members the decreased gene symbols and (or) metabolites' kegg id
+#' @param all_members the all measured gene symbols and (or) metabolites' kegg id
 #' @param sort_plot the method of pathway rank in the plot,Default rank by DA score.
-#' if value is classification, then rank by pathway classification
+#' if value is category, then rank by pathway category
 #' @param min_measured_num the minimum measured members that be ploted in a pathway,
 #' Default the value is 2.
 #' @param out the analysis type,default "metabolite", alternative is "gene" and "Extended"
 #'
-#' @return Calculate the differential abundance (DA) score and show the DA figure
+#' @return Calculate the differential abundance (DA) score and visualization of the DA score
 #'
 #' @examples
 #' name <- c("C00022","C00024","C00031","B4GALT2","AGPAT3","FHIT")
-#' DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "classification")
+#' DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "category")
 #' DAscore_result$result
-#' DAscore_result$p
+#' ## the figure not run ##
+#' # DAscore_result$p
 #'
 #'
 #' @export
 
 DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
                     min_measured_num=2,out="metabolite") {
-  name <- kegg_pathwayname <- pathway_type <- measured_members_num <- type <- `pathway classification` <- NULL
+  name <- kegg_pathwayname <- pathway_type <- measured_members_num <- type <- `Pathway Category` <- NULL
 
   if (out == "gene") {
     pathway_data <- PathwayExtendData %>%
@@ -125,7 +128,7 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
       dplyr::select(-name,-type) %>%
       unique() %>%
       dplyr::arrange(da_score) %>%
-      dplyr::rename(`pathway classification`=`kegg_category`) %>%
+      dplyr::rename(`Pathway Category`=`kegg_category`) %>%
       tibble::as_tibble()
   
   
@@ -135,16 +138,16 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
   
     if (is.na(sort_plot)) {
       result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
-    }else if (sort_plot=="classification") {
+    }else if (sort_plot=="category") {
       result_filter <- result_filter %>%
-        dplyr::arrange(`pathway classification`)
+        dplyr::arrange(`Pathway Category`)
   
       result_filter$pathway <- factor(result_filter$pathway,levels=result_filter$pathway)
     }
   
     p <- ggplot2::ggplot(result_filter)+
-      ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`pathway classification`))+
-      ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`pathway classification`))+
+      ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`Pathway Category`))+
+      ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`Pathway Category`))+
       ggplot2::coord_flip()+
 #      ggplot2::ylab("DA score")+
       ggplot2::xlab(NULL)+
