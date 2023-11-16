@@ -2,24 +2,24 @@
 % Please edit documentation in R/pPCA.R
 \name{pPCA}
 \alias{pPCA}
-\title{Plot the PCA figure}
+\title{Plot the PCA (Principal Component Analysis)}
 \usage{
-pPCA(mydata, group)
+pPCA(object, group)
 }
 \arguments{
-\item{mydata}{the data needed to pca, the raw is the metabolites, and the column is the sample}
+\item{object}{A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples}
 
 \item{group}{the group}
 }
 \value{
-test
+Visualization of PCA
 }
 \description{
-Plot the PCA figure
+Plot the PCA (Principal Component Analysis)
 }
 \examples{
-result <- pPCA(mydata,group)
-result$p1
-result$p2
-result$p3
+p_PCA <- pPCA(meta_dat,group)
+#p_PCA$p1
+#p_PCA$p2
+#p_PCA$p3
 }
