@@ -172,6 +172,7 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
       dplyr::rename("Decrease_member_result"="decrease_member_result") %>%
       dplyr::rename("Measure_member_result"="measure_member_result") %>%
       dplyr::rename("KEGG_pathwayid"="kegg_pathwayid") %>%
+      tibble::as_tibble()
     result_1 <- list(result=result,p=p)
     return(result_1)
   }
