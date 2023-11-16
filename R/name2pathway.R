@@ -17,38 +17,36 @@ name2pathway <- function(name) {
   kegg_id <- pathway_type <- NAME <- ENTRY <- NULL
   library(dplyr)
   name_kegg_temp <- name2keggid(name) %>%
-    dplyr::distinct(name,.keep_all=TRUE)
+    dplyr::distinct(Name,.keep_all=TRUE)
 
   name_kegg_print <- name_kegg_temp %>%
-    tidyr::separate_rows(kegg_id,sep=";")
-#    tidyr::separate(kegg_id,sep=";","kegg_id_first",remove=FALSE)
+    tidyr::separate_rows(KEGG_id,sep=";")
 
   name_kegg_correspondence <- name_kegg_temp %>%
-    tidyr::separate_rows(kegg_id,sep=";") %>%
-#    tidyr::separate(kegg_id,sep=";","kegg_id") %>%
-    dplyr::filter(!is.na(kegg_id))
+    tidyr::separate_rows(KEGG_id,sep=";") %>%
+    dplyr::filter(!is.na(KEGG_id))
 
   kegg_id_need <- name_kegg_correspondence %>%
-    dplyr::pull(kegg_id)
+    dplyr::pull(KEGG_id)
 
   kegg_pathway_filter <- kegg_pathway %>%
     dplyr::filter(!is.na(pathway_type)) %>%
     dplyr::select(ENTRY,PATHWAY,pathway_type)
-#    dplyr::rename("name"="ENTRY") %>%
-#    dplyr::mutate(type="metabolite")
 
   name_pathway <- name_kegg_correspondence %>%
-    dplyr::inner_join(kegg_pathway_filter,by=c("kegg_id"="ENTRY"))
+    dplyr::inner_join(kegg_pathway_filter,by=c("KEGG_id"="ENTRY"))
   pathwayid <- pathway2pathwayid(name_pathway$PATHWAY)
 
   name_pathway <- name_pathway %>%
     dplyr::inner_join(pathwayid,by="PATHWAY") %>%
+    dplyr::rename("Pathway"="PATHWAY") %>%
+    dplyr::rename("Pathway_type"="pathway_type") %>%
+    dplyr::rename("Pathway_id"="pathwayid") %>%
     tibble::as_tibble()
 
   db <- kegg_pathway_filter %>%
     dplyr::rename("name"="ENTRY") %>%
     dplyr::mutate(type="metabolite")
-#  xgr_result <- xgr(kegg_id_need,kegg_pathway_filter,p_cutoff=1.1,noverlap_cutoff=0)
   xgr_result <- xgr(kegg_id_need,db,p_cutoff=1.1,noverlap_cutoff=0)
   result <- xgr_result$output
 
