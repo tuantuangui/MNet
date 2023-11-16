@@ -12,7 +12,7 @@
 #' name2keggid(compound_name)
 #'
 name2keggid <- function(compound_name) {
-  NAME <- name <- KEGG_ENTRY <- Compound_ENTRY <- Synonyms_ENTRY <- kegg_id <- NULL
+  NAME <- name <- Name <- KEGG_ENTRY <- Compound_ENTRY <- Synonyms_ENTRY <- kegg_id <- Kegg_id <- NULL
   kegg <- all_kegg_id %>%
     dplyr::filter(source=="KEGG") %>%
     dplyr::select(-source) %>%

@@ -14,7 +14,7 @@
 #' kegg_name <- result_all$kegg_name
 name2pathway <- function(name) {
 
-  kegg_id <- pathway_type <- NAME <- ENTRY <- NULL
+  Kegg_id <- kegg_id <- Pathway_type <- pathway_type <- NAME <- ENTRY <- NULL
   library(dplyr)
   name_kegg_temp <- name2keggid(name) %>%
     dplyr::distinct(Name,.keep_all=TRUE)
