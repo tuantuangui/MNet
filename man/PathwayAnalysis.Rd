@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{PathwayAnalysis}
 \alias{PathwayAnalysis}
-\title{KEGG pathway analysis}
+\title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
 \usage{
 PathwayAnalysis(
   name,
@@ -13,7 +13,7 @@ PathwayAnalysis(
 )
 }
 \arguments{
-\item{name}{a vector of genes' or the metabolites' names}
+\item{name}{The genes' or the metabolites' names which to analysis pathway}
 
 \item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "extended",alternative is "metabolite" and "gene"}
 
@@ -24,10 +24,10 @@ PathwayAnalysis(
 \item{test}{the test statistic used. It can be "fisher" for using fisher's exact test, "hypergeo" for using hypergeometric test, or "binomial" for using binomial test. Fisher's exact test is to test the independence between gene group (genes belonging to a group or not) and gene annotation (genes annotated by a term or not), and thus compare sampling to the left part of background (after sampling without replacement). Hypergeometric test is to sample at random (without replacement) from the background containing annotated and non-annotated genes, and thus compare sampling to background. Unlike hypergeometric test, binomial test is to sample at random (with replacement) from the background with the constant probability. In terms of the ease of finding the significance, they are in order: hypergeometric test > fisher's exact test > binomial test. In other words, in terms of the calculated p-value, hypergeometric test < fisher's exact test < binomial test}
 }
 \value{
-result
+test
 }
 \description{
-the KEGG pathway analysis which not only includes gene or metabolites pathway analysis alone, but also includes the extended pathway analysis including genes and metabolites
+the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
 }
 \examples{
 name <- c("C15973","C16254","MDH1")
