@@ -246,7 +246,14 @@ name2refmet <- function(metabolites_name) {
   
   result <- result %>%
     dplyr::select(-class_index,-exactmass) %>%
-    dplyr::select(`Input name`,everything())
+    dplyr::select(`Input name`,everything()) %>%
+    dplyr::rename("Input_name"="Input name") %>%
+    dplyr::rename("Refmet_name"="refmet_name") %>%
+    dplyr::rename("Formula"="formula") %>%
+    dplyr::rename("Super_class"="super_class") %>%
+    dplyr::rename("Main_class"="main_class") %>%
+    dplyr::rename("Sub_class"="sub_class")
+
   return(result)
 }
 
