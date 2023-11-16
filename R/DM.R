@@ -11,7 +11,7 @@
 #' library(dplyr)
 #' result <- DM(mydata,group)
 DM <- function(mydata,group) {
-  Fold_change <- c(); group1_mean <- c(); group2_mean <- c()
+  fold_change <- c(); group1_mean <- c(); group2_mean <- c()
   for (i in seq(1,nrow(mydata))){
     group1_mean[i] <- mean(as.numeric(mydata[i,which(group=="normal")])) ###mean or median
     group2_mean[i] <- mean(as.numeric(mydata[i,which(group=="tumor")]))
