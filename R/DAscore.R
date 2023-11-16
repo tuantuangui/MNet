@@ -162,6 +162,7 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
    DA_score <- Increase_members_num <- Decrease_members_num <- Measured_members_num <- Increase_member_result <- Decrease_member_result <- Measure_member_result <- KEGG_pathwayid <- NULL
 
     result <- result %>%
+      as.data.frame() %>%
       dplyr::rename("Pathway"="pathway") %>%
       dplyr::rename("DA_score"="da_score") %>%
       dplyr::rename("Increase_members_num"="increase_members_num") %>%
