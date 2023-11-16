@@ -11,7 +11,7 @@
 #' library(dplyr)
 #' result <- DM(mydata,group)
 DM <- function(mydata,group) {
-  fold_change <- c(); group1_mean <- c(); group2_mean <- c()
+  Fold_change <- c(); group1_mean <- c(); group2_mean <- c()
   for (i in seq(1,nrow(mydata))){
     group1_mean[i] <- mean(as.numeric(mydata[i,which(group=="normal")])) ###mean or median
     group2_mean[i] <- mean(as.numeric(mydata[i,which(group=="tumor")]))
@@ -58,6 +58,14 @@ DM <- function(mydata,group) {
   result <- fold_change_result %>%
     dplyr::left_join(p_value_result,by="name") %>%
     dplyr::left_join(vip_result,by="name") %>%
+    dplyr::select(name,fold_change,t_value,fdr_t,wilcox_value,fdr_wilcox,vip) %>%
+    dplyr::rename("Name"="name") %>%
+    dplyr::rename("Fold_change"="fold_change") %>%
+    dplyr::rename("PValue_t"="t_value") %>%
+    dplyr::rename("Padj_t"="fdr_t") %>%
+    dplyr::rename("PValue_wilcox"="wilcox_value") %>%
+    dplyr::rename("Padj_wilcox"="fdr_wilcox") %>%
+    dplyr::rename("VIP"="vip") %>%
     tibble::as_tibble()
 
   return(result)
