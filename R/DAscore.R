@@ -129,6 +129,15 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
       unique() %>%
       dplyr::arrange(da_score) %>%
       dplyr::rename(`Pathway Category`=`kegg_category`) %>%
+      dplyr::rename("Pathway"="pathway") %>%
+      dplyr::rename("DA_score"="da_score") %>%
+      dplyr::rename("Increase_members_num"="increase_members_num") %>%
+      dplyr::rename("Decrease_members_num"="decrease_members_num") %>%
+      dplyr::rename("Measured_members_num"="measured_members_num") %>%
+      dplyr::rename("Increase_member_result"="increase_member_result") %>%
+      dplyr::rename("Decrease_member_result"="decrease_member_result") %>%
+      dplyr::rename("Measure_member_result"="measure_member_result") %>%
+      dplyr::rename("KEGG_pathwayid"="kegg_pathwayid") %>%
       tibble::as_tibble()
   
   
