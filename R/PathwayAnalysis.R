@@ -63,7 +63,7 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
   kegg_pathway_uniq <- PathwayExtendData %>%
   dplyr::select(kegg_pathwayname,kegg_category) %>%
   dplyr::rename("PATHWAY"="kegg_pathwayname") %>%
-  dplyr::rename("pathway_type"="kegg_category") %>%
+  dplyr::rename("Pathway_Category"="kegg_category") %>%
   unique()
 
   result_1 <- result$output %>%
@@ -72,12 +72,12 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
     dplyr::left_join(kegg_pathway_uniq,by=c("name"="PATHWAY"))
 
   result_1$name <- factor(result_1$name,levels = rev(result_1$name))
-  result_1$pathway_type <- factor(result_1$pathway_type,levels=unique(kegg_pathway_uniq$pathway_type))
+  result_1$Pathway_Category <- factor(result_1$Pathway_Category,levels=unique(kegg_pathway_uniq$Pathway_Category))
 
   p1 <- ggplot(result_1,aes(name,-log10(pvalue)))+
-    geom_bar(stat="identity",aes(fill=pathway_type))+
+    geom_bar(stat="identity",aes(fill=Pathway_Category))+
     scale_fill_manual(values=RColorBrewer::brewer.pal(11, "Set3"),
-                      breaks=unique(kegg_pathway_uniq$pathway_type))+
+                      breaks=unique(kegg_pathway_uniq$Pathway_Category))+
     coord_flip()+
     theme_bw()+
     labs(x=NULL)
