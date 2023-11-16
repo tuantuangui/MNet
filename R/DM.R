@@ -55,6 +55,9 @@ DM <- function(mydata,group) {
   vip_result <- data.frame(vip=oplsda@vipVn)
   vip_result$name <- rownames(vip_result)
 
+
+  Name <- Fold_change <- PValue_t <- Padj_t <- PValue_wilcox <- Padj_wilcox <- VIP <- NULL
+
   result <- fold_change_result %>%
     dplyr::left_join(p_value_result,by="name") %>%
     dplyr::left_join(vip_result,by="name") %>%
