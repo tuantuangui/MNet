@@ -1,7 +1,7 @@
 #' Plot the volcano figure
 #'
 #' @param mydata the result of function "differential_metabolites",have column "Name","Fold_change",
-#' "Padj_wilcox"
+#' "Padj_t"
 #' @param foldchange_threshold the fold change, default is 1.5,1/1.5
 #' @param p_threshold the p value cutoff, default is 0.05
 #'
@@ -14,15 +14,15 @@
 
 pVolcano <- function(mydata,foldchange_threshold = 1.5,p_threshold = 0.05) {
 
-  Condition <- Name <- Fold_change <- Padj_wilcox <- label <- NULL
+  Condition <- Name <- Fold_change <- Padj_t <- label <- NULL
 
-  mydata$Condition = ifelse(mydata$Fold_change >= foldchange_threshold & mydata$Padj_wilcox < p_threshold,"up",
-                            ifelse(mydata$Fold_change <= 1/foldchange_threshold & mydata$Padj_wilcox < p_threshold,"down","Not Sig"))
+  mydata$Condition = ifelse(mydata$Fold_change >= foldchange_threshold & mydata$Padj_t < p_threshold,"up",
+                            ifelse(mydata$Fold_change <= 1/foldchange_threshold & mydata$Padj_t < p_threshold,"down","Not Sig"))
 
   mydata <- mydata %>%
     dplyr::mutate(label=ifelse(Condition=="Not Sig","",Name))
 print(foldchange_threshold)
-  p <- ggplot2::ggplot(mydata,ggplot2::aes(log2(Fold_change),-log2(Padj_wilcox)))+
+  p <- ggplot2::ggplot(mydata,ggplot2::aes(log2(Fold_change),-log2(Padj_t)))+
     ggplot2::geom_point(ggplot2::aes(color=Condition),size=2,alpha=0.7)+
     ggplot2::geom_vline(xintercept=c(-log2(foldchange_threshold),log2(foldchange_threshold)), linetype = 'dashed',color="gray")+
     ggplot2::geom_hline(yintercept = -log2(p_threshold),linetype='dashed',color="gray")+
