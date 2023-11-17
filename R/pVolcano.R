@@ -16,8 +16,8 @@ pVolcano <- function(mydata,foldchange_threshold = 1.5,p_threshold = 0.05) {
 
   Condition <- Name <- Fold_change <- Padj_t <- label <- NULL
 
-  mydata$Condition = ifelse(mydata$Fold_change >= foldchange_threshold & mydata$Padj_t < p_threshold,"up",
-                            ifelse(mydata$Fold_change <= 1/foldchange_threshold & mydata$Padj_t < p_threshold,"down","Not Sig"))
+  mydata$Condition = ifelse(mydata$Fold_change >= foldchange_threshold & mydata$Padj_t < p_threshold,"Up",
+                            ifelse(mydata$Fold_change <= 1/foldchange_threshold & mydata$Padj_t < p_threshold,"Down","Not Sig"))
 
   mydata <- mydata %>%
     dplyr::mutate(label=ifelse(Condition=="Not Sig","",Name))
@@ -27,7 +27,7 @@ print(foldchange_threshold)
     ggplot2::geom_vline(xintercept=c(-log2(foldchange_threshold),log2(foldchange_threshold)), linetype = 'dashed',color="gray")+
     ggplot2::geom_hline(yintercept = -log2(p_threshold),linetype='dashed',color="gray")+
     ggrepel::geom_text_repel(ggplot2::aes(label=label),size=1)+
-    ggplot2::scale_color_manual(values=c("up"="red","Not Sig"="gray","down"="blue"))+
+    ggplot2::scale_color_manual(values=c("Up"="red","Not Sig"="gray","Down"="blue"))+
     ggplot2::theme_bw()+
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank())+
     ggplot2::labs(x="log2(Fold Change)",y="-log2(P Value)")
