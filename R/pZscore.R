@@ -40,7 +40,7 @@ pZscore <- function(mydata,group,tumor_color="#d53e4f",normal_color="#7FC8A9",sh
     ggplot2::theme_bw()+
     labs(x=NULL,y=NULL)+
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),panel.grid.minor = ggplot2::element_blank(),
-          axis.text.y = ggplot2::element_text( hjust = 1,size = ysize))
+          axis.text.y = ggplot2::element_text( hjust = 0,size = ysize))
 
   return(p)
 
