@@ -68,8 +68,13 @@ PathwayAnalysis <- function(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,
 
   result_1 <- result$output %>%
     dplyr::filter(pvalue < p_cutoff) %>%
-    dplyr::arrange(pvalue) %>%
-    dplyr::left_join(kegg_pathway_uniq,by=c("name"="PATHWAY"))
+    dplyr::left_join(kegg_pathway_uniq,by=c("name"="PATHWAY")) %>%
+    dplyr::arrange(pvalue)
+
+  pathway_hh <- unique(result_1$pathway_type)
+  
+  result_1 <- result_1 %>%
+    dplyr::arrange(match(pathway_type,pathway_hh))
 
   result_1$name <- factor(result_1$name,levels = rev(result_1$name))
   result_1$pathway_type <- factor(result_1$pathway_type,levels=unique(kegg_pathway_uniq$pathway_type))
