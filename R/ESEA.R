@@ -13,9 +13,9 @@
 #' @examples
 #' library(ggplot2)
 #' library(dplyr)
-#' result <- ESEA(sim.cpd.data,out="Extended")
-ESEA <- function(Ranks_all,minSize = 5,nPermSimple=20000,gseaParam=0.5,out="extended") {
-  Ranks_all <- sort(Ranks_all)
+#' result <- ESEA(sim.cpd.data,out="metabolite")
+ESEA <- function(Ranks_all,minSize = 5,nPermSimple=20000,gseaParam=0.5,out="Extended") {
+  Ranks_all <- sort(Ranks_all,decreasing=TRUE)
 
   if (out=="Extended") {
     fgseaRes_all <- fgsea::fgsea(Pathways_all, Ranks_all,minSize = minSize,nPermSimple=nPermSimple,gseaParam=gseaParam)
