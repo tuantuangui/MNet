@@ -9,7 +9,7 @@ ESEA(
   minSize = 5,
   nPermSimple = 20000,
   gseaParam = 0.5,
-  out = "extended"
+  out = "Extended"
 )
 }
 \arguments{
