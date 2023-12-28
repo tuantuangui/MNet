@@ -148,6 +148,8 @@ DAscore <- function(increase_members,decrease_members,all_members,sort_plot=NA,
     p <- ggplot2::ggplot(result_filter)+
       ggplot2::geom_point(ggplot2::aes(x=pathway,y=da_score,size=log2(measured_members_num),color=`Pathway Category`))+
       ggplot2::geom_pointrange(ggplot2::aes(x=pathway,y=da_score,ymin=0,ymax=da_score,color=`Pathway Category`))+
+      scale_color_manual(values=RColorBrewer::brewer.pal(11, "Set3"),name="Pathway Category",
+                      breaks=unique(pathway_data$kegg_category))+
       ggplot2::coord_flip()+
 #      ggplot2::ylab("DA score")+
       ggplot2::xlab(NULL)+
