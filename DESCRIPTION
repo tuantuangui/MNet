@@ -60,6 +60,7 @@ biocViews: Metabolomics
 Collate: 
     'DAscore.R'
     'DM.R'
+    'ESEA.R'
     'ML_Boruta.R'
     'ML_RF.R'
     'ML_alpha.R'
