@@ -5,6 +5,7 @@
 #' @param gseaParam GSEA parameter value, all compound-level statis are raised to the power of 'gseaParam' before calculation of GSEA enrichment scores.
 #' @param minSize Minimal size of a compound set to test. All pathways below the threshold are excluded.
 #' @param ticksSize width of vertical line corresponding to a compound (default: 0.2)
+#' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"
 #'
 #' @return a plot for the pathway's MSEA
 #' @export
@@ -12,10 +13,21 @@
 #' @examples
 #' library(ggplot2)
 #' library(dplyr)
-#' result <- pMSEA("Butanoate metabolism",sim.cpd.data)
-pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, ticksSize = 0.2) {
+#' result <- pMSEA("Butanoate metabolism",sim.cpd.data,out="metabolite")
+pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, ticksSize = 0.2,out="Extended") {
   
-  fgseaRes_all <- fgsea::fgsea(Pathways, Ranks_all,minSize = minSize,nPermSimple=20000,gseaParam=0.5)
+#  fgseaRes_all <- fgsea::fgsea(Pathways, Ranks_all,minSize = minSize,nPermSimple=20000,gseaParam=0.5)
+
+  if (out=="Extended") {
+    fgseaRes_all <- fgsea::fgsea(Pathways_all, Ranks_all,minSize = minSize,nPermSimple=nPermSimple,gseaParam=gseaParam)
+    Pathways <- Pathways_all
+  }else if (out=="gene") {
+    fgseaRes_all <- fgsea::fgsea(Pathways_gene, Ranks_all,minSize = minSize,nPermSimple=nPermSimple,gseaParam=gseaParam)
+    Pathways <- Pathways_gene
+  }else if (out=="metabolite") {
+    fgseaRes_all <- fgsea::fgsea(Pathways_metabolite, Ranks_all,minSize = minSize,nPermSimple=nPermSimple,gseaParam=gseaParam)
+    Pathways <- Pathways_metabolite
+  }
   
   pval <- fgseaRes_all %>% 
     dplyr::filter(pathway == pathway_name) %>% 
@@ -86,7 +98,3 @@ pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, ticksSize
                            align ="v",labels=paste0(pathway_name," pval=",pval,";NES=",nes),label_size = 8)
   return(p1)
 }
-
-  
-
-
