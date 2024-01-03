@@ -30,5 +30,5 @@ the Extended-data Set Enrichment Analysis which includes gene and metabolite
 \examples{
 library(ggplot2)
 library(dplyr)
-result <- ESEA(sim.cpd.data,out="Extended")
+result <- ESEA(sim.cpd.data,out="metabolite")
 }
