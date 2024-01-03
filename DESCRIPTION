@@ -88,6 +88,7 @@ Collate:
     'pCorCliMetMantel.R'
     'pHeatmap.R'
     'pMSEA.R'
+    'pMSEA_raw.R'
     'pPCA.R'
     'pPathview.R'
     'pVolcano.R'
