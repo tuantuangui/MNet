@@ -14,7 +14,7 @@
 #' library(ggplot2)
 #' library(dplyr)
 #' result <- pMSEA("Butanoate metabolism",sim.cpd.data,out="metabolite")
-pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, ticksSize = 0.2,out="Extended") {
+pMSEA <- function(pathway_name, Ranks_all, gseaParam = 0.5, minSize=5, nPermSimple=20000,ticksSize = 0.2,out="Extended") {
   
 #  fgseaRes_all <- fgsea::fgsea(Pathways, Ranks_all,minSize = minSize,nPermSimple=20000,gseaParam=0.5)
 
