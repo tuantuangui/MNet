@@ -84,11 +84,8 @@
     
     
 <div class="section level2">
-<h2 id="example-unique-analyses">Example-unique analyses<a class="anchor" aria-label="anchor" href="#example-unique-analyses"></a>
+<h2 id="loading-the-data">Loading the data<a class="anchor" aria-label="anchor" href="#loading-the-data"></a>
 </h2>
-<div class="section level3">
-<h3 id="loading-the-data">Loading the data<a class="anchor" aria-label="anchor" href="#loading-the-data"></a>
-</h3>
 <p>The case study is an integrated metabolic and transcriptional
 analysis to understand the rapidly proliferating breast cancers (Liao,
 et al., 2022). In this paper, the authors characterized the metabolomic
@@ -122,16 +119,16 @@ altered in tumoral samples.</p>
 <span><span class="co">#head(diff_meta)</span></span>
 <span><span class="co">#head(diff_gene)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="pathway-enrichment-analysis">Pathway enrichment analysis<a class="anchor" aria-label="anchor" href="#pathway-enrichment-analysis"></a>
+</h2>
 <div class="section level3">
-<h3 id="pathway-enrichment-analysis">Pathway enrichment analysis<a class="anchor" aria-label="anchor" href="#pathway-enrichment-analysis"></a>
+<h3 id="extended-pathway-enrichment-analysis-epea">Extended pathway enrichment analysis (ePEA)<a class="anchor" aria-label="anchor" href="#extended-pathway-enrichment-analysis-epea"></a>
 </h3>
-<div class="section level4">
-<h4 id="extended-pathway-enrichment">Extended pathway enrichment<a class="anchor" aria-label="anchor" href="#extended-pathway-enrichment"></a>
-</h4>
-<p>KEGG metabolic pathway-based extended pathway enrichment (EPE)
-analysis to investigate the dysregulation of metabolic pathways
-considering both metabolites and genes using the function
-“PathwayAnalysis” setting the parameter out is “Extended” in MNet.</p>
+<p>KEGG metabolic pathway-based extended pathway enrichment analysis to
+investigate the dysregulation of metabolic pathways considering both
+metabolites and genes using the function “PathwayAnalysis” setting the
+parameter out is “Extended” in MNet.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## combine the metabolite information and gene information</span></span>
 <span></span>
@@ -161,10 +158,10 @@ considering both metabolites and genes using the function
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/EPE_gene_meta.png"</span>,<span class="va">p</span>,width<span class="op">=</span><span class="fl">20</span>,height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/EPE_gene_meta.png"><img src="result_v0131/EPE1.png"><img src="result_v0131/EPE2.png"></p>
 </div>
-<div class="section level4">
-<h4 id="metabolite-pathway-enrichment">metabolite pathway enrichment<a class="anchor" aria-label="anchor" href="#metabolite-pathway-enrichment"></a>
-</h4>
-<p>KEGG metabolic pathway-based pathway enrichment (PE) analysis to
+<div class="section level3">
+<h3 id="metabolite-pathway-enrichment-analysis-mpea">metabolite pathway enrichment analysis (mPEA)<a class="anchor" aria-label="anchor" href="#metabolite-pathway-enrichment-analysis-mpea"></a>
+</h3>
+<p>KEGG metabolic pathway-based pathway enrichment analysis to
 investigate the dysregulation of metabolic pathways considering
 metabolites using the function “PathwayAnalysis” setting the parameter
 out is “metabolite” in MNet.</p>
@@ -196,14 +193,13 @@ out is “metabolite” in MNet.</p>
 <p><img src="result_v0131/PE_meta.png"><img src="result_v0131/PE_meta1.png"></p>
 <p><img src="result_v0131/PE_meta2.png"></p>
 </div>
-<div class="section level4">
-<h4 id="gene-pathway-enrichment">gene pathway enrichment<a class="anchor" aria-label="anchor" href="#gene-pathway-enrichment"></a>
-</h4>
-<p>KEGG metabolic pathway-based pathway enrichment (PE) analysis to
+<div class="section level3">
+<h3 id="gene-pathway-enrichment-analysis-gpea">gene pathway enrichment analysis (gPEA)<a class="anchor" aria-label="anchor" href="#gene-pathway-enrichment-analysis-gpea"></a>
+</h3>
+<p>KEGG metabolic pathway-based pathway enrichment analysis to
 investigate the dysregulation of metabolic pathways considering genes
 using the function “PathwayAnalysis” setting the parameter out is “gene”
-in MNet.<br>
-因为基因差异注释后的比较少，所以选择阈值小点的</p>
+in MNet.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_dat</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span></span>
 <span></span>
@@ -233,12 +229,12 @@ in MNet.<br>
 <p><img src="result_v0131/PE_gene.png"><img src="result_v0131/PE_gene1.png"><img src="result_v0131/PE_gene2.png"></p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="pathway-differential-abundance-score">Pathway differential abundance score<a class="anchor" aria-label="anchor" href="#pathway-differential-abundance-score"></a>
+</h2>
 <div class="section level3">
-<h3 id="pathway-differential-abundance-score">Pathway differential abundance score<a class="anchor" aria-label="anchor" href="#pathway-differential-abundance-score"></a>
+<h3 id="extended-pathway-differential-abundance-score-epda">Extended pathway differential abundance score (ePDA)<a class="anchor" aria-label="anchor" href="#extended-pathway-differential-abundance-score-epda"></a>
 </h3>
-<div class="section level4">
-<h4 id="extended-pathway-differential-abundance-score">Extended pathway differential abundance score<a class="anchor" aria-label="anchor" href="#extended-pathway-differential-abundance-score"></a>
-</h4>
 <p>KEGG metabolic pathway-based extended differential abundance (EDA)
 analysis investigate the dysregulation of metabolic pathways considering
 both metabolites and genes using the function “DAscore” setting the
@@ -264,9 +260,9 @@ parameter out is “Extended” in MNet.</p>
 <span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/EDA.png"</span>,<span class="va">ExtendDAscore_result</span><span class="op">$</span><span class="va">p</span>,width<span class="op">=</span><span class="fl">10</span>,height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/EDA.png"></p>
 </div>
-<div class="section level4">
-<h4 id="metabolite-differential-abundance-score">metabolite differential abundance score<a class="anchor" aria-label="anchor" href="#metabolite-differential-abundance-score"></a>
-</h4>
+<div class="section level3">
+<h3 id="metabolite-pathway-differential-abundance-score-mpda">metabolite pathway differential abundance score (mPDA)<a class="anchor" aria-label="anchor" href="#metabolite-pathway-differential-abundance-score-mpda"></a>
+</h3>
 <p>KEGG metabolic pathway-based differential abundance (DA) analysis
 investigate the dysregulation of metabolic pathways considering only
 metabolites using the function “DAscore” setting the parameter out is
@@ -283,9 +279,9 @@ metabolites using the function “DAscore” setting the parameter out is
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/DAscore_metabolite.png"</span>,<span class="va">dascore_result_meta</span><span class="op">$</span><span class="va">p</span>,width<span class="op">=</span><span class="fl">10</span>,height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/DAscore_metabolite.png"></p>
 </div>
-<div class="section level4">
-<h4 id="gene-differential-abundance-score">gene differential abundance score<a class="anchor" aria-label="anchor" href="#gene-differential-abundance-score"></a>
-</h4>
+<div class="section level3">
+<h3 id="gene-pathway-differential-abundance-score-gpda">gene pathway differential abundance score (gPDA)<a class="anchor" aria-label="anchor" href="#gene-pathway-differential-abundance-score-gpda"></a>
+</h3>
 <p>KEGG metabolic pathway-based differential abundance (DA) analysis
 investigate the dysregulation of metabolic pathways considering only
 genes using the function “DAscore” setting the parameter out is “gene”
@@ -303,16 +299,16 @@ in MNet.</p>
 <p><img src="result_v0131/DAscore_gene.png"></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="esea-extended-data-set-enrichment-analysis">ESEA Extended-data Set Enrichment Analysis<a class="anchor" aria-label="anchor" href="#esea-extended-data-set-enrichment-analysis"></a>
-</h3>
+<div class="section level2">
+<h2 id="pathway-set-enrichment-analysis">Pathway set enrichment analysis<a class="anchor" aria-label="anchor" href="#pathway-set-enrichment-analysis"></a>
+</h2>
 <p>the extended-data set enrichment analysis, includes gene set
 enrichment analysis, metabolite set enrichment analysis and
 extended-data set enrichment analysis which includes gene and
 metabolite, using function “ESEA” in MNet.</p>
-<div class="section level4">
-<h4 id="extended-data-set-enrichment-analysis">Extended-data set enrichment analysis<a class="anchor" aria-label="anchor" href="#extended-data-set-enrichment-analysis"></a>
-</h4>
+<div class="section level3">
+<h3 id="extended-pathway-set-enrichment-analysis-esea">Extended pathway set enrichment analysis (eSEA)<a class="anchor" aria-label="anchor" href="#extended-pathway-set-enrichment-analysis-esea"></a>
+</h3>
 <p>The extended-data set enrichment analysis which includes gene and
 metabolite</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -338,9 +334,9 @@ metabolite</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/ESEA_Butanoate_extended.png"</span>,<span class="va">p</span>,width<span class="op">=</span><span class="fl">5</span>,height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/ESEA_Butanoate_extended.png"></p>
 </div>
-<div class="section level4">
-<h4 id="gene-set-enrichment-analysis">Gene Set enrichment analysis<a class="anchor" aria-label="anchor" href="#gene-set-enrichment-analysis"></a>
-</h4>
+<div class="section level3">
+<h3 id="gene-set-enrichment-analysis-gsea">Gene set enrichment analysis (gSEA)<a class="anchor" aria-label="anchor" href="#gene-set-enrichment-analysis-gsea"></a>
+</h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">gene.data</span>,out<span class="op">=</span><span class="st">"gene"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span><span class="op">)</span></span>
@@ -351,27 +347,26 @@ metabolite</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/ESEA_Butanoate_gene.png"</span>,<span class="va">p</span>,width<span class="op">=</span><span class="fl">5</span>,height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/ESEA_Butanoate_gene.png"></p>
 </div>
-<div class="section level4">
-<h4 id="metabolite-set-enrichment-analysis">Metabolite Set Enrichment Analysis<a class="anchor" aria-label="anchor" href="#metabolite-set-enrichment-analysis"></a>
-</h4>
+<div class="section level3">
+<h3 id="metabolite-set-enrichment-analysis-msea">Metabolite set enrichment analysis (mSEA)<a class="anchor" aria-label="anchor" href="#metabolite-set-enrichment-analysis-msea"></a>
+</h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">sim.cpd.data</span>,out<span class="op">=</span><span class="st">"metabolite"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">result</span>,file<span class="op">=</span><span class="st">"result_v0131/ESEA_metabolite.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
-<p>the esea plot of interested pathway</p>
+<p>the eSEA plot of interested pathway</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>,<span class="va">sim.cpd.data</span>,out<span class="op">=</span><span class="st">"metabolite"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"result_v0131/ESEA_Butanoate_metabolite.png"</span>,<span class="va">p</span>,width<span class="op">=</span><span class="fl">5</span>,height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/ESEA_Butanoate_metabolite.png"></p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="subnetwork-analysis">Subnetwork analysis<a class="anchor" aria-label="anchor" href="#subnetwork-analysis"></a>
+</h2>
 <div class="section level3">
-<h3 id="subnetwork-analysis-of-metabolism-and-transcriptome-data-from-tnbc">Subnetwork analysis of Metabolism and transcriptome data from
-TNBC:<a class="anchor" aria-label="anchor" href="#subnetwork-analysis-of-metabolism-and-transcriptome-data-from-tnbc"></a>
+<h3 id="subnetwork-extraction-by-dnet">Subnetwork extraction by dnet<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-by-dnet"></a>
 </h3>
-<div class="section level4">
-<h4 id="subnetwork-extraction-by-dnet">Subnetwork extraction by dnet<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-by-dnet"></a>
-</h4>
 <p>the data need to have the column name “name”, and have the “p_value”,
 “logFC” is alternative. If have the “logFC”, the color in the figure is
 the logFC, otherwise, the color “blue” in figure means metabolites and
@@ -394,9 +389,9 @@ the color “red” means the genes.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">edge_result</span>,<span class="st">"result_v0131/subnetwork_important_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/subnetwork_important.png"></p>
 </div>
-<div class="section level4">
-<h4 id="subnetwork-extraction-of-interested-metabolites-and-genes">Subnetwork extraction of interested metabolites and genes<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-of-interested-metabolites-and-genes"></a>
-</h4>
+<div class="section level3">
+<h3 id="subnetwork-extraction-of-interested-metabolites-and-genes">Subnetwork extraction of interested metabolites and genes<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-of-interested-metabolites-and-genes"></a>
+</h3>
 <p>the data need to have the column name “name”, and do not have the
 “p_value”</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -408,16 +403,15 @@ the color “red” means the genes.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span>,<span class="st">"result_v0131/subnetwork_interested_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/subnetwork_interested.png"></p>
 </div>
-<div class="section level4">
-<h4 id="subnetwork-extraction-using-correlation">Subnetwork extraction using correlation<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-using-correlation"></a>
-</h4>
+<div class="section level3">
+<h3 id="subnetwork-extraction-using-correlation">Subnetwork extraction using correlation<a class="anchor" aria-label="anchor" href="#subnetwork-extraction-using-correlation"></a>
+</h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"result_v0131/subnetwork_correlation.png"</span>,width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">7</span>, units <span class="op">=</span> <span class="st">'in'</span>, res <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pNetCor.html">pNetCor</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">gene_dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">result</span>,<span class="st">"result_v0131/subnetwork_correlation.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/subnetwork_correlation.png"></p>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
