@@ -502,12 +502,12 @@
     </entry>
     <entry id="198" name="hsa:593 hsa:594" type="gene" reaction="rn:R10997"
         link="https://www.kegg.jp/dbget-bin/www_bget?hsa:593+hsa:594">
-        <graphics name="BCKDHA, BCKDE1A, MSU, MSUD1, OVD1A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCKDHA, BCKDE1A, MSU, MSUD1, MSUD1A, OVD1A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="806" y="209" width="46" height="17"/>
     </entry>
     <entry id="199" name="hsa:593 hsa:594" type="gene" reaction="rn:R10996"
         link="https://www.kegg.jp/dbget-bin/www_bget?hsa:593+hsa:594">
-        <graphics name="BCKDHA, BCKDE1A, MSU, MSUD1, OVD1A..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCKDHA, BCKDE1A, MSU, MSUD1, MSUD1A, OVD1A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="806" y="138" width="46" height="17"/>
     </entry>
     <entry id="200" name="hsa:1629" type="gene" reaction="rn:R10998"

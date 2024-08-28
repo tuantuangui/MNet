@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "https://www.kegg.jp/kegg/xml/KGML_v0.7.2_.dtd">
-<!-- Creation date: Mar 8, 2023 15:03:56 +0900 (GMT+9) -->
+<!-- Creation date: Jun 10, 2024 16:38:00 +0900 (GMT+9) -->
 <pathway name="path:hsa00400" org="hsa" number="00400"
          title="Phenylalanine, tyrosine and tryptophan biosynthesis"
          image="https://www.kegg.jp/kegg/pathway/hsa/hsa00400.png"
@@ -83,7 +83,7 @@
     <entry id="48" name="path:map00710" type="map"
         link="https://www.kegg.jp/dbget-bin/www_bget?map00710">
         <graphics name="Carbon fixation in photosynthetic organisms" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="168" y="159" width="90" height="25"/>
+             type="roundrectangle" x="167" y="165" width="95" height="34"/>
     </entry>
     <entry id="49" name="path:hsa00030" type="map"
         link="https://www.kegg.jp/dbget-bin/www_bget?hsa00030">
