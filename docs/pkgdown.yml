@@ -2,8 +2,10 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  01-example_unique: 01-example_unique.html
-  02-example_routine: 02-example_routine.html
+  01-load_data: 01-load_data.html
+  02-Pathway_analysis: 02-Pathway_analysis.html
+  03-Subnetwork_analysis: 03-Subnetwork_analysis.html
+  04-Routine_analyses: 04-Routine_analyses.html
   MNet: MNet.html
-last_built: 2024-08-28T09:01Z
+last_built: 2024-08-29T02:57Z
 

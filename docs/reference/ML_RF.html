@@ -27,8 +27,10 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-example_unique.html">Example-unique analyses</a>
-    <a class="dropdown-item" href="../articles/02-example_routine.html">Example-rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
+    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Pathway analyses</a>
+    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -86,20 +88,20 @@
 <span class="r-in"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">p</span></span></span>
 <span class="r-plt img"><img src="ML_RF-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 119 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names   raw    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   3.80  3.87                 4.37            0.400 C00025  C00025 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   4.26  3.83                 4.35            0.578 C00073  C00073 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   4.01  4.31                 4.33            0.538 C02045  C02045 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   4.30  3.26                 4.09            0.467 C02291  C02291 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   4.10  3.09                 4.08            0.463 C00407  C00407 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3.82  3.52                 3.97            0.441 C05938. C05938 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   3.70  3.40                 3.93            0.437 C00022  C00022 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3.56  3.60                 3.87            0.418 C03413  C03413 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   2.30  3.54                 3.78            0.449 C00255  C00255 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3.78  2.90                 3.73            0.340 C00148  C00148 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 109 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 121 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names  raw   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   4.93  4.42                 4.88            0.766 C05674 C05674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   4.46  3.95                 4.53            0.467 C00073 C00073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   4.25  4.03                 4.40            0.464 C00042 C00042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   3.65  3.78                 3.99            0.475 C00267 C00267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   3.98  3.72                 3.98            0.475 C02045 C02045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3.90  3.63                 3.95            0.417 C00255 C00255</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   4.01  2.84                 3.90            0.420 C00148 C00148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   4.04  1.69                 3.86            0.562 C00365 C00365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3.76  3.04                 3.80            0.516 C00025 C00025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3.56  3.19                 3.75            0.406 C00022 C00022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 111 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
