@@ -2,7 +2,7 @@
 #'
 #' @param pathway_name the pathway name for plot
 #' @param Ranks_all the Named vector of compound-level and (or) gene-level stats. Names should be KEGG ID and(or) gene-level
-#' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "extended",alternative is "metabolite" and "gene"
+#' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"
 #' @param gseaParam GSEA parameter value, all compound-level and(or) gene-level stats are raised to the power of 'gseaParam' before calculation of GSEA enrichment scores.
 #' @param minSize Minimal size of a compound and(or) gene set to test. All pathways below the threshold are excluded.
 #' @param ticksSize width of vertical line corresponding to a compound or gene(default: 0.2)
@@ -14,11 +14,11 @@
 #' library(ggplot2)
 #' library(dplyr)
 #' result <- pESEA("Butanoate metabolism",sim.cpd.data,out="metabolite")
-pESEA <- function(pathway_name, Ranks_all, out="extended", gseaParam = 0.5, minSize=5, ticksSize = 0.2) {
+pESEA <- function(pathway_name, Ranks_all, out="Extended", gseaParam = 0.5, minSize=5, ticksSize = 0.2) {
 
   Ranks_all <- sort(Ranks_all)
  
-  if (out=="extended") {
+  if (out=="Extended") {
     Pathways=Pathways_all
   } else if (out=="gene") {
     Pathways=Pathways_gene
