@@ -89,12 +89,28 @@ Xuan Liu and Hai Fang</h4>
     
     
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="installation-of-r-requirement">Installation of R requirement<a class="anchor" aria-label="anchor" href="#installation-of-r-requirement"></a>
+</h2>
+<p>R (<a href="http://www.r-project.org" class="external-link uri">http://www.r-project.org</a>) is a language and environment
+for statistical computing and graphics. We assume R (version 4.0.0 or
+higher) has been installed in your local machine. The latest version can
+be installed following instructions below for different platforms
+(Windows, Mac, and Linux).</p>
+<p>Quick link for Windows: <a href="https://cran.r-project.org/bin/windows/base/" class="external-link">Download R for
+Windows</a>.</p>
+<p>Quick link for Mac: <a href="https://cran.r-project.org/bin/macosx/big-sur-arm64/base/" class="external-link">Download
+R for Mac OS X 11</a>.</p>
+<p>Below are shell command lines in Terminal (for Linux):</p>
+<p>Ensure you have the conda:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge r-base</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="installation-of-the-package">Installation of the package<a class="anchor" aria-label="anchor" href="#installation-of-the-package"></a>
 </h2>
 <p>The R package MNet requires R version 4.0.0 or higher, please see <a href="https://cran.r-project.org" class="external-link uri">https://cran.r-project.org</a>.</p>
 <p>MNet is available for all operating systems and can be installed via
 the Github.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">BiocManager</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -110,7 +126,7 @@ the Github.</p>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"hfang-bristol/dnet"</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"tuantuangui/MNet"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p>check the package ‘MNet’ successfully installed</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span>help<span class="op">=</span><span class="va">MNet</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
