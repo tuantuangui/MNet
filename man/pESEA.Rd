@@ -7,7 +7,7 @@
 pESEA(
   pathway_name,
   Ranks_all,
-  out = "extended",
+  out = "Extended",
   gseaParam = 0.5,
   minSize = 5,
   ticksSize = 0.2
@@ -18,7 +18,7 @@ pESEA(
 
 \item{Ranks_all}{the Named vector of compound-level and (or) gene-level stats. Names should be KEGG ID and(or) gene-level}
 
-\item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "extended",alternative is "metabolite" and "gene"}
+\item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"}
 
 \item{gseaParam}{GSEA parameter value, all compound-level and(or) gene-level stats are raised to the power of 'gseaParam' before calculation of GSEA enrichment scores.}
 
