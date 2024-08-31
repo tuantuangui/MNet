@@ -89,7 +89,7 @@ Collate:
     'pESEA.R'
     'pHeatmap.R'
     'pMSEA.R'
-    'pNetCor'
+    'pNetCor.R'
     'pPCA.R'
     'pPathview.R'
     'pVolcano.R'
