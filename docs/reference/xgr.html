@@ -100,51 +100,51 @@
 <span class="r-in"><span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">name</span>,<span class="va">kegg_pathwayname</span>,<span class="va">kegg_category</span>,<span class="va">type</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">kegg_id_need</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C05984"</span>,<span class="st">"C02494"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xgr_result</span> <span class="op">&lt;-</span> <span class="fu">xgr</span><span class="op">(</span><span class="va">kegg_id_need</span>,<span class="va">database</span>,p_cutoff<span class="op">=</span><span class="fl">1.1</span>,noverlap_cutoff<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-08-31 10:17:24</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-08-31 23:06:04</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> #######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' is being called (2024-08-31 10:17:24):</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' is being called (2024-08-31 23:06:04):</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-08-31 10:17:24) ...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Next, prepare enrichment analysis (2024-08-31 10:17:24) ...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	There are 1 genes/SNPs of interest tested against 3047 genes/SNPs as the background (annotatable only? TRUE) (2024-08-31 10:17:24)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, perform enrichment analysis using 'hypergeo' test (2024-08-31 10:17:24) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-08-31 23:06:04) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Next, prepare enrichment analysis (2024-08-31 23:06:04) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 	There are 1 genes/SNPs of interest tested against 3047 genes/SNPs as the background (annotatable only? TRUE) (2024-08-31 23:06:04)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, perform enrichment analysis using 'hypergeo' test (2024-08-31 23:06:04) ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	There are 81 terms being used, each restricted within [1,2000] annotations</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Last, adjust the p-values for 81 terms (with 0 minimum overlaps) using the BH method (2024-08-31 10:17:24) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Last, adjust the p-values for 81 terms (with 0 minimum overlaps) using the BH method (2024-08-31 23:06:04) ...</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' has been finished (2024-08-31 10:17:24)!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' has been finished (2024-08-31 23:06:04)!</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> End at 2024-08-31 10:17:24</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> End at 2024-08-31 23:06:04</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total (xEnricherYours): 0 secs</span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">xgr</span><span class="op">(</span><span class="va">kegg_id_need</span>,<span class="va">PathwayExtendData</span>,p_cutoff<span class="op">=</span><span class="fl">1.1</span>,noverlap_cutoff<span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-08-31 10:17:24</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-08-31 23:06:04</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> #######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' is being called (2024-08-31 10:17:24):</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' is being called (2024-08-31 23:06:04):</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-08-31 10:17:24) ...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Next, prepare enrichment analysis (2024-08-31 10:17:25) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-08-31 23:06:04) ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Next, prepare enrichment analysis (2024-08-31 23:06:04) ...</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' has been finished (2024-08-31 10:17:25)!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'xEnricher' has been finished (2024-08-31 23:06:04)!</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one argument not used by format '#######################################################</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> '</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> #######################################################</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> End at 2024-08-31 10:17:25</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total (xEnricherYours): 1 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> End at 2024-08-31 23:06:04</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total (xEnricherYours): 0 secs</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("filter"):</span> no applicable method for 'filter' applied to an object of class "NULL"</span>
 <span class="r-in"><span><span class="va">xgr_result</span><span class="op">$</span><span class="va">output</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 14</span></span>
