@@ -8,8 +8,18 @@ The package is designed for mining metabolomics alongside transcriptomic data wi
 ![](docs/articles/data/Figure1.png)
 
 ## Usage
-The tutorial of MNet can be found at 
-https://tuantuangui.github.io/MNet
+The Installation of MNet can be found at 
+https://tuantuangui.github.io/MNet/articles/MNet.html
+
+The function of MNet can be found at https://tuantuangui.github.io/MNet/reference/index.html
+
+The example of MNet can be found at https://tuantuangui.github.io/MNet/articles/01-load_data.html
+
+The pathway analysis example of MNet can be found at https://tuantuangui.github.io/MNet/articles/02-Pathway_analysis.html
+
+The subnetwork analysis example of MNet can be found at https://tuantuangui.github.io/MNet/articles/03-Subnetwork_analysis.html
+
+The rountine exampe of MNet can be found at https://tuantuangui.github.io/MNet/articles/04-Routine_analyses.html
 
 ## Need help?
 If you have any questions about MNet, please don’t hesitate to email me (guituant2009@163.com).
