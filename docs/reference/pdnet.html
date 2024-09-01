@@ -89,35 +89,35 @@
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">pdnet</span><span class="op">(</span><span class="va">diff_meta</span>,<span class="va">diff_gene</span>,nsize<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-08-31 23:05:40</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-09-01 09:30:41</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> First, fit the input p-value distribution under beta-uniform mixture model (2024-08-31 23:05:40)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> First, fit the input p-value distribution under beta-uniform mixture model (2024-09-01 09:30:41)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	A total of p-values: 17978</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Maximum Log-Likelihood: 29984.0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Mixture parameter (lambda): 0.109</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Shape parameter (a): 0.225</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Second, determine the significance threshold (2024-08-31 23:05:40)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Second, determine the significance threshold (2024-09-01 09:30:41)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Via constraint on the size of subnetwork to be identified (100 nodes)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at rough stage (2024-08-31 23:05:40)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-08-31 23:05:40)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-08-31 23:05:40)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-08-31 23:05:40)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-08-31 23:05:40)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-08-31 23:05:41)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-08-31 23:05:41)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-08-31 23:05:43)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-08-31 23:05:47)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at finetuning stage (2024-08-31 23:05:47)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-08-31 23:05:49)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-08-31 23:05:51)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-08-31 23:05:54)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at rough stage (2024-09-01 09:30:41)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-09-01 09:30:41)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-09-01 09:30:41)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-09-01 09:30:41)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-09-01 09:30:42)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-09-01 09:30:42)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-09-01 09:30:42)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-09-01 09:30:44)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-09-01 09:30:48)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at finetuning stage (2024-09-01 09:30:48)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-09-01 09:30:50)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-09-01 09:30:52)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-09-01 09:30:55)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	significance threshold: 2.50e-05</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-08-31 23:05:54)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-09-01 09:30:55)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Amongst 17978 scores, there are 920 positives.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-08-31 23:05:54)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-09-01 09:30:55)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Size of the subgraph: 110 nodes and 156 edges</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish at 2024-08-31 23:05:56</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish at 2024-09-01 09:30:57</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total is: 16 secs</span>
 <span class="r-plt img"><img src="pdnet-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">pdnet</span><span class="op">(</span><span class="va">diff_metabolite</span><span class="op">[</span>,<span class="fl">8</span><span class="op">]</span>,<span class="va">diff_gene1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></span>
