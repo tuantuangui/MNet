@@ -53,10 +53,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
-    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Pathway analyses</a>
-    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Subnetwork analyses</a>
-    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-Pathway_analysis.html">Extended pathway analyses</a>
+    <a class="dropdown-item" href="../articles/02-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/03-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul>
@@ -80,7 +79,7 @@
                         <h4 data-toc-skip class="author">Tuantuan Gui,
 Xuan Liu and Hai Fang</h4>
             
-            <h4 data-toc-skip class="date">2024-09-01</h4>
+            <h4 data-toc-skip class="date">2024-09-02</h4>
       
       
       <div class="d-none name"><code>MNet.Rmd</code></div>
@@ -89,25 +88,29 @@ Xuan Liu and Hai Fang</h4>
     
     
 <div class="section level2">
-<h2 id="installation-of-r-requirement">Installation of R requirement<a class="anchor" aria-label="anchor" href="#installation-of-r-requirement"></a>
+<h2 id="r-installation">
+<font size="5">R Installation</font><a class="anchor" aria-label="anchor" href="#r-installation"></a>
 </h2>
 <p>R (<a href="http://www.r-project.org" class="external-link uri">http://www.r-project.org</a>) is a language and environment
 for statistical computing and graphics. We assume R (version 4.0.0 or
 higher) has been installed in your local machine. The latest version can
 be installed following instructions below for different platforms
 (Windows, Mac, and Linux).</p>
-<p>Quick link for Windows: <a href="https://cran.r-project.org/bin/windows/base/" class="external-link">Download R for
-Windows</a>.</p>
-<p>Quick link for Mac: <a href="https://cran.r-project.org/bin/macosx/big-sur-arm64/base/" class="external-link">Download
-R for Mac OS X 11</a>.</p>
-<p>Below are shell command lines in Terminal (for Linux):</p>
-<p>Ensure you have the conda:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge r-base</span></code></pre></div>
+<ul>
+<li><p>Quick link for Windows: <a href="https://cran.r-project.org/bin/windows/base/" class="external-link">Download R for
+Windows</a>.</p></li>
+<li><p>Quick link for Mac: <a href="https://cran.r-project.org/bin/macosx/big-sur-arm64/base/" class="external-link">Download
+R for Mac OS X 11</a>.</p></li>
+<li><p>Below are shell command lines in Terminal (for Linux):</p></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Ensure you have the conda:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge r-base</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="installation-of-the-package">Installation of the package<a class="anchor" aria-label="anchor" href="#installation-of-the-package"></a>
+<h2 id="mnet-installation">
+<font size="5">MNet Installation</font><a class="anchor" aria-label="anchor" href="#mnet-installation"></a>
 </h2>
-<p>The R package MNet requires R version 4.0.0 or higher, please see <a href="https://cran.r-project.org" class="external-link uri">https://cran.r-project.org</a>.</p>
+<p>MNet requires R version 4.0.0 or higher, please see <a href="https://cran.r-project.org" class="external-link uri">https://cran.r-project.org</a>.</p>
 <p>MNet is available for all operating systems and can be installed via
 the Github.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -124,14 +127,22 @@ the Github.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"hfang-bristol/dnet"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"tuantuangui/MNet"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p>if the installation of MNet is failed, please install the failed
-dependency package again, such as if the ERROR is “ERROR: dependencies
-‘xxx’ is not available for package ‘MNet’”, please install the ‘xxx’
-package again.</p>
-<p>check the package ‘MNet’ successfully installed</p>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"tuantuangui/MNet"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#if the installation of MNet is failed, please install the failed dependency package again, such as if the ERROR is "ERROR: dependencies ‘xxx’ is not available for package ‘MNet’", please install the 'xxx' package again.</span></span></code></pre></div>
+<p>Check the package ‘MNet’ successfully installed</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span>help<span class="op">=</span><span class="va">MNet</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="usage">
+<font size="5">Usage</font><a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<ul>
+<li><p>Extended pathway analysis can be found <a href="https://tuantuangui.github.io/MNet/articles/01-Pathway_analysis.html" class="external-link">here</a></p></li>
+<li><p>Metabolism-related subnetwork analysis can be found <a href="https://tuantuangui.github.io/MNet/articles/02-Subnetwork_analysis.html" class="external-link">here</a></p></li>
+<li><p>Routine analysis can be found <a href="https://tuantuangui.github.io/MNet/articles/03-Routine_analyses.html" class="external-link">here</a></p></li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

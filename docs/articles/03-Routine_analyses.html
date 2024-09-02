@@ -53,10 +53,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
-    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Extended pathway analyses</a>
-    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
-    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-Pathway_analysis.html">Extended pathway analyses</a>
+    <a class="dropdown-item" href="../articles/02-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/03-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul>
@@ -80,18 +79,21 @@
             
       
       
-      <div class="d-none name"><code>04-Routine_analyses.Rmd</code></div>
+      <div class="d-none name"><code>03-Routine_analyses.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="metabolite-and-kegg-name-change">Metabolite and kegg name change<a class="anchor" aria-label="anchor" href="#metabolite-and-kegg-name-change"></a>
+<h2 id="metabolite-and-kegg-name-change">
+<font size="5">Metabolite and kegg name change</font><a class="anchor" aria-label="anchor" href="#metabolite-and-kegg-name-change"></a>
 </h2>
 <div class="section level3">
-<h3 id="metabolite-name-changed-to-refmet-name">Metabolite name changed to refmet name<a class="anchor" aria-label="anchor" href="#metabolite-name-changed-to-refmet-name"></a>
+<h3 id="metabolite-name-changed-to-refmet-name">
+<font size="4">Metabolite name changed to refmet name</font><a class="anchor" aria-label="anchor" href="#metabolite-name-changed-to-refmet-name"></a>
 </h3>
-<p>This step requires networking</p>
+<p><font color="CadetBlue"><strong>This step requires
+networking</strong></font></p>
 <p>RefMet: A Reference list of Metabolite names<br>
 The main objective of RefMet is to provide a standardized reference
 nomenclature for both discrete metabolite structures and metabolite
@@ -121,10 +123,12 @@ experiments.</p>
 <span><span class="co">## 4 Organic acids Amino acids and peptides            Amino acids          NA</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="metabolite-name-changed-to-kegg-id">Metabolite name changed to kegg id<a class="anchor" aria-label="anchor" href="#metabolite-name-changed-to-kegg-id"></a>
+<h3 id="metabolite-name-changed-to-kegg-id">
+<font size="4">Metabolite name changed to kegg id</font><a class="anchor" aria-label="anchor" href="#metabolite-name-changed-to-kegg-id"></a>
 </h3>
-<p>This step requires networking</p>
-<p>search the kegg id corresponding to the metabolites name</p>
+<p><font color="CadetBlue"><strong>This step requires
+networking</strong></font></p>
+<p>Search the kegg id corresponding to the metabolites name</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">compound_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-Hydroxybutyric acid"</span>,<span class="st">"1-Methyladenosine"</span>,<span class="st">"tt"</span>,<span class="st">"2-Aminooctanoic acid"</span><span class="op">)</span></span>
 <span><span class="va">keggid_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/name2keggid.html">name2keggid</a></span><span class="op">(</span><span class="va">compound_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -138,10 +142,12 @@ experiments.</p>
 <span><span class="co">## 4  2-Aminooctanoic acid    &lt;NA&gt;</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="metabolite-name-corresponding-to-kegg-pathway">Metabolite name corresponding to kegg pathway<a class="anchor" aria-label="anchor" href="#metabolite-name-corresponding-to-kegg-pathway"></a>
+<h3 id="metabolite-name-corresponding-to-kegg-pathway">
+<font size="4">Metabolite name corresponding to kegg
+pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-name-corresponding-to-kegg-pathway"></a>
 </h3>
-<p>This step requires networking</p>
-<p>search the kegg pathway corresponding to the metabolite name</p>
+<p><strong>This step requires networking</strong></p>
+<p>Search the kegg pathway corresponding to the metabolite name</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">compound_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-Hydroxybutyric acid"</span>,<span class="st">"1-Methyladenosine"</span>,<span class="st">"tt"</span>,<span class="st">"2-Aminooctanoic acid"</span><span class="op">)</span></span>
 <span><span class="va">result_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/name2pathway.html">name2pathway</a></span><span class="op">(</span><span class="va">compound_name</span><span class="op">)</span></span>
@@ -172,9 +178,10 @@ experiments.</p>
 <span><span class="co">## 1 Acetyl-CoA;Succinate;Thiamin diphosphate;Malonyl-CoA;Succinyl-CoA;beta-Alanine;Propanoyl-CoA;2-Oxobutanoate;Glycerone phosphate;Propanoate;(S)-Lactate;3-Oxopropanoate;(S)-Lactaldehyde;Propanal;Methylglyoxal;Propane-1,2-diol;(S)-Methylmalonyl-CoA;Propynoate;Lactoyl-CoA;Propenoyl-CoA;3-Hydroxypropanoate;(R)-Methylmalonyl-CoA;Methylmalonate;2-Methylcitrate;beta-Alanyl-CoA;Propanoyl phosphate;(Z)-But-2-ene-1,2,3-tricarboxylate;(2S,3R)-3-Hydroxybutane-1,2,3-tricarboxylate;Hydroxyacetone;3-Hydroxypropionyl-CoA;Propane-1-ol;Propionyladenylate;2-Hydroxybutyric acid;3-Oxopropionyl-CoA;(S)-Methylmalonate semialdehyde;Enzyme N6-(lipoyl)lysine;Enzyme N6-(dihydrolipoyl)lysine;2-(alpha-Hydroxypropyl)thiamine diphosphate;Enzyme N6-(S-propyldihydrolipoyl)lysine;2-Methyl-trans-aconitate</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="metabolite-keggid-to-kegg-pathway">Metabolite keggid to kegg pathway<a class="anchor" aria-label="anchor" href="#metabolite-keggid-to-kegg-pathway"></a>
+<h3 id="metabolite-keggid-to-kegg-pathway">
+<font size="4">Metabolite keggid to kegg pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-keggid-to-kegg-pathway"></a>
 </h3>
-<p>the kegg pathway corresponding to kegg id</p>
+<p>KEGG pathway corresponding to kegg id</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: replacing previous import 'igraph::diversity' by 'vegan::diversity'</span></span>
@@ -190,9 +197,9 @@ experiments.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> C05984 2-Hydroxybutanoic acid;///2-Hydroxybutyrate… Propan… Carbohydrat… hsa0…</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="the-pathway-information">the pathway information<a class="anchor" aria-label="anchor" href="#the-pathway-information"></a>
+<h3 id="pathway-information">Pathway information<a class="anchor" aria-label="anchor" href="#pathway-information"></a>
 </h3>
-<p>get the gene and the metabolite in the pathway</p>
+<p>Get the gene and the metabolite in the pathway</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"hsa00630"</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"Glyoxylate and dicarboxylate metabolism"</span><span class="op">)</span></span>
@@ -213,7 +220,8 @@ experiments.</p>
 <span><span class="co">## 2 Carbohydrate metabolism</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="pathway-name-to-pathway-id">pathway name to pathway id<a class="anchor" aria-label="anchor" href="#pathway-name-to-pathway-id"></a>
+<h3 id="pathway-name-to-pathway-id">
+<font size="4">pathway name to pathway id</font><a class="anchor" aria-label="anchor" href="#pathway-name-to-pathway-id"></a>
 </h3>
 <p>Change the pathway name to pathway KEGG ID</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -224,10 +232,12 @@ experiments.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="group-wise-analyses">Group-wise analyses<a class="anchor" aria-label="anchor" href="#group-wise-analyses"></a>
+<h2 id="group-wise-analyses">
+<font size="5">Group-wise analyses</font><a class="anchor" aria-label="anchor" href="#group-wise-analyses"></a>
 </h2>
 <div class="section level3">
-<h3 id="pca-plot">PCA plot<a class="anchor" aria-label="anchor" href="#pca-plot"></a>
+<h3 id="pca-plot">
+<font size="4">PCA plot</font><a class="anchor" aria-label="anchor" href="#pca-plot"></a>
 </h3>
 <p>PCA of the data</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
@@ -236,16 +246,21 @@ experiments.</p>
 <p><img src="result_v0131/1.PCA_1.png" style="width:50.0%"><img src="result_v0131/1.PCA_2.png" style="width:50.0%"><img src="result_v0131/1.PCA_3.png" style="width:50.0%"></p>
 </div>
 <div class="section level3">
-<h3 id="differnetial-metabolite-analysis">Differnetial metabolite analysis<a class="anchor" aria-label="anchor" href="#differnetial-metabolite-analysis"></a>
+<h3 id="differnetial-metabolite-analysis">
+<font size="4">Differnetial metabolite analysis</font><a class="anchor" aria-label="anchor" href="#differnetial-metabolite-analysis"></a>
 </h3>
 <div class="section level4">
-<h4 id="using-the-function-mlimma-in-r-packages-mnet">using the function mlimma in R packages “MNet”<a class="anchor" aria-label="anchor" href="#using-the-function-mlimma-in-r-packages-mnet"></a>
+<h4 id="using-the-function-mlimma-in-r-packages-mnet">
+<font size="3">Using the function mlimma in R packages
+“MNet”</font><a class="anchor" aria-label="anchor" href="#using-the-function-mlimma-in-r-packages-mnet"></a>
 </h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="using-the-function-dm-in-r-packages-mnet">using the function DM in R packages “MNet”<a class="anchor" aria-label="anchor" href="#using-the-function-dm-in-r-packages-mnet"></a>
+<h4 id="using-the-function-dm-in-r-packages-mnet">
+<font size="3">Using the function DM in R packages
+“MNet”</font><a class="anchor" aria-label="anchor" href="#using-the-function-dm-in-r-packages-mnet"></a>
 </h4>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DM.html">DM</a></span><span class="op">(</span><span class="fl">2</span><span class="op">**</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span>
@@ -263,18 +278,20 @@ experiments.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="differential-metabolites-volcano">Differential metabolites’ volcano<a class="anchor" aria-label="anchor" href="#differential-metabolites-volcano"></a>
+<h3 id="differential-metabolites-volcano">
+<font size="4">Differential metabolites’ volcano</font><a class="anchor" aria-label="anchor" href="#differential-metabolites-volcano"></a>
 </h3>
-<p>the volcano plot of metabolites using the function “pVolcano” in the
+<p>Volcano plot of metabolites using the function “pVolcano” in the
 package “MNet”</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_volcano</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pVolcano.html">pVolcano</a></span><span class="op">(</span><span class="va">diff_result</span>,foldchange_threshold<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="result_v0131/3.volcano.png" style="width:50.0%"></p>
 </div>
 <div class="section level3">
-<h3 id="differential-metabolites-heatmap">Differential metabolites’ heatmap<a class="anchor" aria-label="anchor" href="#differential-metabolites-heatmap"></a>
+<h3 id="differential-metabolites-heatmap">
+<font size="4">Differential metabolites’ heatmap</font><a class="anchor" aria-label="anchor" href="#differential-metabolites-heatmap"></a>
 </h3>
-<p>the heatmap plot of differentital metabolites using the function
+<p>Heatmap plot of differentital metabolites using the function
 “pHeatmap” in R package “MNet”</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta_dat_diff</span> <span class="op">&lt;-</span> <span class="va">meta_dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">meta_dat</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diff_result_filter</span><span class="op">$</span><span class="va">Name</span>,<span class="op">]</span></span>
@@ -282,10 +299,11 @@ package “MNet”</p>
 <p><img src="result_v0131/3.heatmap.png" style="width:50.0%"></p>
 </div>
 <div class="section level3">
-<h3 id="differential-metabolites-zscore">Differential metabolites’ zscore<a class="anchor" aria-label="anchor" href="#differential-metabolites-zscore"></a>
+<h3 id="differential-metabolites-zscore">
+<font size="4">Differential metabolites’ zscore</font><a class="anchor" aria-label="anchor" href="#differential-metabolites-zscore"></a>
 </h3>
-<p>the zscore plot of differentital metabolites using the function
-“pZscore” in R package “MNet”</p>
+<p>Zscore plot of differentital metabolites using the function “pZscore”
+in R package “MNet”</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_zscore</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pZscore.html">pZscore</a></span><span class="op">(</span><span class="va">meta_dat_diff</span>,<span class="va">group</span>,ysize<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#p_zscore</span></span></code></pre></div>
@@ -293,10 +311,12 @@ package “MNet”</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="feature-selection">Feature selection<a class="anchor" aria-label="anchor" href="#feature-selection"></a>
+<h2 id="feature-selection">
+<font size="5">Feature selection</font><a class="anchor" aria-label="anchor" href="#feature-selection"></a>
 </h2>
 <div class="section level3">
-<h3 id="boruta">Boruta<a class="anchor" aria-label="anchor" href="#boruta"></a>
+<h3 id="boruta">
+<font size="4">Boruta</font><a class="anchor" aria-label="anchor" href="#boruta"></a>
 </h3>
 <p>Using machine learning “Boruta” for feature selection</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -309,7 +329,8 @@ package “MNet”</p>
 <span><span class="va">result_ML_Boruta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_Boruta.html">ML_Boruta</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="random-forest">Random Forest<a class="anchor" aria-label="anchor" href="#random-forest"></a>
+<h3 id="random-forest">
+<font size="4">Random Forest</font><a class="anchor" aria-label="anchor" href="#random-forest"></a>
 </h3>
 <p>Using machine learning “Random Forest” for feature selection</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
@@ -318,7 +339,8 @@ package “MNet”</p>
 <span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="xgboost">XGBoost<a class="anchor" aria-label="anchor" href="#xgboost"></a>
+<h3 id="xgboost">
+<font size="4">XGBoost</font><a class="anchor" aria-label="anchor" href="#xgboost"></a>
 </h3>
 <p>Using machine learning ” XGBoost” for feature selection</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
@@ -327,14 +349,16 @@ package “MNet”</p>
 <span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="lasso">LASSO<a class="anchor" aria-label="anchor" href="#lasso"></a>
+<h3 id="lasso">
+<font size="4">LASSO</font><a class="anchor" aria-label="anchor" href="#lasso"></a>
 </h3>
 <p>Using machine learning “LASSO” for feature selection</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>,method<span class="op">=</span><span class="st">"lasso"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="elastic-network">elastic network<a class="anchor" aria-label="anchor" href="#elastic-network"></a>
+<h3 id="elastic-network">
+<font size="4">elastic network</font><a class="anchor" aria-label="anchor" href="#elastic-network"></a>
 </h3>
 <p>Using machine learning “elastic network” for feature selection</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
@@ -342,10 +366,12 @@ package “MNet”</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="pathway-analysis">Pathway analysis<a class="anchor" aria-label="anchor" href="#pathway-analysis"></a>
+<h2 id="pathway-analysis">
+<font size="5">Pathway analysis</font><a class="anchor" aria-label="anchor" href="#pathway-analysis"></a>
 </h2>
 <div class="section level3">
-<h3 id="pathview-only-metabolite">pathview only metabolite<a class="anchor" aria-label="anchor" href="#pathview-only-metabolite"></a>
+<h3 id="pathview-only-metabolite">
+<font size="4">Pathview only metabolite</font><a class="anchor" aria-label="anchor" href="#pathview-only-metabolite"></a>
 </h3>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kegg_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C02494"</span>,<span class="st">"C03665"</span>,<span class="st">"C01546"</span>,<span class="st">"C05984"</span>,<span class="st">"C14088"</span>,<span class="st">"C00587"</span><span class="op">)</span></span>
@@ -361,7 +387,8 @@ package “MNet”</p>
 <p><img src="result_v0131/hsa00640.pathview.metabolite.png"></p>
 </div>
 <div class="section level3">
-<h3 id="pathview-metabolite-and-gene">pathview metabolite and gene<a class="anchor" aria-label="anchor" href="#pathview-metabolite-and-gene"></a>
+<h3 id="pathview-metabolite-and-gene">
+<font size="4">Pathview metabolite and gene</font><a class="anchor" aria-label="anchor" href="#pathview-metabolite-and-gene"></a>
 </h3>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pPathview.html">pPathview</a></span><span class="op">(</span>cpd.data<span class="op">=</span><span class="va">cpd.data</span>,gene.data<span class="op">=</span><span class="va">gene_value</span>,outdir<span class="op">=</span><span class="st">"result_v0131"</span><span class="op">)</span></span></code></pre></div>
@@ -369,13 +396,15 @@ package “MNet”</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="clinical-analysis">Clinical analysis<a class="anchor" aria-label="anchor" href="#clinical-analysis"></a>
+<h2 id="clinical-analysis">
+<font size="5">Clinical analysis</font><a class="anchor" aria-label="anchor" href="#clinical-analysis"></a>
 </h2>
 <div class="section level3">
-<h3 id="time-series-of-clinical">Time series of clinical<a class="anchor" aria-label="anchor" href="#time-series-of-clinical"></a>
+<h3 id="time-series-of-clinical">
+<font size="4">Time series of clinical</font><a class="anchor" aria-label="anchor" href="#time-series-of-clinical"></a>
 </h3>
-<p>the column contains the time, group, clinical index(such as ALT), low
-and high</p>
+<p>Column contains the time, group, clinical index(such as ALT), low and
+high</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
 <span></span>
@@ -385,7 +414,8 @@ and high</p>
 <p><img src="result_v0131/clinical_time_series.png"></p>
 </div>
 <div class="section level3">
-<h3 id="survival-analysis">Survival analysis<a class="anchor" aria-label="anchor" href="#survival-analysis"></a>
+<h3 id="survival-analysis">
+<font size="4">Survival analysis</font><a class="anchor" aria-label="anchor" href="#survival-analysis"></a>
 </h3>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
@@ -397,7 +427,8 @@ and high</p>
 <p><img src="result_v0131/survival.png"></p>
 </div>
 <div class="section level3">
-<h3 id="metabolites-survival-plot">Metabolites’ survival plot<a class="anchor" aria-label="anchor" href="#metabolites-survival-plot"></a>
+<h3 id="metabolites-survival-plot">
+<font size="4">Metabolites’ survival plot</font><a class="anchor" aria-label="anchor" href="#metabolites-survival-plot"></a>
 </h3>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C03819"</span>,<span class="st">"C02918"</span>,<span class="st">"C03916"</span><span class="op">)</span></span>
@@ -405,7 +436,8 @@ and high</p>
 <p><img src="result_v0131/survival/C02918.survival.png"></p>
 </div>
 <div class="section level3">
-<h3 id="cox-analysis">Cox analysis<a class="anchor" aria-label="anchor" href="#cox-analysis"></a>
+<h3 id="cox-analysis">
+<font size="4">Cox analysis</font><a class="anchor" aria-label="anchor" href="#cox-analysis"></a>
 </h3>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MetCox.html">MetCox</a></span><span class="op">(</span><span class="va">dat_surv</span><span class="op">)</span></span>
@@ -413,7 +445,8 @@ and high</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+<h2 id="session-information">
+<font size="5">Session information</font><a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>

@@ -53,10 +53,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
-    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Extended pathway analyses</a>
-    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
-    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-Pathway_analysis.html">Extended pathway analyses</a>
+    <a class="dropdown-item" href="../articles/02-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/03-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul>
@@ -80,14 +79,14 @@
             
       
       
-      <div class="d-none name"><code>03-Subnetwork_analysis.Rmd</code></div>
+      <div class="d-none name"><code>02-Subnetwork_analysis.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="the-data">
-<font size="5">the data</font><a class="anchor" aria-label="anchor" href="#the-data"></a>
+<h2 id="differential-information">
+<font size="5">Differential Information</font><a class="anchor" aria-label="anchor" href="#differential-information"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span>
@@ -97,10 +96,10 @@
 <h2 id="subnetwork-extraction-by-dnet">
 <font size="5">Subnetwork extraction by dnet</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-by-dnet"></a>
 </h2>
-<p>the data need to have the column name “name”, and have the “p_value”,
-“logFC” is alternative. If have the “logFC”, the color in the figure is
-the logFC, otherwise, the color “blue” in figure means metabolites and
-the color “red” means the genes.</p>
+<p>Input data need to have the column name “name”, and have the
+“p_value”, “logFC” is alternative. If have the “logFC”, the color in the
+figure is the logFC, otherwise, the color “blue” in figure means
+metabolites and the color “red” means the genes.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="st">"p_value"</span></span>
 <span><span class="va">diff_metabolite</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -124,7 +123,7 @@ the color “red” means the genes.</p>
 <font size="5">Subnetwork extraction of interested metabolites and
 genes</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-of-interested-metabolites-and-genes"></a>
 </h2>
-<p>the data need to have the column name “name”, and do not have the
+<p>Input data need to have the column name “name”, and do not have the
 “p_value”</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"result_v0131/subnetwork_interested.png"</span>,width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">7</span>, units <span class="op">=</span> <span class="st">'in'</span>, res <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
