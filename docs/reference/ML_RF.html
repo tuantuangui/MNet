@@ -27,10 +27,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
-    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Pathway analyses</a>
-    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Subnetwork analyses</a>
-    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-Pathway_analysis.html">Extended pathway analyses</a>
+    <a class="dropdown-item" href="../articles/02-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/03-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -88,20 +87,20 @@
 <span class="r-in"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">p</span></span></span>
 <span class="r-plt img"><img src="ML_RF-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 124 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 119 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names  raw   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   4.87  4.82                 5.16            0.642 C02045 C02045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   4.41  4.40                 4.65            0.594 C00073 C00073</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   4.16  4.05                 4.33            0.531 C05674 C05674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   4.34  2.43                 4.12            0.500 C05378 C05378</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   3.77  3.71                 4.05            0.419 C00025 C00025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3.82  3.29                 4.00            0.406 C00267 C00267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   3.69  3.61                 3.91            0.457 C02291 C02291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   3.59  3.19                 3.83            0.376 C02630 C02630</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3.40  3.59                 3.77            0.338 C03413 C03413</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3.55  3.45                 3.73            0.404 C00242 C00242</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 114 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   4.68  4.84                 5.08            0.655 C00073 C00073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   4.51  4.41                 4.59            0.621 C02045 C02045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>   4.10  3.53                 4.47            0.467 C00267 C00267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   4.07  3.55                 4.16            0.521 C00042 C00042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   4.10  2.53                 4.15            0.452 C00025 C00025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   3.96  3.63                 4.05            0.443 C18170 C18170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   4.05  3.25                 4.04            0.461 C03413 C03413</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>   4.31  3.08                 4.03            0.419 C02630 C02630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>   3.85  3.49                 3.96            0.375 C05674 C05674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   3.74  3.36                 3.88            0.520 C02291 C02291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 109 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

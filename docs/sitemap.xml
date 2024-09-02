@@ -4,13 +4,19 @@
     <loc>/404.html</loc>
   </url>
   <url>
-    <loc>/README_1.html</loc>
+    <loc>/articles/01-Pathway_analysis.html</loc>
   </url>
   <url>
     <loc>/articles/01-load_data.html</loc>
   </url>
   <url>
     <loc>/articles/02-Pathway_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/articles/02-Subnetwork_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/articles/03-Routine_analyses.html</loc>
   </url>
   <url>
     <loc>/articles/03-Subnetwork_analysis.html</loc>

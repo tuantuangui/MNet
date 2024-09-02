@@ -27,10 +27,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/01-load_data.html">Load data</a>
-    <a class="dropdown-item" href="../articles/02-Pathway_analysis.html">Pathway analyses</a>
-    <a class="dropdown-item" href="../articles/03-Subnetwork_analysis.html">Subnetwork analyses</a>
-    <a class="dropdown-item" href="../articles/04-Routine_analyses.html">Rountine analyses</a>
+    <a class="dropdown-item" href="../articles/01-Pathway_analysis.html">Extended pathway analyses</a>
+    <a class="dropdown-item" href="../articles/02-Subnetwork_analysis.html">Metabolism-related subnetwork analyses</a>
+    <a class="dropdown-item" href="../articles/03-Routine_analyses.html">Rountine analyses</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -77,85 +76,113 @@
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group<span class="op">=</span><span class="va">group</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result_ML_xgboost</span> <span class="op">&lt;-</span> <span class="fu">ML_xgboost</span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-rmse:0.364289	test-rmse:0.420552 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-rmse:0.265516	test-rmse:0.323838 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-rmse:0.193653	test-rmse:0.360718 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-rmse:0.141468	test-rmse:0.362661 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-rmse:0.103879	test-rmse:0.368937 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-rmse:0.076854	test-rmse:0.387712 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-rmse:0.057567	test-rmse:0.392754 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-rmse:0.043686	test-rmse:0.393775 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-rmse:0.033696	test-rmse:0.385904 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-rmse:0.026214	test-rmse:0.382918 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-rmse:0.020489	test-rmse:0.377933 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-rmse:0.016104	test-rmse:0.373931 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-rmse:0.012739	test-rmse:0.372377 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-rmse:0.010192	test-rmse:0.369983 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-rmse:0.008204	test-rmse:0.370153 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-rmse:0.006662	test-rmse:0.369924 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-rmse:0.005475	test-rmse:0.370160 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-rmse:0.004509	test-rmse:0.369266 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-rmse:0.003721	test-rmse:0.368957 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-rmse:0.003087	test-rmse:0.368702 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21]	train-rmse:0.002574	test-rmse:0.368616 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22]	train-rmse:0.002158	test-rmse:0.368498 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23]	train-rmse:0.001816	test-rmse:0.368312 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24]	train-rmse:0.001531	test-rmse:0.368254 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25]	train-rmse:0.001298	test-rmse:0.368265 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26]	train-rmse:0.001110	test-rmse:0.368275 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27]	train-rmse:0.000950	test-rmse:0.368263 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [28]	train-rmse:0.000830	test-rmse:0.368105 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29]	train-rmse:0.000719	test-rmse:0.368105 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [30]	train-rmse:0.000626	test-rmse:0.368106 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31]	train-rmse:0.000548	test-rmse:0.368072 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [32]	train-rmse:0.000477	test-rmse:0.368072 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33]	train-rmse:0.000431	test-rmse:0.368065 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34]	train-rmse:0.000395	test-rmse:0.368036 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35]	train-rmse:0.000364	test-rmse:0.368032 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36]	train-rmse:0.000364	test-rmse:0.368036 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37]	train-rmse:0.000363	test-rmse:0.368039 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [38]	train-rmse:0.000363	test-rmse:0.368042 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39]	train-rmse:0.000363	test-rmse:0.368043 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40]	train-rmse:0.000363	test-rmse:0.368044 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [41]	train-rmse:0.000363	test-rmse:0.368045 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [42]	train-rmse:0.000363	test-rmse:0.368046 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43]	train-rmse:0.000363	test-rmse:0.368046 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [44]	train-rmse:0.000363	test-rmse:0.368046 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [45]	train-rmse:0.000363	test-rmse:0.368046 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [46]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [47]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [48]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [49]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [51]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [52]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [53]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [54]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [55]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [56]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [57]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [58]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [59]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [60]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [61]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [62]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [63]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [64]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [65]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [66]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [67]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [68]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [69]	train-rmse:0.000363	test-rmse:0.368047 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [70]	train-rmse:0.000363	test-rmse:0.368047 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-rmse:0.364289	test-rmse:0.458457 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-rmse:0.265516	test-rmse:0.361844 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-rmse:0.193653	test-rmse:0.293355 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-rmse:0.141777	test-rmse:0.245586 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-rmse:0.104312	test-rmse:0.212519 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-rmse:0.077374	test-rmse:0.189868 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-rmse:0.057857	test-rmse:0.174208 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-rmse:0.044250	test-rmse:0.163119 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-rmse:0.034233	test-rmse:0.157906 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-rmse:0.026903	test-rmse:0.152925 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-rmse:0.021420	test-rmse:0.149827 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-rmse:0.017206	test-rmse:0.148192 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-rmse:0.013981	test-rmse:0.148220 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-rmse:0.011448	test-rmse:0.147389 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-rmse:0.009395	test-rmse:0.146834 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-rmse:0.007764	test-rmse:0.146569 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-rmse:0.006460	test-rmse:0.146217 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-rmse:0.005400	test-rmse:0.145917 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-rmse:0.004523	test-rmse:0.145695 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-rmse:0.003807	test-rmse:0.145662 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21]	train-rmse:0.003227	test-rmse:0.145492 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22]	train-rmse:0.002754	test-rmse:0.145465 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23]	train-rmse:0.002319	test-rmse:0.145359 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24]	train-rmse:0.001962	test-rmse:0.145081 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25]	train-rmse:0.001684	test-rmse:0.145057 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26]	train-rmse:0.001430	test-rmse:0.145114 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27]	train-rmse:0.001234	test-rmse:0.144937 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [28]	train-rmse:0.001061	test-rmse:0.145040 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [29]	train-rmse:0.000900	test-rmse:0.144991 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [30]	train-rmse:0.000792	test-rmse:0.145079 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [31]	train-rmse:0.000695	test-rmse:0.145155 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [32]	train-rmse:0.000617	test-rmse:0.145113 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33]	train-rmse:0.000541	test-rmse:0.145058 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [34]	train-rmse:0.000478	test-rmse:0.145065 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [35]	train-rmse:0.000446	test-rmse:0.145063 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [36]	train-rmse:0.000419	test-rmse:0.145113 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37]	train-rmse:0.000419	test-rmse:0.145114 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [38]	train-rmse:0.000419	test-rmse:0.145114 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [39]	train-rmse:0.000419	test-rmse:0.145114 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [40]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [41]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [42]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [43]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [44]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [45]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [46]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [47]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [48]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [49]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [50]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [51]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [52]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [53]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [54]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [55]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [56]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [57]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [58]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [59]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [60]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [61]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [62]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [63]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [64]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [65]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [66]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [67]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [68]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [69]	train-rmse:0.000419	test-rmse:0.145115 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [70]	train-rmse:0.000419	test-rmse:0.145115 </span>
 <span class="r-plt img"><img src="ML_xgboost-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">p</span></span></span>
 <span class="r-plt img"><img src="ML_xgboost-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">feature_result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Feature       Gain     Cover Frequency Importance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  C02985 0.56878134 0.3289474      0.25 0.56878134</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  C00073 0.30209217 0.3289474      0.25 0.30209217</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  C03264 0.08479320 0.1710526      0.25 0.08479320</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  C00408 0.04433329 0.1710526      0.25 0.04433329</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Feature         Gain       Cover  Frequency   Importance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  C02630 4.109723e-01 0.031133250 0.03260870 4.109723e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  C00073 2.478196e-01 0.031133250 0.02173913 2.478196e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  C02045 1.894634e-01 0.046699875 0.03260870 1.894634e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  C15025 6.090636e-02 0.008094645 0.01086957 6.090636e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  C00408 3.794991e-02 0.104607721 0.08695652 3.794991e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  C03264 3.226734e-02 0.036114570 0.05434783 3.226734e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  C00365 8.180507e-03 0.015566625 0.01086957 8.180507e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  C00022 4.323476e-03 0.046699875 0.03260870 4.323476e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  C00149 3.025430e-03 0.077833126 0.05434783 3.025430e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  C00255 2.281620e-03 0.046699875 0.03260870 2.281620e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:  C05635 8.095804e-04 0.018679950 0.02173913 8.095804e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:  C05581 6.411860e-04 0.013698630 0.02173913 6.411860e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:  C00267 5.650250e-04 0.018679950 0.02173913 5.650250e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:  C09642 5.234275e-04 0.100249066 0.20652174 5.234275e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:  C01762 7.943457e-05 0.009339975 0.01086957 7.943457e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:  C00632 5.933786e-05 0.140099626 0.09782609 5.933786e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17: C06178  5.265050e-05 0.036737235 0.04347826 5.265050e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18: C00219  4.386996e-05 0.009339975 0.01086957 4.386996e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:  C00906 1.521031e-05 0.028642590 0.02173913 1.521031e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:  C01607 4.160399e-06 0.011830635 0.01086957 4.160399e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:  C00438 3.658445e-06 0.029887920 0.02173913 3.658445e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:  C02291 3.476269e-06 0.012453300 0.01086957 3.476269e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:  C00183 2.681922e-06 0.024906600 0.02173913 2.681922e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:  C02838 1.744950e-06 0.025529265 0.02173913 1.744950e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:  C00380 1.102265e-06 0.012453300 0.01086957 1.102265e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:  C00506 1.023032e-06 0.027397260 0.02173913 1.023032e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:  C14825 8.163068e-07 0.013075965 0.01086957 8.163068e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:  C01259 5.712219e-07 0.003735990 0.01086957 5.712219e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:  C00026 4.613947e-07 0.004981320 0.01086957 4.613947e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:  C01571 3.763328e-07 0.011207970 0.01086957 3.763328e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:  C01250 2.322017e-07 0.002490660 0.01086957 2.322017e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Feature         Gain       Cover  Frequency   Importance</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
