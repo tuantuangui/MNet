@@ -80,14 +80,17 @@
 <p><strong>MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data</strong></p>
 <p>MNet is designed for mining metabolomics alongside transcriptomic data with three key features:</p>
 <ul>
-<li>its built-in ‘dbMNet’ providing an expert-curated knowledgebase for metabolomics, which includes all currently available gene-metabolite and metabolite-metabolite interactions in humans;<br>
+<li>
+<strong>Knowledgebase:</strong> its built-in ‘dbMNet’ providing an expert-curated knowledgebase for metabolomics, which includes all currently available gene-metabolite and metabolite-metabolite interactions in humans;<br>
 </li>
-<li>its advanced analytical capabilities supporting extended pathway enrichment analysis, extended differential abundance analysis, and extended pathway set enrichment analysis to identify dysregulated metabolic pathways via considering both metabolites and genes;<br>
+<li>
+<strong>Algorithm1:</strong> its advanced analytical capabilities supporting extended pathway enrichment analysis, extended differential abundance analysis, and extended pathway set enrichment analysis to identify dysregulated metabolic pathways via considering both metabolites and genes;<br>
 </li>
-<li>its unique capabilities for metabolic-related subnetwork analysis, offering a systems-level understanding of metabolic interconnections.</li>
+<li>
+<strong>Algorithm2:</strong> its unique capabilities for metabolic-related subnetwork analysis, offering a systems-level understanding of metabolic interconnections.</li>
 </ul>
 <p><img src="articles/data/Figure1.png"></p>
-<p><font size="2" color="CadetBlue"><strong>Figure 1. Overview of the analytical model underlying MNet.</strong> <strong>(A)</strong> The MNet model includes three primary components: Knowledgebase, Algorithm, and Deployment. Their interconnected relationships are illustrated. <strong>(B)</strong> The Knowledgebase component comprises gene-metabolite pairs sourced from five primary data sources. This comprehensive knowledgebase forms the foundation for both extended pathway and subnetwork analyses (see the next Algorithm component). <strong>(C)</strong> The Algorithm component includes methods for extended pathway and metabolism-related subnetwork analyses. Extended pathway analyses (implemented in ePEA, ePDA, and eSEA) consider both genes and metabolites, while metabolism-related subnetwork analysis employs our previously well-established algorithm ‘dnet’ to explore interactions involving genes and metabolites. <strong>(D)</strong> The Deployment component includes its use via programmatically accessible R functions and an intuitive Shiny user interface.</font></p>
+<p><font size="2" color="CadetBlue"><strong>Figure 1. Overview of the analytical model underlying MNet.</strong> <strong>(A)</strong> The MNet model includes three primary components: <em><strong>Knowledgebase</strong></em>, <em><strong>Algorithm</strong></em>, and <em><strong>Deployment</strong></em>. Their interconnected relationships are illustrated. <strong>(B)</strong> The <em><strong>Knowledgebase</strong></em> component comprises gene-metabolite pairs sourced from five primary data sources. This comprehensive knowledgebase forms the foundation for both extended pathway and subnetwork analyses (see the next <em><strong>Algorithm</strong></em> component). <strong>(C)</strong> The <em><strong>Algorithm</strong></em> component includes methods for extended pathway and metabolism-related subnetwork analyses. Extended pathway analyses (implemented in ePEA, ePDA, and eSEA) consider both genes and metabolites, while metabolism-related subnetwork analysis employs our previously well-established algorithm ‘dnet’ to explore interactions involving genes and metabolites. <strong>(D)</strong> The <em><strong>Deployment</strong></em> component includes its use via programmatically accessible R functions and an intuitive Shiny user interface.</font></p>
 </div>
 <div class="section level2">
 <h2 id="get-started">
