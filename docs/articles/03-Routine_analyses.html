@@ -205,7 +205,8 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 </h3>
 <p>Get the gene and the metabolite in the pathway</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"hsa00630"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"hsa00630"</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"Glyoxylate and dicarboxylate metabolism"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">gene_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##   type  name kegg_pathwayid                        kegg_pathwayname</span></span>
@@ -229,7 +230,8 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 </h3>
 <p>Transform the KEGG pathway name to KEGG pathway ID</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pathwayid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathway2pathwayid.html">pathway2pathwayid</a></span><span class="op">(</span><span class="st">"Glycolysis / Gluconeogenesis"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
+<span><span class="va">pathwayid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathway2pathwayid.html">pathway2pathwayid</a></span><span class="op">(</span><span class="st">"Glycolysis / Gluconeogenesis"</span><span class="op">)</span></span>
 <span><span class="va">pathwayid</span></span></code></pre></div>
 <pre><code><span><span class="co">##                        PATHWAY pathwayid</span></span>
 <span><span class="co">## 1 Glycolysis / Gluconeogenesis  hsa00010</span></span></code></pre>
