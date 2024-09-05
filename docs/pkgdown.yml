@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   01-Pathway_analysis: 01-Pathway_analysis.html
   02-Subnetwork_analysis: 02-Subnetwork_analysis.html
-  03-Routine_analyses: 03-Routine_analyses.html
+  03-Routine_analysis: 03-Routine_analysis.html
   MNet: MNet.html
-last_built: 2024-09-05T06:39Z
+last_built: 2024-09-05T06:55Z
 
