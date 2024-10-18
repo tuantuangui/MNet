@@ -2,7 +2,7 @@
 % Please edit documentation in R/name2pathway.R
 \name{name2pathway}
 \alias{name2pathway}
-\title{seek the metabolits' name's pathway}
+\title{seek the metabolits' pathway}
 \usage{
 name2pathway(name)
 }
@@ -13,7 +13,7 @@ name2pathway(name)
 test
 }
 \description{
-seek the metabolits' name's pathway
+seek the metabolits' pathway
 }
 \examples{
 name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt")

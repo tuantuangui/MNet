@@ -2,10 +2,10 @@
 % Please edit documentation in R/pHeatmap.R
 \name{pHeatmap}
 \alias{pHeatmap}
-\title{the heatmap of differential metabolites in the data}
+\title{Heatmap of differential metabolites}
 \usage{
 pHeatmap(
-  mydata_diff,
+  object,
   group,
   fontsize_row = 5,
   fontsize_col = 4,
@@ -16,8 +16,7 @@ pHeatmap(
 )
 }
 \arguments{
-\item{mydata_diff}{the data of differential metabolites' value,the row is
-metabolites, and the column is the samples' names.}
+\item{object}{A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to differential metabolites, and the columns corresponding to the samples}
 
 \item{group}{character vector,the data's group information, must tumor and normal}
 
@@ -25,16 +24,25 @@ metabolites, and the column is the samples' names.}
 
 \item{fontsize_col}{numeric, the value of column's fontsize, default is 4}
 
-\item{clustering_method}{the method that cluster,default is complete}
+\item{clustering_method}{the method for cluster,default is complete}
 
 \item{clustering_distance_cols}{the distance for cluster,default is correlation}
 }
 \value{
-test
+Heatmap
 }
 \description{
-the heatmap of differential metabolites in the data
+Heatmap of differential metabolites
 }
 \examples{
-p_heatmap <- pHeatmap(mydata,group)
+if (FALSE) {
+diff_result <- DM(2**meta_dat,group)
+# filter the differential metabolites by default fold change >1.5 or < 1/1.5 ,fdr < 0.05 and VIP>1
+diff_result_filter <- diff_result \%>\%
+  dplyr::filter(fold_change >1.3 | fold_change < 1/1.3) \%>\%
+  dplyr::filter(fdr_wilcox<0.1) \%>\%
+  dplyr::filter(vip>0.8)
+meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$name,]
+p_heatmap <- pHeatmap(meta_dat_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="ward.D",clustering_distance_cols="correlation")
+}
 }

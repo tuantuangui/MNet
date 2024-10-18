@@ -2,18 +2,18 @@
 % Please edit documentation in R/keggid2pathway.R
 \name{keggid2pathway}
 \alias{keggid2pathway}
-\title{search the kegg pathway corresponding to kegg id}
+\title{the kegg pathway corresponding to kegg id}
 \usage{
 keggid2pathway(keggid)
 }
 \arguments{
-\item{keggid}{the kegg id that be searched pathway}
+\item{keggid}{the KEGG ID}
 }
 \value{
-test
+result
 }
 \description{
-search the kegg pathway corresponding to kegg id
+the kegg pathway corresponding to kegg id
 }
 \examples{
 keggid <- c("C05984","C02494")

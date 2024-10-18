@@ -2,12 +2,12 @@
 % Please edit documentation in R/ML_alpha.R
 \name{ML_alpha}
 \alias{ML_alpha}
-\title{feature selection in lasso or elastic network}
+\title{feature selection using lasso or elastic network}
 \usage{
-ML_alpha(mydata, method = "lasso")
+ML_alpha(object, method = "lasso")
 }
 \arguments{
-\item{mydata}{the data}
+\item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
 
 \item{method}{the feature selection method,default is "lasso", "elastic" is optional}
 }
@@ -15,14 +15,12 @@ ML_alpha(mydata, method = "lasso")
 test
 }
 \description{
-feature selection in lasso or elastic network
+feature selection using lasso or elastic network
 }
 \examples{
 library(dplyr)
-mydata_t <- mydata \%>\%
-  t() \%>\%
-  as.data.frame()
-# the group information must be tumor and normal
-mydata_t$group <- group
-result <- ML_alpha(mydata_t)
+meta_dat1 <- t(meta_dat) \%>\%
+  as.data.frame() \%>\%
+  dplyr::mutate(group=group)
+result_ML_lasso <- ML_alpha(meta_dat1,method="lasso")
 }

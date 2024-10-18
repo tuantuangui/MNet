@@ -19,5 +19,5 @@ fold change, p value and vip of the data
 }
 \examples{
 library(dplyr)
-result <- DM(mydata,group)
+diff_result <- DM(2**meta_dat,group)
 }

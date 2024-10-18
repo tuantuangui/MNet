@@ -2,8 +2,7 @@
 % Please edit documentation in R/survMet.R
 \name{survMet}
 \alias{survMet}
-\title{The metabolites' survival plot
-automatic classify the samples by each selected metabolites by mean or median, and then plot the survival}
+\title{The metabolites' survival analysis and visualization}
 \usage{
 survMet(
   dat,
@@ -13,8 +12,7 @@ survMet(
 )
 }
 \arguments{
-\item{dat}{the row is the sample, and the first 2 column is status and time, the rest of column
-is the metabolites' value}
+\item{dat}{A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status}
 
 \item{metabolites}{the selected metabolites that used to classify the samples}
 
@@ -23,13 +21,12 @@ is the metabolites' value}
 \item{out_dir}{the output directory,default is "survival/metabolites"}
 }
 \value{
-test
+Figures
 }
 \description{
-The metabolites' survival plot
 automatic classify the samples by each selected metabolites by mean or median, and then plot the survival
 }
 \examples{
 metabolites <- c("C03819","C02918","C03916")
-survMet(dat,metabolites,cluster_method="mean",out_dir="result/survival/metabolites/")
+survMet(dat_surv,metabolites,cluster_method="mean",out_dir="result/survival/")
 }

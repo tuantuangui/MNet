@@ -4,10 +4,10 @@
 \alias{myscale}
 \title{Scale the data}
 \usage{
-myscale(mydata, method = "log_zscore")
+myscale(object, method = "log_zscore")
 }
 \arguments{
-\item{mydata}{the data that row is the metabolites, and the column is the sample}
+\item{object}{A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples}
 
 \item{method}{default is "log_zscore","raw_zscore" is alternative}
 }
@@ -18,5 +18,5 @@ test
 Scale the data
 }
 \examples{
-mydata_scale <- myscale(mydata)
+object_scale <- myscale(meta_dat,method="raw_zscore")
 }

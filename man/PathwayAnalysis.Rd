@@ -2,7 +2,7 @@
 % Please edit documentation in R/PathwayAnalysis.R
 \name{PathwayAnalysis}
 \alias{PathwayAnalysis}
-\title{the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites}
+\title{KEGG pathway analysis}
 \usage{
 PathwayAnalysis(
   name,
@@ -27,7 +27,7 @@ PathwayAnalysis(
 test
 }
 \description{
-the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
+KEGG pathway analysis
 }
 \examples{
 name <- c("C15973","C16254","MDH1")

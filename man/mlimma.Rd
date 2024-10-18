@@ -2,21 +2,21 @@
 % Please edit documentation in R/mlimma.R
 \name{mlimma}
 \alias{mlimma}
-\title{the limma analysis for metabolism or transcriptome}
+\title{Differential Metabolite analysis by limma}
 \usage{
-mlimma(dat, group)
+mlimma(object, group)
 }
 \arguments{
-\item{dat}{the data to be analyzed, the column is the sample name, and row is the gene name or compound name}
+\item{object}{object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples}
 
 \item{group}{the data's group}
 }
 \value{
-test
+A dataframe is same with limma's result
 }
 \description{
-the limma analysis for metabolism or transcriptome
+Differential Metabolite analysis by limma
 }
 \examples{
-result <- mlimma(mydata,group)
+result <- mlimma(meta_dat,group)
 }

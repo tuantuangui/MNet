@@ -2,7 +2,7 @@
 % Please edit documentation in R/pathwayinfo.R
 \name{pathwayinfo}
 \alias{pathwayinfo}
-\title{get the gene and the enzyme in the pathway}
+\title{the gene and the metabolite in the pathway}
 \usage{
 pathwayinfo(pathwayid)
 }
@@ -10,10 +10,10 @@ pathwayinfo(pathwayid)
 \item{pathwayid}{the pathway id, hsa or name}
 }
 \value{
-test
+the genes and metabolites KEGG ID corresponding to pathway
 }
 \description{
-get the gene and the enzyme in the pathway
+the gene and the metabolite in the pathway
 }
 \examples{
 result <- pathwayinfo("hsa00630")

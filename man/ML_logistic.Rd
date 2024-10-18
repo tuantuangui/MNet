@@ -2,12 +2,12 @@
 % Please edit documentation in R/ML_logistic.R
 \name{ML_logistic}
 \alias{ML_logistic}
-\title{The logistic regression to predict the data}
+\title{feature selection using logistic regression}
 \usage{
-ML_logistic(mydata, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
+ML_logistic(object, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
 }
 \arguments{
-\item{mydata}{the data that input}
+\item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
 
 \item{out_dir}{the out directory}
 
@@ -19,7 +19,7 @@ ML_logistic(mydata, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
 test
 }
 \description{
-The logistic regression to predict the data
+feature selection using logistic regression
 }
 \examples{
 library(dplyr)

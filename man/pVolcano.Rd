@@ -7,8 +7,8 @@
 pVolcano(mydata, foldchange_threshold = 1.5, p_threshold = 0.05)
 }
 \arguments{
-\item{mydata}{the result of function "differential_metabolites",have column "name","fold_change",
-"fdr_wilcox"}
+\item{mydata}{the result of function "differential_metabolites",have column "Name","Fold_change",
+"Padj_t"}
 
 \item{foldchange_threshold}{the fold change, default is 1.5,1/1.5}
 
@@ -21,6 +21,6 @@ test
 Plot the volcano figure
 }
 \examples{
-result <- DM(mydata,group)
-p <- pVolcano(result)
+diff_result <- DM(2**meta_dat,group)
+p_volcano <- pVolcano(diff_result,foldchange_threshold=1.5)
 }

@@ -2,25 +2,25 @@
 % Please edit documentation in R/ML_xgboost.R
 \name{ML_xgboost}
 \alias{ML_xgboost}
-\title{feature selection in XGBoost}
+\title{feature selection using XGBoost}
 \usage{
-ML_xgboost(mydata)
+ML_xgboost(object)
 }
 \arguments{
-\item{mydata}{the data}
+\item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
 }
 \value{
 test
 }
 \description{
-feature selection in XGBoost
+feature selection using XGBoost
 }
 \examples{
 library(dplyr)
-mydata_t <- mydata \%>\%
-  t() \%>\%
-  as.data.frame()
-# the group information must be tumor and normal
-mydata_t$group <- group
-result <- ML_xgboost(mydata_t)
+meta_dat1 <- t(meta_dat) \%>\%
+  as.data.frame() \%>\%
+  dplyr::mutate(group=group)
+result_ML_xgboost <- ML_xgboost(meta_dat1)
+result_ML_xgboost$p
+result_ML_xgboost$feature_result
 }

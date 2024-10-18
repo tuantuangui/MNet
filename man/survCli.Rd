@@ -2,23 +2,22 @@
 % Please edit documentation in R/survCli.R
 \name{survCli}
 \alias{survCli}
-\title{The OS,RFS and EFS's survival analysis}
+\title{The survival analysis and visualization}
 \usage{
 survCli(clinical_survival)
 }
 \arguments{
-\item{clinical_survival}{the data.frame must have the column name of OS_status, OS_time, group;
-the column name of RFS_status,RFS_time,EFS_status,EFS_time is alternative}
+\item{clinical_survival}{the data.frame must have the column name of status, time, group}
 }
 \value{
-test
+Figure
 }
 \description{
-The OS,RFS and EFS's survival analysis
+The survival analysis and visualization
 }
 \examples{
-p <- survCli(clinical_survival)
-p$p_OS
-p$p_RFS
-p$p_EFS
+library(survival)
+names(aml)[3] ="group"
+p=survCli(aml)
+p
 }

@@ -4,12 +4,14 @@
 \alias{pPathview}
 \title{the pathview of differential metabolites}
 \usage{
-pPathview(cpd.data, gene.data = NULL, outdir = "./")
+pPathview(cpd.data, gene.data = NULL, hsaid = NULL, outdir = "./")
 }
 \arguments{
 \item{cpd.data}{character vector,the metabolites' value, log2(fold change)}
 
 \item{gene.data}{default is NULL, the gene expression data, log2(fold change)}
+
+\item{hsaid}{default is NULL, the hsa pathway id wanted to plot}
 
 \item{outdir}{the output directory}
 }

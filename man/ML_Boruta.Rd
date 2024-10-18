@@ -2,25 +2,23 @@
 % Please edit documentation in R/ML_Boruta.R
 \name{ML_Boruta}
 \alias{ML_Boruta}
-\title{feature selection in Boruta}
+\title{feature selection using Boruta}
 \usage{
-ML_Boruta(mydata)
+ML_Boruta(object)
 }
 \arguments{
-\item{mydata}{the data}
+\item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
 }
 \value{
 test
 }
 \description{
-feature selection in Boruta
+feature selection using Boruta
 }
 \examples{
 library(dplyr)
-mydata_t <- mydata \%>\%
-  t() \%>\%
-  as.data.frame()
-# the group information must be tumor and normal
-mydata_t$group <- group
-result <- ML_Boruta(mydata_t)
+meta_dat1 <- t(meta_dat) \%>\%
+  as.data.frame() \%>\%
+  dplyr::mutate(group=group)
+result_ML_Boruta <- ML_Boruta(meta_dat1)
 }

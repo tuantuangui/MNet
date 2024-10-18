@@ -7,15 +7,14 @@
 MetCox(dat)
 }
 \arguments{
-\item{dat}{the data that row is sample, and column is the metabolite, the column
-must have time and status}
+\item{object}{A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status}
 }
 \value{
-test
+result
 }
 \description{
 The cox analysis about the metabolites
 }
 \examples{
-result <- MetCox(dat)
+result <- MetCox(dat_surv)
 }

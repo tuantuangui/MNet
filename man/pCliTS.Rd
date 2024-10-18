@@ -9,16 +9,14 @@ pCliTS(clinical, marker)
 \arguments{
 \item{clinical}{the clinical marker of different time, and need included "time","group",maker;
 "high"and "low" are alternative.}
-
-\item{marker}{the marker in the clinical info}
 }
 \value{
-test
+Figure
 }
 \description{
 The clinical's time series analysis
 }
 \examples{
-time_series_ALT <- pCliTS(clinical_index,"ALT")
+time_series_ALT <- pCliTS(clinical_index)
 
 }
