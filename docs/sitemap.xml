@@ -4,16 +4,37 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/README_1.html</loc>
+  </url>
+  <url>
     <loc>/articles/01-Pathway_analysis.html</loc>
   </url>
   <url>
+    <loc>/articles/01-example_unique.html</loc>
+  </url>
+  <url>
+    <loc>/articles/01-load_data.html</loc>
+  </url>
+  <url>
+    <loc>/articles/02-Pathway_analysis.html</loc>
+  </url>
+  <url>
     <loc>/articles/02-Subnetwork_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/articles/02-example_routine.html</loc>
   </url>
   <url>
     <loc>/articles/03-Routine_analyses.html</loc>
   </url>
   <url>
     <loc>/articles/03-Routine_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/articles/03-Subnetwork_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/articles/04-Routine_analyses.html</loc>
   </url>
   <url>
     <loc>/articles/MNet.html</loc>
@@ -26,6 +47,9 @@
   </url>
   <url>
     <loc>/index.html</loc>
+  </url>
+  <url>
+    <loc>/news/index.html</loc>
   </url>
   <url>
     <loc>/reference/DAscore.html</loc>
