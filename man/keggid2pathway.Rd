@@ -2,7 +2,7 @@
 % Please edit documentation in R/keggid2pathway.R
 \name{keggid2pathway}
 \alias{keggid2pathway}
-\title{the kegg pathway corresponding to kegg id}
+\title{The kegg pathway corresponding to kegg id}
 \usage{
 keggid2pathway(keggid)
 }
@@ -13,9 +13,11 @@ keggid2pathway(keggid)
 result
 }
 \description{
-the kegg pathway corresponding to kegg id
+The kegg pathway corresponding to kegg id
 }
 \examples{
 keggid <- c("C05984","C02494")
 kegg_result <- keggid2pathway(keggid)
+kegg_result
+
 }

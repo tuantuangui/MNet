@@ -2,7 +2,7 @@
 % Please edit documentation in R/ESEA.R
 \name{ESEA}
 \alias{ESEA}
-\title{the ESEA analysis}
+\title{The ESEA analysis}
 \usage{
 ESEA(
   Ranks_all,
@@ -28,7 +28,7 @@ the ESEA result
 the Extended-data Set Enrichment Analysis which includes gene and metabolite
 }
 \examples{
-library(ggplot2)
-library(dplyr)
-result <- ESEA(sim.cpd.data,out="metabolite")
+result <- ESEA(sim.cpd.data, out="metabolite")
+result
+
 }

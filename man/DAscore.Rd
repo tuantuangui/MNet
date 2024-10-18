@@ -20,11 +20,9 @@ DAscore(
 
 \item{all_members}{the all measured gene symbols and (or) metabolites' kegg id}
 
-\item{sort_plot}{the method of pathway rank in the plot,Default rank by DA score.
-if value is category, then rank by pathway category}
+\item{sort_plot}{the method of pathway rank in the plot,Default rank by DA score. if value is category, then rank by pathway category}
 
-\item{min_measured_num}{the minimum measured members that be ploted in a pathway,
-Default the value is 2.}
+\item{min_measured_num}{the minimum measured members that be ploted in a pathway, Default the value is 2.}
 
 \item{out}{the analysis type,default "metabolite", alternative is "gene" and "Extended"}
 }
@@ -36,10 +34,11 @@ Calculate the differential abundance (DA) score and visualization the DA score
 }
 \examples{
 name <- c("C00022","C00024","C00031","B4GALT2","AGPAT3","FHIT")
-DAscore_result <- DAscore(c(name[1],name[4]),name[2],name,min_measured_num = 0,sort_plot = "category")
-DAscore_result$result
-## the figure not run ##
-# DAscore_result$p
+DAscore_result <- DAscore(c(name[1], name[4]),
+                          name[2], name, min_measured_num = 0,
+                          sort_plot = "category")
 
+DAscore_result$result
+DAscore_result$p
 
 }

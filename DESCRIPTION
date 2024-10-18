@@ -27,17 +27,23 @@ Imports:
     Biobase,
     e1071,
     magrittr,
-    vegan
-Suggests: knitr,
+    vegan,
+    MatrixGenerics,
+    glmnet,
+    foreign,
+    RColorBrewer,
+    tibble,
+    utils,
+    ropls,
+    fgsea,
+    DMwR2,
+    Hmisc,
     stringr,
     survminer,
-    ropls,
     pheatmap,
     pROC,
     randomForest,
     jsonlite,
-    tibble,
-    utils,
     tidyr,
     grDevices,
     ggpubr,
@@ -49,13 +55,17 @@ Suggests: knitr,
     reshape2,
     tidyselect,
     AnnotationDbi,
-    rmarkdown,
     BiocStyle,
     RUnit,
-    BiocGenerics,
-    fgsea
+    BiocGenerics
+Suggests: knitr,
+    rmarkdown,
+    bs4Dash,
+    DT,
+    colourpicker,
+    shinyWidgets
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 biocViews: Metabolomics
 Collate: 
     'DAscore.R'
@@ -68,7 +78,6 @@ Collate:
     'ML_xgboost.R'
     'MetCox.R'
     'PathwayAnalysis.R'
-    'PathwayAnalysis_name2pathway.R'
     'col.key.R'
     'colorpanel2.R'
     'keggid2pathway.R'

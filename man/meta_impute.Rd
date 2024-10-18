@@ -2,7 +2,7 @@
 % Please edit documentation in R/meta_impute.R
 \name{meta_impute}
 \alias{meta_impute}
-\title{impute the NA in data}
+\title{Impute the NA in data}
 \usage{
 meta_impute(object, method, k = k)
 }
@@ -15,5 +15,9 @@ meta_impute(object, method, k = k)
 a data frame
 }
 \description{
-impute the NA in data
+Impute the NA in data
+}
+\examples{
+library(MNet)
+
 }

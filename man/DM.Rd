@@ -2,7 +2,7 @@
 % Please edit documentation in R/DM.R
 \name{DM}
 \alias{DM}
-\title{fold change, p value and vip of the data}
+\title{Fold change, p value and vip of the data}
 \usage{
 DM(mydata, group)
 }
@@ -15,9 +15,10 @@ DM(mydata, group)
 a data frame of the result contains fold change,p value and vip
 }
 \description{
-fold change, p value and vip of the data
+Fold change, p value and vip of the data
 }
 \examples{
-library(dplyr)
 diff_result <- DM(2**meta_dat,group)
+diff_result
+
 }
