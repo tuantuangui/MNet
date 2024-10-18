@@ -1,5 +1,5 @@
 
-#' seek the metabolits' name's pathway
+#' seek the metabolits' pathway
 #'
 #' @param name the metabolites' name
 #'

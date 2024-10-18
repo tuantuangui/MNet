@@ -1,25 +1,22 @@
-#' feature selection in Boruta
+#' feature selection using Boruta
 #'
-#' @param mydata the data
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
 #'
 #' @return test
 #' @export
 #'
 #' @examples
 #' library(dplyr)
-#' mydata_t <- mydata %>%
-#'   t() %>%
-#'   as.data.frame()
-#' # the group information must be tumor and normal
-#' mydata_t$group <- group
-#' result <- ML_Boruta(mydata_t)
+#' meta_dat1 <- t(meta_dat) %>%
+#'   as.data.frame() %>%
+#'   dplyr::mutate(group=group)
+#' result_ML_Boruta <- ML_Boruta(meta_dat1)
 
-
-ML_Boruta <- function(mydata) {
+ML_Boruta <- function(object) {
 
   decision <- NULL
-  mydata$group <- as.factor(mydata$group)
-  model_boruta <- Boruta::Boruta(group ~ ., data = mydata, doTrace = 2, maxRuns = 500)
+  object$group <- as.factor(object$group)
+  model_boruta <- Boruta::Boruta(group ~ ., data = object, doTrace = 2, maxRuns = 500)
   #print(boruta)
   #plot(boruta, las = 2, cex.axis = 0.7)
   #plotImpHistory(boruta)

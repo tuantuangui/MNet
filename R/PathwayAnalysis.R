@@ -1,4 +1,4 @@
-#' the KEGG pathway analysis which includes the extended pathway analysis of gene and metabolites
+#' KEGG pathway analysis
 #'
 #' @param name The genes' or the metabolites' names which to analysis pathway
 #' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "extended",alternative is "metabolite" and "gene"

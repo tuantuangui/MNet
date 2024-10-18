@@ -1,20 +1,19 @@
 
-#' The metabolites' survival plot
+#' The metabolites' survival analysis and visualization 
+#'
 #' automatic classify the samples by each selected metabolites by mean or median, and then plot the survival
 #'
-#' @param dat the row is the sample, and the first 2 column is status and time, the rest of column
-#' is the metabolites' value
+#' @param dat A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status
 #' @param metabolites the selected metabolites that used to classify the samples
 #' @param cluster_method "mean" or "median",defalult is "mean"
 #' @param out_dir the output directory,default is "survival/metabolites"
 #'
-#' @return test
+#' @return Figures
 #' @export
 #'
 #' @examples
 #' metabolites <- c("C03819","C02918","C03916")
-#' survMet(dat,metabolites,cluster_method="mean",out_dir="result/survival/metabolites/")
-
+#' survMet(dat_surv,metabolites,cluster_method="mean",out_dir="result/survival/")
 survMet <- function(dat,metabolites,cluster_method="mean",out_dir="survival/metabolites/") {
    
   metabolite_mean_median <- NULL

@@ -9,8 +9,8 @@
 #' @export
 #'
 #' @examples
-#' result <- DM(mydata,group)
-#' p <- pVolcano(result)
+#' diff_result <- DM(2**meta_dat,group)
+#' p_volcano <- pVolcano(diff_result,foldchange_threshold=1.5)
 
 pVolcano <- function(mydata,foldchange_threshold = 1.5,p_threshold = 0.05) {
 

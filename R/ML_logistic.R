@@ -1,6 +1,6 @@
-#' The logistic regression to predict the data
+#' feature selection using logistic regression
 #'
-#' @param mydata the data that input
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
 #' @param out_dir the out directory
 #' @param seed the seed
 #' @param auc_cutoff the cut off of auc that be filtered
@@ -11,18 +11,18 @@
 #' @examples
 #' library(dplyr)
 
-ML_logistic <- function(mydata,out_dir="logistic/",seed=NULL,auc_cutoff=0.8) {
- ## ML_logistic(mydata)
+ML_logistic <- function(object,out_dir="logistic/",seed=NULL,auc_cutoff=0.8) {
+ ## ML_logistic(object)
   dir.create(out_dir,recursive = TRUE)
   set.seed(NULL)
 
   test_set <- auc <- NULL
-  mydata1 = as.data.frame(lapply(mydata[, -which(colnames(mydata)=="group")],as.numeric))
-  mydata1$group <- mydata$group
-  mydata <- mydata1
-  parts = caret::createDataPartition(mydata$group, p = .8, list = F)
-  train_data = mydata[parts, ]
-  test_data = mydata[-parts, ]
+  object1 = as.data.frame(lapply(object[, -which(colnames(object)=="group")],as.numeric))
+  object1$group <- object$group
+  object <- object1
+  parts = caret::createDataPartition(object$group, p = .8, list = F)
+  train_data = object[parts, ]
+  test_data = object[-parts, ]
 
   train_data$group<- as.factor(train_data$group)
   test_data$group <- as.factor(test_data$group)

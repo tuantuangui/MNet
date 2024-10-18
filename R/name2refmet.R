@@ -9,8 +9,6 @@
 #' compound_name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt","2-Aminooctanoic acid")
 #' name2refmet(compound_name)
 name2refmet <- function(metabolites_name) {
-  #refmet_database <- data.table::fread("../data/refmet_database_v0211.txt") %>%
-  #  as.data.frame()
 
  # `Input name` <- NULL
   #数据库中已经有的代谢物名称
@@ -232,13 +230,18 @@ name2refmet <- function(metabolites_name) {
         aa$refmet_name=temp2
       }
 
+      if ("refmet_id" %in% names(aa)) {
+         aa <- aa %>% dplyr::select(-refmet_id)
+      }
+      if ("refmet_id" %in% names(standardized_2)) {
+         standardized_2 <- standardized_2 %in% dplyr::select(-refmet_id)
+      }
+
       standardized_2 <- rbind(standardized_2,aa)
       file.remove(ref)
     }
-#    result <- rbind(standardized_1,standardized_2)
     result <- standardized_2
   }else {
-#    result <- standardized_1
     result <- NULL
   }
   result[which(is.na(result$refmet_name)),2] <- result[which(is.na(result$refmet_name)),1]

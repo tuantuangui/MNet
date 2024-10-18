@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' library(dplyr)
-#' result <- DM(mydata,group)
+#' diff_result <- DM(2**meta_dat,group)
 DM <- function(mydata,group) {
   fold_change <- c(); group1_mean <- c(); group2_mean <- c()
   for (i in seq(1,nrow(mydata))){

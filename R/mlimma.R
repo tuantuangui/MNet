@@ -1,16 +1,16 @@
-#' the limma analysis for metabolism or transcriptome
+#' Differential Metabolite analysis by limma
 #'
-#' @param dat the data to be analyzed, the column is the sample name, and row is the gene name or compound name
+#' @param object object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples
 #' @param group the data's group
 #'
-#' @return test
+#' @return A dataframe is same with limma's result 
 #' @export
 #'
 #' @examples
-#' result <- mlimma(mydata,group)
-mlimma <- function(dat,group) {
+#' result <- mlimma(meta_dat,group)
+mlimma <- function(object,group) {
 
-  meta.data <- data.frame(Sample = colnames(dat))
+  meta.data <- data.frame(Sample = colnames(object))
   meta.data$patient <- meta.data$Sample
   meta.data$Type <- group
   
@@ -19,7 +19,7 @@ mlimma <- function(dat,group) {
   pdata.gene$contrast <- pdata.gene$Type
   design <- stats::model.matrix(~ 0 + as.factor(contrast), data = pdata.gene)
   colnames(design) <- stringr::str_replace_all(colnames(design), stringr::fixed("as.factor(contrast)"), "")
-  fit <- limma::lmFit(dat, design)
+  fit <- limma::lmFit(object, design)
   contrast <- limma::makeContrasts(P_N = tumor - normal, levels = design)
   fits <- limma::contrasts.fit(fit, contrast)
   ebFit <- limma::eBayes(fits)

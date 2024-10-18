@@ -1,14 +1,13 @@
 
 #' The cox analysis about the metabolites
 #'
-#' @param dat the data that row is sample, and column is the metabolite, the column
-#' must have time and status
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status
 #'
-#' @return test
+#' @return result
 #' @export
 #'
 #' @examples
-#' result <- MetCox(dat)
+#' result <- MetCox(dat_surv)
 MetCox <- function(dat) {
   metabolite_name <- names(dat)[3:ncol(dat)]
   univ_formulas <- lapply(metabolite_name,function(x) stats::as.formula(paste('survival::Surv(time, status)~', x)))

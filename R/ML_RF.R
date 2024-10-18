@@ -1,6 +1,6 @@
-#' feature selection in random forest
+#' feature selection using random forest
 #'
-#' @param mydata the data
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
 #' @param ylim_min the min ylim,default is 0
 #' @param seed the seed
 #'
@@ -9,23 +9,23 @@
 #'
 #' @examples
 #' library(dplyr)
-#' mydata_t <- mydata %>%
-#'   t() %>%
-#'   as.data.frame()
-#' # the group information must be tumor and normal
-#' mydata_t$group <- group
-#' result <- ML_RF(mydata_t)
-ML_RF <- function(mydata,ylim_min=0,seed=NULL) {
+#' meta_dat1 <- t(meta_dat) %>%
+#'   as.data.frame() %>%
+#'   dplyr::mutate(group=group)
+#' result_ML_RF <- ML_RF(meta_dat1)
+#' result_ML_RF$p
+#' result_ML_RF$feature_result
+ML_RF <- function(object,ylim_min=0,seed=NULL) {
 
   group <- MeanDecreaseAccuracy <- test_set<- AUC <- type<- NULL
   set.seed(seed)
 
-  mydata_raw <- mydata
-  mydata <- data.frame(mydata)
+  object_raw <- object
+  object <- data.frame(object)
 
-  data1 <- data.frame(raw=names(mydata_raw),frame=names(mydata))
-  mydata$group <- as.factor(mydata$group)
-  rf_model <- randomForest::randomForest(group~.,data=mydata,ntree=500,importance=TRUE,proximity=TRUE)
+  data1 <- data.frame(raw=names(object_raw),frame=names(object))
+  object$group <- as.factor(object$group)
+  rf_model <- randomForest::randomForest(group~.,data=object,ntree=500,importance=TRUE,proximity=TRUE)
 
   rf_model_accuracy <- randomForest::importance(rf_model) %>%
     as.data.frame() %>%

@@ -1,13 +1,16 @@
 
-#' The survival analysis and plot
+#' The survival analysis and visualization
 #'
-#' @param clinical_survival the data.frame must have the column name of status, time, group;the test data is from survival
+#' @param clinical_survival the data.frame must have the column name of status, time, group
 #'
-#' @return test
+#' @return Figure
 #' @export
 #'
 #' @examples
-#' p <- survCli(clinical_survival)
+#' library(survival)
+#' names(aml)[3] ="group"
+#' p=survCli(aml)
+#' p
 survCli <- function(clinical_survival) {
 
   #OS surv_object

@@ -1,42 +1,41 @@
-#' feature selection in XGBoost
+#' feature selection using XGBoost
 #'
-#' @param mydata the data
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
 #'
 #' @return test
 #' @export
 #'
 #' @examples
 #' library(dplyr)
-#' mydata_t <- mydata %>%
-#'   t() %>%
-#'   as.data.frame()
-#' # the group information must be tumor and normal
-#' mydata_t$group <- group
-#' result <- ML_xgboost(mydata_t)
+#' meta_dat1 <- t(meta_dat) %>%
+#'   as.data.frame() %>%
+#'   dplyr::mutate(group=group)
+#' result_ML_xgboost <- ML_xgboost(meta_dat1)
+#' result_ML_xgboost$p
+#' result_ML_xgboost$feature_result
 
-
-ML_xgboost <- function(mydata) {
+ML_xgboost <- function(object) {
   test_rmse <- iter <- Feature <- Importance <- NULL
-  parts = caret::createDataPartition(mydata$group, p = .8, list = F)
-  train = mydata[parts, ]
-  test = mydata[-parts, ]
+  parts = caret::createDataPartition(object$group, p = .8, list = F)
+  train = object[parts, ]
+  test = object[-parts, ]
 
   #define predictor and response variables in training set
-#  train_x = as.data.frame(lapply(train[, -which(colnames(mydata)=="group")],as.numeric)) %>%
+#  train_x = as.data.frame(lapply(train[, -which(colnames(object)=="group")],as.numeric)) %>%
 #    as.matrix()
   train_x <- train %>%
     dplyr::select(-group) %>%
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), as.numeric)) %>%
     as.matrix()
 
-  train_y = train[,which(names(mydata)=="group")]
+  train_y = train[,which(names(object)=="group")]
 
-  train_y[which(train_y==unique(mydata$group)[1])] <- 0
-  train_y[which(train_y==unique(mydata$group)[2])] <- 1
+  train_y[which(train_y==unique(object$group)[1])] <- 0
+  train_y[which(train_y==unique(object$group)[2])] <- 1
   train_y <- as.numeric(train_y)
 
   #define predictor and response variables in testing set
-#  test_x = as.data.frame(lapply(test[, -which(colnames(mydata)=="group")],as.numeric)) %>%
+#  test_x = as.data.frame(lapply(test[, -which(colnames(object)=="group")],as.numeric)) %>%
 #    as.matrix()
   
   test_x <- test %>%
@@ -44,9 +43,9 @@ ML_xgboost <- function(mydata) {
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), as.numeric)) %>%
     as.matrix()
 
-  test_y = test[, which(names(mydata)=="group")]
-  test_y[which(test_y==unique(mydata$group)[1])] <- 0
-  test_y[which(test_y==unique(mydata$group)[2])] <- 1
+  test_y = test[, which(names(object)=="group")]
+  test_y[which(test_y==unique(object$group)[1])] <- 0
+  test_y[which(test_y==unique(object$group)[2])] <- 1
   test_y <- as.numeric(test_y)
 
   #define final training and testing sets

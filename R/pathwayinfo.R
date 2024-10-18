@@ -1,8 +1,8 @@
-#' get the gene and the enzyme in the pathway
+#' the gene and the metabolite in the pathway
 #'
 #' @param pathwayid the pathway id, hsa or name
 #'
-#' @return test
+#' @return the genes and metabolites KEGG ID corresponding to pathway
 #' @export
 #'
 #' @examples

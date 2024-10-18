@@ -1,6 +1,6 @@
-#' feature selection in lasso or elastic network
+#' feature selection using lasso or elastic network
 #'
-#' @param mydata the data
+#' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
 #' @param method the feature selection method,default is "lasso", "elastic" is optional
 #'
 #' @return test
@@ -8,30 +8,28 @@
 #'
 #' @examples
 #' library(dplyr)
-#' mydata_t <- mydata %>%
-#'   t() %>%
-#'   as.data.frame()
-#' # the group information must be tumor and normal
-#' mydata_t$group <- group
-#' result <- ML_alpha(mydata_t)
+#' meta_dat1 <- t(meta_dat) %>%
+#'   as.data.frame() %>%
+#'   dplyr::mutate(group=group)
+#' result_ML_lasso <- ML_alpha(meta_dat1,method="lasso")
 
-ML_alpha <- function(mydata,method="lasso"){
+ML_alpha <- function(object,method="lasso"){
 
   s1 <- feature <- NULL
-  mydata1 <- mydata %>%
+  object1 <- object %>%
     dplyr::select(-group) %>%
     dplyr::mutate(dplyr::across(tidyselect::vars_select_helpers$where(is.character), as.numeric))
-  mydata1$group <- mydata$group
-  mydata <- mydata1
+  object1$group <- object$group
+  object <- object1
   
-  mydata$group <- as.character(mydata$group)
-  mydata1 <- mydata[which(mydata$group==unique(mydata$group)[1]),]
-  mydata2 <- mydata[which(mydata$group==unique(mydata$group)[2]),]
-  train_sub1 = base::sample(nrow(mydata1),round(8/10*nrow(mydata1),0))
-  train_sub2 = base::sample(nrow(mydata2),round(8/10*nrow(mydata2),0))
+  object$group <- as.character(object$group)
+  object1 <- object[which(object$group==unique(object$group)[1]),]
+  object2 <- object[which(object$group==unique(object$group)[2]),]
+  train_sub1 = base::sample(nrow(object1),round(8/10*nrow(object1),0))
+  train_sub2 = base::sample(nrow(object2),round(8/10*nrow(object2),0))
   
-  train_data = rbind(mydata1[train_sub1,],mydata2[train_sub2,])
-  test_data <- rbind(mydata1[-train_sub1,],mydata2[-train_sub2,])
+  train_data = rbind(object1[train_sub1,],object2[train_sub2,])
+  test_data <- rbind(object1[-train_sub1,],object2[-train_sub2,])
   
   train_data$group<- as.factor(train_data$group)
   test_data$group <- as.factor(test_data$group)
@@ -43,7 +41,7 @@ ML_alpha <- function(mydata,method="lasso"){
   if (method=="ridge") {
     # Build the model
     ridge <- caret::train(
-      group ~., data = mydata, method = "glmnet",
+      group ~., data = object, method = "glmnet",
       trControl = caret::trainControl("cv", number = 10),
       tuneGrid = expand.grid(alpha = 0, lambda = lambda)
     )
@@ -66,7 +64,7 @@ ML_alpha <- function(mydata,method="lasso"){
     # Build the model
 #    set.seed(123)
     lasso <- caret::train(
-      group ~., data = mydata, method = "glmnet",
+      group ~., data = object, method = "glmnet",
       trControl = caret::trainControl("cv", number = 10),
       tuneGrid = expand.grid(alpha = 1, lambda = lambda)
     )
@@ -89,7 +87,7 @@ ML_alpha <- function(mydata,method="lasso"){
     # Build the model
 #    set.seed(123)
     elastic <- caret::train(
-      group ~., data = mydata, method = "glmnet",
+      group ~., data = object, method = "glmnet",
       trControl = caret::trainControl("cv", number = 10),
       tuneLength = 10
     )

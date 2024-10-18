@@ -1,8 +1,8 @@
-#' search the kegg pathway corresponding to kegg id
+#' the kegg pathway corresponding to kegg id
 #'
-#' @param keggid the kegg id that be searched pathway
+#' @param keggid the KEGG ID
 #'
-#' @return test
+#' @return result
 #' @export
 #'
 #' @examples

@@ -1,26 +1,26 @@
 
 #' Scale the data
 #'
-#' @param mydata the data that row is the metabolites, and the column is the sample
+#' @param object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples
 #' @param method default is "log_zscore","raw_zscore" is alternative
 #'
 #' @return test
 #' @export
 #'
 #' @examples
-#' mydata_scale <- myscale(mydata)
-myscale <- function(mydata,method="log_zscore") {
+#' object_scale <- myscale(meta_dat,method="raw_zscore")
+myscale <- function(object,method="log_zscore") {
 
   if (method=="log_zscore") {
-    mydata <- log10(t(mydata))
-    centered.x <- scale(mydata,center=TRUE, scale = TRUE)
-    mydata_norm <- as.data.frame(t(centered.x))
-    return(mydata_norm)
+    object <- log10(t(object))
+    centered.x <- scale(object,center=TRUE, scale = TRUE)
+    object_norm <- as.data.frame(t(centered.x))
+    return(object_norm)
   }else if (method=="raw_zscore") {
-    mydata <- t(mydata)
-    centered.x <- scale(mydata,center=TRUE, scale = TRUE)
-    mydata_norm <- as.data.frame(t(centered.x))
-    return(mydata_norm)
+    object <- t(object)
+    centered.x <- scale(object,center=TRUE, scale = TRUE)
+    object_norm <- as.data.frame(t(centered.x))
+    return(object_norm)
   }
 }
 

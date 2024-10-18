@@ -3,7 +3,7 @@
 #' @param clinical the clinical marker of different time, and need included "time","group",maker;
 #' "high"and "low" are alternative.
 #'
-#' @return test
+#' @return Figure
 #' @export
 #'
 #' @examples
