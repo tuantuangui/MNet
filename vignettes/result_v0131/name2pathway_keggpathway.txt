@@ -1,0 +1,2 @@
+name	kegg_id	PATHWAY	pathwayid
+2-Hydroxybutyric acid	C05984	Propanoate metabolism	hsa00640

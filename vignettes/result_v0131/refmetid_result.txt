@@ -1,0 +1,5 @@
+Input name	refmet_name	formula	exactmass	super_class	main_class	sub_class	class_index
+1-Methyladenosine	1-Methyladenosine	C11H15N5O4	281.112405	Nucleic acids	Purines	Purine ribonucleosides	1330
+2-Hydroxybutyric acid	2-Hydroxybutyric acid	C4H8O3	104.047345	Fatty Acyls	Fatty acids	Hydroxy FA	125
+tt	tt	NA	NA	NA	NA	NA	NA
+2-Aminooctanoic acid	2-Aminooctanoic acid	C8H17NO2	159.1259	Organic acids	Amino acids and peptides	Amino acids	NA

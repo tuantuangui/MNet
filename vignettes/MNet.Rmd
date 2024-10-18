@@ -1,0 +1,74 @@
+--- 
+title: "MNet"
+author: "Tuantuan Gui, Xuan Liu and Hai Fang"
+date: "`r Sys.Date()`"
+description: >
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::gitbook,
+  set in the _output.yml file.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MNet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## <font size="5">R Installation</font>
+
+R (http://www.r-project.org) is a language and environment for statistical computing and graphics. We assume R (version 4.0.0 or higher) has been installed in your local machine. The latest version can be installed following instructions below for different platforms (Windows, Mac, and Linux).
+
+- Quick link for Windows: [Download R for Windows](https://cran.r-project.org/bin/windows/base/).
+
+- Quick link for Mac: [Download R for Mac OS X 11](https://cran.r-project.org/bin/macosx/big-sur-arm64/base/).
+
+- Below are shell command lines in Terminal (for Linux):
+
+```{bash,eval=FALSE}
+#Ensure you have the conda:
+conda install -c conda-forge r-base
+```
+
+## <font size="5">MNet Installation</font>
+
+MNet requires R version 4.0.0 or higher, please see https://cran.r-project.org.
+
+MNet is available for all operating systems and can be installed via the Github.
+
+```{r,eval=FALSE}
+if(!require(BiocManager)){
+  install.packages("BiocManager")
+}
+
+if (!require(remotes)) {
+  BiocManager::install("remotes", dependencies=T)
+}
+
+if (!require(devtools)) {
+  BiocManager::install("devtools", dependencies=T)
+}
+
+BiocManager::install("hfang-bristol/dnet", dependencies=T)
+BiocManager::install("tuantuangui/MNet", dependencies=T)
+
+#If the installation of MNet is failed, please install the failed dependency package again, such as if the ERROR is "ERROR: dependencies ‘xxx’ is not available for package ‘MNet’", please install the 'xxx' package again.
+```
+
+Check the package 'MNet' successfully installed
+```{r,eval=FALSE}
+library(help=MNet)
+```
+## <font size="5">Frequently Asked Questions</font>
+1. Can not install dependent packages dnet  
+If the ERROR is "Error: Failed to install 'dnet' from GitHub: Could not resolve host: api.github.com", please try it again.
+
+```{r,eval=FALSE}
+BiocManager::install("hfang-bristol/dnet", dependencies=T)
+```
+
+## <font size="5">Usage</font>
+
+- Extended pathway analysis can be found [here](https://tuantuangui.github.io/MNet/articles/01-Pathway_analysis.html)
+
+- Metabolism-related subnetwork analysis can be found [here](https://tuantuangui.github.io/MNet/articles/02-Subnetwork_analysis.html)
+
+- Routine analysis can be found [here](https://tuantuangui.github.io/MNet/articles/03-Routine_analysis.html)
