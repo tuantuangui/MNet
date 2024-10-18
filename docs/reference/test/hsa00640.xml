@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "https://www.kegg.jp/kegg/xml/KGML_v0.7.2_.dtd">
-<!-- Creation date: Feb 10, 2023 13:34:52 +0900 (GMT+9) -->
+<!-- Creation date: Sep 19, 2024 10:12:35 +0900 (GMT+9) -->
 <pathway name="path:hsa00640" org="hsa" number="00640"
          title="Propanoate metabolism"
          image="https://www.kegg.jp/kegg/pathway/hsa/hsa00640.png"
@@ -305,10 +305,10 @@
         <graphics name="MMUT, MCM, MUT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="807" y="577" width="46" height="17"/>
     </entry>
-    <entry id="111" name="ko:K01659" type="ortholog" reaction="rn:R00931"
-        link="https://www.kegg.jp/dbget-bin/www_bget?K01659">
-        <graphics name="K01659" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="1041" y="390" width="46" height="17"/>
+    <entry id="111" name="ko:K01659 ko:K27797" type="ortholog" reaction="rn:R00931"
+        link="https://www.kegg.jp/dbget-bin/www_bget?K01659+K27797">
+        <graphics name="K01659..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1041" y="393" width="46" height="17"/>
     </entry>
     <entry id="112" name="cpd:C00091" type="compound"
         link="https://www.kegg.jp/dbget-bin/www_bget?C00091">
@@ -320,9 +320,9 @@
         <graphics name="C02225" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="1041" y="433" width="8" height="8"/>
     </entry>
-    <entry id="118" name="ko:K01682" type="ortholog" reaction="rn:R04425"
-        link="https://www.kegg.jp/dbget-bin/www_bget?K01682">
-        <graphics name="K01682" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="118" name="ko:K01682 ko:K27802" type="ortholog" reaction="rn:R04425"
+        link="https://www.kegg.jp/dbget-bin/www_bget?K01682+K27802">
+        <graphics name="K01682..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="1041" y="576" width="46" height="17"/>
     </entry>
     <entry id="119" name="hsa:8801 hsa:8802 hsa:8803" type="gene" reaction="rn:R00405"
@@ -335,9 +335,9 @@
         <graphics name="SUCLG2, G-SCS, GBETA, GTPSCS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="865" y="609" width="46" height="17"/>
     </entry>
-    <entry id="121" name="ko:K03417" type="ortholog" reaction="rn:R00409"
-        link="https://www.kegg.jp/dbget-bin/www_bget?K03417">
-        <graphics name="K03417" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="121" name="ko:K03417 ko:K01637" type="ortholog" reaction="rn:R00409"
+        link="https://www.kegg.jp/dbget-bin/www_bget?K03417+K01637">
+        <graphics name="K03417..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="981" y="620" width="46" height="17"/>
     </entry>
     <entry id="122" name="cpd:C00042" type="compound"
@@ -584,6 +584,16 @@
         link="https://www.kegg.jp/dbget-bin/www_bget?K26355">
         <graphics name="K26355" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="1073" y="106" width="46" height="17"/>
+    </entry>
+    <entry id="221" name="cpd:C00036" type="compound"
+        link="https://www.kegg.jp/dbget-bin/www_bget?C00036">
+        <graphics name="C00036" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="1163" y="360" width="8" height="8"/>
+    </entry>
+    <entry id="222" name="path:hsa00020" type="map"
+        link="https://www.kegg.jp/dbget-bin/www_bget?hsa00020">
+        <graphics name="Citrate cycle (TCA cycle)" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="1164" y="412" width="73" height="25"/>
     </entry>
     <relation entry1="68" entry2="72" type="ECrel">
         <subtype name="compound" value="96"/>
