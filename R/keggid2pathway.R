@@ -3,8 +3,9 @@
 #' @param keggid the KEGG ID
 #'
 #' @return result
-#'
-#' @importFrom dplyr %>% filter
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dplyr filter
 #' @importFrom tibble as_tibble
 #' @export
 #'

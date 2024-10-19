@@ -2,8 +2,7 @@
 % Please edit documentation in R/name2refmet.R
 \name{name2refmet}
 \alias{name2refmet}
-\title{change the compound name to refmet name
-if the compound name can not be changed to kegg id, then the compound name is changed to refmet id}
+\title{change the compound name to refmet name}
 \usage{
 name2refmet(metabolites_name)
 }
@@ -14,10 +13,10 @@ name2refmet(metabolites_name)
 test
 }
 \description{
-change the compound name to refmet name
 if the compound name can not be changed to kegg id, then the compound name is changed to refmet id
 }
 \examples{
 compound_name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt","2-Aminooctanoic acid")
 name2refmet(compound_name)
+
 }

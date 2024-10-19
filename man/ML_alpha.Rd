@@ -2,7 +2,7 @@
 % Please edit documentation in R/ML_alpha.R
 \name{ML_alpha}
 \alias{ML_alpha}
-\title{feature selection using lasso or elastic network}
+\title{Feature selection using lasso or elastic network}
 \usage{
 ML_alpha(object, method = "lasso")
 }
@@ -15,12 +15,15 @@ ML_alpha(object, method = "lasso")
 test
 }
 \description{
-feature selection using lasso or elastic network
+Feature selection using lasso or elastic network
 }
 \examples{
 library(dplyr)
+
 meta_dat1 <- t(meta_dat) \%>\%
   as.data.frame() \%>\%
   dplyr::mutate(group=group)
-result_ML_lasso <- ML_alpha(meta_dat1,method="lasso")
+result_ML_lasso <- ML_alpha(meta_dat1, method="lasso")
+result_ML_lasso
+
 }

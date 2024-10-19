@@ -2,7 +2,7 @@
 % Please edit documentation in R/ML_Boruta.R
 \name{ML_Boruta}
 \alias{ML_Boruta}
-\title{feature selection using Boruta}
+\title{Feature selection using Boruta}
 \usage{
 ML_Boruta(object)
 }
@@ -13,12 +13,16 @@ ML_Boruta(object)
 test
 }
 \description{
-feature selection using Boruta
+Feature selection using Boruta
 }
 \examples{
 library(dplyr)
+
 meta_dat1 <- t(meta_dat) \%>\%
   as.data.frame() \%>\%
   dplyr::mutate(group=group)
+
 result_ML_Boruta <- ML_Boruta(meta_dat1)
+result_ML_Boruta
+
 }

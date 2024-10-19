@@ -2,7 +2,7 @@
 % Please edit documentation in R/ML_xgboost.R
 \name{ML_xgboost}
 \alias{ML_xgboost}
-\title{feature selection using XGBoost}
+\title{Feature selection using XGBoost}
 \usage{
 ML_xgboost(object)
 }
@@ -13,14 +13,17 @@ ML_xgboost(object)
 test
 }
 \description{
-feature selection using XGBoost
+Feature selection using XGBoost
 }
 \examples{
 library(dplyr)
+
 meta_dat1 <- t(meta_dat) \%>\%
   as.data.frame() \%>\%
   dplyr::mutate(group=group)
 result_ML_xgboost <- ML_xgboost(meta_dat1)
+
 result_ML_xgboost$p
 result_ML_xgboost$feature_result
+
 }

@@ -18,5 +18,7 @@ A dataframe is same with limma's result
 Differential Metabolite analysis by limma
 }
 \examples{
-result <- mlimma(meta_dat,group)
+result <- mlimma(meta_dat, group)
+result
+
 }

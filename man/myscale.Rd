@@ -18,5 +18,7 @@ test
 Scale the data
 }
 \examples{
-object_scale <- myscale(meta_dat,method="raw_zscore")
+object_scale <- myscale(meta_dat, method="raw_zscore")
+object_scale
+
 }

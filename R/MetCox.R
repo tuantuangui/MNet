@@ -4,6 +4,7 @@
 #'
 #' @return result
 #' 
+#' @importFrom magrittr %>%
 #' @importFrom stats as.formula
 #' @importFrom survival Surv coxph
 #' @importFrom tibble as_tibble

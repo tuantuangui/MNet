@@ -18,7 +18,11 @@ seek the metabolits' pathway
 \examples{
 name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt")
 result_all <- name2pathway(name)
+
 result <- result_all$name2pathway
 pathway <- result_all$pathway
+pathway
 kegg_name <- result_all$kegg_name
+kegg_name
+
 }

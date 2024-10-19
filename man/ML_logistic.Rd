@@ -2,7 +2,7 @@
 % Please edit documentation in R/ML_logistic.R
 \name{ML_logistic}
 \alias{ML_logistic}
-\title{feature selection using logistic regression}
+\title{Feature selection using logistic regression}
 \usage{
 ML_logistic(object, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
 }
@@ -19,8 +19,9 @@ ML_logistic(object, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
 test
 }
 \description{
-feature selection using logistic regression
+Feature selection using logistic regression
 }
 \examples{
-library(dplyr)
+library(MNet)
+
 }

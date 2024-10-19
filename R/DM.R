@@ -4,8 +4,9 @@
 #' @param group the group information of the sample
 #'
 #' @return a data frame of the result contains fold change,p value and vip
-#'
-#' @importFrom dplyr %>% filter left_join select rename
+#' 
+#' @importFrom magrittr %>%
+#' @importFrom dplyr filter left_join select rename
 #' @importFrom stats t.test wilcox.test p.adjust
 #' @importFrom ropls opls
 #' @export

@@ -17,4 +17,6 @@ Change the pathway name to pathway id
 }
 \examples{
 pathwayid <- pathway2pathwayid("Glycolysis / Gluconeogenesis")
+pathwayid
+
 }

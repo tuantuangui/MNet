@@ -2,7 +2,7 @@
 % Please edit documentation in R/ML_RF.R
 \name{ML_RF}
 \alias{ML_RF}
-\title{feature selection using random forest}
+\title{Feature selection using random forest}
 \usage{
 ML_RF(object, ylim_min = 0, seed = NULL)
 }
@@ -17,14 +17,17 @@ ML_RF(object, ylim_min = 0, seed = NULL)
 test
 }
 \description{
-feature selection using random forest
+Feature selection using random forest
 }
 \examples{
 library(dplyr)
+
 meta_dat1 <- t(meta_dat) \%>\%
   as.data.frame() \%>\%
   dplyr::mutate(group=group)
 result_ML_RF <- ML_RF(meta_dat1)
+
 result_ML_RF$p
 result_ML_RF$feature_result
+
 }
