@@ -12,10 +12,10 @@
 #' @examples
 #' library(dplyr)
 #' database <- PathwayExtendData %>%
-#'       dplyr::filter(type=="metabolite") %>%
-#'       dplyr::select(name,kegg_pathwayname,kegg_category,type)
-#' kegg_id_need <- c("C05984","C02494")
-#' xgr_result <- xgr(kegg_id_need,database,p_cutoff=1.1,noverlap_cutoff=0)
+#'       dplyr::filter(type == "metabolite") %>%
+#'       dplyr::select(name, kegg_pathwayname, kegg_category, type)
+#' kegg_id_need <- c("C05984", "C02494")
+#' xgr_result <- xgr(kegg_id_need, database, p_cutoff = 1.1, noverlap_cutoff = 0)
 #' xgr_result$output
 #' xgr_result$gp
 xgr <- function(metabolites_keggid,
@@ -37,28 +37,28 @@ xgr <- function(metabolites_keggid,
   # output
   output <- eTerm %>%
     MNet::xEnrichViewer(details = TRUE, top_num = 100) %>%
-    dplyr::filter(nOverlap > noverlap_cutoff) %>%
-    dplyr::filter(pvalue < p_cutoff) %>%
+    dplyr::filter(.data$nOverlap > noverlap_cutoff) %>%
+    dplyr::filter(.data$pvalue < p_cutoff) %>%
     tibble::as_tibble()
   
   # plot
   #  gp <- XGR::xEnrichLadder(eTerm,top_num=nrow(output))
   
   dat <- output %>%
-    tidyr::separate_rows(members_Overlap, sep = ", ") %>%
+    tidyr::separate_rows(.data$members_Overlap, sep = ", ") %>%
     dplyr::left_join(database, by = c("members_Overlap" = "name")) %>%
-    dplyr::select(name, members_Overlap, type)
+    dplyr::select(.data$name, .data$members_Overlap, .data$type)
   
-  Data1 <- data.frame(Var1 = rep(unique(dat$members_Overlap), time = length(unique(dat$name))),
+  Data1 <- data.frame(Var1 = rep(unique(dat$members_Overlap), times = length(unique(dat$name))),
                       Var2 = rep(unique(dat$name), each = length(unique(
                         dat$members_Overlap
                       ))))
   
-  p1 <- ggplot(dat, aes(x = members_Overlap, y = name)) +
-    geom_point(aes(color = type)) +
+  p1 <- ggplot(dat, aes(x = .data$members_Overlap, y = .data$name)) +
+    geom_point(aes(color = .data$type)) +
     geom_tile(
       data = Data1,
-      aes(x = Var1, y = Var2),
+      aes(x = .data$Var1, y = .data$Var2),
       fill = NA,
       color = "black",
       size = 0.3

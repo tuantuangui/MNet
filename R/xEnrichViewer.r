@@ -26,6 +26,7 @@
 #'  \item{\code{members_Anno}: members (represented as Gene Symbols) in annotations; optional, it is only appended when "details" is true}
 #' }
 #' @note none
+#' @importFrom methods is
 #' @export
 #' @seealso \code{\link{xEnrichViewer}}
 #' @include xEnrichViewer.r
@@ -60,7 +61,7 @@ xEnrichViewer <- function(eTerm,
     return(NULL)
   }
   
-  if (is(eTerm, "data.frame")) {
+  if (methods::is(eTerm, "data.frame")) {
     warnings("The function apply to a 'data.frame' object.\n")
     
     if (is.null(top_num)) {
@@ -73,7 +74,7 @@ xEnrichViewer <- function(eTerm,
     
     tab <- eTerm
     
-  } else if (is(eTerm, "eTerm")) {
+  } else if (methods::is(eTerm, "eTerm")) {
     if (is.null(top_num)) {
       top_num <- length(eTerm$term_info$id)
     }

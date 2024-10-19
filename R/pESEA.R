@@ -12,6 +12,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select filter arrange distinct mutate rename pull summarise group_by left_join inner_join cross_join
 #' @importFrom fgsea fgsea calcGseaStat
+#' @importFrom stats na.omit
 #' @importFrom cowplot plot_grid
 #' @import ggplot2
 #' @export
@@ -44,12 +45,12 @@ pESEA <- function(pathway_name,
   )
   
   pval <- fgseaRes_all %>%
-    dplyr::filter(pathway == pathway_name) %>%
-    dplyr::pull(pval) %>%
+    dplyr::filter(.data$pathway == pathway_name) %>%
+    dplyr::pull(.data$pval) %>%
     round(3)
   nes <- fgseaRes_all %>%
-    dplyr::filter(pathway == pathway_name) %>%
-    dplyr::pull(NES) %>%
+    dplyr::filter(.data$pathway == pathway_name) %>%
+    dplyr::pull(.data$NES) %>%
     round(3)
   
   pathway <- Pathways[[pathway_name]]
@@ -60,7 +61,7 @@ pESEA <- function(pathway_name,
   statsAdj <- stats[ord]
   statsAdj <- sign(statsAdj) * (abs(statsAdj) ^ gseaParam)
   statsAdj <- statsAdj / max(abs(statsAdj))
-  pathway <- unname(as.vector(na.omit(match(
+  pathway <- unname(as.vector(stats::na.omit(match(
     pathway, names(statsAdj)
   ))))
   pathway <- sort(pathway)
@@ -77,7 +78,8 @@ pESEA <- function(pathway_name,
   x = y = NULL
   g1 <- ggplot2::ggplot(toPlot, aes(x = x, y = y)) +
     ggplot2::geom_point(color = "green", size = 0.1) +
-    ggplot2::geom_hline(yintercept = 0, colour = "gray") + geom_line(color = "green") +
+    ggplot2::geom_hline(yintercept = 0, colour = "gray") + 
+    geom_line(color = "green") +
     ggplot2::geom_line(color = "green") + theme_bw() +
     ggplot2::theme(
       panel.grid.minor = ggplot2::element_blank(),
@@ -115,7 +117,7 @@ pESEA <- function(pathway_name,
   
   dat <- data.frame(name = 1:length(statsAdj), value = statsAdj)
   
-  g3 <- ggplot2::ggplot(dat, aes(name, value)) +
+  g3 <- ggplot2::ggplot(dat, aes(.data$name, .data$value)) +
     ggplot2::geom_bar(stat = "identity", fill = "gray") +
     ggplot2::theme_bw() +
     ggplot2::theme(panel.grid = element_blank()) +

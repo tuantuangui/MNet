@@ -52,7 +52,10 @@ Suggests:
     bs4Dash,
     DT,
     colourpicker,
-    shinyWidgets
+    shinyWidgets,
+    data.table,
+    clusterProfiler,
+    org.Hs.eg.db
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 biocViews: Metabolomics

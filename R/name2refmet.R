@@ -8,6 +8,7 @@
 #' @importFrom dplyr rename select mutate filter 
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils download.file
+#' @importFrom tidyselect everything
 #' @export
 #'
 #' @examples
@@ -252,10 +253,10 @@ name2refmet <- function(metabolites_name) {
       }
       
       if ("refmet_id" %in% names(aa)) {
-        aa <- aa %>% dplyr::select(-refmet_id)
+        aa <- aa %>% dplyr::select(-.data$refmet_id)
       }
       if ("refmet_id" %in% names(standardized_2)) {
-        standardized_2 <- standardized_2 %in% dplyr::select(-refmet_id)
+        standardized_2 <- standardized_2 %in% dplyr::select(-.data$refmet_id)
       }
       
       standardized_2 <- rbind(standardized_2, aa)
@@ -270,8 +271,8 @@ name2refmet <- function(metabolites_name) {
                                                                             "-"), "Input name"]
   
   result <- result %>%
-    dplyr::select(-class_index, -exactmass) %>%
-    dplyr::select(`Input name`, everything()) %>%
+    dplyr::select(-.data$class_index, -.data$exactmass) %>%
+    dplyr::select(.data$`Input name`, everything()) %>%
     dplyr::rename("Input_name" = "Input name") %>%
     dplyr::rename("Refmet_name" = "refmet_name") %>%
     dplyr::rename("Formula" = "formula") %>%

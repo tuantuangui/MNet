@@ -6,6 +6,7 @@
 #' 
 #' @return a data frame
 #' 
+#' @importFrom stats median
 #' @importFrom Hmisc impute
 #' @importFrom DMwR2 knnImputation
 #' @export
@@ -23,7 +24,7 @@ meta_impute <- function(object, method, k = k) {
     })
   } else if (method == "median") {
     result <- apply(object, 2, function(x) {
-      Hmisc::impute(x, base::median)
+      Hmisc::impute(x, stats::median)
     })
   } else if (method == "knn") {
     result <- DMwR2::knnImputation(object, k = k, meth = "median")

@@ -31,72 +31,75 @@ pNetCor <- function(dat_meta,
   names(a2) = c("type", "name")
   
   metabolic_gene <- rbind(a1, a2) %>%
-    dplyr::filter(type == "gene") %>%
-    dplyr::pull(name) %>%
+    dplyr::filter(.data$type == "gene") %>%
+    dplyr::pull(.data$name) %>%
     unique()
   
   meta_dat1 <- dat_meta %>%
     dplyr::mutate(type = "metabolite")
   gene_dat1 <- dat_gene %>%
     tibble::rownames_to_column(var = "name") %>%
-    dplyr::filter(name %in% metabolic_gene) %>%
+    dplyr::filter(.data$name %in% metabolic_gene) %>%
     tibble::column_to_rownames("name") %>%
     dplyr::mutate(type = "gene")
+  
   gene_name <- rownames(gene_dat1)
   metabolite_name <- rownames(meta_dat1)
   
   dat_all <- rbind(meta_dat1, gene_dat1) %>%
-    dplyr::select(-type) %>%
+    dplyr::select(-.data$type) %>%
     t()
   
   print("Starting correlation calculation")
   print("If the data is large, it will take some minutes")
+  
   dd <- Hmisc::rcorr(dat_all, type = cor_method)
+  
   result_cor <- dd$r
   result_cor_melt <- reshape2::melt(result_cor) %>%
-    dplyr::mutate(Var1 = as.character(Var1)) %>%
-    dplyr::mutate(Var2 = as.character(Var2)) %>%
-    dplyr::filter(abs(value) > cor_threshold) %>%
-    dplyr::filter(Var1 != Var2) %>%
-    dplyr::mutate(name1 = ifelse(Var1 > Var2, Var1, Var2)) %>%
-    dplyr::mutate(name2 = ifelse(Var1 > Var2, Var2, Var1)) %>%
-    dplyr::select(name1, name2, value) %>%
+    dplyr::mutate(Var1 = as.character(.data$Var1)) %>%
+    dplyr::mutate(Var2 = as.character(.data$Var2)) %>%
+    dplyr::filter(abs(.data$value) > cor_threshold) %>%
+    dplyr::filter(.data$Var1 != .data$Var2) %>%
+    dplyr::mutate(name1 = ifelse(.data$Var1 > .data$Var2, .data$Var1, .data$Var2)) %>%
+    dplyr::mutate(name2 = ifelse(.data$Var1 > .data$Var2, .data$Var2, .data$Var1)) %>%
+    dplyr::select(.data$name1, .data$name2, .data$value) %>%
     dplyr::rename("cor_result" = "value") %>%
     unique()
   
   result_p <- dd$P
   result_p_melt <- reshape2::melt(result_p) %>%
-    dplyr::mutate(Var1 = as.character(Var1)) %>%
-    dplyr::mutate(Var2 = as.character(Var2)) %>%
-    dplyr::filter(value < p_threshold) %>%
-    dplyr::mutate(name1 = ifelse(Var1 > Var2, Var1, Var2)) %>%
-    dplyr::mutate(name2 = ifelse(Var1 > Var2, Var2, Var1)) %>%
-    dplyr::select(name1, name2, value) %>%
+    dplyr::mutate(Var1 = as.character(.data$Var1)) %>%
+    dplyr::mutate(Var2 = as.character(.data$Var2)) %>%
+    dplyr::filter(.data$value < p_threshold) %>%
+    dplyr::mutate(name1 = ifelse(.data$Var1 > .data$Var2, .data$Var1, .data$Var2)) %>%
+    dplyr::mutate(name2 = ifelse(.data$Var1 > .data$Var2, .data$Var2, .data$Var1)) %>%
+    dplyr::select(.data$name1, .data$name2, .data$value) %>%
     dplyr::rename("p" = "value") %>%
     unique()
   
   result <- result_cor_melt %>%
     dplyr::inner_join(result_p_melt, by = c("name1", "name2")) %>%
     dplyr::mutate(type1 = ifelse(
-      name1 %in% gene_name,
+      .data$name1 %in% gene_name,
       "gene",
-      ifelse(name1 %in% metabolite_name, "metabolite", "other")
+      ifelse(.data$name1 %in% metabolite_name, "metabolite", "other")
     )) %>%
     dplyr::mutate(type2 = ifelse(
-      name2 %in% gene_name,
+      .data$name2 %in% gene_name,
       "gene",
-      ifelse(name2 %in% metabolite_name, "metabolite", "other")
+      ifelse(.data$name2 %in% metabolite_name, "metabolite", "other")
     ))
   
-  
   relation <- result %>%
-    dplyr::select(name1, name2)
+    dplyr::select(.data$name1, .data$name2)
   
   node1 <- result %>%
-    dplyr::select(name1, type1) %>%
+    dplyr::select(.data$name1, .data$type1) %>%
     dplyr::rename("name" = "name1", "type" = "type1")
+  
   node2 <- result %>%
-    dplyr::select(name2, type2) %>%
+    dplyr::select(.data$name2, .data$type2) %>%
     dplyr::rename("name" = "name2", "type" = "type2")
   
   nodes <- rbind(node1, node2) %>%
@@ -112,11 +115,11 @@ pNetCor <- function(dat_meta,
     dplyr::left_join(nodes, by = "name")
   
   name_meta <- name %>%
-    dplyr::filter(type == "metabolite") %>%
+    dplyr::filter(.data$type == "metabolite") %>%
     dplyr::mutate(colors = "blue")
   
   name_gene <- name %>%
-    dplyr::filter(type == "gene") %>%
+    dplyr::filter(.data$type == "gene") %>%
     dplyr::mutate(colors = "red")
   
   name_all <- rbind(name_meta, name_gene)
@@ -138,6 +141,7 @@ pNetCor <- function(dat_meta,
     vertex.size = 9,
     vertex.label.cex = 0.5
   )
+  
   h <- list(result = result, p = p)
   return(h)
 }

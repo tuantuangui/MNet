@@ -33,6 +33,7 @@
 #'  \item{\code{call}: the call that produced this result}
 #' }
 #' @note None
+#' @importFrom methods is
 #' @export
 #' @seealso \code{\link{xEnricher}}
 #' @include xEnricherYours.r
@@ -131,7 +132,7 @@ xEnricherYours <- function(data.file,
     data <- unique(data.file[, 1])
   } else if (!is.null(data.file) & any(!is.na(data.file))) {
     if (length(data.file) == 1) {
-      if (is(suppressWarnings(try(data <- utils::read.delim(
+      if (methods::is(suppressWarnings(try(data <- utils::read.delim(
         file = data.file,
         header = F,
         row.names = NULL,

@@ -18,17 +18,17 @@
 #' names(diff_meta)[4]  <- "p_value"
 #' diff_metabolite <- diff_meta %>%
 #'   dplyr::filter(adj.P.Val < 0.01) %>%
-#'   dplyr::filter(abs(logFC)>1)
+#'   dplyr::filter(abs(logFC) > 1)
 #'   
 #' names(diff_gene)[4] <- "p_value"
 #' diff_gene1 <- diff_gene %>%
 #'   dplyr::filter(adj.P.Val < 0.01) %>%
-#'   dplyr::filter(abs(logFC)>1)
+#'   dplyr::filter(abs(logFC) > 1)
 #'   
-#' res <- pdnet(diff_meta,diff_gene,nsize=100)
+#' res <- pdnet(diff_meta, diff_gene, nsize = 100)
 #' res
 #' 
-#' res <- pdnet(diff_metabolite[,8],diff_gene1[1:500,8])
+#' res <- pdnet(diff_metabolite[, 8], diff_gene1[1:500, 8])
 #' res
 #'
 
@@ -38,11 +38,11 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
     as.data.frame() %>%
     unique()
   gene_metabolite_filter1 <- gene_metabolite_1 %>%
-    dplyr::filter(keggId %in% diff_metabolite$name) %>%
-    dplyr::filter(gene %in% diff_metabolite$name)
+    dplyr::filter(.data$keggId %in% diff_metabolite$name) %>%
+    dplyr::filter(.data$gene %in% diff_metabolite$name)
   gene_metabolite_filter2 <- gene_metabolite_1 %>%
-    dplyr::filter(keggId %in% diff_metabolite$name) %>%
-    dplyr::filter(gene %in% diff_gene$name)
+    dplyr::filter(.data$keggId %in% diff_metabolite$name) %>%
+    dplyr::filter(.data$gene %in% diff_gene$name)
   
   gene_metabolite_filter <- rbind(gene_metabolite_filter1, gene_metabolite_filter2)
   
@@ -51,7 +51,7 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
   names(name_2) <- names(name_1)
   name_all <- rbind(name_1, name_2) %>%
     unique() %>%
-    dplyr::rename(type = src_type, name = keggId)
+    dplyr::rename(type = .data$src_type, name = keggId)
   
   diff_info <- rbind(diff_metabolite, diff_gene)
   
@@ -65,7 +65,7 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
                                              vertices = nodes,
                                              directed = F)
     
-    p <- diff_info %>% dplyr::pull(p_value)
+    p <- diff_info %>% dplyr::pull(.data$p_value)
     names(p) <- diff_info %>% dplyr::pull(name)
     
     g <- dnet::dNetPipeline(network, pval = p, nsize = nsize)
@@ -78,10 +78,10 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
     
     if ("logFC" %in% names(diff_info)) {
       name <- name %>%
-        dplyr::mutate(logFC = round(logFC, 2))
+        dplyr::mutate(logFC = round(.data$logFC, 2))
       
       name_meta <- name %>%
-        dplyr::filter(type == "metabolite")
+        dplyr::filter(.data$type == "metabolite")
       meta_limits = as.numeric(sprintf("%.1f", max(max(
         name_meta$logFC
       ), abs(
@@ -97,7 +97,7 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
       name_meta$colors <- meta_color
       
       name_gene <- name %>%
-        dplyr::filter(type == "gene")
+        dplyr::filter(.data$type == "gene")
       gene_limits = as.numeric(sprintf("%.1f", max(max(
         name_gene$logFC
       ), abs(
@@ -108,18 +108,18 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
       name_gene$colors <- gene_color
     } else {
       name_meta <- name %>%
-        dplyr::filter(type == "metabolite") %>%
+        dplyr::filter(.data$type == "metabolite") %>%
         dplyr::mutate(colors = "blue")
       
       name_gene <- name %>%
-        dplyr::filter(type == "gene") %>%
+        dplyr::filter(.data$type == "gene") %>%
         dplyr::mutate(colors = "red")
     }
     name_all <- rbind(name_meta, name_gene)
     name <- name %>%
       dplyr::left_join(name_all, by = "name") %>%
-      dplyr::select(name, colors, type.x) %>%
-      dplyr::rename(type = type.x)
+      dplyr::select(name, .data$colors, .data$type.x) %>%
+      dplyr::rename(type = .data$type.x)
     
     shape1 = c("square", "circle")
     my_shape <- shape1[as.numeric(as.factor(name$type))]
@@ -164,8 +164,8 @@ pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
   } else {
     nodes <- name_all %>%
       dplyr::select(name, type) %>%
-      dplyr::mutate(color = ifelse(type == "metabolite", "red", "blue")) %>%
-      dplyr::mutate(shape1 = ifelse(type == "metabolite", "circle", "square"))
+      dplyr::mutate(color = ifelse(.data$type == "metabolite", "red", "blue")) %>%
+      dplyr::mutate(shape1 = ifelse(.data$type == "metabolite", "circle", "square"))
     
     relation <- gene_metabolite_filter %>%
       dplyr::select(keggId, gene)

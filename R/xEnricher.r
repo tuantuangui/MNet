@@ -48,6 +48,7 @@
 #' }
 #' @export
 #' @import igraph
+#' @importFrom methods is
 #' @seealso \code{\link{xDAGanno}}
 #' @include xEnricher.r
 #' @examples
@@ -125,11 +126,11 @@ xEnricher <- function(data,
     return(NULL)
   }
   
-  if (is(annotation, "GS")) {
+  if (methods::is(annotation, "GS")) {
     originAnnos <- annotation$gs
-  } else if (is(annotation, "list")) {
+  } else if (methods::is(annotation, "list")) {
     originAnnos <- annotation
-  } else if (is(annotation, "dgCMatrix")) {
+  } else if (methods::is(annotation, "dgCMatrix")) {
     D <- annotation
     originAnnos <- sapply(1:ncol(D), function(j) {
       names(which(D[, j] != 0))
@@ -142,7 +143,7 @@ xEnricher <- function(data,
   annotation <- originAnnos
   
   ig <- g
-  if (!is(ig, "igraph")) {
+  if (!methods::is(ig, "igraph")) {
     warnings("The function must apply to the 'igraph' object.\n")
     return(NULL)
   } else{

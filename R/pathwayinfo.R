@@ -19,13 +19,13 @@ pathwayinfo <- function(pathwayid) {
   GENE <- V2 <- tt <- A <- enzyme <- pathid <- pathname <- NULL
   
   dat <- PathwayExtendData %>%
-    dplyr::filter(kegg_pathwayname == pathwayid |
-                    kegg_pathwayid == pathwayid)
+    dplyr::filter(.data$kegg_pathwayname == pathwayid |
+                    .data$kegg_pathwayid == pathwayid)
   
   gene_info <- dat %>%
-    dplyr::filter(type == "gene")
+    dplyr::filter(.data$type == "gene")
   compound_info <- dat %>%
-    dplyr::filter(type == "metabolite")
+    dplyr::filter(.data$type == "metabolite")
   
   result <- list(gene_info = gene_info, compound_info = compound_info)
   return(result)

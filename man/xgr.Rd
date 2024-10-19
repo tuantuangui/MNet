@@ -32,10 +32,10 @@ pathway analysis and visualization
 \examples{
 library(dplyr)
 database <- PathwayExtendData \%>\%
-      dplyr::filter(type=="metabolite") \%>\%
-      dplyr::select(name,kegg_pathwayname,kegg_category,type)
-kegg_id_need <- c("C05984","C02494")
-xgr_result <- xgr(kegg_id_need,database,p_cutoff=1.1,noverlap_cutoff=0)
+      dplyr::filter(type == "metabolite") \%>\%
+      dplyr::select(name, kegg_pathwayname, kegg_category, type)
+kegg_id_need <- c("C05984", "C02494")
+xgr_result <- xgr(kegg_id_need, database, p_cutoff = 1.1, noverlap_cutoff = 0)
 xgr_result$output
 xgr_result$gp
 }

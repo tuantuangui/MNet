@@ -22,7 +22,7 @@
 #'
 name2pathway <- function(name) {
   Kegg_id <- kegg_id <- Pathway_category <- pathway_type <- NAME <- ENTRY <- NULL
-
+  
   name_kegg_temp <- name2keggid(name) %>%
     dplyr::distinct(Name, .keep_all = TRUE)
   

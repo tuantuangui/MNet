@@ -11,7 +11,7 @@
 #' @return Calculate the differential abundance (DA) score and visualization of the DA score
 #' 
 #' @importFrom magrittr %>%
-#' @importFrom utils data
+#' @importFrom utils data globalVariables
 #' @importFrom dplyr filter pull left_join select arrange rename
 #' @importFrom tibble as_tibble
 #' @import ggplot2

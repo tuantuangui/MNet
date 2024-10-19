@@ -7,15 +7,15 @@ xDAGanno <- function(g,
   path.mode <- match.arg(path.mode)
   
   ig <- g
-  if (!is(ig, "igraph")) {
+  if (!methods::is(ig, "igraph")) {
     stop("The function must apply to the 'igraph' object.\n")
   }
   
-  if (is(annotation, "GS")) {
+  if (methods::is(annotation, "GS")) {
     originAnnos <- annotation$gs
-  } else if (is(annotation, "list")) {
+  } else if (methods::is(annotation, "list")) {
     originAnnos <- annotation
-  } else if (is(annotation, "dgCMatrix")) {
+  } else if (methods::is(annotation, "dgCMatrix")) {
     D <- annotation
     originAnnos <- sapply(1:ncol(D), function(j) {
       names(which(D[, j] != 0))
