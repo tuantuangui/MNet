@@ -2,6 +2,10 @@
 #'
 #' @param object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples
 #' @param group the sample's group information
+#' @param tumor_color the color of the tumor group
+#' @param normal_color the color of the normal group
+#' @param shape_size the size of the point shape
+#' @param ysize the size of the y-axis text
 #'
 #' @return Visualization of the z-score plot
 #' 

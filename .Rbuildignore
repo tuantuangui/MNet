@@ -1,2 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+
+^pkgdown$
+^_pkgdown\.yml$
+^docs$
+
+^logo.png$
+^LICENSE\.md$

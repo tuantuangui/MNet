@@ -10,6 +10,8 @@ meta_impute(object, method, k = k)
 \item{object}{object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples}
 
 \item{method}{the method used for imputed data, default is min_0.1. You can choose "mean","median","min","knn"}
+
+\item{k}{the k value for knn imputation}
 }
 \value{
 a data frame

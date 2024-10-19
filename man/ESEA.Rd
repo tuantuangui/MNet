@@ -17,6 +17,8 @@ ESEA(
 
 \item{minSize}{Minimal size of a compound and(or) gene set to test. All pathways below the threshold are excluded.}
 
+\item{nPermSimple}{nPermSimple is the number of permutations used to estimate the significance of the enrichment score. The default value is 20000.}
+
 \item{gseaParam}{GSEA parameter value, all compound-level and(or) gene-level stats are raised to the power of 'gseaParam' before calculation of GSEA enrichment scores.}
 
 \item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"}

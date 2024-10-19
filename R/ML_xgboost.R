@@ -33,7 +33,7 @@ ML_xgboost <- function(object) {
   #  train_x = as.data.frame(lapply(train[, -which(colnames(object)=="group")],as.numeric)) %>%
   #    as.matrix()
   train_x <- train %>%
-    dplyr::select(-group) %>%
+    dplyr::select(-.data$group) %>%
     dplyr::mutate(dplyr::across(
       tidyselect::vars_select_helpers$where(is.character),
       as.numeric
@@ -51,7 +51,7 @@ ML_xgboost <- function(object) {
   #    as.matrix()
   
   test_x <- test %>%
-    dplyr::select(-group) %>%
+    dplyr::select(-.data$group) %>%
     dplyr::mutate(dplyr::across(
       tidyselect::vars_select_helpers$where(is.character),
       as.numeric

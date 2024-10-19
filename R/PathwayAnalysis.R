@@ -34,7 +34,7 @@ PathwayAnalysis <- function(name,
                             test = c("hypergeo", "fisher", "binomial")) {
   if (out == "Extended") {
     PathwayExtendData <- PathwayExtendData %>%
-      dplyr::select(name, kegg_pathwayname, kegg_category, type)
+      dplyr::select(.data$name, .data$kegg_pathwayname, .data$kegg_category, .data$type)
     result <- xgr(
       name,
       PathwayExtendData,
@@ -44,8 +44,8 @@ PathwayAnalysis <- function(name,
     )
   } else if (out == "gene") {
     PathwayExtendData <- PathwayExtendData %>%
-      dplyr::filter(type == "gene") %>%
-      dplyr::select(name, kegg_pathwayname, kegg_category, type)
+      dplyr::filter(.data$type == "gene") %>%
+      dplyr::select(.data$name, .data$kegg_pathwayname, .data$kegg_category, .data$type)
     result <- xgr(
       name,
       PathwayExtendData,
@@ -55,8 +55,8 @@ PathwayAnalysis <- function(name,
     )
   } else if (out == "metabolite") {
     PathwayExtendData <- PathwayExtendData %>%
-      dplyr::filter(type == "metabolite") %>%
-      dplyr::select(name, kegg_pathwayname, kegg_category, type)
+      dplyr::filter(.data$type == "metabolite") %>%
+      dplyr::select(.data$name, .data$kegg_pathwayname, .data$kegg_category, .data$type)
     result <- xgr(
       name,
       PathwayExtendData,
@@ -69,83 +69,83 @@ PathwayAnalysis <- function(name,
   result_temp <- result$output
   
   kegg_a <- all_kegg_id %>%
-    dplyr::filter(source == "KEGG") %>%
-    tidyr::separate_rows(ENTRY) %>%
-    dplyr::arrange(ENTRY) %>%
-    dplyr::distinct(ENTRY, .keep_all = TRUE)
+    dplyr::filter(.data$source == "KEGG") %>%
+    tidyr::separate_rows(.data$ENTRY) %>%
+    dplyr::arrange(.data$ENTRY) %>%
+    dplyr::distinct(.data$ENTRY, .keep_all = TRUE)
   
   result_final <- result_temp %>%
-    dplyr::mutate(members_Overlap_keggid = members_Overlap) %>%
-    dplyr::mutate(members_Anno_keggid = members_Anno) %>%
-    tidyr::separate_rows(members_Overlap, sep = ", ") %>%
+    dplyr::mutate(members_Overlap_keggid = .data$members_Overlap) %>%
+    dplyr::mutate(members_Anno_keggid = .data$members_Anno) %>%
+    tidyr::separate_rows(.data$members_Overlap, sep = ", ") %>%
     dplyr::left_join(kegg_a, by = c("members_Overlap" = "ENTRY")) %>%
-    dplyr::mutate(NAME = ifelse(is.na(NAME), members_Overlap, NAME)) %>%
-    dplyr::select(-source) %>%
+    dplyr::mutate(NAME = ifelse(is.na(.data$NAME), .data$members_Overlap, .data$NAME)) %>%
+    dplyr::select(-.data$source) %>%
     dplyr::group_by(
-      name,
-      nAnno,
-      nOverlap,
-      fc,
-      zscore,
-      pvalue,
-      adjp,
-      or,
-      CIl,
-      CIu,
-      distance,
-      namespace,
-      members_Anno,
-      members_Overlap_keggid,
-      members_Anno_keggid
+      .data$name,
+      .data$nAnno,
+      .data$nOverlap,
+      .data$fc,
+      .data$zscore,
+      .data$pvalue,
+      .data$adjp,
+      .data$or,
+      .data$CIl,
+      .data$CIu,
+      .data$distance,
+      .data$namespace,
+      .data$members_Anno,
+      .data$members_Overlap_keggid,
+      .data$members_Anno_keggid
     ) %>%
-    dplyr::summarise(members_Overlap = paste(NAME, collapse = ", ")) %>%
-    tidyr::separate_rows(members_Anno, sep = ", ") %>%
+    dplyr::summarise(members_Overlap = paste(.data$NAME, collapse = ", ")) %>%
+    tidyr::separate_rows(.data$members_Anno, sep = ", ") %>%
     dplyr::left_join(kegg_a, by = c("members_Anno" = "ENTRY")) %>%
-    dplyr::mutate(NAME = ifelse(is.na(NAME), members_Anno, NAME)) %>%
-    dplyr::select(-source) %>%
+    dplyr::mutate(NAME = ifelse(is.na(.data$NAME), .data$members_Anno, .data$NAME)) %>%
+    dplyr::select(-.data$source) %>%
     dplyr::group_by(
-      name,
-      nAnno,
-      nOverlap,
-      fc,
-      zscore,
-      pvalue,
-      adjp,
-      or,
-      CIl,
-      CIu,
-      distance,
-      namespace,
-      members_Overlap,
-      members_Overlap_keggid,
-      members_Anno_keggid
+      .data$name,
+      .data$nAnno,
+      .data$nOverlap,
+      .data$fc,
+      .data$zscore,
+      .data$pvalue,
+      .data$adjp,
+      .data$or,
+      .data$CIl,
+      .data$CIu,
+      .data$distance,
+      .data$namespace,
+      .data$members_Overlap,
+      .data$members_Overlap_keggid,
+      .data$members_Anno_keggid
     ) %>%
-    dplyr::summarise(members_Anno = paste(NAME, collapse = ", "))
+    dplyr::summarise(members_Anno = paste(.data$NAME, collapse = ", "))
   
   result$output <- result_final
   
   kegg_pathway_uniq <- PathwayExtendData %>%
-    dplyr::select(kegg_pathwayname, kegg_category) %>%
+    dplyr::select(.data$kegg_pathwayname, .data$kegg_category) %>%
     dplyr::rename("PATHWAY" = "kegg_pathwayname") %>%
     dplyr::rename("pathway_type" = "kegg_category") %>%
     unique()
   
   result_1 <- result$output %>%
-    dplyr::filter(pvalue < p_cutoff) %>%
+    dplyr::filter(.data$pvalue < p_cutoff) %>%
     dplyr::left_join(kegg_pathway_uniq, by = c("name" = "PATHWAY")) %>%
-    dplyr::arrange(pvalue)
+    dplyr::arrange(.data$pvalue)
   
   pathway_hh <- unique(result_1$pathway_type)
   
   result_1 <- result_1 %>%
-    dplyr::arrange(match(pathway_type, pathway_hh))
+    dplyr::arrange(match(.data$pathway_type, pathway_hh))
   
   result_1$name <- factor(result_1$name, levels = rev(result_1$name))
   result_1$pathway_type <- factor(result_1$pathway_type,
                                   levels = unique(kegg_pathway_uniq$pathway_type))
   
-  p1 <- ggplot(result_1, aes(name, -log10(pvalue))) +
-    geom_bar(stat = "identity", aes(fill = pathway_type)) +
+  p1 <- ggplot(result_1, aes(.data$name, -log10(.data$pvalue))) +
+    geom_bar(stat = "identity", aes(fill = .data$pathway_type)) +
     scale_fill_manual(
       values = RColorBrewer::brewer.pal(11, "Set3"),
       name = "Pathway Category",

@@ -1,6 +1,6 @@
 #' @title The cox analysis about the metabolites
 #'
-#' @param object A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status
+#' @param dat A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status
 #'
 #' @return result
 #' 

@@ -2,7 +2,8 @@
 #'
 #' @param object object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples
 #' @param method the method used for imputed data, default is min_0.1. You can choose "mean","median","min","knn"
-#'
+#' @param k the k value for knn imputation
+#' 
 #' @return a data frame
 #' 
 #' @importFrom Hmisc impute
@@ -22,7 +23,7 @@ meta_impute <- function(object, method, k = k) {
     })
   } else if (method == "median") {
     result <- apply(object, 2, function(x) {
-      Hmisc::impute(x, median)
+      Hmisc::impute(x, base::median)
     })
   } else if (method == "knn") {
     result <- DMwR2::knnImputation(object, k = k, meth = "median")

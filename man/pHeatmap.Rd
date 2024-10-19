@@ -27,6 +27,10 @@ pHeatmap(
 \item{clustering_method}{the method for cluster,default is complete}
 
 \item{clustering_distance_cols}{the distance for cluster,default is correlation}
+
+\item{tumor_color}{the color for tumor, default is "#d53e4f"}
+
+\item{normal_color}{the color for normal, default is "#7FC8A9"}
 }
 \value{
 Heatmap
@@ -46,8 +50,12 @@ diff_result_filter <- diff_result \%>\%
   dplyr::filter(vip>0.8)
 meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$name,]
 
-p_heatmap <- pHeatmap(meta_dat_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="ward.D",clustering_distance_cols="correlation")
+p_heatmap <- pHeatmap(meta_dat_diff,
+  group,
+  fontsize_row=5,
+  fontsize_col=4,
+  clustering_method="ward.D",
+  clustering_distance_cols="correlation")
 }
-p_heatmap
 
 }

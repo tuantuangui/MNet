@@ -1,6 +1,7 @@
 #' @title The clinical's time series analysis
 #'
 #' @param clinical the clinical marker of different time, and need included "time","group",maker; "high"and "low" are alternative.
+#' @param marker the marker of clinical, default is 'marker'
 #'
 #' @return Figure
 #' 

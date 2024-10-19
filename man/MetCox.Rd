@@ -7,7 +7,7 @@
 MetCox(dat)
 }
 \arguments{
-\item{object}{A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status}
+\item{dat}{A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status}
 }
 \value{
 result

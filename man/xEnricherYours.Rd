@@ -102,8 +102,10 @@ print(bp)
 RData.location <- "http://galahad.well.ox.ac.uk/bigdata/"
 ImmunoBase <- xRDataLoader(RData.customised='ImmunoBase', RData.location=RData.location)
 ## get disease associated variants/SNPs
-variants_list <- lapply(ImmunoBase, function(x) cbind(SNP=names(x$variants), Disease=rep(x$disease,length(x$variants))))
-## extract annotations as a data frame: Variant Disease_Name 
+variants_list <- lapply(ImmunoBase, 
+  function(x) cbind(SNP=names(x$variants), 
+  Disease=rep(x$disease,length(x$variants))))
+## extract annotations as a data frame: Variant Disease_Name
 annotation.file <- do.call(rbind, variants_list)
 head(annotation.file)
 ## provide the input SNPs of interest

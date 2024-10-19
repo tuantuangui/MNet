@@ -17,6 +17,14 @@ pZscore(
 \item{object}{A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples}
 
 \item{group}{the sample's group information}
+
+\item{tumor_color}{the color of the tumor group}
+
+\item{normal_color}{the color of the normal group}
+
+\item{shape_size}{the size of the point shape}
+
+\item{ysize}{the size of the y-axis text}
 }
 \value{
 Visualization of the z-score plot

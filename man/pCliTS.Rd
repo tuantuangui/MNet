@@ -8,6 +8,8 @@ pCliTS(clinical, marker)
 }
 \arguments{
 \item{clinical}{the clinical marker of different time, and need included "time","group",maker; "high"and "low" are alternative.}
+
+\item{marker}{the marker of clinical, default is 'marker'}
 }
 \value{
 Figure

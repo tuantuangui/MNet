@@ -33,7 +33,7 @@ col.key <-
     if (size.by.graph == T) {
       xs = width / 80
       ys = height / 40
-    } else if (!missing(node.sizes)) {
+    } else if (!missing(node.size)) {
       xs = node.size[1] * 3 / bins
       ys = node.size[2]
     } else{

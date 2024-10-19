@@ -9,9 +9,9 @@
 #' @export
 #'
 #' @examples
-#' names(aml)[3] ="group"
-#' plot = survCli(aml)
-#' plot
+#' # names(aml)[3] ="group"
+#' # plot = survCli(aml)
+#' # plot
 #' 
 survCli <- function(clinical_survival) {
   #OS surv_object

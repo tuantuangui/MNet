@@ -16,8 +16,8 @@ Figure
 The survival analysis and visualization
 }
 \examples{
-names(aml)[3] ="group"
-plot = survCli(aml)
-plot
+# names(aml)[3] ="group"
+# plot = survCli(aml)
+# plot
 
 }

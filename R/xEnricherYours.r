@@ -13,7 +13,7 @@
 #' @param p.adjust.method the method used to adjust p-values. It can be one of "BH", "BY", "bonferroni", "holm", "hochberg" and "hommel". The first two methods "BH" (widely used) and "BY" control the false discovery rate (FDR: the expected proportion of false discoveries amongst the rejected hypotheses); the last four methods "bonferroni", "holm", "hochberg" and "hommel" are designed to give strong control of the family-wise error rate (FWER). Notes: FDR is a less stringent condition than FWER
 #' @param verbose logical to indicate whether the messages will be displayed in the screen. By default, it sets to false for no display
 #' @param silent logical to indicate whether the messages will be silent completely. By default, it sets to false. If true, verbose will be forced to be false
-#' @return 
+#' @return
 #' an object of class "eTerm", a list with following components:
 #' \itemize{
 #'  \item{\code{term_info}: a matrix of nTerm X 4 containing snp/gene set information, where nTerm is the number of terms, and the 4 columns are "id" (i.e. "Term ID"), "name" (i.e. "Term Name"), "namespace" and "distance"}
@@ -41,7 +41,7 @@
 #' # Load the library
 #' library(XGR)
 #' library(igraph)
-#' 
+#'
 #' # Enrichment analysis using your own data
 #' # a) provide your own data (eg InterPro domains and their annotations by GO terms)
 #' ## All InterPro domains
@@ -51,7 +51,7 @@
 #' data.file <- sample(data, 100)
 #' ## InterPro domains annotated by GO Molecular Function (GOMF) terms
 #' annotation.file <- "http://dcgor.r-forge.r-project.org/data/InterPro/Domain2GOMF.txt"
-#' 
+#'
 #' # b) perform enrichment analysis
 #' eTerm <- xEnricherYours(data.file=data.file, annotation.file=annotation.file)
 #'
@@ -61,18 +61,20 @@
 #' # d) save enrichment results to the file called 'Yours_enrichments.txt'
 #' output <- xEnrichViewer(eTerm, top_num=length(eTerm$adjp), sortBy="adjp", details=TRUE)
 #' utils::write.table(output, file="Yours_enrichments.txt", sep="\t", row.names=FALSE)
-#' 
+#'
 #' # e) barplot of significant enrichment results
 #' bp <- xEnrichBarplot(eTerm, top_num="auto", displayBy="adjp")
 #' print(bp)
-#' 
+#'
 #' # Using ImmunoBase SNPs and associations/annotations with disease traits
 #' ## get ImmunoBase
 #' RData.location <- "http://galahad.well.ox.ac.uk/bigdata/"
 #' ImmunoBase <- xRDataLoader(RData.customised='ImmunoBase', RData.location=RData.location)
 #' ## get disease associated variants/SNPs
-#' variants_list <- lapply(ImmunoBase, function(x) cbind(SNP=names(x$variants), Disease=rep(x$disease,length(x$variants))))
-#' ## extract annotations as a data frame: Variant Disease_Name 
+#' variants_list <- lapply(ImmunoBase, 
+#'   function(x) cbind(SNP=names(x$variants), 
+#'   Disease=rep(x$disease,length(x$variants))))
+#' ## extract annotations as a data frame: Variant Disease_Name
 #' annotation.file <- do.call(rbind, variants_list)
 #' head(annotation.file)
 #' ## provide the input SNPs of interest
@@ -88,127 +90,209 @@
 #' print(bp)
 #' }
 
-xEnricherYours <- function(data.file, annotation.file, background.file=NULL, size.range=c(10,2000), min.overlap=5, test=c("fisher","hypergeo","binomial"), background.annotatable.only=NULL, p.tail=c("one-tail","two-tails"), p.adjust.method=c("BH", "BY", "bonferroni", "holm", "hochberg", "hommel"), verbose=T, silent=FALSE)
+xEnricherYours <- function(data.file,
+                           annotation.file,
+                           background.file = NULL,
+                           size.range = c(10, 2000),
+                           min.overlap = 5,
+                           test = c("fisher", "hypergeo", "binomial"),
+                           background.annotatable.only = NULL,
+                           p.tail = c("one-tail", "two-tails"),
+                           p.adjust.method = c("BH", "BY", "bonferroni", "holm", "hochberg", "hommel"),
+                           verbose = T,
+                           silent = FALSE)
 {
-    startT <- Sys.time()
-    if(!silent){
-    	message(paste(c("Start at ",as.character(startT)), collapse=""), appendLF=TRUE)
-    	message("", appendLF=TRUE)
-    }else{
-    	verbose <- FALSE
+  startT <- Sys.time()
+  if (!silent) {
+    message(paste(c("Start at ", as.character(startT)), collapse = ""), appendLF =
+              TRUE)
+    message("", appendLF = TRUE)
+  } else{
+    verbose <- FALSE
+  }
+  
+  ####################################################################################
+  
+  ## match.arg matches arg against a table of candidate values as specified by choices, where NULL means to take the first one
+  test <- match.arg(test)
+  p.tail <- match.arg(p.tail)
+  p.adjust.method <- match.arg(p.adjust.method)
+  p.tail <- match.arg(p.tail)
+  
+  ############
+  if (length(data.file) == 0) {
+    return(NULL)
+  }
+  ############
+  
+  ###################
+  ## import data file
+  if (is.matrix(data.file) | is.data.frame(data.file)) {
+    data <- unique(data.file[, 1])
+  } else if (!is.null(data.file) & any(!is.na(data.file))) {
+    if (length(data.file) == 1) {
+      if (is(suppressWarnings(try(data <- utils::read.delim(
+        file = data.file,
+        header = F,
+        row.names = NULL,
+        stringsAsFactors = F
+      ),
+      TRUE)
+      ), "try-error")) {
+        data <- data.file
+      } else{
+        data <- unique(data[, 1])
+      }
+      
+      #data <- utils::read.delim(file=data.file, header=F, row.names=NULL, stringsAsFactors=F)
+      #data <- unique(data[,1])
+    } else{
+      data <- data.file
     }
-    
-    ####################################################################################
-    
-    ## match.arg matches arg against a table of candidate values as specified by choices, where NULL means to take the first one
-    test <- match.arg(test)
-    p.tail <- match.arg(p.tail)
-    p.adjust.method <- match.arg(p.adjust.method)
-    p.tail <- match.arg(p.tail)
-    
-    ############
-    if(length(data.file)==0){
-    	return(NULL)
+  } else{
+    stop("The file 'data.file' must be provided!\n")
+  }
+  
+  ## define background information
+  if (is.matrix(background.file) |
+      is.data.frame(background.file)) {
+    background <- unique(background.file[, 1])
+  } else if (!is.null(background.file)) {
+    if (length(background.file) == 1) {
+      background <- utils::read.delim(
+        file = background.file,
+        header = F,
+        row.names = NULL,
+        stringsAsFactors = F
+      )
+      background <- unique(background[, 1])
+    } else{
+      background <- background.file
     }
-    ############
-    
-    ###################
-    ## import data file
-    if(is.matrix(data.file) | is.data.frame(data.file)){
-        data <- unique(data.file[,1])
-    }else if(!is.null(data.file) & any(!is.na(data.file))){
-    	if(length(data.file)==1){
-    	
-        	if(is(suppressWarnings(try(data <- utils::read.delim(file=data.file, header=F, row.names=NULL, stringsAsFactors=F), TRUE)),"try-error")){
-        		data <- data.file
-        	}else{
-        		data <- unique(data[,1])
-        	}
-    	
-			#data <- utils::read.delim(file=data.file, header=F, row.names=NULL, stringsAsFactors=F)
-			#data <- unique(data[,1])
-		}else{
-			data <- data.file
-		}
-    }else{
-    	stop("The file 'data.file' must be provided!\n")
+  } else{
+    background <- background.file
+  }
+  
+  ## import annotation file
+  if (is.matrix(annotation.file) |
+      is.data.frame(annotation.file)) {
+    input <- cbind(annotation.file[, 1], annotation.file[, 2])
+  } else if (!is.null(annotation.file) &
+             any(!is.na(annotation.file))) {
+    input <- utils::read.delim(
+      file = annotation.file,
+      header = F,
+      row.names = NULL,
+      stringsAsFactors = F
+    )
+  } else{
+    stop("The file 'annotation.file' must be provided!\n")
+  }
+  
+  #######################################
+  ## not needed any more
+  if (0) {
+    ###################################
+    # only works when "background.file" is not NULL and "background.annotatable.only" is false
+    if (background.annotatable.only == FALSE) {
+      if (!is.null(background.file)) {
+        tmp <- cbind(background.file, rep('BG', length(background.file)))
+        input <- rbind(input, tmp)
+      }
     }
-    
-	## define background information
-    if(is.matrix(background.file) | is.data.frame(background.file)){
-        background <- unique(background.file[,1])
-    }else if(!is.null(background.file)){
-    
-    	if(length(background.file)==1){
-			background <- utils::read.delim(file=background.file, header=F, row.names=NULL, stringsAsFactors=F)
-			background <- unique(background[,1])
-		}else{
-			background <- background.file
-		}
-    }else{
-    	background <- background.file
-    }
-    
-    ## import annotation file
-    if(is.matrix(annotation.file) | is.data.frame(annotation.file)){
-        input <- cbind(annotation.file[,1], annotation.file[,2])
-    }else if(!is.null(annotation.file) & any(!is.na(annotation.file))){
-		input <- utils::read.delim(file=annotation.file, header=F, row.names=NULL, stringsAsFactors=F)
-    }else{
-    	stop("The file 'annotation.file' must be provided!\n")
-    }
-    
-    #######################################
-    ## not needed any more
-    if(0){
-		###################################
-		# only works when "background.file" is not NULL and "background.annotatable.only" is false
-		if(background.annotatable.only==FALSE){
-			if(!is.null(background.file)){
-				tmp <- cbind(background.file, rep('BG',length(background.file)))
-				input <- rbind(input, tmp)
-			}
-		}
-		###################################
-    }
-    #######################################
-    ## define annotation information
-	anno <- split(x=input[,1], f=input[,2])
-    
-	## define ontology information (artificially)
-	terms <- names(anno)
-	nodes <- data.frame(name=terms, term_id=terms, term_name=terms, term_distance=rep(1,length(terms)), term_namespace=rep('Customised',length(terms)), stringsAsFactors=F)
-	root <- c('Root', 'Root', 'Root', 0, 'Customised')
-	nodes <- rbind(nodes, root)
-	relations <- data.frame(from='Root', to=nodes$name)
-	g <- igraph::graph.data.frame(d=relations, directed=T, vertices=nodes)
-
-
-    #############################################################################################
-    
-    if(verbose){
-        now <- Sys.time()
-        message(sprintf("\n#######################################################", appendLF=T))
-        message(sprintf("'xEnricher' is being called (%s):", as.character(now)), appendLF=T)
-        message(sprintf("#######################################################", appendLF=T))
-    }
-    eTerm <- MNet::xEnricher(data=data, annotation=anno, g=g, background=background, size.range=size.range, min.overlap=min.overlap, test=test, background.annotatable.only=background.annotatable.only, p.tail=p.tail, p.adjust.method=p.adjust.method, ontology.algorithm="none",true.path.rule=F, verbose=verbose)
-	
-	if(verbose){
-        now <- Sys.time()
-        message(sprintf("#######################################################", appendLF=T))
-        message(sprintf("'xEnricher' has been finished (%s)!", as.character(now)), appendLF=T)
-        message(sprintf("#######################################################\n", appendLF=T))
-    }
-    
-    ####################################################################################
-    endT <- Sys.time()
-    runTime <- as.numeric(difftime(strptime(endT, "%Y-%m-%d %H:%M:%S"), strptime(startT, "%Y-%m-%d %H:%M:%S"), units="secs"))
-    
-    if(!silent){
-    	message(paste(c("\nEnd at ",as.character(endT)), collapse=""), appendLF=TRUE)
-    	message(paste(c("Runtime in total (xEnricherYours): ",runTime," secs\n"), collapse=""), appendLF=TRUE)
-    }
-    
-    invisible(eTerm)
+    ###################################
+  }
+  #######################################
+  ## define annotation information
+  anno <- split(x = input[, 1], f = input[, 2])
+  
+  ## define ontology information (artificially)
+  terms <- names(anno)
+  nodes <- data.frame(
+    name = terms,
+    term_id = terms,
+    term_name = terms,
+    term_distance = rep(1, length(terms)),
+    term_namespace = rep('Customised', length(terms)),
+    stringsAsFactors = F
+  )
+  root <- c('Root', 'Root', 'Root', 0, 'Customised')
+  nodes <- rbind(nodes, root)
+  relations <- data.frame(from = 'Root', to = nodes$name)
+  g <- igraph::graph.data.frame(d = relations,
+                                directed = T,
+                                vertices = nodes)
+  
+  
+  #############################################################################################
+  
+  if (verbose) {
+    now <- Sys.time()
+    message(
+      sprintf(
+        "\n#######################################################",
+        appendLF = T
+      )
+    )
+    message(sprintf("'xEnricher' is being called (%s):", as.character(now)),
+            appendLF = T)
+    message(
+      sprintf(
+        "#######################################################",
+        appendLF = T
+      )
+    )
+  }
+  eTerm <- MNet::xEnricher(
+    data = data,
+    annotation = anno,
+    g = g,
+    background = background,
+    size.range = size.range,
+    min.overlap = min.overlap,
+    test = test,
+    background.annotatable.only = background.annotatable.only,
+    p.tail = p.tail,
+    p.adjust.method = p.adjust.method,
+    ontology.algorithm = "none",
+    true.path.rule = F,
+    verbose = verbose
+  )
+  
+  if (verbose) {
+    now <- Sys.time()
+    message(
+      sprintf(
+        "#######################################################",
+        appendLF = T
+      )
+    )
+    message(sprintf("'xEnricher' has been finished (%s)!", as.character(now)),
+            appendLF = T)
+    message(
+      sprintf(
+        "#######################################################\n",
+        appendLF = T
+      )
+    )
+  }
+  
+  ####################################################################################
+  endT <- Sys.time()
+  runTime <- as.numeric(difftime(
+    strptime(endT, "%Y-%m-%d %H:%M:%S"),
+    strptime(startT, "%Y-%m-%d %H:%M:%S"),
+    units = "secs"
+  ))
+  
+  if (!silent) {
+    message(paste(c("\nEnd at ", as.character(endT)), collapse = ""), appendLF =
+              TRUE)
+    message(paste(
+      c("Runtime in total (xEnricherYours): ", runTime, " secs\n"),
+      collapse = ""
+    ), appendLF = TRUE)
+  }
+  
+  invisible(eTerm)
 }
