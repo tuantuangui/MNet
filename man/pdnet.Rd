@@ -21,14 +21,21 @@ The subnetwork's extraction
 }
 \examples{
 library(dplyr)
+
 names(diff_meta)[4]  <- "p_value"
 diff_metabolite <- diff_meta \%>\%
   dplyr::filter(adj.P.Val < 0.01) \%>\%
   dplyr::filter(abs(logFC)>1)
+  
 names(diff_gene)[4] <- "p_value"
 diff_gene1 <- diff_gene \%>\%
   dplyr::filter(adj.P.Val < 0.01) \%>\%
   dplyr::filter(abs(logFC)>1)
-a <- pdnet(diff_meta,diff_gene,nsize=100)
-a <- pdnet(diff_metabolite[,8],diff_gene1[1:500,8])
+  
+res <- pdnet(diff_meta,diff_gene,nsize=100)
+res
+
+res <- pdnet(diff_metabolite[,8],diff_gene1[1:500,8])
+res
+
 }

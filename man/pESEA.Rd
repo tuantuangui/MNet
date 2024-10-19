@@ -2,7 +2,7 @@
 % Please edit documentation in R/pESEA.R
 \name{pESEA}
 \alias{pESEA}
-\title{the visualization of ESEA in a pathway}
+\title{The visualization of ESEA in a pathway}
 \usage{
 pESEA(
   pathway_name,
@@ -30,10 +30,10 @@ pESEA(
 visualization for the pathway's ESEA
 }
 \description{
-the visualization of ESEA in a pathway
+The visualization of ESEA in a pathway
 }
 \examples{
-library(ggplot2)
-library(dplyr)
 result <- pESEA("Butanoate metabolism",sim.cpd.data,out="metabolite")
+result
+
 }

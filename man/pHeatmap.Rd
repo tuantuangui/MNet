@@ -35,6 +35,8 @@ Heatmap
 Heatmap of differential metabolites
 }
 \examples{
+library(dplyr)
+
 if (FALSE) {
 diff_result <- DM(2**meta_dat,group)
 # filter the differential metabolites by default fold change >1.5 or < 1/1.5 ,fdr < 0.05 and VIP>1
@@ -43,6 +45,9 @@ diff_result_filter <- diff_result \%>\%
   dplyr::filter(fdr_wilcox<0.1) \%>\%
   dplyr::filter(vip>0.8)
 meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$name,]
+
 p_heatmap <- pHeatmap(meta_dat_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="ward.D",clustering_distance_cols="correlation")
 }
+p_heatmap
+
 }
