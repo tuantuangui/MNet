@@ -26,5 +26,7 @@ kegg_id <- c("C02494","C03665","C01546","C05984","C14088","C00587")
 value <- c(-0.3824620,0.1823628,-1.1681486,0.5164899,1.6449798,-0.7340652)
 names(value) <- kegg_id
 cpd.data <- value
+
 pPathview(cpd.data,outdir="test")
+
 }

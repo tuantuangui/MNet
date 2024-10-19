@@ -26,6 +26,7 @@ Visualization of the z-score plot
 }
 \examples{
 library(dplyr)
+
 diff_result <- DM(2**meta_dat,group)
 # filter the differential metabolites by default fold change >1.5 or < 1/1.5 ,fdr < 0.05 and VIP>1
 diff_result_filter <- diff_result \%>\%
@@ -33,5 +34,8 @@ diff_result_filter <- diff_result \%>\%
   dplyr::filter(Padj_wilcox<0.1) \%>\%
   dplyr::filter(VIP>0.8)
 meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$Name,]
+
 p_zscore <- pZscore(meta_dat_diff,group)
+p_zscore
+
 }

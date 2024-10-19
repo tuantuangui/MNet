@@ -30,7 +30,7 @@ a figure and a data frame
 The correlation network's extraction
 }
 \examples{
-res <- pNetCor(meta_dat,gene_dat)
+res <- pNetCor(meta_dat, gene_dat)
 res
 
 }

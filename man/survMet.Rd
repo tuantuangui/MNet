@@ -29,4 +29,5 @@ automatic classify the samples by each selected metabolites by mean or median, a
 \examples{
 metabolites <- c("C03819","C02918","C03916")
 survMet(dat_surv,metabolites,cluster_method="mean",out_dir="result/survival/")
+
 }
