@@ -91,6 +91,7 @@ Collate:
     'pathway2pathwayid.R'
     'pathwayinfo.R'
     'pdnet.R'
+    'shinyapp.R'
     'survCli.R'
     'survMet.R'
     'xDAGanno.r'
