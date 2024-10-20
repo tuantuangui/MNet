@@ -1,16 +1,16 @@
 #' @title MNet shiny app start function.
 #' @description MNet shiny app start function.
 #'
-#' @return Shinyapp: MNet shiny app.
+#' @return MNet shiny app.
 #'
 #' @importFrom shiny runApp
 #' @export
 #'
 #' @examples
 #' library(MNet)
-#' # MNet::shinyapp()
+#' # MNet::mnetapp()
 #'
-tomicsvis <- function() {
+mnetapp <- function() {
   app_path <- system.file("shinyapp", package = "MNet")
   
   if (is.na(app_path)) {
