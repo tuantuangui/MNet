@@ -1,7 +1,7 @@
 Package: MNet
 Type: Package
 Title: MNet
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
        person("Tuantuan","Gui",email="guituantuan@sjtu.edu.cn",role=c("aut","cre")),
        person("Hai","Fang",email="fh12355@rjh.com.cn",role="aut"))
