@@ -38,7 +38,7 @@ ui <- shinyUI(
                               color: #555555;
                               font-weight: bolder;
                               text-shadow: 3px 3px 10px #888888;"
-                ), 
+                ),
                 titleWidth = NULL,
                 disable = FALSE,
                 .list = NULL,
@@ -619,9 +619,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -857,9 +855,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -1129,9 +1125,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -1368,9 +1362,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -1668,9 +1660,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -1925,9 +1915,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -2203,9 +2191,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -2494,9 +2480,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -2758,9 +2742,7 @@ ui <- shinyUI(
                                        bs4Card(
                                            style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span(
-                                               "| Data && Figure Preview",
-                                           ),
+                                           title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
@@ -12503,10 +12485,7 @@ server <- shinyServer(function(session, input, output) {
     # home_markdown
     output$home_markdown <- renderUI({
         file_content <- markdown::renderMarkdown(file = "./README.md")
-        htmltools::tags$div(
-            style = "padding: 1% 10%",
-            HTML(file_content)
-        )
+        htmltools::tags$div(style = "padding: 1% 10%", HTML(file_content))
     })
     
     # pca_plot
@@ -12538,7 +12517,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -12575,7 +12554,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -12622,7 +12601,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -12686,7 +12665,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -12723,7 +12702,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -12732,10 +12711,11 @@ server <- shinyServer(function(session, input, output) {
             if (input$volcano_diff_method == "LIMMA") {
                 diff_res <- mlimma(meta_data, group_data)
             } else if (input$volcano_diff_method == "OPLS-DA") {
-                diff_res <- DM(2**meta_data, group_data)
+                diff_res <- DM(2 ** meta_data, group_data)
             }
             
-            p_volcano <- pVolcano(diff_res, foldchange_threshold = input$volcano_fold_change)
+            p_volcano <- pVolcano(diff_res,
+                                  foldchange_threshold = input$volcano_fold_change)
             p_volcano
         })
         
@@ -12776,7 +12756,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -12785,10 +12765,11 @@ server <- shinyServer(function(session, input, output) {
                     if (input$volcano_diff_method == "LIMMA") {
                         diff_res <- mlimma(meta_data, group_data)
                     } else if (input$volcano_diff_method == "OPLS-DA") {
-                        diff_res <- DM(2**meta_data, group_data)
+                        diff_res <- DM(2 ** meta_data, group_data)
                     }
                     
-                    p_volcano <- pVolcano(diff_res, foldchange_threshold = input$volcano_fold_change)
+                    p_volcano <- pVolcano(diff_res,
+                                          foldchange_threshold = input$volcano_fold_change)
                     p_volcano
                 })
                 
@@ -12846,7 +12827,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -12883,7 +12864,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -12892,15 +12873,18 @@ server <- shinyServer(function(session, input, output) {
             if (input$heatmap_diff_method == "LIMMA") {
                 diff_res <- mlimma(meta_data, group_data)
             } else if (input$heatmap_diff_method == "OPLS-DA") {
-                diff_res <- DM(2**meta_data, group_data)
+                diff_res <- DM(2 ** meta_data, group_data)
             }
             
             diff_res_filter <- diff_res %>%
-                filter(Fold_change > input$heatmap_fold_change | Fold_change < 1/input$heatmap_fold_change) %>%
+                filter(
+                    Fold_change > input$heatmap_fold_change |
+                        Fold_change < 1 / input$heatmap_fold_change
+                ) %>%
                 filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
                 filter(VIP > input$heatmap_VIP)
             
-            meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name,]
+            meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
             p_heatmap <- pHeatmap(
                 meta_data_diff,
                 group_data,
@@ -12908,7 +12892,7 @@ server <- shinyServer(function(session, input, output) {
                 fontsize_col = 4,
                 clustering_method = "ward.D",
                 clustering_distance_cols = "correlation"
-                )
+            )
             p_heatmap
         })
         
@@ -12949,7 +12933,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -12958,15 +12942,18 @@ server <- shinyServer(function(session, input, output) {
                     if (input$heatmap_diff_method == "LIMMA") {
                         diff_res <- mlimma(meta_data, group_data)
                     } else if (input$heatmap_diff_method == "OPLS-DA") {
-                        diff_res <- DM(2**meta_data, group_data)
+                        diff_res <- DM(2 ** meta_data, group_data)
                     }
                     
                     diff_res_filter <- diff_res %>%
-                        filter(Fold_change > input$heatmap_fold_change | Fold_change < 1/input$heatmap_fold_change) %>%
+                        filter(
+                            Fold_change > input$heatmap_fold_change |
+                                Fold_change < 1 / input$heatmap_fold_change
+                        ) %>%
                         filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
                         filter(VIP > input$heatmap_VIP)
                     
-                    meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name,]
+                    meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
                     p_heatmap <- pHeatmap(
                         meta_data_diff,
                         group_data,
@@ -13047,7 +13034,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -13096,7 +13083,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -13161,7 +13148,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -13246,7 +13233,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -13295,7 +13282,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -13314,13 +13301,15 @@ server <- shinyServer(function(session, input, output) {
                 filter(adj.P.Val < input$diff_network_padj) %>%
                 filter(abs(logFC) > input$diff_network_logfc)
             
-            diff_network_res <- pdnet(diff_metabolite[, 8],diff_gene1[1:input$diff_network_gene_num, 8])
+            diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
             diff_network_res
         })
         
         output$diff_network_plot_download <- downloadHandler(
             filename = function() {
-                paste("DiffNetwork", input$diff_network_plot_format, sep = ".")
+                paste("DiffNetwork",
+                      input$diff_network_plot_format,
+                      sep = ".")
             },
             content = function(file) {
                 plot <- reactive({
@@ -13367,7 +13356,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -13386,7 +13375,7 @@ server <- shinyServer(function(session, input, output) {
                         filter(adj.P.Val < input$diff_network_padj) %>%
                         filter(abs(logFC) > input$diff_network_logfc)
                     
-                    diff_network_res <- pdnet(diff_metabolite[, 8],diff_gene1[1:input$diff_network_gene_num, 8])
+                    diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
                     diff_network_res
                 })
                 
@@ -13485,13 +13474,17 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 100)
             progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
             
-            corr_network_res <- pNetCor(meta_data, gene_data, cor_threshold = input$corr_network_threshold)
+            corr_network_res <- pNetCor(meta_data,
+                                        gene_data,
+                                        cor_threshold = input$corr_network_threshold)
             corr_network_res
         })
         
         output$corr_network_plot_download <- downloadHandler(
             filename = function() {
-                paste("corr_networkPlot", input$corr_network_plot_format, sep = ".")
+                paste("corr_networkPlot",
+                      input$corr_network_plot_format,
+                      sep = ".")
             },
             content = function(file) {
                 plot <- reactive({
@@ -13531,7 +13524,9 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 100)
                     progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
                     
-                    corr_network_res <- pNetCor(meta_data, gene_data, cor_threshold = input$corr_network_threshold)
+                    corr_network_res <- pNetCor(meta_data,
+                                                gene_data,
+                                                cor_threshold = input$corr_network_threshold)
                     corr_network_res
                 })
                 
@@ -13604,7 +13599,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -13653,7 +13648,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -13667,22 +13662,29 @@ server <- shinyServer(function(session, input, output) {
             all_data_up <- all_data %>%
                 filter(logFC > input$epea_logfc) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_up <- PathwayAnalysis(all_data_up$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+            result_up <- PathwayAnalysis(all_data_up$name,
+                                         out = "Extended",
+                                         p_cutoff = input$epea_p_cutoff)
             
             all_data_down <- all_data %>%
                 filter(logFC < -(input$epea_padj)) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_down <- PathwayAnalysis(all_data_down$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+            result_down <- PathwayAnalysis(
+                all_data_down$name,
+                out = "Extended",
+                p_cutoff = input$epea_p_cutoff
+            )
             
-            plot <- cowplot::plot_grid(plotlist = list(
-                        result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
-                        ),
-                        ncol = 1,
-                        align = "v"
-                    )
+            plot <- cowplot::plot_grid(
+                plotlist = list(
+                    result_up$p_barplot,
+                    result_up$gp,
+                    result_down$p_barplot,
+                    result_down$gp
+                ),
+                ncol = 1,
+                align = "v"
+            )
             plot
         })
         
@@ -13735,7 +13737,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -13749,21 +13751,30 @@ server <- shinyServer(function(session, input, output) {
                     all_data_up <- all_data %>%
                         filter(logFC > input$epea_logfc) %>%
                         filter(adj.P.Val < input$epea_padj)
-                    result_up <- PathwayAnalysis(all_data_up$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+                    result_up <- PathwayAnalysis(
+                        all_data_up$name,
+                        out = "Extended",
+                        p_cutoff = input$epea_p_cutoff
+                    )
                     
                     all_data_down <- all_data %>%
                         filter(logFC < -(input$epea_padj)) %>%
                         filter(adj.P.Val < input$epea_padj)
-                    result_down <- PathwayAnalysis(all_data_down$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+                    result_down <- PathwayAnalysis(
+                        all_data_down$name,
+                        out = "Extended",
+                        p_cutoff = input$epea_p_cutoff
+                    )
                     
-                    plot <- cowplot::plot_grid(plotlist = list(
-                        result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
-                    ),
-                    ncol = 1,
-                    align = "v"
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
                     )
                     plot
                 })
@@ -13822,7 +13833,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -13859,7 +13870,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -13870,21 +13881,28 @@ server <- shinyServer(function(session, input, output) {
             diff_meta_up <- diff_meta %>%
                 filter(logFC > input$mpea_logfc) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_up <- PathwayAnalysis(diff_meta_up$name, out = "metabolite", p_cutoff = input$mpea_p_cutoff)
+            result_up <- PathwayAnalysis(diff_meta_up$name,
+                                         out = "metabolite",
+                                         p_cutoff = input$mpea_p_cutoff)
             
             diff_meta_down <- diff_meta %>%
                 filter(logFC < -(input$mpea_padj)) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_down <- PathwayAnalysis(diff_meta_down$name, out = "metabolite", p_cutoff = input$mpea_p_cutoff)
+            result_down <- PathwayAnalysis(
+                diff_meta_down$name,
+                out = "metabolite",
+                p_cutoff = input$mpea_p_cutoff
+            )
             
-            plot <- cowplot::plot_grid(plotlist = list(
-                result_up$p_barplot,
-                result_up$gp,
-                result_down$p_barplot,
-                result_down$gp
-            ),
-            ncol = 1,
-            align = "v"
+            plot <- cowplot::plot_grid(
+                plotlist = list(
+                    result_up$p_barplot,
+                    result_up$gp,
+                    result_down$p_barplot,
+                    result_down$gp
+                ),
+                ncol = 1,
+                align = "v"
             )
             plot
         })
@@ -13926,7 +13944,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -13937,21 +13955,30 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_up <- diff_meta %>%
                         filter(logFC > input$mpea_logfc) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_up <- PathwayAnalysis(diff_meta_up$name, out = "metabolite", p_cutoff = input$mpea_p_cutoff)
+                    result_up <- PathwayAnalysis(
+                        diff_meta_up$name,
+                        out = "metabolite",
+                        p_cutoff = input$mpea_p_cutoff
+                    )
                     
                     diff_meta_down <- diff_meta %>%
                         filter(logFC < -(input$mpea_padj)) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_down <- PathwayAnalysis(diff_meta_down$name, out = "metabolite", p_cutoff = input$mpea_p_cutoff)
+                    result_down <- PathwayAnalysis(
+                        diff_meta_down$name,
+                        out = "metabolite",
+                        p_cutoff = input$mpea_p_cutoff
+                    )
                     
-                    plot <- cowplot::plot_grid(plotlist = list(
-                        result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
-                    ),
-                    ncol = 1,
-                    align = "v"
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
                     )
                     plot
                 })
@@ -14009,7 +14036,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             return(group_data)
         })
@@ -14045,7 +14072,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[,1])
+                group_data <- as.character(group_data[, 1])
             }
             
             progress$set(value = 100)
@@ -14056,21 +14083,28 @@ server <- shinyServer(function(session, input, output) {
             diff_gene_up <- diff_gene %>%
                 filter(logFC > input$gpea_logfc) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_up <- PathwayAnalysis(diff_gene_up$name, out = "gene", p_cutoff = input$gpea_p_cutoff)
+            result_up <- PathwayAnalysis(diff_gene_up$name,
+                                         out = "gene",
+                                         p_cutoff = input$gpea_p_cutoff)
             
             diff_gene_down <- diff_gene %>%
                 filter(logFC < -(input$gpea_padj)) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_down <- PathwayAnalysis(diff_gene_down$name, out = "gene", p_cutoff = input$gpea_p_cutoff)
+            result_down <- PathwayAnalysis(
+                diff_gene_down$name,
+                out = "gene",
+                p_cutoff = input$gpea_p_cutoff
+            )
             
-            plot <- cowplot::plot_grid(plotlist = list(
-                result_up$p_barplot,
-                result_up$gp,
-                result_down$p_barplot,
-                result_down$gp
-            ),
-            ncol = 1,
-            align = "v"
+            plot <- cowplot::plot_grid(
+                plotlist = list(
+                    result_up$p_barplot,
+                    result_up$gp,
+                    result_down$p_barplot,
+                    result_down$gp
+                ),
+                ncol = 1,
+                align = "v"
             )
             plot
         })
@@ -14111,7 +14145,7 @@ server <- shinyServer(function(session, input, output) {
                             sep = "\t",
                             stringsAsFactors = F
                         )
-                        group_data <- as.character(group_data[,1])
+                        group_data <- as.character(group_data[, 1])
                     }
                     
                     progress$set(value = 100)
@@ -14122,21 +14156,30 @@ server <- shinyServer(function(session, input, output) {
                     diff_gene_up <- diff_gene %>%
                         filter(logFC > input$gpea_logfc) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_up <- PathwayAnalysis(diff_gene_up$name, out = "gene", p_cutoff = input$gpea_p_cutoff)
+                    result_up <- PathwayAnalysis(
+                        diff_gene_up$name,
+                        out = "gene",
+                        p_cutoff = input$gpea_p_cutoff
+                    )
                     
                     diff_gene_down <- diff_gene %>%
                         filter(logFC < -(input$gpea_padj)) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_down <- PathwayAnalysis(diff_gene_down$name, out = "gene", p_cutoff = input$gpea_p_cutoff)
+                    result_down <- PathwayAnalysis(
+                        diff_gene_down$name,
+                        out = "gene",
+                        p_cutoff = input$gpea_p_cutoff
+                    )
                     
-                    plot <- cowplot::plot_grid(plotlist = list(
-                        result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
-                    ),
-                    ncol = 1,
-                    align = "v"
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
                     )
                     plot
                 })
@@ -14167,5 +14210,5 @@ server <- shinyServer(function(session, input, output) {
     }
 })
 
-# shinyApp(ui = ui, server = server)
-runApp(ui = ui, server = server)
+# runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
+shinyApp(ui = ui, server = server)
