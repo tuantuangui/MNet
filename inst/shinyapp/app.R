@@ -15,6 +15,7 @@ library(colourpicker)
 library(ggsci)
 library(ggplot2)
 library(MNet)
+library(dplyr)
 
 ui <- shinyUI(
     #=== 1.bs4DashPage
@@ -126,8 +127,8 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| Violin Plot",
-                            tabName = "violin_plot",
+                            text = "| Metabolite Heatmap",
+                            tabName = "heatmap_plot",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -820,7 +821,7 @@ ui <- shinyUI(
                                        ),
                                        hr(),
                                        selectInput(
-                                           inputId = "diff_method",
+                                           inputId = "volcano_diff_method",
                                            label = "Diff Methods",
                                            choices = c("LIMMA" = "LIMMA", "OPLS-DA" = "OPLS-DA"),
                                            selected = "OPLS-DA",
@@ -828,7 +829,7 @@ ui <- shinyUI(
                                            width = NULL
                                        ),
                                        sliderInput(
-                                           inputId = "fold_change",
+                                           inputId = "volcano_fold_change",
                                            label = "Fold Change",
                                            min = 0.00,
                                            max = 100.00,
@@ -1015,13 +1016,12 @@ ui <- shinyUI(
                 },
                 #=== 1.5.1.2 bs4TabItem violin_plot
                 {
-                    bs4TabItem(tabName = "violin_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                    bs4TabItem(tabName = "heatmap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
-                                       title = "| Options",
+                                       title = "| Setting",
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
@@ -1034,359 +1034,164 @@ ui <- shinyUI(
                                        collapsed = FALSE,
                                        closable = FALSE,
                                        maximizable = TRUE,
-                                       icon = icon("palette"),
+                                       icon = icon("gear"),
                                        boxToolSize = "sm",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "violin_plot_input",
-                                                   label = "Samples Traits",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "violin_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "violin_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "violin_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "violin_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "violin_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "violin_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "test_method_violin",
-                                                   label = "Test Method",
-                                                   choices = c("wilcox.test", "t.test", "anova"),
-                                                   selected = "t.test",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "test_label_violin",
-                                                   label = "Test Label",
-                                                   choices = c("p.signif", "p.format"),
-                                                   selected = "p.format",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "group_level_violin",
-                                                   label = "Group Levle",
-                                                   choices = c("Two_Column", "Three_Column"),
-                                                   selected = "Three_Column",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "violin_orientation_violin",
-                                                   label = "Orientation",
-                                                   choices = c("vertical", "horizontal", "reverse"),
-                                                   selected = "vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "add_element_violin",
-                                                   label = "Add Element",
-                                                   choices = c(
-                                                       "none",
-                                                       "dotplot",
-                                                       "jitter",
-                                                       "boxplot",
-                                                       "point",
-                                                       "mean",
-                                                       "mean_se",
-                                                       "mean_sd",
-                                                       "mean_ci",
-                                                       "mean_range",
-                                                       "median",
-                                                       "median_iqr",
-                                                       "median_hilow",
-                                                       "median_q1q3",
-                                                       "median_mad",
-                                                       "median_range"
-                                                   ),
-                                                   selected = "boxplot",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "element_alpha_violin",
-                                                   label = "Element Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "my_shape_violin",
-                                                   label = "Point Shape",
-                                                   choices = c(
-                                                       "border_square",
-                                                       "border_circle",
-                                                       "border_triangle",
-                                                       "plus",
-                                                       "times",
-                                                       "border_diamond",
-                                                       "border_triangle_down",
-                                                       "square_times",
-                                                       "plus_times",
-                                                       "diamond_plus",
-                                                       "circle_plus",
-                                                       "di_triangle",
-                                                       "square_plus",
-                                                       "circle_times",
-                                                       "square_triangle",
-                                                       "fill_square",
-                                                       "fill_circle",
-                                                       "fill_triangle",
-                                                       "fill_diamond",
-                                                       "large_circle",
-                                                       "small_circle",
-                                                       "fill_border_circle",
-                                                       "fill_border_square",
-                                                       "fill_border_diamond",
-                                                       "fill_border_triangle"
-                                                   ),
-                                                   selected = "plus_times",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_violin",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sci_fill_alpha_violin",
-                                                   label = "Fill Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sci_color_alpha_violin",
-                                                   label = "Border Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_pos_violin",
-                                                   label = "Legend Position",
-                                                   choices = c("none", "left", "right", "bottom", "top"),
-                                                   selected = "right",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_dir_violin",
-                                                   label = "Legend Director",
-                                                   choices = c("horizontal", "vertical"),
-                                                   selected = "vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_violin",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
+                                       fileInput(
+                                           inputId = "heatmap_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolites (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "heatmap_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Groups (TXT)"
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "heatmap_diff_method",
+                                           label = "Diff Methods",
+                                           choices = c("LIMMA" = "LIMMA", "OPLS-DA" = "OPLS-DA"),
+                                           selected = "OPLS-DA",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_fold_change",
+                                           label = "Fold Change",
+                                           min = 0.00,
+                                           max = 100.00,
+                                           value = 1.50,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_padj_wilcox",
+                                           label = "Padj Wilcox",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_VIP",
+                                           label = "OPLS-DA VIP",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.80,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "heatmap_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "heatmap_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "heatmap_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           # 1
+                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Violin Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
+                                               "| Data && Figure Preview",
                                            ),
                                            footer = NULL,
                                            width = 12,
@@ -1396,7 +1201,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
                                            maximizable = TRUE,
@@ -1405,36 +1210,79 @@ ui <- shinyUI(
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           plotOutput("violin_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "violin_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "heatmap_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("heatmap_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("heatmap_plot", width = "100%", height = "640px")
                                            )
-                                       )
+                                       ),
                                    )
                                ))
                 },
@@ -13703,19 +13551,19 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 100)
             progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
             
-            if (input$diff_method == "LIMMA") {
+            if (input$volcano_diff_method == "LIMMA") {
                 diff_res <- mlimma(meta_data, group_data)
-            } else if (input$diff_method == "OPLS-DA") {
+            } else if (input$volcano_diff_method == "OPLS-DA") {
                 diff_res <- DM(2**meta_data, group_data)
             }
             
-            p_volcano <- pVolcano(diff_res, foldchange_threshold = input$fold_change)
+            p_volcano <- pVolcano(diff_res, foldchange_threshold = input$volcano_fold_change)
             p_volcano
         })
         
         output$volcano_plot_download <- downloadHandler(
             filename = function() {
-                paste("VolcanoPlot", input$pca_plot_format, sep = ".")
+                paste("VolcanoPlot", input$volcano_plot_format, sep = ".")
             },
             content = function(file) {
                 plot <- reactive({
@@ -13756,13 +13604,13 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 100)
                     progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
                     
-                    if (input$diff_method == "LIMMA") {
+                    if (input$volcano_diff_method == "LIMMA") {
                         diff_res <- mlimma(meta_data, group_data)
-                    } else if (input$diff_method == "OPLS-DA") {
+                    } else if (input$volcano_diff_method == "OPLS-DA") {
                         diff_res <- DM(2**meta_data, group_data)
                     }
                     
-                    p_volcano <- pVolcano(diff_res, foldchange_threshold = input$fold_change)
+                    p_volcano <- pVolcano(diff_res, foldchange_threshold = input$volcano_fold_change)
                     p_volcano
                 })
                 
@@ -13782,6 +13630,192 @@ server <- shinyServer(function(session, input, output) {
                         height = input$volcano_plot_height,
                         units = "in",
                         res = input$volcano_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # heatmap_plot
+    {
+        output$heatmap_meta_data <- renderDT({
+            if (is.null(input$heatmap_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$heatmap_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$heatmap_group_data <- renderText({
+            if (is.null(input$heatmap_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$heatmap_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            return(group_data)
+        })
+        
+        output$heatmap_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$heatmap_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$heatmap_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$heatmap_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$heatmap_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            if (input$heatmap_diff_method == "LIMMA") {
+                diff_res <- mlimma(meta_data, group_data)
+            } else if (input$heatmap_diff_method == "OPLS-DA") {
+                diff_res <- DM(2**meta_data, group_data)
+            }
+            
+            diff_res_filter <- diff_res %>%
+                filter(Fold_change > input$heatmap_fold_change | Fold_change < 1/input$heatmap_fold_change) %>%
+                filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                filter(VIP > input$heatmap_VIP)
+            
+            meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name,]
+            p_heatmap <- pHeatmap(
+                meta_data_diff,
+                group_data,
+                fontsize_row = 5,
+                fontsize_col = 4,
+                clustering_method = "ward.D",
+                clustering_distance_cols = "correlation"
+                )
+            p_heatmap
+        })
+        
+        output$heatmap_plot_download <- downloadHandler(
+            filename = function() {
+                paste("HeatmapPlot", input$heatmap_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$heatmap_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$heatmap_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$heatmap_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$heatmap_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[,1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    if (input$heatmap_diff_method == "LIMMA") {
+                        diff_res <- mlimma(meta_data, group_data)
+                    } else if (input$heatmap_diff_method == "OPLS-DA") {
+                        diff_res <- DM(2**meta_data, group_data)
+                    }
+                    
+                    diff_res_filter <- diff_res %>%
+                        filter(Fold_change > input$heatmap_fold_change | Fold_change < 1/input$heatmap_fold_change) %>%
+                        filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                        filter(VIP > input$heatmap_VIP)
+                    
+                    meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name,]
+                    p_heatmap <- pHeatmap(
+                        meta_data_diff,
+                        group_data,
+                        fontsize_row = 5,
+                        fontsize_col = 4,
+                        clustering_method = "ward.D",
+                        clustering_distance_cols = "correlation"
+                    )
+                    p_heatmap
+                })
+                
+                if (input$heatmap_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$heatmap_plot_width,
+                        height = input$heatmap_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$heatmap_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$heatmap_plot_width,
+                        height = input$heatmap_plot_height,
+                        units = "in",
+                        res = input$heatmap_plot_dpi,
                         quality = 100
                     )
                     print(plot())
