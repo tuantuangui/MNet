@@ -207,47 +207,47 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Volcano Plot",
-                            tabName = "volcano_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| MA Plot",
-                            tabName = "ma_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Heatmap Group",
-                            tabName = "heatmap_group",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Circos Heatmap",
-                            tabName = "circos_heatmap",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Chord Plot",
-                            tabName = "chord_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Volcano Plot",
+                        #     tabName = "volcano_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| MA Plot",
+                        #     tabName = "ma_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Heatmap Group",
+                        #     tabName = "heatmap_group",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Circos Heatmap",
+                        #     tabName = "circos_heatmap",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Chord Plot",
+                        #     tabName = "chord_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                     ),
                     bs4SidebarMenuItem(
                         text = "4. Clinical Analysis",
@@ -268,39 +268,39 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Gene Cluster Trend",
-                            tabName = "gene_cluster_trend",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Trend Plot",
-                            tabName = "trend_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Network Plot",
-                            tabName = "network_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Heatmap Cluster",
-                            tabName = "heatmap_cluster",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Gene Cluster Trend",
+                        #     tabName = "gene_cluster_trend",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Trend Plot",
+                        #     tabName = "trend_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Network Plot",
+                        #     tabName = "network_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Heatmap Cluster",
+                        #     tabName = "heatmap_cluster",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                     ),
                     bs4SidebarMenuItem(
                         text = "5. Feature Selection",
@@ -321,71 +321,71 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| GO Enrich Stat",
-                            tabName = "go_enrich_stat",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| GO Enrich Bar",
-                            tabName = "go_enrich_bar",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| GO Enrich Dot",
-                            tabName = "go_enrich_dot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| GO Enrich Net",
-                            tabName = "go_enrich_net",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| KEGG Enrich",
-                            tabName = "kegg_enrich",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| KEGG Enrich Bar",
-                            tabName = "kegg_enrich_bar",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| KEGG Enrich Dot",
-                            tabName = "kegg_enrich_dot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| KEGG Enrich Net",
-                            tabName = "kegg_enrich_net",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| GO Enrich Stat",
+                        #     tabName = "go_enrich_stat",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| GO Enrich Bar",
+                        #     tabName = "go_enrich_bar",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| GO Enrich Dot",
+                        #     tabName = "go_enrich_dot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| GO Enrich Net",
+                        #     tabName = "go_enrich_net",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| KEGG Enrich",
+                        #     tabName = "kegg_enrich",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| KEGG Enrich Bar",
+                        #     tabName = "kegg_enrich_bar",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| KEGG Enrich Dot",
+                        #     tabName = "kegg_enrich_dot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| KEGG Enrich Net",
+                        #     tabName = "kegg_enrich_net",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                     ),
                     bs4SidebarMenuItem(
                         text = "6. Metabolite Conversion",
@@ -406,44 +406,31 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Table Merge",
-                            tabName = "table_merge",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Table Filter",
-                            tabName = "table_filter",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Table Cross",
-                            tabName = "table_cross",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
-                    ),
-                    bs4SidebarMenuItem(
-                        "About",
-                        tabName = "about",
-                        icon = icon("trophy"),
-                        badgeLabel = "Author&Project",
-                        badgeColor = "danger",
-                        href = NULL,
-                        newTab = TRUE,
-                        selected = NULL,
-                        expandedName = NULL,
-                        startExpanded = FALSE,
-                        condition = NULL
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Table Merge",
+                        #     tabName = "table_merge",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Table Filter",
+                        #     tabName = "table_filter",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Table Cross",
+                        #     tabName = "table_cross",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                     )
                 ),
                 hr()
@@ -474,7 +461,7 @@ ui <- shinyUI(
         #=== 1.4 bs4DashFooter
         {
             footer = bs4DashFooter(
-                left = span("Copyright: @benben-miao", style = "font-weight:bold"),
+                left = span("Copyright: @MNet", style = "font-weight:bold"),
                 right = NULL,
                 fixed = TRUE
             )
@@ -12506,119 +12493,6 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                },
-                #=== 1.5.1.3 bs4DashPage about
-                {
-                    bs4TabItem(tabName = "about", fluidRow(
-                        bs4Card(
-                            # 1
-                            style = "padding:20px;",
-                            inputId = NULL,
-                            title = "| 1. Project Information",
-                            footer = "",
-                            width = 12,
-                            height = NULL,
-                            status = "danger",
-                            elevation = 1,
-                            solidHeader = TRUE,
-                            headerBorder = TRUE,
-                            gradient = FALSE,
-                            collapsible = TRUE,
-                            collapsed = FALSE,
-                            closable = FALSE,
-                            maximizable = TRUE,
-                            icon = icon("r-project"),
-                            boxToolSize = "sm",
-                            label = NULL,
-                            dropdownMenu = NULL,
-                            sidebar = NULL,
-                            h5(
-                                strong("TOmicsVis: Transcriptomics Visualizaiont R Package")
-                            ),
-                            p(
-                                "GitHub Repository: ",
-                                a("https://github.com/benben-miao/TOmicsVis/", href = "https://github.com/benben-miao/TOmicsVis/"),
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                "Website and API Documents: ",
-                                a("https://benben-miao.github.io/TOmicsVis/", href = "https://benben-miao.github.io/TOmicsVis/"),
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                "Maintain on CRAN: ",
-                                a("https://cran.r-project.org/package=TOmicsVis", href = "https://cran.r-project.org/package=TOmicsVis"),
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                'Install from GitHub: `devtools::install_github("benben-miao/TOmicsVis")`',
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                'Install from CRAN: `install.packages("TOmicsVis")`',
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                'Start TOmicsVis Shinyapp: `TOmicsVis::tomicsvis()`',
-                                style = "font-weight:bold"
-                            ),
-                            hr(),
-                            p(
-                                "Article Introduction: ",
-                                a(
-                                    "https://mp.weixin.qq.com/s/g8sRcK_ExlsOFniMWEJnVQ",
-                                    href = "https://mp.weixin.qq.com/s/g8sRcK_ExlsOFniMWEJnVQ"
-                                ),
-                                style = "font-weight:bold"
-                            ),
-                            p(
-                                "Videos Courses: ",
-                                a(
-                                    "https://space.bilibili.com/34105515/channel/series",
-                                    href = "https://space.bilibili.com/34105515/channel/series"
-                                ),
-                                style = "font-weight:bold"
-                            )
-                        ),
-                        bs4Card(
-                            # 1
-                            style = "padding:20px;",
-                            inputId = NULL,
-                            title = "| 2. Author Information",
-                            footer = "",
-                            width = 12,
-                            height = NULL,
-                            status = "danger",
-                            elevation = 1,
-                            solidHeader = TRUE,
-                            headerBorder = TRUE,
-                            gradient = FALSE,
-                            collapsible = TRUE,
-                            collapsed = FALSE,
-                            closable = FALSE,
-                            maximizable = TRUE,
-                            icon = icon("github"),
-                            boxToolSize = "sm",
-                            label = NULL,
-                            dropdownMenu = NULL,
-                            sidebar = NULL,
-                            p("Author 1: benben-miao (Xiamen University)", style = "font-weight:bold"),
-                            p(
-                                "GitHub Profile",
-                                a("https://github.com/benben-miao/", href = "https://github.com/benben-miao/"),
-                                style = "font-weight:bold"
-                            ),
-                            p("Email: benben.miao@outlook.com", style = "font-weight:bold"),
-                            hr(),
-                            p("Author 2: dongwei1220 (Sun Yat-sen University)", style = "font-weight:bold"),
-                            p(
-                                "GitHub Profile",
-                                a("https://github.com/dongwei1220/", href = "https://github.com/dongwei1220/"),
-                                style = "font-weight:bold"
-                            ),
-                            p("Email: dwei1220779@gmail.com", style = "font-weight:bold")
-                        )
-                    ))
                 }
             )
         )
