@@ -14168,4 +14168,4 @@ server <- shinyServer(function(session, input, output) {
 })
 
 # shinyApp(ui = ui, server = server)
-runApp(list(ui = ui, server = server), port = 6767)
+runApp(ui = ui, server = server)
