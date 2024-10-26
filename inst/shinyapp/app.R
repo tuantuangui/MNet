@@ -185,8 +185,8 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Venn Plot",
-                            tabName = "venn_plot",
+                            text = "| ePEA Pathway",
+                            tabName = "epea_plot",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -2039,15 +2039,14 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.1.2 bs4TabItem tsne_analysis
+                #=== 1.5.1.2 bs4TabItem
                 {
-                    bs4TabItem(tabName = "tsne_analysis", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                    bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
-                                       title = "| Options",
+                                       title = "| Setting",
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
@@ -2060,19 +2059,187 @@ ui <- shinyUI(
                                        collapsed = FALSE,
                                        closable = FALSE,
                                        maximizable = TRUE,
-                                       icon = icon("palette"),
+                                       icon = icon("gear"),
                                        boxToolSize = "sm",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
+                                       fileInput(
+                                           inputId = "epea_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolites (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epea_gene_data_input",
+                                           label = "GeneExp Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "GeneExp (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epea_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Groups (TXT)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "epea_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_p_cutoff",
+                                           label = "Pathway Pcutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "epea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "epea_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span(
+                                               "| Data && Figure Preview",
+                                           ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "danger",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "sm",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
                                            bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
                                                inputId = NULL,
-                                               title = "| 1. Upload/Download",
+                                               title = "| Data Table",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2085,179 +2252,90 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
+                                               icon = icon("table-list"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "tsne_analysis_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "tsne_analysis_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "seed_tsne_analysis",
-                                                   label = "TSNE Seed",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 1,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "tsne_dims_tsne_analysis",
-                                                   label = "TSNE Dimensionality",
-                                                   min = 2,
-                                                   max = 30,
-                                                   value = 2,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               actionButton(
-                                                   inputId = "tsne_analysis_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "tsne_analysis_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "TSNE Analysis",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
+                                               DTOutput(
+                                                   "epea_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
                                                )
                                            ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "tsne_analysis_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "epea_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("epea_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("epea_plot", width = "100%", height = "1000px")
                                            )
                                        ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "tsne_analysis_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "tsne_analysis_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
                                    )
                                ))
                 },
@@ -13715,6 +13793,239 @@ server <- shinyServer(function(session, input, output) {
                         height = input$corr_network_plot_height,
                         units = "in",
                         res = input$corr_network_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # ePEA
+    {
+        output$epea_meta_data <- renderDT({
+            if (is.null(input$epea_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$epea_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$epea_gene_data <- renderDT({
+            if (is.null(input$epea_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$epea_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            return(gene_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$epea_group_data <- renderText({
+            if (is.null(input$epea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$epea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            return(group_data)
+        })
+        
+        output$epea_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$epea_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$epea_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$epea_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$epea_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$epea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$epea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            all_data <- rbind(diff_gene, diff_meta)
+            
+            all_data_up <- all_data %>%
+                filter(logFC > input$epea_logfc) %>%
+                filter(adj.P.Val < input$epea_padj)
+            result_up <- PathwayAnalysis(all_data_up$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+            
+            all_data_down <- all_data %>%
+                filter(logFC < -(input$epea_padj)) %>%
+                filter(adj.P.Val < input$epea_padj)
+            result_down <- PathwayAnalysis(all_data_down$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+            
+            plot <- cowplot::plot_grid(plotlist = list(
+                        result_up$p_barplot,
+                        result_up$gp,
+                        result_down$p_barplot,
+                        result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
+                    )
+            plot
+        })
+        
+        output$epea_plot_download <- downloadHandler(
+            filename = function() {
+                paste("ePEA", input$epea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$epea_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$epea_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$epea_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$epea_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$epea_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$epea_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[,1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    all_data <- rbind(diff_gene, diff_meta)
+                    
+                    all_data_up <- all_data %>%
+                        filter(logFC > input$epea_logfc) %>%
+                        filter(adj.P.Val < input$epea_padj)
+                    result_up <- PathwayAnalysis(all_data_up$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+                    
+                    all_data_down <- all_data %>%
+                        filter(logFC < -(input$epea_padj)) %>%
+                        filter(adj.P.Val < input$epea_padj)
+                    result_down <- PathwayAnalysis(all_data_down$name, out = "Extended", p_cutoff = input$epea_p_cutoff)
+                    
+                    plot <- cowplot::plot_grid(plotlist = list(
+                        result_up$p_barplot,
+                        result_up$gp,
+                        result_down$p_barplot,
+                        result_down$gp
+                    ),
+                    ncol = 1,
+                    align = "v"
+                    )
+                    plot
+                })
+                
+                if (input$epea_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$epea_plot_width,
+                        height = input$epea_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$epea_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$epea_plot_width,
+                        height = input$epea_plot_height,
+                        units = "in",
+                        res = input$epea_plot_dpi,
                         quality = 100
                     )
                     print(plot())
