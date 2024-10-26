@@ -13647,7 +13647,7 @@ ui <- shinyUI(
 server <- shinyServer(function(session, input, output) {
     # home_markdown
     output$home_markdown <- renderUI({
-        file_content <- markdown::renderMarkdown(file = "../README.md")
+        file_content <- markdown::renderMarkdown(file = "./README.md")
         htmltools::tags$div(
             style = "padding: 1% 10%",
             HTML(file_content)

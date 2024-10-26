@@ -45,17 +45,17 @@ Imports:
     reshape2,
     tidyselect,
     cowplot,
-    methods
-Suggests: 
-    knitr,
-    rmarkdown,
+    methods,
+    data.table,
+    shiny,
     bs4Dash,
     DT,
     colourpicker,
-    shinyWidgets,
-    data.table,
-    clusterProfiler,
-    org.Hs.eg.db
+    shinyWidgets
+Suggests: 
+    knitr,
+    rmarkdown,
+    clusterProfiler
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 biocViews: Metabolomics
