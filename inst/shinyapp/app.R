@@ -133,14 +133,6 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Survival Plot",
-                            tabName = "survival_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
                     ),
                     bs4SidebarMenuItem(
@@ -156,8 +148,8 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Corr Heatmap",
-                            tabName = "corr_heatmap",
+                            text = "| Meta-Gene Network",
+                            tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -174,46 +166,6 @@ ui <- shinyUI(
                         bs4SidebarMenuSubItem(
                             text = "| PCA Plot",
                             tabName = "pca_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| TSNE Analysis",
-                            tabName = "tsne_analysis",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| TSNE Plot",
-                            tabName = "tsne_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| UMAP Analysis",
-                            tabName = "umap_analysis",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| UMAP Plot",
-                            tabName = "umap_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Dendro Plot",
-                            tabName = "dendro_plot",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -564,7 +516,7 @@ ui <- shinyUI(
                         )
                     ))
                 },
-                #=== 1.5.1.2 bs4TabItem pca_plot
+                #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "pca_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -776,7 +728,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.1.2 bs4TabItem box_plot
+                #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "volcano_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1014,7 +966,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.1.2 bs4TabItem violin_plot
+                #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "heatmap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1286,15 +1238,14 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.1.2 bs4TabItem survival_plot
+                #=== 1.5.1.2 bs4TabItem
                 {
-                    bs4TabItem(tabName = "survival_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                    bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
-                                       title = "| Options",
+                                       title = "| Setting",
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
@@ -1307,324 +1258,131 @@ ui <- shinyUI(
                                        collapsed = FALSE,
                                        closable = FALSE,
                                        maximizable = TRUE,
-                                       icon = icon("palette"),
+                                       icon = icon("gear"),
                                        boxToolSize = "sm",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "survival_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "survival_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "survival_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "survival_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "survival_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "survival_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "survival_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "curve_function_survival",
-                                                   label = "Curve Function",
-                                                   choices = c("event", "cumhaz", "pct"),
-                                                   selected = "pct",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "conf_inter_survival",
-                                                   label = "Confidence Interval Shown",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "interval_style_survival",
-                                                   label = "CI Style",
-                                                   choices = c("ribbon", "step"),
-                                                   selected = "ribbon",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "risk_table_survival",
-                                                   label = "Risk Table Shown",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "num_censor_survival",
-                                                   label = "Number Censoring Shown",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_palette_survival",
-                                                   label = "Sci Palette Colors",
-                                                   choices = c(
-                                                       "aaas",
-                                                       "npg",
-                                                       "lancet",
-                                                       "jco",
-                                                       "ucscgb",
-                                                       "uchicago",
-                                                       "simpsons",
-                                                       "rickandmorty"
-                                                   ),
-                                                   selected = "aaas",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_survival",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "x_start_survival",
-                                                   label = "X-axis Start",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 0,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "y_start_survival",
-                                                   label = "Y-axis Start",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 0,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "y_end_survival",
-                                                   label = "Y-axis End",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 100,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "x_break_survival",
-                                                   label = "X-axis Break",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 10,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "y_break_survival",
-                                                   label = "Y-axis Break",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 10,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
+                                       fileInput(
+                                           inputId = "network_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolites (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "network_gene_data_input",
+                                           label = "GeneExp Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "GeneExp (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "network_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Groups (TXT)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "network_nsize",
+                                           label = "Nodes Num",
+                                           min = 1,
+                                           max = 1000,
+                                           value = 100,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "network_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "network_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           # 1
+                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Survival Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
+                                               "| Data && Figure Preview",
                                            ),
                                            footer = NULL,
                                            width = 12,
@@ -1634,7 +1392,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
                                            maximizable = TRUE,
@@ -1643,73 +1401,10 @@ ui <- shinyUI(
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           plotOutput("survival_plot_plot", height = 580)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "survival_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem corr_heatmap
-                {
-                    bs4TabItem(tabName = "corr_heatmap", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "danger",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
+                                           class = "no-header",
                                            bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
                                                inputId = NULL,
-                                               title = "| 1. Upload/Download",
+                                               title = "| Data Table",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1722,92 +1417,21 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
+                                               icon = icon("table-list"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "corr_heatmap_input",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "corr_heatmap_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "corr_heatmap_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "corr_heatmap_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "corr_heatmap_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "corr_heatmap_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                               DTOutput(
+                                                   "network_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
                                                )
                                            ),
                                            bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
                                                inputId = NULL,
-                                               title = "| 2. Parameters",
+                                               title = "| Data Table",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1820,244 +1444,63 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("brain"),
+                                               icon = icon("table-list"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "corr_heatmap_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "corr_method_corr",
-                                                   label = "Correlation Method",
-                                                   choices = c("pearson", "spearman", "kendall"),
-                                                   selected = "pearson",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "cell_shape_corr",
-                                                   label = "Cell Shape",
-                                                   choices = c("circle", "square"),
-                                                   selected = "square",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "fill_type_corr",
-                                                   label = "Fill Type",
-                                                   choices = c("upper", "low", "full"),
-                                                   selected = "full",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "lable_size_corr",
-                                                   label = "Lable Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 3,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "axis_angle_corr",
-                                                   label = "Axis Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 45,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "axis_size_corr",
-                                                   label = "Axis Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "lable_digits_corr",
-                                                   label = "Label Digits",
-                                                   min = 0,
-                                                   max = 5,
-                                                   value = 3,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_low_corr",
-                                                   label = "Low Color",
-                                                   value = "blue",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_mid_corr",
-                                                   label = "Middle Color",
-                                                   value = "white",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_high_corr",
-                                                   label = "High Color",
-                                                   value = "red",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "outline_color_corr",
-                                                   label = "Outline Color",
-                                                   value = "white",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_corr",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Corr Heatmap",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
+                                               DTOutput(
+                                                   "network_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
                                                )
                                            ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("corr_heatmap_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "corr_heatmap_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("network_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("network_plot", width = "100%", height = "640px")
                                            )
-                                       )
+                                       ),
                                    )
                                ))
                 },
@@ -8495,7 +7938,7 @@ ui <- shinyUI(
                 },
                 #=== 1.5.1.2 bs4TabItem network_plot
                 {
-                    bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                    bs4TabItem(tabName = "network_plot2", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
                                        # 1
@@ -8562,7 +8005,7 @@ ui <- shinyUI(
                                                    width = NULL
                                                ),
                                                sliderInput(
-                                                   inputId = "network_plot_width",
+                                                   inputId = "network_plot_width2",
                                                    label = "Figure Width (inch)",
                                                    min = 0.00,
                                                    max = 30.00,
@@ -8579,7 +8022,7 @@ ui <- shinyUI(
                                                    dragRange = TRUE
                                                ),
                                                sliderInput(
-                                                   inputId = "network_plot_height",
+                                                   inputId = "network_plot_height2",
                                                    label = "Figure Height (inch)",
                                                    min = 0.00,
                                                    max = 30.00,
@@ -8596,7 +8039,7 @@ ui <- shinyUI(
                                                    dragRange = TRUE
                                                ),
                                                sliderInput(
-                                                   inputId = "network_plot_dpi",
+                                                   inputId = "network_plot_dpi2",
                                                    label = "Figure DPI",
                                                    min = 68,
                                                    max = 1000,
@@ -8613,7 +8056,7 @@ ui <- shinyUI(
                                                    dragRange = TRUE
                                                ),
                                                downloadButton(
-                                                   outputId = "network_plot_download",
+                                                   outputId = "network_plot_download2",
                                                    label = "Result Download",
                                                    class = NULL,
                                                    icon = icon("circle-down"),
@@ -13816,6 +13259,205 @@ server <- shinyServer(function(session, input, output) {
                         height = input$heatmap_plot_height,
                         units = "in",
                         res = input$heatmap_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # network_plot
+    {
+        output$network_meta_data <- renderDT({
+            if (is.null(input$network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$network_gene_data <- renderDT({
+            if (is.null(input$network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            return(gene_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$network_group_data <- renderText({
+            if (is.null(input$network_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$network_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            return(group_data)
+        })
+        
+        output$network_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$network_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$network_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[,1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            names(diff_meta)[4] <- "p_value"
+            names(diff_gene)[4] <- "p_value"
+            
+            network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+            network_res
+        })
+        
+        output$network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("networkPlot", input$network_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$network_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$network_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$network_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$network_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$network_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$network_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[,1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    names(diff_meta)[4] <- "p_value"
+                    names(diff_gene)[4] <- "p_value"
+                    
+                    network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+                    network_res
+                })
+                
+                if (input$network_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$network_plot_width,
+                        height = input$network_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$network_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$network_plot_width,
+                        height = input$network_plot_height,
+                        units = "in",
+                        res = input$network_plot_dpi,
                         quality = 100
                     )
                     print(plot())
