@@ -164,8 +164,8 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| PCA Plot",
-                            tabName = "pca_plot",
+                            text = "| Correlate Network",
+                            tabName = "corr_network",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -1804,15 +1804,14 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.1.2 bs4TabItem pca_plot
+                #=== 1.5.1.2 bs4TabItem
                 {
-                    bs4TabItem(tabName = "pca_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                    bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
-                                       title = "| Options",
+                                       title = "| Setting",
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
@@ -1825,354 +1824,122 @@ ui <- shinyUI(
                                        collapsed = FALSE,
                                        closable = FALSE,
                                        maximizable = TRUE,
-                                       icon = icon("palette"),
+                                       icon = icon("gear"),
                                        boxToolSize = "sm",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "pca_plot_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "pca_plot_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "pca_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pca_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pca_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pca_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "pca_plot_download2",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "danger",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "pca_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "xPC_pca_plot",
-                                                   label = "xPC Index",
-                                                   min = 1,
-                                                   max = 30,
-                                                   value = 1,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "yPC_pca_plot",
-                                                   label = "yPC Index",
-                                                   min = 1,
-                                                   max = 30,
-                                                   value = 2,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "multi_shape_pca_plot",
-                                                   label = "Multiple Shape",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_size_pca_plot",
-                                                   label = "Point Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_alpha_pca_plot",
-                                                   label = "Point Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "text_size_pca_plot",
-                                                   label = "Text Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "fill_alpha_pca_plot",
-                                                   label = "Ellipse Fill Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.10,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "border_alpha_pca_plot",
-                                                   label = "Ellipse Border Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_pca_plot",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_pos_pca_plot",
-                                                   label = "Legend Position",
-                                                   choices = c("none", "left", "right", "bottom", "top"),
-                                                   selected = "right",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_dir_pca_plot",
-                                                   label = "Legend Director",
-                                                   choices = c("horizontal", "vertical"),
-                                                   selected = "vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_pca_plot",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
+                                       fileInput(
+                                           inputId = "corr_network_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolites (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "corr_network_gene_data_input",
+                                           label = "GeneExp Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "GeneExp (TXT)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "corr_network_threshold",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.95,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "corr_network_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "corr_network_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           # 1
+                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "PCA Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
+                                               "| Data && Figure Preview",
                                            ),
                                            footer = NULL,
                                            width = 12,
@@ -2182,7 +1949,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
                                            maximizable = TRUE,
@@ -2191,64 +1958,84 @@ ui <- shinyUI(
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           plotOutput("pca_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "pca_plot_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "corr_network_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "corr_network_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("corr_network_plot", width = "100%", height = "640px")
                                            )
                                        ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "danger",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "pca_plot_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
                                    )
                                ))
                 },
@@ -13783,6 +13570,151 @@ server <- shinyServer(function(session, input, output) {
                         height = input$diff_network_plot_height,
                         units = "in",
                         res = input$diff_network_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # corr_network
+    {
+        output$corr_network_meta_data <- renderDT({
+            if (is.null(input$corr_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$corr_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$corr_network_gene_data <- renderDT({
+            if (is.null(input$corr_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$corr_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            return(gene_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$corr_network_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$corr_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$corr_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$corr_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$corr_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
+            
+            corr_network_res <- pNetCor(meta_data, gene_data, cor_threshold = input$corr_network_threshold)
+            corr_network_res
+        })
+        
+        output$corr_network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("corr_networkPlot", input$corr_network_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$corr_network_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$corr_network_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$corr_network_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$corr_network_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
+                    
+                    corr_network_res <- pNetCor(meta_data, gene_data, cor_threshold = input$corr_network_threshold)
+                    corr_network_res
+                })
+                
+                if (input$corr_network_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$corr_network_plot_width,
+                        height = input$corr_network_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$corr_network_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$corr_network_plot_width,
+                        height = input$corr_network_plot_height,
+                        units = "in",
+                        res = input$corr_network_plot_dpi,
                         quality = 100
                     )
                     print(plot())
