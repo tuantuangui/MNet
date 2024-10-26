@@ -469,9 +469,9 @@ ui <- shinyUI(
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
             includeCSS("www/styles.css"),
-            # tags$head(
-            #     tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
-            # ),
+            tags$head(
+                tags$link(rel = "icon", type = "image/png", href = "favicon.png")
+            ),
             #=== 1.5.1 bs4DashPage -> bs4DashBody -> bs4TabItems
             bs4TabItems(
                 #=== 1.5.1.1 bs4DashPage home
