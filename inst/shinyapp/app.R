@@ -20,7 +20,7 @@ library(dplyr)
 ui <- shinyUI(
     #=== 1.bs4DashPage
     bs4DashPage(
-        title = "MNet App",
+        title = "MNet",
         skin = NULL,
         freshTheme = NULL,
         preloader = NULL,
@@ -74,7 +74,7 @@ ui <- shinyUI(
                 #=== 1.2.1.1 bs4SidebarUserPanel
                 bs4SidebarUserPanel(name = strong("MNet App"), image = "https://tuantuangui.github.io/MNet/logo.png"),
                 #=== 1.2.1.2 bs4SidebarHeader
-                bs4SidebarHeader(title = strong("App Store 【20】")),
+                bs4SidebarHeader(title = strong("Function【20】")),
                 hr(),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
@@ -248,190 +248,190 @@ ui <- shinyUI(
                         #     icon = icon("r-project"),
                         #     selected = NULL
                         # )
-                    ),
-                    bs4SidebarMenuItem(
-                        text = "4. Clinical Analysis",
-                        tabName = NULL,
-                        icon = icon("stethoscope"),
-                        # badgeLabel = "6",
-                        # badgeColor = "warning",
-                        href = NULL,
-                        newTab = TRUE,
-                        selected = NULL,
-                        expandedName = "anvanced_analysis",
-                        startExpanded = TRUE,
-                        condition = NULL,
-                        bs4SidebarMenuSubItem(
-                            text = "| Gene Rank Plot",
-                            tabName = "gene_rank_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        )
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Gene Cluster Trend",
-                        #     tabName = "gene_cluster_trend",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Trend Plot",
-                        #     tabName = "trend_plot",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Network Plot",
-                        #     tabName = "network_plot",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Heatmap Cluster",
-                        #     tabName = "heatmap_cluster",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # )
-                    ),
-                    bs4SidebarMenuItem(
-                        text = "5. Feature Selection",
-                        tabName = NULL,
-                        icon = icon("square-root-variable"),
-                        # badgeLabel = "6",
-                        # badgeColor = "warning",
-                        href = NULL,
-                        newTab = TRUE,
-                        selected = NULL,
-                        expandedName = "go_and_kegg",
-                        startExpanded = TRUE,
-                        condition = NULL,
-                        bs4SidebarMenuSubItem(
-                            text = "| GO Enrich",
-                            tabName = "go_enrich",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        )
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| GO Enrich Stat",
-                        #     tabName = "go_enrich_stat",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| GO Enrich Bar",
-                        #     tabName = "go_enrich_bar",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| GO Enrich Dot",
-                        #     tabName = "go_enrich_dot",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| GO Enrich Net",
-                        #     tabName = "go_enrich_net",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| KEGG Enrich",
-                        #     tabName = "kegg_enrich",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| KEGG Enrich Bar",
-                        #     tabName = "kegg_enrich_bar",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| KEGG Enrich Dot",
-                        #     tabName = "kegg_enrich_dot",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| KEGG Enrich Net",
-                        #     tabName = "kegg_enrich_net",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # )
-                    ),
-                    bs4SidebarMenuItem(
-                        text = "6. Metabolite Conversion",
-                        tabName = NULL,
-                        icon = icon("repeat"),
-                        # badgeLabel = "6",
-                        # badgeColor = "warning",
-                        href = NULL,
-                        newTab = TRUE,
-                        selected = NULL,
-                        expandedName = "tables_operations",
-                        startExpanded = TRUE,
-                        condition = NULL,
-                        bs4SidebarMenuSubItem(
-                            text = "| Table Split",
-                            tabName = "table_split",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        )
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Table Merge",
-                        #     tabName = "table_merge",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Table Filter",
-                        #     tabName = "table_filter",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Table Cross",
-                        #     tabName = "table_cross",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # )
                     )
+                    # bs4SidebarMenuItem(
+                    #     text = "4. Clinical Analysis",
+                    #     tabName = NULL,
+                    #     icon = icon("stethoscope"),
+                    #     # badgeLabel = "6",
+                    #     # badgeColor = "warning",
+                    #     href = NULL,
+                    #     newTab = TRUE,
+                    #     selected = NULL,
+                    #     expandedName = "anvanced_analysis",
+                    #     startExpanded = TRUE,
+                    #     condition = NULL,
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| Gene Rank Plot",
+                    #         tabName = "gene_rank_plot",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     )
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Gene Cluster Trend",
+                    #     #     tabName = "gene_cluster_trend",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Trend Plot",
+                    #     #     tabName = "trend_plot",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Network Plot",
+                    #     #     tabName = "network_plot",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Heatmap Cluster",
+                    #     #     tabName = "heatmap_cluster",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # )
+                    # ),
+                    # bs4SidebarMenuItem(
+                    #     text = "5. Feature Selection",
+                    #     tabName = NULL,
+                    #     icon = icon("square-root-variable"),
+                    #     # badgeLabel = "6",
+                    #     # badgeColor = "warning",
+                    #     href = NULL,
+                    #     newTab = TRUE,
+                    #     selected = NULL,
+                    #     expandedName = "go_and_kegg",
+                    #     startExpanded = TRUE,
+                    #     condition = NULL,
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| GO Enrich",
+                    #         tabName = "go_enrich",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     )
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| GO Enrich Stat",
+                    #     #     tabName = "go_enrich_stat",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| GO Enrich Bar",
+                    #     #     tabName = "go_enrich_bar",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| GO Enrich Dot",
+                    #     #     tabName = "go_enrich_dot",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| GO Enrich Net",
+                    #     #     tabName = "go_enrich_net",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| KEGG Enrich",
+                    #     #     tabName = "kegg_enrich",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| KEGG Enrich Bar",
+                    #     #     tabName = "kegg_enrich_bar",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| KEGG Enrich Dot",
+                    #     #     tabName = "kegg_enrich_dot",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| KEGG Enrich Net",
+                    #     #     tabName = "kegg_enrich_net",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # )
+                    # ),
+                    # bs4SidebarMenuItem(
+                    #     text = "6. Metabolite Conversion",
+                    #     tabName = NULL,
+                    #     icon = icon("repeat"),
+                    #     # badgeLabel = "6",
+                    #     # badgeColor = "warning",
+                    #     href = NULL,
+                    #     newTab = TRUE,
+                    #     selected = NULL,
+                    #     expandedName = "tables_operations",
+                    #     startExpanded = TRUE,
+                    #     condition = NULL,
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| Table Split",
+                    #         tabName = "table_split",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     )
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Table Merge",
+                    #     #     tabName = "table_merge",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Table Filter",
+                    #     #     tabName = "table_filter",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # ),
+                    #     # bs4SidebarMenuSubItem(
+                    #     #     text = "| Table Cross",
+                    #     #     tabName = "table_cross",
+                    #     #     href = NULL,
+                    #     #     newTab = TRUE,
+                    #     #     icon = icon("r-project"),
+                    #     #     selected = NULL
+                    #     # )
+                    # )
                 ),
                 hr()
             )
@@ -460,11 +460,11 @@ ui <- shinyUI(
         },
         #=== 1.4 bs4DashFooter
         {
-            footer = bs4DashFooter(
-                left = span("Copyright: @MNet", style = "font-weight:bold"),
-                right = NULL,
-                fixed = TRUE
-            )
+            # footer = bs4DashFooter(
+            #     left = span("Copyright: @MNet", style = "font-weight:bold"),
+            #     right = NULL,
+            #     fixed = TRUE
+            # )
         },
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
@@ -508,7 +508,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "pca_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -617,7 +617,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -718,7 +718,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "volcano_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -853,7 +853,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -954,7 +954,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "heatmap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -1123,7 +1123,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -1224,7 +1224,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -1360,7 +1360,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -1488,7 +1488,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "diff_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -1658,7 +1658,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -1786,7 +1786,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -1913,7 +1913,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -2019,7 +2019,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -2189,7 +2189,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -2317,7 +2317,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "mpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -2478,7 +2478,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -2579,7 +2579,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "gpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
                                    bs4Card(
-                                       style = "padding: 10%; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
@@ -2740,7 +2740,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
                                            title = span("| Data && Figure Preview", ),
                                            footer = NULL,
@@ -2842,7 +2842,7 @@ ui <- shinyUI(
                                fluidRow(
                                    bs4Card(
                                        # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
+                                       style = "padding: 5px; height: 850px; overflow-y: scroll; overflow-x: hidden",
                                        id = NULL,
                                        title = "| Options",
                                        footer = NULL,

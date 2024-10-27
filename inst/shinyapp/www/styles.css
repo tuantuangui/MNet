@@ -33,3 +33,7 @@ pre {
   scrollbar-width: thin;
   scrollbar-color: #cdcdcd #efefef;
 }
+
+.main-footer {
+  display: none !important;
+}
