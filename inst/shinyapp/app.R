@@ -14932,8 +14932,16 @@ server <- shinyServer(function(session, input, output) {
     {
         output$esea_comp_gene_data <- renderDT({
             if (is.null(input$esea_comp_gene_data_input)) {
-                data("sim.cpd.data")
-                comp_gene_data <- as.data.frame(sim.cpd.data)
+                comp_gene_data_df <- read.table(
+                    "data-tables/sim.cpd.data.txt",
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
+                comp_gene_data <- as.data.frame(comp_gene_data)
             } else{
                 comp_gene_data_df <- read.table(
                     input$esea_comp_gene_data_input$datapath,
@@ -14959,8 +14967,15 @@ server <- shinyServer(function(session, input, output) {
             progress$set(message = "Reading data ...", detail = "Reading data ...")
             
             if (is.null(input$esea_comp_gene_data_input)) {
-                data("sim.cpd.data")
-                comp_gene_data <- sim.cpd.data
+                comp_gene_data_df <- read.table(
+                    "data-tables/sim.cpd.data.txt",
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
             } else{
                 comp_gene_data_df <- read.table(
                     input$esea_comp_gene_data_input$datapath,
@@ -14976,7 +14991,7 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 100)
             progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
             
-            plot <- pESEA(
+            plot <- MNet::pESEA(
                 input$esea_pathway,
                 comp_gene_data,
                 out = "Extended"
@@ -14999,8 +15014,15 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(message = "Reading data ...", detail = "Reading data ...")
                     
                     if (is.null(input$esea_comp_gene_data_input)) {
-                        data("sim.cpd.data")
-                        comp_gene_data <- sim.cpd.data
+                        comp_gene_data_df <- read.table(
+                            "data-tables/sim.cpd.data.txt",
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                        comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                        names(comp_gene_data) <- rownames(comp_gene_data_df)
                     } else{
                         comp_gene_data_df <- read.table(
                             input$esea_comp_gene_data_input$datapath,
@@ -15016,7 +15038,7 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 100)
                     progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
                     
-                    plot <- pESEA(
+                    plot <- MNet::pESEA(
                         input$esea_pathway,
                         comp_gene_data,
                         out = "Extended"
