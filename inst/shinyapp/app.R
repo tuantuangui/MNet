@@ -193,6 +193,14 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
+                            text = "| DAscore ePDA",
+                            tabName = "epda_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
                             text = "| mPEA Pathway",
                             tabName = "mpea_plot",
                             href = NULL,
@@ -2307,6 +2315,287 @@ ui <- shinyUI(
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
                                                plotOutput("epea_plot", width = "100%", height = "1000px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== 1.5.1.2 bs4TabItem
+                {
+                    bs4TabItem(tabName = "epda_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "danger",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "sm",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "epda_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolites (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epda_gene_data_input",
+                                           label = "GeneExp Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "GeneExp (TXT)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epda_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Groups (TXT)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "epda_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "epda_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "epda_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "danger",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "sm",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "epda_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "epda_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("epda_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("epda_plot", width = "100%", height = "1000px")
                                            )
                                        ),
                                    )
@@ -14200,6 +14489,241 @@ server <- shinyServer(function(session, input, output) {
                         height = input$gpea_plot_height,
                         units = "in",
                         res = input$gpea_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # ePDA
+    {
+        output$epda_meta_data <- renderDT({
+            if (is.null(input$epda_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$epda_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$epda_gene_data <- renderDT({
+            if (is.null(input$epda_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$epda_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            return(gene_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$epda_group_data <- renderText({
+            if (is.null(input$epda_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$epda_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$epda_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$epda_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$epda_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$epda_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$epda_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$epda_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$epda_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            diff_gene_increase <-  diff_gene %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            diff_gene_decrease <- diff_gene %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_increase <- diff_meta %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_decrease <- diff_meta %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            epda_res <- DAscore(
+                c(diff_gene_increase$name, diff_meta_increase$name),
+                c(diff_gene_decrease$name, diff_meta_decrease$name),
+                c(diff_gene$name, diff_meta$name),
+                min_measured_num = 2,
+                out = "Extended"
+                )
+            epda_res
+        })
+        
+        output$epda_plot_download <- downloadHandler(
+            filename = function() {
+                paste("ePDA", input$epda_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$epda_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$epda_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$epda_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$epda_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$epda_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$epda_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    diff_gene_increase <-  diff_gene %>%
+                        filter(logFC > input$epda_logfc) %>%
+                        filter(adj.P.Val < input$epda_padj)
+                    diff_gene_decrease <- diff_gene %>%
+                        filter(logFC < -(input$epda_logfc)) %>%
+                        filter(adj.P.Val < input$epda_padj)
+                    
+                    diff_meta_increase <- diff_meta %>%
+                        filter(logFC > input$epda_logfc) %>%
+                        filter(adj.P.Val < input$epda_padj)
+                    
+                    diff_meta_decrease <- diff_meta %>%
+                        filter(logFC < -(input$epda_logfc)) %>%
+                        filter(adj.P.Val < input$epda_padj)
+                    
+                    epda_res <- DAscore(
+                        c(diff_gene_increase$name, diff_meta_increase$name),
+                        c(diff_gene_decrease$name, diff_meta_decrease$name),
+                        c(diff_gene$name, diff_meta$name),
+                        min_measured_num = 2,
+                        out = "Extended"
+                    )
+                    epda_res
+                })
+                
+                if (input$epda_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$epda_plot_width,
+                        height = input$epda_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$epda_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$epda_plot_width,
+                        height = input$epda_plot_height,
+                        units = "in",
+                        res = input$epda_plot_dpi,
                         quality = 100
                     )
                     print(plot())
