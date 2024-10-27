@@ -201,6 +201,14 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
+                            text = "| eSEA Pathway",
+                            tabName = "esea_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
                             text = "| mPEA Pathway",
                             tabName = "mpea_plot",
                             href = NULL,
@@ -2596,6 +2604,193 @@ ui <- shinyUI(
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
                                                plotOutput("epda_plot", width = "100%", height = "1000px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== 1.5.1.2 bs4TabItem
+                {
+                    bs4TabItem(tabName = "esea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "danger",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "sm",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "esea_comp_gene_data_input",
+                                           label = "Compound Gene Stats",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Compound Gene (TXT)"
+                                       ),
+                                       hr(),
+                                       textInput(
+                                           inputId = "esea_pathway",
+                                           label = "Pathway Name",
+                                           value = "Butanoate metabolism",
+                                           placeholder = "Pathway Name",
+                                           width = NULL
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "esea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "esea_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "danger",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "sm",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "esea_comp_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "danger",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "sm",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("esea_plot", width = "100%", height = "640px")
                                            )
                                        ),
                                    )
@@ -14724,6 +14919,127 @@ server <- shinyServer(function(session, input, output) {
                         height = input$epda_plot_height,
                         units = "in",
                         res = input$epda_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # eSEA
+    {
+        output$esea_comp_gene_data <- renderDT({
+            if (is.null(input$esea_comp_gene_data_input)) {
+                data("sim.cpd.data")
+                comp_gene_data <- as.data.frame(sim.cpd.data)
+            } else{
+                comp_gene_data_df <- read.table(
+                    input$esea_comp_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
+                comp_gene_data <- as.data.frame(comp_gene_data)
+            }
+            return(comp_gene_data)
+        }, options = list(scrollX = TRUE))
+        
+        output$esea_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$esea_comp_gene_data_input)) {
+                data("sim.cpd.data")
+                comp_gene_data <- sim.cpd.data
+            } else{
+                comp_gene_data_df <- read.table(
+                    input$esea_comp_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            plot <- pESEA(
+                input$esea_pathway,
+                comp_gene_data,
+                out = "Extended"
+                )
+            plot
+        })
+        
+        output$esea_plot_download <- downloadHandler(
+            filename = function() {
+                paste("eSEA", input$esea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$esea_comp_gene_data_input)) {
+                        data("sim.cpd.data")
+                        comp_gene_data <- sim.cpd.data
+                    } else{
+                        comp_gene_data_df <- read.table(
+                            input$esea_comp_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                        comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                        names(comp_gene_data) <- rownames(comp_gene_data_df)
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    plot <- pESEA(
+                        input$esea_pathway,
+                        comp_gene_data,
+                        out = "Extended"
+                    )
+                    plot
+                })
+                
+                if (input$esea_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$esea_plot_width,
+                        height = input$esea_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$esea_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$esea_plot_width,
+                        height = input$esea_plot_height,
+                        units = "in",
+                        res = input$esea_plot_dpi,
                         quality = 100
                     )
                     print(plot())
