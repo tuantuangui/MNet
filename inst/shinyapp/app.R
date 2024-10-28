@@ -42,13 +42,13 @@ ui <- shinyUI(
                 titleWidth = NULL,
                 disable = FALSE,
                 .list = NULL,
-                rightUi = bs4DropdownMenu(
-                    type = c("notifications"),
-                    badgeStatus = "primary",
-                    icon = icon("bell"),
-                    headerText = "Version Update:",
-                    href = "https://tuantuangui.github.io/MNet/index.html"
-                ),
+                # rightUi = bs4DropdownMenu(
+                #     type = c("notifications"),
+                #     badgeStatus = "primary",
+                #     icon = icon("bell"),
+                #     headerText = "Version Update:",
+                #     href = "https://tuantuangui.github.io/MNet/index.html"
+                # ),
                 skin = "light",
                 status = "white",
                 border = TRUE,
@@ -72,10 +72,10 @@ ui <- shinyUI(
                 id = NULL,
                 customArea = NULL,
                 #=== 1.2.1.1 bs4SidebarUserPanel
-                bs4SidebarUserPanel(name = strong("MNet App"), image = "https://tuantuangui.github.io/MNet/logo.png"),
+                bs4SidebarUserPanel(name = strong("MNet"), image = "https://tuantuangui.github.io/MNet/logo.png"),
                 #=== 1.2.1.2 bs4SidebarHeader
-                bs4SidebarHeader(title = strong("Function【20】")),
-                hr(),
+                # bs4SidebarHeader(title = strong("Function【4】")),
+                br(),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
                     id = NULL,
@@ -98,45 +98,46 @@ ui <- shinyUI(
                         startExpanded = FALSE,
                         condition = NULL
                     ),
+                    br(),
+                    # bs4SidebarMenuItem(
+                    #     text = "1. Metabolite Analysis",
+                    #     tabName = NULL,
+                    #     icon = icon("atom"),
+                    #     # badgeLabel = "6",
+                    #     # badgeColor = "warning",
+                    #     href = NULL,
+                    #     newTab = TRUE,
+                    #     selected = NULL,
+                    #     expandedName = "samples_statistics",
+                    #     startExpanded = TRUE,
+                    #     condition = NULL,
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| Metabolite PCA",
+                    #         tabName = "pca_plot",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     ),
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| Metabolite Volcano",
+                    #         tabName = "volcano_plot",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     ),
+                    #     bs4SidebarMenuSubItem(
+                    #         text = "| Metabolite Heatmap",
+                    #         tabName = "heatmap_plot",
+                    #         href = NULL,
+                    #         newTab = TRUE,
+                    #         icon = icon("r-project"),
+                    #         selected = NULL
+                    #     )
+                    # ),
                     bs4SidebarMenuItem(
-                        text = "1. Metabolite Analysis",
-                        tabName = NULL,
-                        icon = icon("atom"),
-                        # badgeLabel = "6",
-                        # badgeColor = "warning",
-                        href = NULL,
-                        newTab = TRUE,
-                        selected = NULL,
-                        expandedName = "samples_statistics",
-                        startExpanded = TRUE,
-                        condition = NULL,
-                        bs4SidebarMenuSubItem(
-                            text = "| Metabolite PCA",
-                            tabName = "pca_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Metabolite Volcano",
-                            tabName = "volcano_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Metabolite Heatmap",
-                            tabName = "heatmap_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        )
-                    ),
-                    bs4SidebarMenuItem(
-                        text = "2. Metabolic Network",
+                        text = "1. Metabolic Network",
                         tabName = NULL,
                         icon = icon("circle-nodes"),
                         # badgeLabel = "6",
@@ -154,26 +155,27 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| DiffExp Network",
-                            tabName = "diff_network",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Correlate Network",
-                            tabName = "corr_network",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| DiffExp Network",
+                        #     tabName = "diff_network",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Correlate Network",
+                        #     tabName = "corr_network",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                     ),
+                    br(),
                     bs4SidebarMenuItem(
-                        text = "3. Extended Pathway",
+                        text = "2. Extended Pathway",
                         tabName = NULL,
                         icon = icon("dna"),
                         # badgeLabel = "6",
@@ -207,23 +209,23 @@ ui <- shinyUI(
                             newTab = TRUE,
                             icon = icon("r-project"),
                             selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| mPEA Pathway",
-                            tabName = "mpea_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| gPEA Pathway",
-                            tabName = "gpea_plot",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
                         )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| mPEA Pathway",
+                        #     tabName = "mpea_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| gPEA Pathway",
+                        #     tabName = "gpea_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
                         # bs4SidebarMenuSubItem(
                         #     text = "| Volcano Plot",
                         #     tabName = "volcano_plot",
