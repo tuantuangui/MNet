@@ -62,7 +62,7 @@ ui <- shinyUI(
             sidebar = bs4DashSidebar(
                 disable = FALSE,
                 width = NULL,
-                skin = "dark",
+                skin = "light",
                 status = "warning",
                 elevation = 3,
                 collapsed = FALSE,
