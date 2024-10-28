@@ -1408,7 +1408,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Metabolic Data",
+                                               title = " Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1442,7 +1442,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Gene Data",
+                                               title = " Input: Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1476,7 +1476,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Group Data",
+                                               title = " Input: Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1504,7 +1504,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Meta-Gene Network",
+                                               title = " Output: Metabolism-related subnetwork",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2263,7 +2263,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Metabolic Data:",
+                                               title = " Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2297,7 +2297,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Gene Data",
+                                               title = " Input: Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2331,7 +2331,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Group Data",
+                                               title = " Input: Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2359,7 +2359,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . ePEA Visualization",
+                                               title = " Output: ePEA Pathway",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2570,7 +2570,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Metabolic Data",
+                                               title = " Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2604,7 +2604,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Gene Data",
+                                               title = " Input: Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2638,7 +2638,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Group Data",
+                                               title = " Input: Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2666,7 +2666,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . ePDA Visualization",
+                                               title = " Output: ePDA Pathway",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2832,7 +2832,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . Metabolic Data",
+                                               title = " Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2866,7 +2866,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " . eSEA Visualization",
+                                               title = " Output: eSEA Pathway",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -14266,8 +14266,8 @@ server <- shinyServer(function(session, input, output) {
                     result_down$p_barplot,
                     result_down$gp
                 ),
-                ncol = 1,
-                align = "v"
+                labels = "AUTO",
+                ncol = 1
             )
             plot
         })
@@ -14357,8 +14357,8 @@ server <- shinyServer(function(session, input, output) {
                             result_down$p_barplot,
                             result_down$gp
                         ),
-                        ncol = 1,
-                        align = "v"
+                        labels = "AUTO",
+                        ncol = 1
                     )
                     plot
                 })
