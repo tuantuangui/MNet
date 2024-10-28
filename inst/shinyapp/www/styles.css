@@ -8,6 +8,10 @@ pre {
   box-shadow: 0px 0px 5px #aaaaaa;
 }
 
+.card {
+  border-radius: 10px;
+}
+        
 .no-header .card-header {
   display: none;
 }

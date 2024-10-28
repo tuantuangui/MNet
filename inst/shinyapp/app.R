@@ -16,6 +16,7 @@ library(ggsci)
 library(ggplot2)
 library(MNet)
 library(dplyr)
+library(markdown)
 
 ui <- shinyUI(
     #=== 1.bs4DashPage
@@ -62,7 +63,7 @@ ui <- shinyUI(
             sidebar = bs4DashSidebar(
                 disable = FALSE,
                 width = NULL,
-                skin = "light",
+                skin = "dark",
                 status = "gray-dark",
                 elevation = 3,
                 collapsed = FALSE,
@@ -86,7 +87,7 @@ ui <- shinyUI(
                     legacy = FALSE,
                     #=== 1.2.1.3 bs4SidebarMenuItem
                     bs4SidebarMenuItem(
-                        text = "Overview",
+                        text = "Documents",
                         tabName = "home",
                         icon = icon("house"),
                         badgeLabel = "Intro",
@@ -499,11 +500,11 @@ ui <- shinyUI(
                             # 1
                             style = "padding: 10px;",
                             inputId = NULL,
-                            title = tags$b(" | MNet Introduction:"),
+                            title = tags$b(" . MNet Documents"),
                             footer = NULL,
                             width = 12,
                             height = NULL,
-                            status = "danger",
+                            status = "white",
                             elevation = 1,
                             solidHeader = FALSE,
                             headerBorder = FALSE,
@@ -517,7 +518,13 @@ ui <- shinyUI(
                             label = NULL,
                             dropdownMenu = NULL,
                             sidebar = NULL,
-                            htmlOutput("home_markdown")
+                            # htmlOutput("home_markdown")
+                            tags$iframe(
+                                src = "https://tuantuangui.github.io/MNet/index.html",
+                                width = "100%",
+                                height = "840px",
+                                style = "border: none; border-radius: 10px;"
+                            )
                         )
                     ))
                 },
@@ -532,7 +539,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -641,7 +648,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -662,7 +669,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -689,7 +696,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -711,7 +718,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -742,7 +749,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -877,7 +884,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -898,7 +905,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -925,7 +932,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -947,7 +954,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -978,7 +985,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -1147,7 +1154,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -1168,7 +1175,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1195,7 +1202,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1217,7 +1224,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1248,7 +1255,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -1378,34 +1385,34 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
+                                           # title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
-                                           solidHeader = FALSE,
+                                           solidHeader = TRUE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
                                            collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
+                                           maximizable = FALSE,
+                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = "no-header",
+                                           class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1419,6 +1426,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "network_meta_data",
                                                    width = "100%",
@@ -1428,11 +1442,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1446,6 +1460,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "network_gene_data",
                                                    width = "100%",
@@ -1455,11 +1476,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1473,15 +1494,21 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               textOutput("network_group_data")
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("network_group_data")
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Meta-Gene Network",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1490,11 +1517,17 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("table-list"),
+                                               icon = icon("image"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   "
+                                               ),
+                                               hr(),
                                                plotOutput("network_plot", width = "100%", height = "640px")
                                            )
                                        ),
@@ -1512,7 +1545,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -1682,7 +1715,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -1703,7 +1736,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1730,7 +1763,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1757,7 +1790,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1779,7 +1812,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1810,7 +1843,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -1937,7 +1970,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -1958,7 +1991,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -1985,7 +2018,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2012,7 +2045,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2043,7 +2076,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -2207,34 +2240,34 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
+                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = "epea_plot_card",
+                                           # title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
-                                           solidHeader = FALSE,
+                                           solidHeader = TRUE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
                                            collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
+                                           maximizable = FALSE,
+                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = "no-header",
+                                           class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Metabolic Data:",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2248,6 +2281,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "epea_meta_data",
                                                    width = "100%",
@@ -2257,11 +2297,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2275,6 +2315,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "epea_gene_data",
                                                    width = "100%",
@@ -2284,11 +2331,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2302,15 +2349,21 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               textOutput("epea_group_data")
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("epea_group_data")
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . ePEA Visualization",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2319,11 +2372,17 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("table-list"),
+                                               icon = icon("image"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   "
+                                               ),
+                                               hr(),
                                                plotOutput("epea_plot", width = "100%", height = "1000px")
                                            )
                                        ),
@@ -2341,7 +2400,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -2488,13 +2547,13 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
+                                           # title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -2502,20 +2561,20 @@ ui <- shinyUI(
                                            collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
+                                           maximizable = FALSE,
+                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = "no-header",
+                                           class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2529,6 +2588,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "epda_meta_data",
                                                    width = "100%",
@@ -2538,11 +2604,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2556,6 +2622,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "epda_gene_data",
                                                    width = "100%",
@@ -2565,11 +2638,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2583,15 +2656,21 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
-                                               textOutput("epda_group_data")
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("epda_group_data")
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . ePDA Visualization",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2600,11 +2679,17 @@ ui <- shinyUI(
                                                collapsed = FALSE,
                                                closable = FALSE,
                                                maximizable = TRUE,
-                                               icon = icon("table-list"),
+                                               icon = icon("image"),
                                                boxToolSize = "sm",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   "
+                                               ),
+                                               hr(),
                                                plotOutput("epda_plot", width = "100%", height = "1000px")
                                            )
                                        ),
@@ -2622,7 +2707,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -2724,34 +2809,34 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
                                            inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
+                                           # title = span("| Data && Figure Preview", ),
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
-                                           solidHeader = FALSE,
+                                           solidHeader = TRUE,
                                            headerBorder = TRUE,
                                            gradient = FALSE,
                                            collapsible = FALSE,
                                            collapsed = FALSE,
                                            closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
+                                           maximizable = FALSE,
+                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = "no-header",
+                                           class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2765,6 +2850,13 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
+                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
                                                DTOutput(
                                                    "esea_comp_gene_data",
                                                    width = "100%",
@@ -2774,11 +2866,11 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = "| Data Table",
+                                               title = " . eSEA Visualization",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -2792,6 +2884,12 @@ ui <- shinyUI(
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   "
+                                               ),
+                                               hr(),
                                                plotOutput("esea_plot", width = "100%", height = "640px")
                                            )
                                        ),
@@ -2809,7 +2907,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -2970,7 +3068,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -2991,7 +3089,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3018,7 +3116,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3040,7 +3138,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3071,7 +3169,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -3232,7 +3330,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -3253,7 +3351,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3280,7 +3378,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3302,7 +3400,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3334,7 +3432,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -3359,7 +3457,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3466,7 +3564,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3678,7 +3776,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -3701,7 +3799,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -3729,7 +3827,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -3765,7 +3863,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -3790,7 +3888,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -3888,7 +3986,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -4095,7 +4193,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4118,7 +4216,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4154,7 +4252,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -4179,7 +4277,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -4277,7 +4375,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -4437,7 +4535,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4460,7 +4558,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4496,7 +4594,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -4521,7 +4619,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -4619,7 +4717,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -4857,7 +4955,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4880,7 +4978,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -4916,7 +5014,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -4941,7 +5039,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5039,7 +5137,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5148,7 +5246,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -5171,7 +5269,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -5207,7 +5305,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -5232,7 +5330,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5330,7 +5428,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5599,7 +5697,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -5622,7 +5720,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -5658,7 +5756,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -5683,7 +5781,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5781,7 +5879,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -5994,7 +6092,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6017,7 +6115,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6053,7 +6151,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -6078,7 +6176,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -6185,7 +6283,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -6418,7 +6516,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6441,7 +6539,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6469,7 +6567,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6505,7 +6603,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -6530,7 +6628,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -6628,7 +6726,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -6834,7 +6932,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6857,7 +6955,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -6893,7 +6991,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -6918,7 +7016,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7016,7 +7114,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7221,7 +7319,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7244,7 +7342,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7280,7 +7378,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -7305,7 +7403,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7403,7 +7501,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7534,7 +7632,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7557,7 +7655,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7593,7 +7691,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -7618,7 +7716,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7716,7 +7814,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -7830,7 +7928,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7853,7 +7951,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -7889,7 +7987,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -7914,7 +8012,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -8012,7 +8110,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -8205,7 +8303,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -8228,7 +8326,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -8264,7 +8362,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -8289,7 +8387,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -8387,7 +8485,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -8654,7 +8752,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -8677,7 +8775,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -8713,7 +8811,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -8738,7 +8836,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -8836,7 +8934,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -9095,7 +9193,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9118,7 +9216,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9154,7 +9252,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -9179,7 +9277,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -9301,7 +9399,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9329,7 +9427,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9357,7 +9455,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9393,7 +9491,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -9418,7 +9516,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -9525,7 +9623,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -9712,7 +9810,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9735,7 +9833,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9763,7 +9861,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -9799,7 +9897,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -9824,7 +9922,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -9931,7 +10029,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -10111,7 +10209,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10134,7 +10232,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10162,7 +10260,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10198,7 +10296,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -10223,7 +10321,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -10330,7 +10428,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -10510,7 +10608,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10533,7 +10631,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10561,7 +10659,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10597,7 +10695,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -10622,7 +10720,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -10729,7 +10827,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -10896,7 +10994,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10919,7 +11017,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10947,7 +11045,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -10983,7 +11081,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -11008,7 +11106,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -11130,7 +11228,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11158,7 +11256,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11186,7 +11284,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11222,7 +11320,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -11247,7 +11345,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -11354,7 +11452,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -11534,7 +11632,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11557,7 +11655,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11585,7 +11683,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11621,7 +11719,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -11646,7 +11744,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -11753,7 +11851,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -11933,7 +12031,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11956,7 +12054,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -11984,7 +12082,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12020,7 +12118,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -12045,7 +12143,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -12152,7 +12250,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -12319,7 +12417,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12342,7 +12440,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12370,7 +12468,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12406,7 +12504,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -12431,7 +12529,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -12516,7 +12614,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12544,7 +12642,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12580,7 +12678,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -12605,7 +12703,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -12697,7 +12795,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12725,7 +12823,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12761,7 +12859,7 @@ ui <- shinyUI(
                                        footer = NULL,
                                        width = 3,
                                        height = NULL,
-                                       status = "danger",
+                                       status = "white",
                                        elevation = 0,
                                        solidHeader = FALSE,
                                        headerBorder = TRUE,
@@ -12786,7 +12884,7 @@ ui <- shinyUI(
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
-                                               status = "danger",
+                                               status = "white",
                                                elevation = 1,
                                                solidHeader = FALSE,
                                                headerBorder = TRUE,
@@ -12882,7 +12980,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12910,7 +13008,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -12938,7 +13036,7 @@ ui <- shinyUI(
                                            footer = NULL,
                                            width = 12,
                                            height = NULL,
-                                           status = "danger",
+                                           status = "white",
                                            elevation = 1,
                                            solidHeader = FALSE,
                                            headerBorder = TRUE,
@@ -13354,7 +13452,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "Heatmap visualizatioin ...", detail = "Heatmap visualizatioin ...")
             
             if (input$heatmap_diff_method == "LIMMA") {
                 diff_res <- mlimma(meta_data, group_data)
@@ -13423,7 +13521,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "Heatmap visualizatioin ...", detail = "Heatmap visualizatioin ...")
                     
                     if (input$heatmap_diff_method == "LIMMA") {
                         diff_res <- mlimma(meta_data, group_data)
@@ -13509,10 +13607,10 @@ server <- shinyServer(function(session, input, output) {
             return(gene_data)
         }, options = list(scrollX = TRUE))
         
-        output$network_group_data <- renderText({
+        output$network_group_data <- renderDT({
             if (is.null(input$network_group_data_input)) {
                 data("group")
-                group_data <- group
+                group_data <- as.data.frame(group)
             } else{
                 group_data <- read.table(
                     input$network_group_data_input$datapath,
@@ -13520,7 +13618,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[, 1])
+                group_data <- as.data.frame(as.character(group_data[, 1]))
             }
             return(group_data)
         })
@@ -13573,7 +13671,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -13638,7 +13736,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
@@ -13772,7 +13870,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "Metabolism related subnetwork ...", detail = "Metabolism related subnetwork ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -13846,7 +13944,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "Metabolism related subnetwork ...", detail = "Metabolism related subnetwork ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
@@ -13958,7 +14056,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
+            progress$set(message = "Correlation Network analysis ...", detail = "Correlation Network analysis ...")
             
             corr_network_res <- pNetCor(meta_data,
                                         gene_data,
@@ -14008,7 +14106,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Corr Network analysis ...", detail = "Corr Network analysis ...")
+                    progress$set(message = "Correlation Network analysis ...", detail = "Correlation Network analysis ...")
                     
                     corr_network_res <- pNetCor(meta_data,
                                                 gene_data,
@@ -14074,10 +14172,10 @@ server <- shinyServer(function(session, input, output) {
             return(gene_data)
         }, options = list(scrollX = TRUE))
         
-        output$epea_group_data <- renderText({
+        output$epea_group_data <- renderDT({
             if (is.null(input$epea_group_data_input)) {
                 data("group")
-                group_data <- group
+                group_data <- as.data.frame(group)
             } else{
                 group_data <- read.table(
                     input$epea_group_data_input$datapath,
@@ -14085,10 +14183,10 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[, 1])
+                group_data <- as.data.frame(as.character(group_data[, 1]))
             }
             return(group_data)
-        })
+        }, options = list(scrollX = TRUE))
         
         output$epea_plot <- renderPlot({
             progress <- Progress$new(session, min = 1, max = 100)
@@ -14138,7 +14236,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -14227,7 +14325,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
@@ -14360,7 +14458,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "mPEA Pathway ...", detail = "mPEA Pathway ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             
@@ -14434,7 +14532,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "mPEA Pathway ...", detail = "mPEA Pathway ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     
@@ -14562,7 +14660,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "gPEA Pathway ...", detail = "gPEA Pathway ...")
             
             diff_gene <- mlimma(gene_data, group_data)
             
@@ -14635,7 +14733,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "gPEA Pathway ...", detail = "gPEA Pathway ...")
                     
                     diff_gene <- mlimma(gene_data, group_data)
                     
@@ -14728,10 +14826,10 @@ server <- shinyServer(function(session, input, output) {
             return(gene_data)
         }, options = list(scrollX = TRUE))
         
-        output$epda_group_data <- renderText({
+        output$epda_group_data <- renderDT({
             if (is.null(input$epda_group_data_input)) {
                 data("group")
-                group_data <- group
+                group_data <- as.data.frame(group)
             } else{
                 group_data <- read.table(
                     input$epda_group_data_input$datapath,
@@ -14739,7 +14837,7 @@ server <- shinyServer(function(session, input, output) {
                     sep = "\t",
                     stringsAsFactors = F
                 )
-                group_data <- as.character(group_data[, 1])
+                group_data <- as.data.frame(as.character(group_data[, 1]))
             }
             return(group_data)
         })
@@ -14792,7 +14890,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -14875,7 +14973,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
@@ -14991,7 +15089,7 @@ server <- shinyServer(function(session, input, output) {
             }
             
             progress$set(value = 100)
-            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
             
             plot <- MNet::pESEA(
                 input$esea_pathway,
@@ -15038,7 +15136,7 @@ server <- shinyServer(function(session, input, output) {
                     }
                     
                     progress$set(value = 100)
-                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
                     
                     plot <- MNet::pESEA(
                         input$esea_pathway,
