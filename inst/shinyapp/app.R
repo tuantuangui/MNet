@@ -63,7 +63,7 @@ ui <- shinyUI(
                 disable = FALSE,
                 width = NULL,
                 skin = "light",
-                status = "warning",
+                status = "gray-dark",
                 elevation = 3,
                 collapsed = FALSE,
                 minified = TRUE,
