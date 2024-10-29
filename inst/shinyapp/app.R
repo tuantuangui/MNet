@@ -6,6 +6,7 @@
 # <- Author
 
 options = list(warn = -1)
+options(shiny.maxRequestSize = 100 * 1024^2)
 
 library(shiny)
 library(bs4Dash)
@@ -1408,7 +1409,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Metabolic Data",
+                                               title = "Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1442,7 +1443,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Gene Data",
+                                               title = "Input: Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1476,7 +1477,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Group Data",
+                                               title = "Input: Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -1504,7 +1505,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Output: Metabolism-related subnetwork",
+                                               title = "Output: Metabolism-related subnetwork",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2090,8 +2091,10 @@ ui <- shinyUI(
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       hr(),
                                        fileInput(
-                                           inputId = "epea_meta_data_input",
+                                           inputId = "epea_user_meta_data_input",
                                            label = "Metabolite Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2100,7 +2103,7 @@ ui <- shinyUI(
                                            placeholder = "Metabolites (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "epea_gene_data_input",
+                                           inputId = "epea_user_gene_data_input",
                                            label = "GeneExp Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2109,7 +2112,7 @@ ui <- shinyUI(
                                            placeholder = "GeneExp (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "epea_group_data_input",
+                                           inputId = "epea_user_group_data_input",
                                            label = "Group Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2117,6 +2120,31 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Groups (TXT)"
                                        ),
+                                       actionButton(
+                                           inputId = "epea_demo",
+                                           label = "Demo",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "info",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       actionButton(
+                                           inputId = "epea_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
                                            inputId = "epea_logfc",
@@ -2169,6 +2197,7 @@ ui <- shinyUI(
                                            timezone = NULL,
                                            dragRange = TRUE
                                        ),
+                                       tags$b("3. FIGURE CANVAS:"),
                                        hr(),
                                        selectInput(
                                            inputId = "epea_plot_format",
@@ -2228,164 +2257,291 @@ ui <- shinyUI(
                                            timeFormat = FALSE,
                                            timezone = NULL,
                                            dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "epea_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
-                                       bs4Card(
-                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = "epea_plot_card",
-                                           # title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "Demo",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("Demo"),
                                            width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = TRUE,
-                                           headerBorder = TRUE,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = TRUE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
                                            gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = FALSE,
-                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = NULL,
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = " Input: Metabolic Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolic Data",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epea_demo_meta_data_download",
+                                                           label = "Metabolic Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "epea_meta_data",
+                                                   "epea_demo_meta_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = " Input: Gene Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epea_demo_gene_data_download",
+                                                           label = "Gene Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "epea_gene_data",
+                                                   "epea_demo_gene_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = " Input: Group Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epea_demo_group_data_download",
+                                                           label = "Group Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
                                                    "
                                                ),
                                                hr(),
-                                               DTOutput("epea_group_data")
+                                               DTOutput("epea_demo_group_data"),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = " Output: ePEA Pathway",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("image"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Pathway",
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("epea_plot", width = "100%", height = "1000px")
+                                               tags$img(
+                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "|",
+                                               icon = NULL
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Manual",
+                                               tags$iframe(
+                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   width = "100%",
+                                                   height = "720",
+                                                   frameborder = 0
+                                               ),
+                                               icon = shiny::icon("book-open")
                                            )
                                        ),
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "User",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("User"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "sm",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolic Data",
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("epea_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Pathway",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epea_plot_download",
+                                                           label = "Figure Download",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               plotOutput("epea_plot", width = "100%", height = "1000px"),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
                                    )
                                ))
                 },
@@ -2570,7 +2726,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Metabolic Data",
+                                               title = "Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2604,7 +2760,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Gene Data",
+                                               title = "Input: Gene Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2638,7 +2794,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Group Data",
+                                               title = "Input: Group Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2666,7 +2822,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Output: ePDA Pathway",
+                                               title = "Output: ePDA Pathway",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2832,7 +2988,7 @@ ui <- shinyUI(
                                            class = NULL,
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Input: Metabolic Data",
+                                               title = "Input: Metabolic Data",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -2866,7 +3022,7 @@ ui <- shinyUI(
                                            ),
                                            bs4Card(
                                                inputId = NULL,
-                                               title = " Output: eSEA Pathway",
+                                               title = "Output: eSEA Pathway",
                                                footer = NULL,
                                                width = 12,
                                                height = NULL,
@@ -13088,7 +13244,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$pca_group_data <- renderText({
             if (is.null(input$pca_group_data_input)) {
@@ -13236,7 +13392,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$volcano_group_data <- renderText({
             if (is.null(input$volcano_group_data_input)) {
@@ -13398,7 +13554,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$heatmap_group_data <- renderText({
             if (is.null(input$heatmap_group_data_input)) {
@@ -13590,7 +13746,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$network_gene_data <- renderDT({
             if (is.null(input$network_gene_data_input)) {
@@ -13605,7 +13761,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$network_group_data <- renderDT({
             if (is.null(input$network_group_data_input)) {
@@ -13789,7 +13945,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$diff_network_gene_data <- renderDT({
             if (is.null(input$diff_network_gene_data_input)) {
@@ -13804,7 +13960,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$diff_network_group_data <- renderText({
             if (is.null(input$diff_network_group_data_input)) {
@@ -14004,7 +14160,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$corr_network_gene_data <- renderDT({
             if (is.null(input$corr_network_gene_data_input)) {
@@ -14019,7 +14175,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$corr_network_plot <- renderPlot({
             progress <- Progress$new(session, min = 1, max = 100)
@@ -14141,135 +14297,263 @@ server <- shinyServer(function(session, input, output) {
     
     # ePEA
     {
-        output$epea_meta_data <- renderDT({
-            if (is.null(input$epea_meta_data_input)) {
+        output$epea_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epea_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
-                meta_data <- read.table(
-                    input$epea_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
+                
+                write.table(meta_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(meta_data)
-        }, options = list(scrollX = TRUE))
+        )
         
-        output$epea_gene_data <- renderDT({
-            if (is.null(input$epea_gene_data_input)) {
+        output$epea_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            return(head(gene_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epea_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("gene_dat")
                 gene_data <- gene_dat
-            } else{
-                gene_data <- read.table(
-                    input$epea_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
+                
+                write.table(gene_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(gene_data)
-        }, options = list(scrollX = TRUE))
+        )
         
-        output$epea_group_data <- renderDT({
-            if (is.null(input$epea_group_data_input)) {
+        output$epea_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            return(head(group_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epea_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("group")
                 group_data <- as.data.frame(group)
-            } else{
-                group_data <- read.table(
-                    input$epea_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.data.frame(as.character(group_data[, 1]))
+                
+                write.table(group_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = FALSE,
+                            quote = FALSE)
             }
-            return(group_data)
-        }, options = list(scrollX = TRUE))
+        )
         
-        output$epea_plot <- renderPlot({
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+        output$epea_user_meta_data <- renderDT({
+            req(input$epea_user_meta_data_input)
+            meta_data <- read.table(
+                input$epea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epea_user_gene_data <- renderDT({
+            req(input$epea_user_gene_data_input)
+            gene_data <- read.table(
+                input$epea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            if (is.null(input$epea_meta_data_input)) {
+            return(head(gene_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epea_user_group_data <- renderDT({
+            req(input$epea_user_group_data_input)
+            group_data <- read.table(
+                input$epea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            return(head(group_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        observeEvent(input$epea_demo, {
+            output$epea_user_meta_data <- renderDT({
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
+                
+                return(head(meta_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_user_gene_data <- renderDT({
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                return(head(gene_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_user_group_data <- renderDT({
+                data("group")
+                group_data <- as.data.frame(group)
+                
+                return(head(group_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                data("group")
+                group_data <- group
+                
+                progress$set(value = 100)
+                progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                all_data <- rbind(diff_gene, diff_meta)
+                
+                all_data_up <- all_data %>%
+                    filter(logFC > input$epea_logfc) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_up <- PathwayAnalysis(all_data_up$name,
+                                             out = "Extended",
+                                             p_cutoff = input$epea_p_cutoff)
+                
+                all_data_down <- all_data %>%
+                    filter(logFC < -(input$epea_padj)) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_down <- PathwayAnalysis(
+                    all_data_down$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                plot <- cowplot::plot_grid(
+                    plotlist = list(
+                        result_up$p_barplot,
+                        result_up$gp,
+                        result_down$p_barplot,
+                        result_down$gp
+                    ),
+                    labels = "AUTO",
+                    ncol = 1
+                )
+                plot
+            })
+        })
+        
+        observeEvent(input$epea_submit, {
+            output$epea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
                 meta_data <- read.table(
-                    input$epea_meta_data_input$datapath,
+                    input$epea_user_meta_data_input$datapath,
                     header = T,
                     sep = "\t",
                     row.names = 1,
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$epea_gene_data_input)) {
-                data("gene_dat")
-                gene_data <- gene_dat
-            } else{
+                
                 gene_data <- read.table(
-                    input$epea_gene_data_input$datapath,
+                    input$epea_user_gene_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$epea_group_data_input)) {
-                data("group")
-                group_data <- group
-            } else{
+                
                 group_data <- read.table(
-                    input$epea_group_data_input$datapath,
+                    input$epea_user_group_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
                 group_data <- as.character(group_data[, 1])
-            }
-            
-            progress$set(value = 100)
-            progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
-            
-            diff_meta <- mlimma(meta_data, group_data)
-            diff_gene <- mlimma(gene_data, group_data)
-            
-            all_data <- rbind(diff_gene, diff_meta)
-            
-            all_data_up <- all_data %>%
-                filter(logFC > input$epea_logfc) %>%
-                filter(adj.P.Val < input$epea_padj)
-            result_up <- PathwayAnalysis(all_data_up$name,
-                                         out = "Extended",
-                                         p_cutoff = input$epea_p_cutoff)
-            
-            all_data_down <- all_data %>%
-                filter(logFC < -(input$epea_padj)) %>%
-                filter(adj.P.Val < input$epea_padj)
-            result_down <- PathwayAnalysis(
-                all_data_down$name,
-                out = "Extended",
-                p_cutoff = input$epea_p_cutoff
-            )
-            
-            plot <- cowplot::plot_grid(
-                plotlist = list(
-                    result_up$p_barplot,
-                    result_up$gp,
-                    result_down$p_barplot,
-                    result_down$gp
-                ),
-                labels = "AUTO",
-                ncol = 1
-            )
-            plot
+                
+                progress$set(value = 100)
+                progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                all_data <- rbind(diff_gene, diff_meta)
+                
+                all_data_up <- all_data %>%
+                    filter(logFC > input$epea_logfc) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_up <- PathwayAnalysis(all_data_up$name,
+                                             out = "Extended",
+                                             p_cutoff = input$epea_p_cutoff)
+                
+                all_data_down <- all_data %>%
+                    filter(logFC < -(input$epea_padj)) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_down <- PathwayAnalysis(
+                    all_data_down$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                plot <- cowplot::plot_grid(
+                    plotlist = list(
+                        result_up$p_barplot,
+                        result_up$gp,
+                        result_down$p_barplot,
+                        result_down$gp
+                    ),
+                    labels = "AUTO",
+                    ncol = 1
+                )
+                plot
+            })
         })
         
         output$epea_plot_download <- downloadHandler(
@@ -14286,43 +14570,28 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 10)
                     progress$set(message = "Reading data ...", detail = "Reading data ...")
                     
-                    if (is.null(input$epea_meta_data_input)) {
-                        data("meta_dat")
-                        meta_data <- meta_dat
-                    } else{
-                        meta_data <- read.table(
-                            input$epea_meta_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                    }
+                    meta_data <- read.table(
+                        input$epea_user_meta_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        row.names = 1,
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$epea_gene_data_input)) {
-                        data("gene_dat")
-                        gene_data <- gene_dat
-                    } else{
-                        gene_data <- read.table(
-                            input$epea_gene_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                    }
+                    gene_data <- read.table(
+                        input$epea_user_gene_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$epea_group_data_input)) {
-                        data("group")
-                        group_data <- group
-                    } else{
-                        group_data <- read.table(
-                            input$epea_group_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                        group_data <- as.character(group_data[, 1])
-                    }
+                    group_data <- read.table(
+                        input$epea_user_group_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
+                    group_data <- as.character(group_data[, 1])
                     
                     progress$set(value = 100)
                     progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
@@ -14404,7 +14673,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$mpea_group_data <- renderText({
             if (is.null(input$mpea_group_data_input)) {
@@ -14607,7 +14876,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$gpea_group_data <- renderText({
             if (is.null(input$gpea_group_data_input)) {
@@ -14809,7 +15078,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$epda_gene_data <- renderDT({
             if (is.null(input$epda_gene_data_input)) {
@@ -14824,7 +15093,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$epda_group_data <- renderDT({
             if (is.null(input$epda_group_data_input)) {
@@ -15055,7 +15324,7 @@ server <- shinyServer(function(session, input, output) {
                 comp_gene_data <- as.data.frame(comp_gene_data)
             }
             return(comp_gene_data)
-        }, options = list(scrollX = TRUE))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$esea_plot <- renderPlot({
             progress <- Progress$new(session, min = 1, max = 100)

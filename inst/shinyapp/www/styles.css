@@ -8,12 +8,22 @@ pre {
   box-shadow: 0px 0px 5px #aaaaaa;
 }
 
+a {
+  color: #008888;
+  font-weight: bold;
+  font-size: 0.95em;
+}
+
 .card {
   border-radius: 10px;
 }
         
 .no-header .card-header {
   display: none;
+}
+
+.card .form-group {
+  margin-bottom: 0rem !important;
 }
 
 ::-webkit-scrollbar {
