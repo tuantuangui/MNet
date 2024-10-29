@@ -1538,7 +1538,7 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: ePEA Pathway",
+                                               title = "Output: Subnetwork",
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
@@ -1659,7 +1659,7 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: ePEA Pathway",
+                                               title = "Output: Subnetwork",
                                                fluidRow(
                                                    column(
                                                        width = 9
@@ -3010,7 +3010,7 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: ePEA Pathway",
+                                               title = "Output: ePDA Pathway",
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
@@ -3187,8 +3187,10 @@ ui <- shinyUI(
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       hr(),
                                        fileInput(
-                                           inputId = "esea_comp_gene_data_input",
+                                           inputId = "esea_user_comp_gene_data_input",
                                            label = "Compound Gene Stats",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -3196,6 +3198,31 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Compound Gene (TXT)"
                                        ),
+                                       actionButton(
+                                           inputId = "esea_demo",
+                                           label = "Demo",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "info",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       actionButton(
+                                           inputId = "esea_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        textInput(
                                            inputId = "esea_pathway",
@@ -3204,6 +3231,7 @@ ui <- shinyUI(
                                            placeholder = "Pathway Name",
                                            width = NULL
                                        ),
+                                       tags$b("3. FIGURE CANVAS:"),
                                        hr(),
                                        selectInput(
                                            inputId = "esea_plot_format",
@@ -3263,102 +3291,191 @@ ui <- shinyUI(
                                            timeFormat = FALSE,
                                            timezone = NULL,
                                            dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "esea_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
-                                       bs4Card(
-                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           # title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "Demo",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("Demo"),
                                            width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = TRUE,
-                                           headerBorder = TRUE,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = TRUE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
                                            gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = FALSE,
-                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = NULL,
-                                           bs4Card(
-                                               inputId = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "esea_demo_comp_gene_data_download",
+                                                           label = "Metabolic Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "esea_comp_gene_data",
+                                                   "esea_demo_comp_gene_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: eSEA Pathway",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("esea_plot", width = "100%", height = "640px")
+                                               tags$img(
+                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(tags$b("FIGURE 1"), "eSEA Pathway."),
+                                               icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "|",
+                                               icon = NULL
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Manual",
+                                               tags$iframe(
+                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   width = "100%",
+                                                   height = "720",
+                                                   frameborder = 0
+                                               ),
+                                               icon = shiny::icon("book-open")
                                            )
                                        ),
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "User",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("User"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "sm",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolic Data",
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_user_comp_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: eSEA Pathway",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "esea_plot_download",
+                                                           label = "Figure Download",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               plotOutput("esea_plot", width = "100%", height = "1000px"),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
                                    )
                                ))
                 },
@@ -6165,43 +6282,26 @@ server <- shinyServer(function(session, input, output) {
     
     # eSEA
     {
-        output$esea_comp_gene_data <- renderDT({
-            if (is.null(input$esea_comp_gene_data_input)) {
-                comp_gene_data_df <- read.table(
-                    "data-tables/sim.cpd.data.txt",
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
-                comp_gene_data <- as.data.frame(comp_gene_data)
-            } else{
-                comp_gene_data_df <- read.table(
-                    input$esea_comp_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
-                comp_gene_data <- as.data.frame(comp_gene_data)
-            }
-            return(comp_gene_data)
+        output$esea_demo_comp_gene_data <- renderDT({
+            comp_gene_data_df <- read.table(
+                "data-tables/sim.cpd.data.txt",
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+            names(comp_gene_data) <- rownames(comp_gene_data_df)
+            comp_gene_data <- as.data.frame(comp_gene_data)
+            
+            return(head(comp_gene_data, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
-        output$esea_plot <- renderPlot({
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
-            
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
-            
-            if (is.null(input$esea_comp_gene_data_input)) {
+        output$esea_demo_comp_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_comp_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 comp_gene_data_df <- read.table(
                     "data-tables/sim.cpd.data.txt",
                     header = T,
@@ -6211,9 +6311,37 @@ server <- shinyServer(function(session, input, output) {
                 )
                 comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
                 names(comp_gene_data) <- rownames(comp_gene_data_df)
-            } else{
+                comp_gene_data <- as.data.frame(comp_gene_data)
+                
+                write.table(comp_gene_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
+            }
+        )
+        
+        output$esea_user_comp_gene_data <- renderDT({
+            req(input$esea_user_comp_gene_data_input)
+            comp_gene_data_df <- read.table(
+                input$esea_user_comp_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+            names(comp_gene_data) <- rownames(comp_gene_data_df)
+            comp_gene_data <- as.data.frame(comp_gene_data)
+            
+            return(head(comp_gene_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        observeEvent(input$esea_demo, {
+            output$esea_user_comp_gene_data <- renderDT({
                 comp_gene_data_df <- read.table(
-                    input$esea_comp_gene_data_input$datapath,
+                    "data-tables/sim.cpd.data.txt",
                     header = T,
                     sep = "\t",
                     row.names = 1,
@@ -6221,17 +6349,72 @@ server <- shinyServer(function(session, input, output) {
                 )
                 comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
                 names(comp_gene_data) <- rownames(comp_gene_data_df)
-            }
+                comp_gene_data <- as.data.frame(comp_gene_data)
+                
+                return(head(comp_gene_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
-            progress$set(value = 100)
-            progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
-            
-            plot <- MNet::pESEA(
-                input$esea_pathway,
-                comp_gene_data,
-                out = "Extended"
+            output$esea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                comp_gene_data_df <- read.table(
+                    "data-tables/sim.cpd.data.txt",
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
                 )
-            plot
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
+                
+                progress$set(value = 100)
+                progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
+                
+                plot <- MNet::pESEA(
+                    input$esea_pathway,
+                    comp_gene_data,
+                    out = "Extended"
+                )
+                plot
+            })
+        })
+        
+        observeEvent(input$esea_submit, {
+            output$esea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                comp_gene_data_df <- read.table(
+                    input$esea_user_comp_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                names(comp_gene_data) <- rownames(comp_gene_data_df)
+                
+                progress$set(value = 100)
+                progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
+                
+                plot <- MNet::pESEA(
+                    input$esea_pathway,
+                    comp_gene_data,
+                    out = "Extended"
+                )
+                plot
+            })
         })
         
         output$esea_plot_download <- downloadHandler(
@@ -6248,27 +6431,15 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 10)
                     progress$set(message = "Reading data ...", detail = "Reading data ...")
                     
-                    if (is.null(input$esea_comp_gene_data_input)) {
-                        comp_gene_data_df <- read.table(
-                            "data-tables/sim.cpd.data.txt",
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                        comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                        names(comp_gene_data) <- rownames(comp_gene_data_df)
-                    } else{
-                        comp_gene_data_df <- read.table(
-                            input$esea_comp_gene_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                        comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                        names(comp_gene_data) <- rownames(comp_gene_data_df)
-                    }
+                    comp_gene_data_df <- read.table(
+                        input$esea_user_comp_gene_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        row.names = 1,
+                        stringsAsFactors = F
+                    )
+                    comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
+                    names(comp_gene_data) <- rownames(comp_gene_data_df)
                     
                     progress$set(value = 100)
                     progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
