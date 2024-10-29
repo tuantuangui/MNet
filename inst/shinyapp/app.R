@@ -6,7 +6,7 @@
 # <- Author
 
 options = list(warn = -1)
-options(shiny.maxRequestSize = 100 * 1024^2)
+options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 
 library(shiny)
 library(bs4Dash)
@@ -489,12 +489,11 @@ ui <- shinyUI(
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
             includeCSS("www/styles.css"),
-            tags$head(
-                tags$link(rel = "icon", type = "image/png", href = "favicon.png")
-            ),
+            tags$head(tags$link(
+                rel = "icon", type = "image/png", href = "favicon.png"
+            )),
             #=== 1.5.1 bs4DashPage -> bs4DashBody -> bs4TabItems
-            bs4TabItems(
-                #=== 1.5.1.1 bs4DashPage home
+            bs4TabItems(#=== 1.5.1.1 bs4DashPage home
                 {
                     bs4TabItem(tabName = "home", fluidRow(
                         bs4Card(
@@ -528,8 +527,7 @@ ui <- shinyUI(
                             )
                         )
                     ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "pca_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -738,8 +736,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "volcano_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -974,8 +971,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "heatmap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1244,8 +1240,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1310,7 +1305,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        actionButton(
                                            inputId = "network_submit",
                                            label = "Submit",
@@ -1322,7 +1318,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
@@ -1407,10 +1404,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "Demo",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("Demo"),
@@ -1438,27 +1432,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "network_demo_meta_data_download",
-                                                           label = "Metabolic Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_meta_data_download",
+                                                       label = "Metabolic Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -1474,27 +1463,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "network_demo_gene_data_download",
-                                                           label = "Gene Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -1510,25 +1494,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "network_demo_group_data_download",
-                                                           label = "Group Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -1542,7 +1521,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -1573,10 +1552,7 @@ ui <- shinyUI(
                                            )
                                        ),
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "User",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("User"),
@@ -1607,9 +1583,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -1628,9 +1604,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -1649,7 +1625,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -1660,25 +1636,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Subnetwork",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "network_plot_download",
-                                                           label = "Figure Download",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -1689,8 +1660,7 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "diff_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1987,8 +1957,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2220,8 +2189,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2286,7 +2254,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        actionButton(
                                            inputId = "epea_submit",
                                            label = "Submit",
@@ -2298,7 +2267,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
@@ -2417,10 +2387,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "Demo",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("Demo"),
@@ -2448,27 +2415,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epea_demo_meta_data_download",
-                                                           label = "Metabolic Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_meta_data_download",
+                                                       label = "Metabolic Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -2484,27 +2446,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epea_demo_gene_data_download",
-                                                           label = "Gene Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -2520,25 +2477,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epea_demo_group_data_download",
-                                                           label = "Group Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -2552,7 +2504,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -2583,10 +2535,7 @@ ui <- shinyUI(
                                            )
                                        ),
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "User",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("User"),
@@ -2617,9 +2566,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -2638,9 +2587,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -2659,7 +2608,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -2670,25 +2619,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePEA Pathway",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epea_plot_download",
-                                                           label = "Figure Download",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -2699,8 +2643,7 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "epda_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2765,7 +2708,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        actionButton(
                                            inputId = "epda_submit",
                                            label = "Submit",
@@ -2777,7 +2721,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
@@ -2879,10 +2824,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "Demo",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("Demo"),
@@ -2910,27 +2852,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epda_demo_meta_data_download",
-                                                           label = "Metabolic Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_meta_data_download",
+                                                       label = "Metabolic Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -2946,27 +2883,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epda_demo_gene_data_download",
-                                                           label = "Gene Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -2982,25 +2914,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epda_demo_group_data_download",
-                                                           label = "Group Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -3014,7 +2941,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -3045,10 +2972,7 @@ ui <- shinyUI(
                                            )
                                        ),
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "User",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("User"),
@@ -3079,9 +3003,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -3100,9 +3024,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Gene Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to genes.
-                                                   
+
                                                    **Columns:** correspond to the samples.
                                                    "
                                                ),
@@ -3121,7 +3045,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
-                                                   
+
                                                    **Format:** TXT with tab separated.
                                                    "
                                                ),
@@ -3132,25 +3056,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Pathway",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "epda_plot_download",
-                                                           label = "Figure Download",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -3161,8 +3080,7 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "esea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3209,7 +3127,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        actionButton(
                                            inputId = "esea_submit",
                                            label = "Submit",
@@ -3221,7 +3140,8 @@ ui <- shinyUI(
                                            size = NULL,
                                            flat = FALSE
                                        ),
-                                       br(),br(),
+                                       br(),
+                                       br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        textInput(
@@ -3296,10 +3216,7 @@ ui <- shinyUI(
                                    column(
                                        width = 9,
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "Demo",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("Demo"),
@@ -3327,27 +3244,22 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "esea_demo_comp_gene_data_download",
-                                                           label = "Metabolic Data",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_comp_gene_data_download",
+                                                       label = "Metabolic Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -3366,7 +3278,7 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -3397,10 +3309,7 @@ ui <- shinyUI(
                                            )
                                        ),
                                        bs4TabCard(
-                                           ribbon(
-                                               text = "User",
-                                               color = "danger"
-                                           ),
+                                           ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolic Data",
                                            title = tags$b("User"),
@@ -3431,9 +3340,9 @@ ui <- shinyUI(
                                                markdown(
                                                    "
                                                    **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
-                                                   
+
                                                    **Rows:** corresponding to metabolites.
-                                                   
+
                                                    **Columns:** corresponding to samples.
                                                    "
                                                ),
@@ -3449,25 +3358,20 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: eSEA Pathway",
-                                               fluidRow(
-                                                   column(
-                                                       width = 9
-                                                   ),
-                                                   column(
-                                                       width = 3,
-                                                       downloadButton(
-                                                           outputId = "esea_plot_download",
-                                                           label = "Figure Download",
-                                                           class = NULL,
-                                                           icon = icon("circle-down"),
-                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                       )
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
-                                               ),
+                                               )),
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
-                                                   
+
                                                    **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
@@ -3478,8 +3382,7 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "mpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3740,8 +3643,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem
+                }, #=== 1.5.1.2 bs4TabItem
                 {
                     bs4TabItem(tabName = "gpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -4002,8 +3904,7 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                }
-            )
+                })
         )
     )
 )
@@ -4534,12 +4435,14 @@ server <- shinyServer(function(session, input, output) {
                 data("meta_dat")
                 meta_data <- meta_dat
                 
-                write.table(meta_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    meta_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -4558,12 +4461,14 @@ server <- shinyServer(function(session, input, output) {
                 data("gene_dat")
                 gene_data <- gene_dat
                 
-                write.table(gene_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    gene_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -4582,12 +4487,14 @@ server <- shinyServer(function(session, input, output) {
                 data("group")
                 group_data <- as.data.frame(group)
                 
-                write.table(group_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = FALSE,
-                            quote = FALSE)
+                write.table(
+                    group_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = FALSE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -5188,12 +5095,14 @@ server <- shinyServer(function(session, input, output) {
                 data("meta_dat")
                 meta_data <- meta_dat
                 
-                write.table(meta_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    meta_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -5212,12 +5121,14 @@ server <- shinyServer(function(session, input, output) {
                 data("gene_dat")
                 gene_data <- gene_dat
                 
-                write.table(gene_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    gene_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -5236,12 +5147,14 @@ server <- shinyServer(function(session, input, output) {
                 data("group")
                 group_data <- as.data.frame(group)
                 
-                write.table(group_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = FALSE,
-                            quote = FALSE)
+                write.table(
+                    group_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = FALSE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -5334,9 +5247,11 @@ server <- shinyServer(function(session, input, output) {
                 all_data_up <- all_data %>%
                     filter(logFC > input$epea_logfc) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_up <- PathwayAnalysis(all_data_up$name,
-                                             out = "Extended",
-                                             p_cutoff = input$epea_p_cutoff)
+                result_up <- PathwayAnalysis(
+                    all_data_up$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
                 
                 all_data_down <- all_data %>%
                     filter(logFC < -(input$epea_padj)) %>%
@@ -5405,9 +5320,11 @@ server <- shinyServer(function(session, input, output) {
                 all_data_up <- all_data %>%
                     filter(logFC > input$epea_logfc) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_up <- PathwayAnalysis(all_data_up$name,
-                                             out = "Extended",
-                                             p_cutoff = input$epea_p_cutoff)
+                result_up <- PathwayAnalysis(
+                    all_data_up$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
                 
                 all_data_down <- all_data %>%
                     filter(logFC < -(input$epea_padj)) %>%
@@ -5955,12 +5872,14 @@ server <- shinyServer(function(session, input, output) {
                 data("meta_dat")
                 meta_data <- meta_dat
                 
-                write.table(meta_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    meta_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -5979,12 +5898,14 @@ server <- shinyServer(function(session, input, output) {
                 data("gene_dat")
                 gene_data <- gene_dat
                 
-                write.table(gene_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    gene_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -6003,12 +5924,14 @@ server <- shinyServer(function(session, input, output) {
                 data("group")
                 group_data <- as.data.frame(group)
                 
-                write.table(group_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = FALSE,
-                            quote = FALSE)
+                write.table(
+                    group_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = FALSE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -6112,8 +6035,14 @@ server <- shinyServer(function(session, input, output) {
                     filter(adj.P.Val < input$epda_padj)
                 
                 epda_res <- DAscore(
-                    c(diff_gene_increase$name, diff_meta_increase$name),
-                    c(diff_gene_decrease$name, diff_meta_decrease$name),
+                    c(
+                        diff_gene_increase$name,
+                        diff_meta_increase$name
+                    ),
+                    c(
+                        diff_gene_decrease$name,
+                        diff_meta_decrease$name
+                    ),
                     c(diff_gene$name, diff_meta$name),
                     min_measured_num = 2,
                     out = "Extended"
@@ -6177,8 +6106,14 @@ server <- shinyServer(function(session, input, output) {
                     filter(adj.P.Val < input$epda_padj)
                 
                 epda_res <- DAscore(
-                    c(diff_gene_increase$name, diff_meta_increase$name),
-                    c(diff_gene_decrease$name, diff_meta_decrease$name),
+                    c(
+                        diff_gene_increase$name,
+                        diff_meta_increase$name
+                    ),
+                    c(
+                        diff_gene_decrease$name,
+                        diff_meta_decrease$name
+                    ),
                     c(diff_gene$name, diff_meta$name),
                     min_measured_num = 2,
                     out = "Extended"
@@ -6246,8 +6181,14 @@ server <- shinyServer(function(session, input, output) {
                         filter(adj.P.Val < input$epda_padj)
                     
                     epda_res <- DAscore(
-                        c(diff_gene_increase$name, diff_meta_increase$name),
-                        c(diff_gene_decrease$name, diff_meta_decrease$name),
+                        c(
+                            diff_gene_increase$name,
+                            diff_meta_increase$name
+                        ),
+                        c(
+                            diff_gene_decrease$name,
+                            diff_meta_decrease$name
+                        ),
                         c(diff_gene$name, diff_meta$name),
                         min_measured_num = 2,
                         out = "Extended"
@@ -6313,12 +6254,14 @@ server <- shinyServer(function(session, input, output) {
                 names(comp_gene_data) <- rownames(comp_gene_data_df)
                 comp_gene_data <- as.data.frame(comp_gene_data)
                 
-                write.table(comp_gene_data, 
-                            file, 
-                            sep = "\t",
-                            col.names = TRUE,
-                            row.names = TRUE,
-                            quote = FALSE)
+                write.table(
+                    comp_gene_data,
+                    file,
+                    sep = "\t",
+                    col.names = TRUE,
+                    row.names = TRUE,
+                    quote = FALSE
+                )
             }
         )
         
@@ -6376,11 +6319,7 @@ server <- shinyServer(function(session, input, output) {
                 progress$set(value = 100)
                 progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
                 
-                plot <- MNet::pESEA(
-                    input$esea_pathway,
-                    comp_gene_data,
-                    out = "Extended"
-                )
+                plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
                 plot
             })
         })
@@ -6408,11 +6347,7 @@ server <- shinyServer(function(session, input, output) {
                 progress$set(value = 100)
                 progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
                 
-                plot <- MNet::pESEA(
-                    input$esea_pathway,
-                    comp_gene_data,
-                    out = "Extended"
-                )
+                plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
                 plot
             })
         })
@@ -6444,11 +6379,7 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 100)
                     progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
                     
-                    plot <- MNet::pESEA(
-                        input$esea_pathway,
-                        comp_gene_data,
-                        out = "Extended"
-                    )
+                    plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
                     plot
                 })
                 
