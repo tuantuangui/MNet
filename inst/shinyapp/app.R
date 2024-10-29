@@ -1270,8 +1270,10 @@ ui <- shinyUI(
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       hr(),
                                        fileInput(
-                                           inputId = "network_meta_data_input",
+                                           inputId = "network_user_meta_data_input",
                                            label = "Metabolite Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -1280,7 +1282,7 @@ ui <- shinyUI(
                                            placeholder = "Metabolites (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "network_gene_data_input",
+                                           inputId = "network_user_gene_data_input",
                                            label = "GeneExp Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -1289,7 +1291,7 @@ ui <- shinyUI(
                                            placeholder = "GeneExp (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "network_group_data_input",
+                                           inputId = "network_user_group_data_input",
                                            label = "Group Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -1297,6 +1299,31 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Groups (TXT)"
                                        ),
+                                       actionButton(
+                                           inputId = "network_demo",
+                                           label = "Demo",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "info",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       actionButton(
+                                           inputId = "network_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
                                            inputId = "network_nsize",
@@ -1315,6 +1342,7 @@ ui <- shinyUI(
                                            timezone = NULL,
                                            dragRange = TRUE
                                        ),
+                                       tags$b("3. FIGURE CANVAS:"),
                                        hr(),
                                        selectInput(
                                            inputId = "network_plot_format",
@@ -1374,164 +1402,291 @@ ui <- shinyUI(
                                            timeFormat = FALSE,
                                            timezone = NULL,
                                            dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "network_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
-                                       bs4Card(
-                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           # title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "Demo",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("Demo"),
                                            width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = TRUE,
-                                           headerBorder = TRUE,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = TRUE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
                                            gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = FALSE,
-                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = NULL,
-                                           bs4Card(
-                                               inputId = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "network_demo_meta_data_download",
+                                                           label = "Metabolic Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "network_meta_data",
+                                                   "network_demo_meta_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "network_demo_gene_data_download",
+                                                           label = "Gene Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "network_gene_data",
+                                                   "network_demo_gene_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "network_demo_group_data_download",
+                                                           label = "Group Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
                                                    "
                                                ),
                                                hr(),
-                                               DTOutput("network_group_data")
+                                               DTOutput("network_demo_group_data"),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "Output: Metabolism-related subnetwork",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("image"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Pathway",
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("network_plot", width = "100%", height = "640px")
+                                               tags$img(
+                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "|",
+                                               icon = NULL
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Manual",
+                                               tags$iframe(
+                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   width = "100%",
+                                                   height = "720",
+                                                   frameborder = 0
+                                               ),
+                                               icon = shiny::icon("book-open")
                                            )
                                        ),
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "User",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("User"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "sm",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolic Data",
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("network_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Pathway",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "network_plot_download",
+                                                           label = "Figure Download",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               plotOutput("network_plot", width = "100%", height = "1000px"),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
                                    )
                                ))
                 },
@@ -2570,8 +2725,10 @@ ui <- shinyUI(
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       hr(),
                                        fileInput(
-                                           inputId = "epda_meta_data_input",
+                                           inputId = "epda_user_meta_data_input",
                                            label = "Metabolite Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2580,7 +2737,7 @@ ui <- shinyUI(
                                            placeholder = "Metabolites (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "epda_gene_data_input",
+                                           inputId = "epda_user_gene_data_input",
                                            label = "GeneExp Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2589,7 +2746,7 @@ ui <- shinyUI(
                                            placeholder = "GeneExp (TXT)"
                                        ),
                                        fileInput(
-                                           inputId = "epda_group_data_input",
+                                           inputId = "epda_user_group_data_input",
                                            label = "Group Data",
                                            multiple = FALSE,
                                            accept = NULL,
@@ -2597,6 +2754,31 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Groups (TXT)"
                                        ),
+                                       actionButton(
+                                           inputId = "epda_demo",
+                                           label = "Demo",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "info",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       actionButton(
+                                           inputId = "epda_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
                                            inputId = "epda_logfc",
@@ -2632,6 +2814,7 @@ ui <- shinyUI(
                                            timezone = NULL,
                                            dragRange = TRUE
                                        ),
+                                       tags$b("3. FIGURE CANVAS:"),
                                        hr(),
                                        selectInput(
                                            inputId = "epda_plot_format",
@@ -2691,164 +2874,291 @@ ui <- shinyUI(
                                            timeFormat = FALSE,
                                            timezone = NULL,
                                            dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "epda_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                        )
                                    ),
                                    column(
                                        width = 9,
-                                       bs4Card(
-                                           style = "height: 880px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           # title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "Demo",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("Demo"),
                                            width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
                                            solidHeader = FALSE,
-                                           headerBorder = TRUE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = TRUE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
                                            gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = FALSE,
-                                           # icon = icon("compass-drafting"),
                                            boxToolSize = "sm",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
-                                           class = NULL,
-                                           bs4Card(
-                                               inputId = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolic Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epda_demo_meta_data_download",
+                                                           label = "Metabolic Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to metabolites and **columns** corresponding to samples.
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "epda_meta_data",
+                                                   "epda_demo_meta_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epda_demo_gene_data_download",
+                                                           label = "Gene Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
-                                                   **Gene Data:** an interactive table for user-input metabolic data with **rows** 
-                                                   corresponding to genes and **columns** correspond to the samples.
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
                                                    "
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "epda_gene_data",
+                                                   "epda_demo_gene_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
-                                               )
+                                               ),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epda_demo_group_data_download",
+                                                           label = "Group Data",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
                                                markdown(
                                                    "
                                                    **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
                                                    "
                                                ),
                                                hr(),
-                                               DTOutput("epda_group_data")
+                                               DTOutput("epda_demo_group_data"),
+                                               icon = shiny::icon("table-list")
                                            ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "Output: ePDA Pathway",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("image"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Pathway",
                                                markdown(
                                                    "
                                                    **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("epda_plot", width = "100%", height = "1000px")
+                                               tags$img(
+                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "|",
+                                               icon = NULL
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Manual",
+                                               tags$iframe(
+                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   width = "100%",
+                                                   height = "720",
+                                                   frameborder = 0
+                                               ),
+                                               icon = shiny::icon("book-open")
                                            )
                                        ),
+                                       bs4TabCard(
+                                           ribbon(
+                                               text = "User",
+                                               color = "danger"
+                                           ),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolic Data",
+                                           title = tags$b("User"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "sm",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolic Data",
+                                               markdown(
+                                                   "
+                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to metabolites.
+                                                   
+                                                   **Columns:** corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   
+                                                   **Rows:** corresponding to genes.
+                                                   
+                                                   **Columns:** correspond to the samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown(
+                                                   "
+                                                   **Group Data:** Group information.
+                                                   
+                                                   **Format:** TXT with tab separated.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput("epda_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePDA Pathway",
+                                               fluidRow(
+                                                   column(
+                                                       width = 9
+                                                   ),
+                                                   column(
+                                                       width = 3,
+                                                       downloadButton(
+                                                           outputId = "epda_plot_download",
+                                                           label = "Figure Download",
+                                                           class = NULL,
+                                                           icon = icon("circle-down"),
+                                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                       )
+                                                   )
+                                               ),
+                                               markdown(
+                                                   "
+                                                   **Visualization:** analysis and visualization to figure.
+                                                   
+                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               plotOutput("epda_plot", width = "100%", height = "1000px"),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
                                    )
                                ))
                 },
@@ -3575,9646 +3885,6 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                },
-                #=== 1.5.1.2 bs4TabItem umap_plot
-                {
-                    bs4TabItem(tabName = "umap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "umap_plot_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "umap_plot_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "umap_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "umap_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "umap_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "umap_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "umap_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "umap_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "seed_umap_plot",
-                                                   label = "Seed TSNE",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 1,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "multi_shape_umap_plot",
-                                                   label = "Multiple Shape",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_size_umap_plot",
-                                                   label = "Point Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_alpha_umap_plot",
-                                                   label = "Point Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "text_size_umap_plot",
-                                                   label = "Text Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "fill_alpha_umap_plot",
-                                                   label = "Ellipse Fill Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "border_alpha_umap_plot",
-                                                   label = "Ellipse Border Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_umap_plot",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_pos_umap_plot",
-                                                   label = "Legend Position",
-                                                   choices = c("none", "left", "right", "bottom", "top"),
-                                                   selected = "right",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_dir_umap_plot",
-                                                   label = "Legend Director",
-                                                   choices = c("horizontal", "vertical"),
-                                                   selected = "vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_umap_plot",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "UMAP Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("umap_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "umap_plot_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "umap_plot_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem dendro_plot
-                {
-                    bs4TabItem(tabName = "dendro_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "dendro_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "dendro_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dendro_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dendro_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dendro_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "dendro_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "dendro_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "dist_method_dendro",
-                                                   label = "Distance Method",
-                                                   choices = c(
-                                                       "euclidean",
-                                                       "maximum",
-                                                       "manhattan",
-                                                       "canberra",
-                                                       "binary",
-                                                       "minkowski"
-                                                   ),
-                                                   selected = "euclidean",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "hc_method_dendro",
-                                                   label = "HCluster Method",
-                                                   choices = c(
-                                                       "ward.D",
-                                                       "ward.D2",
-                                                       "single",
-                                                       "complete",
-                                                       "average",
-                                                       "mcquitty",
-                                                       "median",
-                                                       "centroid"
-                                                   ),
-                                                   selected = "ward.D2",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "tree_type_dendro",
-                                                   label = "Tree Type",
-                                                   choices = c("rectangle", "circular", "phylogenic"),
-                                                   selected = "rectangle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "k_num_dendro",
-                                                   label = "K Number",
-                                                   min = 1,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "palette_dendro",
-                                                   label = "Color Palette",
-                                                   choices = c(
-                                                       "npg",
-                                                       "aaas",
-                                                       "lancet",
-                                                       "jco",
-                                                       "ucscgb",
-                                                       "uchicago",
-                                                       "simpsons",
-                                                       "rickandmorty"
-                                                   ),
-                                                   selected = "npg",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "color_labels_by_k_dendro",
-                                                   label = "Color Labels",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "horiz_dendro",
-                                                   label = "Horizontal Dendro",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_dendro",
-                                                   label = "Label Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "line_width_dendro",
-                                                   label = "Line Width",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "rect_dendro",
-                                                   label = "Rectangle Tree",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "rect_fill_dendro",
-                                                   label = "Rectangle Fill",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_dendro",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Dendro Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("dendro_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "dendro_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem venn_plot
-                {
-                    bs4TabItem(tabName = "venn_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "venn_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "venn_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "venn_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "venn_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "venn_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "venn_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "venn_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "title_size_venn",
-                                                   label = "Title Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "label_show_venn",
-                                                   label = "Show Label",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_venn",
-                                                   label = "Label Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "border_show_venn",
-                                                   label = "Show Border",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "line_type_venn",
-                                                   label = "Line Type",
-                                                   choices = c(
-                                                       "blank",
-                                                       "solid",
-                                                       "dashed",
-                                                       "dotted",
-                                                       "dotdash",
-                                                       "longdash",
-                                                       "twodash"
-                                                   ),
-                                                   selected = "longdash",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ellipse_shape_venn",
-                                                   label = "Ellipse Circle",
-                                                   choices = c("circle", "ellipse"),
-                                                   selected = "circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_venn",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sci_fill_alpha_venn",
-                                                   label = "Color Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.65,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Venn Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("venn_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "venn_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem upsetr_plot
-                {
-                    bs4TabItem(tabName = "upsetr_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "upsetr_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "upsetr_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "upsetr_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "upsetr_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "upsetr_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "upsetr_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "upsetr_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sets_num_upsetr",
-                                                   label = "Sets Number",
-                                                   min = 2,
-                                                   max = 100,
-                                                   value = 4,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "keep_order_upsetr",
-                                                   label = "Keep Order",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "order_by_upsetr",
-                                                   label = "Ordery By",
-                                                   choices = c("freq", "degree", "both"),
-                                                   selected = "freq",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "decrease_upsetr",
-                                                   label = "Decrease",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "mainbar_color_upsetr",
-                                                   label = "Main Bar Color",
-                                                   value = "#006600",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "number_angle_upsetr",
-                                                   label = "Number Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 45,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "matrix_color_upsetr",
-                                                   label = "Matrix Color",
-                                                   value = "#cc0000",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_size_upsetr",
-                                                   label = "Point Size",
-                                                   min = 1.00,
-                                                   max = 30.00,
-                                                   value = 4.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_alpha_upsetr",
-                                                   label = "Point Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "line_size_upsetr",
-                                                   label = "Line Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "shade_color_upsetr",
-                                                   label = "Shade Color",
-                                                   value = "#cdcdcd",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "setsbar_color_upsetr",
-                                                   label = "Sets Bar Color",
-                                                   value = "#000066",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "setsnum_size_upsetr",
-                                                   label = "Sets Number Size",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "text_scale_upsetr",
-                                                   label = "Text Scale Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 1.20,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Upsetr Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("upsetr_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "upsetr_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem flower_plot
-                {
-                    bs4TabItem(tabName = "flower_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "flower_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "flower_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "flower_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "flower_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "flower_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "flower_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "flower_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "angle_flower",
-                                                   label = "Rotate Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 90,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "ellipse_col_pal_flower",
-                                                   label = "Ellipse Color",
-                                                   choices = c(
-                                                       'Spectral',
-                                                       'Set1',
-                                                       'Set2',
-                                                       'Set3',
-                                                       'Accent',
-                                                       'Dark2',
-                                                       'Paired',
-                                                       'Pastel1',
-                                                       'Pastel2'
-                                                   ),
-                                                   selected = "Spectral",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "circle_col_flower",
-                                                   label = "Circle Color",
-                                                   value = "white",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_text_cex_flower",
-                                                   label = "Label Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Flower Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("flower_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "flower_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem volcano_plot
-                {
-                    bs4TabItem(tabName = "volcano_plot2", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "volcano_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "volcano_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "volcano_plot_width2",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "volcano_plot_height2",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "volcano_plot_dpi2",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "volcano_plot_download2",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "volcano_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               textInput(
-                                                   inputId = "title_volcano",
-                                                   label = "Figure Title",
-                                                   value = "CT-vs-LT12",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "log2fc_cutoff_volcano",
-                                                   label = "Log2FC Cutoff",
-                                                   min = 0.00,
-                                                   max = 100.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "pq_value_volcano",
-                                                   label = "P or Q value",
-                                                   choices = c("pvalue", "padj"),
-                                                   selected = "pvalue",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pq_cutoff_volcano",
-                                                   label = "P or Q Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "cutoff_line_volcano",
-                                                   label = "Cutoff Line",
-                                                   choices = c(
-                                                       "blank",
-                                                       "solid",
-                                                       "dashed",
-                                                       "dotted",
-                                                       "dotdash",
-                                                       "longdash",
-                                                       "twodash"
-                                                   ),
-                                                   selected = "longdash",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "point_shape_volcano",
-                                                   label = "Point Shape",
-                                                   choices = c(
-                                                       "border_square",
-                                                       "border_circle",
-                                                       "border_triangle",
-                                                       "plus",
-                                                       "times",
-                                                       "border_diamond",
-                                                       "border_triangle_down",
-                                                       "square_times",
-                                                       "plus_times",
-                                                       "diamond_plus",
-                                                       "circle_plus",
-                                                       "di_triangle",
-                                                       "square_plus",
-                                                       "circle_times",
-                                                       "square_triangle",
-                                                       "fill_square",
-                                                       "fill_circle",
-                                                       "fill_triangle",
-                                                       "fill_diamond",
-                                                       "large_circle",
-                                                       "small_circle",
-                                                       "fill_border_circle",
-                                                       "fill_border_square",
-                                                       "fill_border_diamond",
-                                                       "fill_border_triangle"
-                                                   ),
-                                                   selected = "large_circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_size_volcano",
-                                                   label = "Point Size",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 2.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_alpha_volcano",
-                                                   label = "Point Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_normal_volcano",
-                                                   label = "Normal Color",
-                                                   value = "#888888",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_log2fc_volcano",
-                                                   label = "Log2FC Color",
-                                                   value = "#008000",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_pvalue_volcano",
-                                                   label = "Pvalue Color",
-                                                   value = "#0088ee",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_Log2fc_p_volcano",
-                                                   label = "Log2FC and Pvalue Color",
-                                                   value = "#ff0000",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_volcano",
-                                                   label = "Label Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 3,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "boxed_labels_volcano",
-                                                   label = "Boxed Labels",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "draw_connectors_volcano",
-                                                   label = "Draw Connectors",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_pos_volcano",
-                                                   label = "Legend Position",
-                                                   choices = c("right", "left", "top", "bottom"),
-                                                   selected = "right",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Volcano Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("volcano_plot_plot2", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "volcano_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem ma_plot
-                {
-                    bs4TabItem(tabName = "ma_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "ma_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "ma_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "ma_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "ma_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "ma_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "ma_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "ma_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "foldchange_ma",
-                                                   label = "Fold Change",
-                                                   min = 0.00,
-                                                   max = 100.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "fdr_value_ma",
-                                                   label = "FDR Value",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "point_size_ma",
-                                                   label = "Point Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 3,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_up_ma",
-                                                   label = "UP Color",
-                                                   value = "#FF0000",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "color_down_ma",
-                                                   label = "Down Color",
-                                                   value = "#008800",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "color_alpha_ma",
-                                                   label = "Color Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "top_method_ma",
-                                                   label = "Top Method",
-                                                   choices = c("padj", "fc"),
-                                                   selected = "fc",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "top_num_ma",
-                                                   label = "Top Gene Number",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 20,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_ma",
-                                                   label = "Label Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 8,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "label_box_ma",
-                                                   label = "Label Box",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               textInput(
-                                                   inputId = "title_ma",
-                                                   label = "Figure Title",
-                                                   value = "CT-vs-LT12",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_ma",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "MA Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("ma_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "ma_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem heatmap_group
-                {
-                    bs4TabItem(tabName = "heatmap_group", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "heatmap_group_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "heatmap_group_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "heatmap_group_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_group_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_group_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_group_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "heatmap_group_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "heatmap_group_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "scale_data_hg",
-                                                   label = "Scale Data",
-                                                   choices = c("row", "column", "none"),
-                                                   selected = "row",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "clust_method_hg",
-                                                   label = "Image Format",
-                                                   choices = c(
-                                                       "ward.D",
-                                                       "ward.D2",
-                                                       "single",
-                                                       "complete",
-                                                       "average",
-                                                       "mcquitty",
-                                                       "median",
-                                                       "centroid"
-                                                   ),
-                                                   selected = "complete",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "border_show_hg",
-                                                   label = "Border Show",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "border_color_hg",
-                                                   label = "Border Color",
-                                                   value = "#ffffff",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "value_show_hg",
-                                                   label = "Value Show",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "value_decimal_hg",
-                                                   label = "Value Decimal",
-                                                   min = 0,
-                                                   max = 7,
-                                                   value = 2,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "value_size_hg",
-                                                   label = "Value Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "axis_size_hg",
-                                                   label = "Axis Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 8,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "cell_height_hg",
-                                                   label = "Cell Height",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 10,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_hg",
-                                                   label = "Low Color",
-                                                   value = "#00880055",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "mid_color_hg",
-                                                   label = "Middle Color",
-                                                   value = "#ffffff",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_hg",
-                                                   label = "High Color",
-                                                   value = "#ff000055",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "na_color_hg",
-                                                   label = "NA Color",
-                                                   value = "#ff8800",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "x_angle_hg",
-                                                   label = "X Axis Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 45,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Heatmap Group",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("heatmap_group_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "heatmap_group_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "heatmap_group_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem circos_heatmap
-                {
-                    bs4TabItem(tabName = "circos_heatmap", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "circos_heatmap_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "circos_heatmap_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "circos_heatmap_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "circos_heatmap_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "circos_heatmap_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "circos_heatmap_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "circos_heatmap_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_ch",
-                                                   label = "Low Color",
-                                                   value = "#0000ff",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "mid_color_ch",
-                                                   label = "Middle Color",
-                                                   value = "#ffffff",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_ch",
-                                                   label = "High Color",
-                                                   value = "#ff0000",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gap_size_ch",
-                                                   label = "Gap Size",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 25,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "cluster_run_ch",
-                                                   label = "Cluster Run",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "cluster_method_ch",
-                                                   label = "Cluster Method",
-                                                   choices = c(
-                                                       "ward.D",
-                                                       "ward.D2",
-                                                       "single",
-                                                       "complete",
-                                                       "average",
-                                                       "mcquitty",
-                                                       "median",
-                                                       "centroid"
-                                                   ),
-                                                   selected = "complete",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "distance_method_ch",
-                                                   label = "Distance Method",
-                                                   choices = c(
-                                                       "euclidean",
-                                                       "maximum",
-                                                       "manhattan",
-                                                       "canberra",
-                                                       "binary",
-                                                       "minkowski"
-                                                   ),
-                                                   selected = "euclidean",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "dend_show_ch",
-                                                   label = "Distance Method",
-                                                   choices = c("none", "outside", "inside"),
-                                                   selected = "inside",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dend_height_ch",
-                                                   label = "Dend Height",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.20,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "track_height_ch",
-                                                   label = "Track Height",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.30,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "rowname_show_ch",
-                                                   label = "Rowname Show",
-                                                   choices = c("none", "outside", "inside"),
-                                                   selected = "outside",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "rowname_size_ch",
-                                                   label = "Rowname Size",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Circos Heatmap",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("circos_heatmap_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "circos_heatmap_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem chord_plot
-                {
-                    bs4TabItem(tabName = "chord_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "chord_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "chord_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "chord_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "chord_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "chord_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "chord_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "chord_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "multi_colors_chord",
-                                                   label = "Multiple Colors",
-                                                   choices = c("VividColors", "RainbowColors"),
-                                                   selected = "VividColors",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "color_seed_chord",
-                                                   label = "Color Seed",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 10,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "color_alpha_chord",
-                                                   label = "Color Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.30,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "link_visible_chord",
-                                                   label = "Link Visible",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "link_dir_chord",
-                                                   label = "Alpha",
-                                                   min = -1,
-                                                   max = 2,
-                                                   value = -1,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "link_type_chord",
-                                                   label = "Link Type",
-                                                   choices = c("diffHeight", "arrows"),
-                                                   selected = "diffHeight",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "sector_scale_chord",
-                                                   label = "Sector Scale",
-                                                   choices = c("Origin", "Scale"),
-                                                   selected = "Origin",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "width_circle_chord",
-                                                   label = "Circle Width",
-                                                   min = 1.00,
-                                                   max = 10.00,
-                                                   value = 3.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dist_name_chord",
-                                                   label = "Distance Name",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 3.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "label_dir_chord",
-                                                   label = "Label Director",
-                                                   choices = c("Horizontal", "Vertical"),
-                                                   selected = "Vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "dist_label_chord",
-                                                   label = "Distance Label",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 0.30,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_scale_chord",
-                                                   label = "Label Scale",
-                                                   min = 0.00,
-                                                   max = 10.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Chord Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("chord_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "chord_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem gene_rank_plot
-                {
-                    bs4TabItem(tabName = "gene_rank_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "gene_rank_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "gene_rank_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_rank_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_rank_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_rank_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "gene_rank_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "gene_rank_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "log2fc_rank",
-                                                   label = "Log2FC Cutoff",
-                                                   min = 0.00,
-                                                   max = 100.00,
-                                                   value = 1.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "palette_rank",
-                                                   label = "Palette Color",
-                                                   choices = c(
-                                                       'Spectral',
-                                                       'BrBG',
-                                                       'PiYG',
-                                                       'PRGn',
-                                                       'PuOr',
-                                                       'RdBu',
-                                                       'RdGy',
-                                                       'RdYlBu',
-                                                       'RdYlGn'
-                                                   ),
-                                                   selected = "Spectral",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "top_n_rank",
-                                                   label = "Top Gene Number",
-                                                   min = 0,
-                                                   max = 100,
-                                                   value = 10,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_rank",
-                                                   label = "Label Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "base_size_rank",
-                                                   label = "Base Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Gene Rank Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("gene_rank_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "gene_rank_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem gene_cluster_trend
-                {
-                    bs4TabItem(tabName = "gene_cluster_trend", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "gene_cluster_trend_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "gene_cluster_trend_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_cluster_trend_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_cluster_trend_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "gene_cluster_trend_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "gene_cluster_trend_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "gene_cluster_trend_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               sliderInput(
-                                                   inputId = "thres_gct",
-                                                   label = "Threshold Excluding Genes",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.25,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "min_std_gct",
-                                                   label = "Threshold Minimum Standard",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.20,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "palette_gct",
-                                                   label = "Color Palette",
-                                                   choices = c(
-                                                       'Spectral',
-                                                       'BrBG',
-                                                       'PiYG',
-                                                       'PRGn',
-                                                       'PuOr',
-                                                       'RdBu',
-                                                       'RdGy',
-                                                       'RdYlBu',
-                                                       'RdYlGn'
-                                                   ),
-                                                   selected = "PiYG",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "cluster_num_gct",
-                                                   label = "Cluster Number",
-                                                   min = 1,
-                                                   max = 30,
-                                                   value = 4,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Gene Cluster Trend",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("gene_cluster_trend_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "gene_cluster_trend_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem trend_plot
-                {
-                    bs4TabItem(tabName = "trend_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "trend_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "trend_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "trend_plot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "trend_plot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "trend_plot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "trend_plot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "trend_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "scale_method_trend",
-                                                   label = "Scale Data",
-                                                   choices = c(
-                                                       "std",
-                                                       "robust",
-                                                       "uniminmax",
-                                                       "globalminmax",
-                                                       "center",
-                                                       "centerObs"
-                                                   ),
-                                                   selected = "centerObs",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "miss_value_trend",
-                                                   label = "Image Format",
-                                                   choices = c("exclude", "mean", "median", "min10", "random"),
-                                                   selected = "exclude",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "line_alpha_trend",
-                                                   label = "Line Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "show_points_trend",
-                                                   label = "Show Points",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "show_boxplot_trend",
-                                                   label = "Show Boxplot",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "num_column_trend",
-                                                   label = "Column Number",
-                                                   min = 1,
-                                                   max = 10,
-                                                   value = 1,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_trend",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sci_color_alpha_trend",
-                                                   label = "Color Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_pos_trend",
-                                                   label = "Legend Position",
-                                                   choices = c("none", "left", "right", "bottom", "top"),
-                                                   selected = "right",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "legend_dir_trend",
-                                                   label = "Legend Director",
-                                                   choices = c("horizontal", "vertical"),
-                                                   selected = "vertical",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_trend",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Trend Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("trend_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "trend_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem network_plot
-                {
-                    bs4TabItem(tabName = "network_plot2", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "network_plot_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "network_plot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "network_plot_width2",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "network_plot_height2",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "network_plot_dpi2",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "network_plot_download2",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "network_plot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "calc_by_network",
-                                                   label = "Calc By",
-                                                   choices = c("degree", "node"),
-                                                   selected = "degree",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "degree_value_network",
-                                                   label = "Degree Value",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "normal_color_network",
-                                                   label = "Normal Color",
-                                                   value = "#008888cc",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "border_color_network",
-                                                   label = "Border Color",
-                                                   value = "#FFFFFF",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "from_color_network",
-                                                   label = "From Color",
-                                                   value = "#FF0000cc",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "to_color_network",
-                                                   label = "To Color",
-                                                   value = "#008800cc",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "normal_shape_network",
-                                                   label = "Normal Shape",
-                                                   choices = c(
-                                                       "circle",
-                                                       "crectangle",
-                                                       "csquare",
-                                                       "none",
-                                                       "pie",
-                                                       "raster",
-                                                       "rectangle",
-                                                       "sphere",
-                                                       "square",
-                                                       "vrectangle"
-                                                   ),
-                                                   selected = "circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "spatial_shape_network",
-                                                   label = "Spatial Shape",
-                                                   choices = c(
-                                                       "circle",
-                                                       "crectangle",
-                                                       "csquare",
-                                                       "none",
-                                                       "pie",
-                                                       "raster",
-                                                       "rectangle",
-                                                       "sphere",
-                                                       "square",
-                                                       "vrectangle"
-                                                   ),
-                                                   selected = "circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "node_size_network",
-                                                   label = "Node Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 25,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "lable_color_network",
-                                                   label = "Lable Color",
-                                                   value = "#FFFFFF",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_network",
-                                                   label = "Label Size",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 0.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "edge_color_network",
-                                                   label = "Edge Color",
-                                                   value = "#888888",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "edge_width_network",
-                                                   label = "Edge Width",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 1.50,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "edge_curved_network",
-                                                   label = "Edge Curved",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "net_layout_network",
-                                                   label = "Network Layout",
-                                                   choices = c(
-                                                       "layout_as_bipartite",
-                                                       "layout_as_star",
-                                                       "layout_as_tree",
-                                                       "layout_components",
-                                                       "layout_in_circle",
-                                                       "layout_nicely",
-                                                       "layout_on_grid",
-                                                       "layout_on_sphere",
-                                                       "layout_randomly",
-                                                       "layout_with_dh",
-                                                       "layout_with_drl",
-                                                       "layout_with_fr",
-                                                       "layout_with_gem",
-                                                       "layout_with_graphopt",
-                                                       "layout_with_kk",
-                                                       "layout_with_lgl",
-                                                       "layout_with_mds",
-                                                       "layout_with_sugiyama"
-                                                   ),
-                                                   selected = "layout_on_sphere",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Network Plot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("network_plot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "network_plot_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem heatmap_cluster
-                {
-                    bs4TabItem(tabName = "heatmap_cluster", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "heatmap_cluster_input",
-                                                   label = "Survival Data",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "heatmap_cluster_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_cluster_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_cluster_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "heatmap_cluster_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "heatmap_cluster_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "heatmap_cluster_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "dist_method_hc",
-                                                   label = "Distance Method",
-                                                   choices = c(
-                                                       "euclidean",
-                                                       "maximum",
-                                                       "manhattan",
-                                                       "canberra",
-                                                       "binary",
-                                                       "minkowski"
-                                                   ),
-                                                   selected = "euclidean",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "hc_method_hc",
-                                                   label = "HCluster Method",
-                                                   choices = c(
-                                                       "ward.D",
-                                                       "ward.D2",
-                                                       "single",
-                                                       "complete",
-                                                       "average",
-                                                       "mcquitty",
-                                                       "median",
-                                                       "centroid"
-                                                   ),
-                                                   selected = "average",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "k_num_hc",
-                                                   label = "K Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 5,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "show_rownames_hc",
-                                                   label = "Show Rowname",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "palette_hc",
-                                                   label = "Color Palette",
-                                                   choices = c(
-                                                       'Spectral',
-                                                       'BrBG',
-                                                       'PiYG',
-                                                       'PRGn',
-                                                       'PuOr',
-                                                       'RdBu',
-                                                       'RdGy',
-                                                       'RdYlBu',
-                                                       'RdYlGn'
-                                                   ),
-                                                   selected = "RdBu",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "cluster_pal_hc",
-                                                   label = "Cluster Palette",
-                                                   choices = c(
-                                                       'Set1',
-                                                       'Set2',
-                                                       'Set3',
-                                                       'Accent',
-                                                       'Dark2',
-                                                       'Paired',
-                                                       'Pastel1',
-                                                       'Pastel2'
-                                                   ),
-                                                   selected = "Set1",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "border_color_hc",
-                                                   label = "Border Color",
-                                                   value = "#ffffff",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "angle_col_hc",
-                                                   label = "Col Label Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 45,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "label_size_hc",
-                                                   label = "Label Size",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "base_size_hc",
-                                                   label = "Base Size",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 12.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "line_color_hc",
-                                                   label = "Line Color",
-                                                   value = "#0000cd",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "line_alpha_hc",
-                                                   label = "Line Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.20,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "summary_color_hc",
-                                                   label = "Summary Color",
-                                                   value = "#0000cd",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "summary_alpha_hc",
-                                                   label = "Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "Heatmap Cluster",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("heatmap_cluster_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "heatmap_cluster_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem go_enrich
-                {
-                    bs4TabItem(tabName = "go_enrich", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "go_enrich_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "go_enrich_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_go_enrich",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_go_enrich",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_go_enrich",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               actionButton(
-                                                   inputId = "go_enrich_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "go_enrich_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "GO Enrich",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem go_enrich_stat
-                {
-                    bs4TabItem(tabName = "go_enrich_stat", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "go_enrich_stat_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "go_enrich_stat_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "go_enrich_stat_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_stat_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_stat_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_stat_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "go_enrich_stat_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "go_enrich_stat_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_go_stat",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_go_stat",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_go_stat",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "max_go_item_go_stat",
-                                                   label = "Max GO Item",
-                                                   min = 1,
-                                                   max = 50,
-                                                   value = 15,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "xtext_angle_go_stat",
-                                                   label = "X Axis Angle",
-                                                   min = 0,
-                                                   max = 360,
-                                                   value = 45,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sci_fill_color_go_stat",
-                                                   label = "Sci Color",
-                                                   choices = c(
-                                                       "Sci_AAAS",
-                                                       "Sci_NPG",
-                                                       "Sci_Simpsons",
-                                                       "Sci_JAMA",
-                                                       "Sci_GSEA",
-                                                       "Sci_Lancet",
-                                                       "Sci_Futurama",
-                                                       "Sci_JCO",
-                                                       "Sci_NEJM",
-                                                       "Sci_IGV",
-                                                       "Sci_UCSC",
-                                                       "Sci_D3",
-                                                       "Sci_Material"
-                                                   ),
-                                                   selected = "Sci_AAAS",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "sci_fill_alpha_go_stat",
-                                                   label = "Color Alpha",
-                                                   min = 0.00,
-                                                   max = 1.00,
-                                                   value = 0.80,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_go_stat",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "GO Enrich Stat",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("go_enrich_stat_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_stat_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_stat_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem go_enrich_bar
-                {
-                    bs4TabItem(tabName = "go_enrich_bar", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "go_enrich_bar_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "go_enrich_bar_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "go_enrich_bar_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_bar_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_bar_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_bar_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "go_enrich_bar_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "go_enrich_bar_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_go_bar",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_go_bar",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_go_bar",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sign_by_go_bar",
-                                                   label = "Sign By",
-                                                   choices = c("pvalue", "p.adjust", "qvalue"),
-                                                   selected = "p.adjust",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_go_bar",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 30,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "font_size_go_bar",
-                                                   label = "Font Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_go_bar",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_go_bar",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_go_bar",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "GO Enrich Bar",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("go_enrich_bar_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_bar_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_bar_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem go_enrich_dot
-                {
-                    bs4TabItem(tabName = "go_enrich_dot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "go_enrich_dot_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "go_enrich_dot_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "go_enrich_dot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_dot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_dot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_dot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "go_enrich_dot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "go_enrich_dot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_go_dot",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_go_dot",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_go_dot",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sign_by_go_dot",
-                                                   label = "Sign By",
-                                                   choices = c("pvalue", "p.adjust", "qvalue"),
-                                                   selected = "p.adjust",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_go_dot",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 30,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "font_size_go_dot",
-                                                   label = "Font Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_go_dot",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_go_dot",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_go_dot",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "GO Enrich Dot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("go_enrich_dot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_dot_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_dot_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem go_enrich_net
-                {
-                    bs4TabItem(tabName = "go_enrich_net", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "go_enrich_net_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "go_enrich_net_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "go_enrich_net_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_net_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_net_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "go_enrich_net_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "go_enrich_net_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "go_enrich_net_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_go_net",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_go_net",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_go_net",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_go_net",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 20,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "net_layout_go_net",
-                                                   label = "Net Layout",
-                                                   choices = c(
-                                                       'star',
-                                                       'circle',
-                                                       'gem',
-                                                       'dh',
-                                                       'graphopt',
-                                                       'grid',
-                                                       'mds',
-                                                       'randomly',
-                                                       'fr',
-                                                       'kk',
-                                                       'drl',
-                                                       'lgl'
-                                                   ),
-                                                   selected = "circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "net_circular_go_net",
-                                                   label = "Net Circular",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_go_net",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_go_net",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "GO Enrich Net",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("go_enrich_net_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_net_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "go_enrich_net_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem kegg_enrich
-                {
-                    bs4TabItem(tabName = "kegg_enrich", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "kegg_enrich_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "kegg_enrich_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_kegg_enrich",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_kegg_enrich",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_kegg_enrich",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               actionButton(
-                                                   inputId = "kegg_enrich_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "kegg_enrich_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "KEGG Enrich",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem kegg_enrich_bar
-                {
-                    bs4TabItem(tabName = "kegg_enrich_bar", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "kegg_enrich_bar_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "kegg_enrich_bar_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "kegg_enrich_bar_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_bar_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_bar_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_bar_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "kegg_enrich_bar_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "kegg_enrich_bar_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_kegg_bar",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_kegg_bar",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_kegg_bar",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sign_by_kegg_bar",
-                                                   label = "Sign By",
-                                                   choices = c("pvalue", "p.adjust", "qvalue"),
-                                                   selected = "p.adjust",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_kegg_bar",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 30,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "font_size_kegg_bar",
-                                                   label = "Font Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_kegg_bar",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_kegg_bar",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_kegg_bar",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "KEGG Enrich Bar",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("kegg_enrich_bar_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_bar_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_bar_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem kegg_enrich_dot
-                {
-                    bs4TabItem(tabName = "kegg_enrich_dot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "kegg_enrich_dot_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "kegg_enrich_dot_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "kegg_enrich_dot_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_dot_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_dot_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_dot_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "kegg_enrich_dot_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "kegg_enrich_dot_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_kegg_dot",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_kegg_dot",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_kegg_dot",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "sign_by_kegg_dot",
-                                                   label = "Sign By",
-                                                   choices = c("pvalue", "p.adjust", "qvalue"),
-                                                   selected = "p.adjust",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_kegg_dot",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 30,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "font_size_kegg_dot",
-                                                   label = "Font Size",
-                                                   min = 0,
-                                                   max = 30,
-                                                   value = 12,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_kegg_dot",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_kegg_dot",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               selectInput(
-                                                   inputId = "ggTheme_kegg_dot",
-                                                   label = "Themes",
-                                                   choices = c(
-                                                       "theme_default",
-                                                       "theme_bw",
-                                                       "theme_gray",
-                                                       "theme_light",
-                                                       "theme_linedraw",
-                                                       "theme_dark",
-                                                       "theme_minimal",
-                                                       "theme_classic",
-                                                       "theme_void"
-                                                   ),
-                                                   selected = "theme_light",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "KEGG Enrich Dot",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("kegg_enrich_dot_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_dot_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_dot_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem kegg_enrich_net
-                {
-                    bs4TabItem(tabName = "kegg_enrich_net", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "kegg_enrich_net_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "kegg_enrich_net_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               selectInput(
-                                                   inputId = "kegg_enrich_net_format",
-                                                   label = "Figure Format",
-                                                   choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                                   selected = "pdf",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_net_width",
-                                                   label = "Figure Width (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 10.00,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_net_height",
-                                                   label = "Figure Height (inch)",
-                                                   min = 0.00,
-                                                   max = 30.00,
-                                                   value = 6.18,
-                                                   step = 0.01,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "kegg_enrich_net_dpi",
-                                                   label = "Figure DPI",
-                                                   min = 68,
-                                                   max = 1000,
-                                                   value = 300,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = FALSE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               downloadButton(
-                                                   outputId = "kegg_enrich_net_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           ),
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 2. Parameters",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("brain"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               actionButton(
-                                                   inputId = "kegg_enrich_net_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               selectInput(
-                                                   inputId = "padjust_method_kegg_net",
-                                                   label = "Padjust Method",
-                                                   choices = c(
-                                                       "holm",
-                                                       "hochberg",
-                                                       "hommel",
-                                                       "bonferroni",
-                                                       "BH",
-                                                       "BY",
-                                                       "fdr",
-                                                       "none"
-                                                   ),
-                                                   selected = "fdr",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               sliderInput(
-                                                   inputId = "pvalue_cutoff_kegg_net",
-                                                   label = "Pvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "qvalue_cutoff_kegg_net",
-                                                   label = "Qvalue Cutoff",
-                                                   min = 0.000,
-                                                   max = 1.000,
-                                                   value = 0.050,
-                                                   step = 0.001,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               sliderInput(
-                                                   inputId = "category_num_kegg_net",
-                                                   label = "Category Number",
-                                                   min = 1,
-                                                   max = 100,
-                                                   value = 20,
-                                                   step = 1,
-                                                   round = TRUE,
-                                                   ticks = TRUE,
-                                                   animate = TRUE,
-                                                   width = NULL,
-                                                   pre = NULL,
-                                                   post = NULL,
-                                                   timeFormat = TRUE,
-                                                   timezone = NULL,
-                                                   dragRange = TRUE
-                                               ),
-                                               selectInput(
-                                                   inputId = "net_layout_kegg_net",
-                                                   label = "Net Layout",
-                                                   choices = c(
-                                                       'star',
-                                                       'circle',
-                                                       'gem',
-                                                       'dh',
-                                                       'graphopt',
-                                                       'grid',
-                                                       'mds',
-                                                       'randomly',
-                                                       'fr',
-                                                       'kk',
-                                                       'drl',
-                                                       'lgl'
-                                                   ),
-                                                   selected = "circle",
-                                                   multiple = FALSE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "net_circular_kegg_net",
-                                                   label = "Net Circular",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "low_color_kegg_net",
-                                                   label = "Low Color",
-                                                   value = "#ff0000aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               ),
-                                               colourInput(
-                                                   inputId = "high_color_kegg_net",
-                                                   label = "High Color",
-                                                   value = "#008800aa",
-                                                   showColour = "both",
-                                                   palette = "square",
-                                                   allowedCols = NULL,
-                                                   allowTransparent = TRUE,
-                                                   returnName = TRUE,
-                                                   closeOnClick = FALSE,
-                                                   width = NULL
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Figure Results",
-                                               span(
-                                                   "KEGG Enrich Net",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           plotOutput("kegg_enrich_net_plot", height = 700)
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_net_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "kegg_enrich_net_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem table_split
-                {
-                    bs4TabItem(tabName = "table_split", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "table_split_input",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               textInput(
-                                                   inputId = "grouped_var_split",
-                                                   label = "Grouped Variable",
-                                                   value = "go_category",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               textInput(
-                                                   inputId = "value_var_split",
-                                                   label = "Value Variable",
-                                                   value = "go_term",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "miss_drop_split",
-                                                   label = "Missing Data Drop",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               actionButton(
-                                                   inputId = "table_split_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "table_split_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "Table Split",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_split_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_split_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem table_merge
-                {
-                    bs4TabItem(tabName = "table_merge", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "table_merge_input",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               textInput(
-                                                   inputId = "merge_vars_table_merge",
-                                                   label = "Merge Variables: split by , ",
-                                                   value = "biological_process,cellular_component,molecular_function",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               textInput(
-                                                   inputId = "new_var_table_merge",
-                                                   label = "New Variable",
-                                                   value = "go_category",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               textInput(
-                                                   inputId = "new_value_table_merge",
-                                                   label = "New Value",
-                                                   value = "go_term",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "na_remove_table_merge",
-                                                   label = "NA Remove",
-                                                   value = FALSE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               actionButton(
-                                                   inputId = "table_merge_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "table_merge_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "Table Merge",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_merge_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_merge_data",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
-                },
-                #=== 1.5.1.2 bs4TabItem table_cross
-                {
-                    bs4TabItem(tabName = "table_cross", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       # 1
-                                       style = "padding: 5px; height: 800px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Options",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("palette"),
-                                       boxToolSize = "sm",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow
-                                       fluidRow(
-                                           #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow -> bs4Card -> fluidRow -> bs4Card
-                                           bs4Card(
-                                               # 1
-                                               style = "padding: 10px 20px;",
-                                               inputId = NULL,
-                                               title = "| 1. Upload/Download",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("file-arrow-up"),
-                                               boxToolSize = "sm",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               fileInput(
-                                                   inputId = "table_cross_input1",
-                                                   label = "Gene Expression",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               fileInput(
-                                                   inputId = "table_cross_input2",
-                                                   label = "Samples Groups",
-                                                   multiple = FALSE,
-                                                   accept = NULL,
-                                                   width = NULL,
-                                                   buttonLabel = "Browse",
-                                                   placeholder = "Format: TXT"
-                                               ),
-                                               textInput(
-                                                   inputId = "inter_var_cross",
-                                                   label = "Internal Variable",
-                                                   value = "Genes",
-                                                   width = "100%",
-                                                   placeholder = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "left_index_cross",
-                                                   label = "Left Table as Index",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               materialSwitch(
-                                                   inputId = "right_index_cross",
-                                                   label = "Right Table as Index",
-                                                   value = TRUE,
-                                                   status = "success",
-                                                   right = TRUE,
-                                                   inline = TRUE,
-                                                   width = NULL
-                                               ),
-                                               actionButton(
-                                                   inputId = "table_cross_run",
-                                                   label = "Start Running",
-                                                   icon = icon('play-circle'),
-                                                   width = NULL,
-                                                   style = "width: 100%; background-color: #0000cc; color: #ffffff; border-radius: 50px;"
-                                               ),
-                                               hr(),
-                                               downloadButton(
-                                                   outputId = "table_cross_download",
-                                                   label = "Result Download",
-                                                   class = NULL,
-                                                   icon = icon("circle-down"),
-                                                   style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                           )
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = span(
-                                               "| Table Results",
-                                               span(
-                                                   "Table Cross",
-                                                   style = "margin-left: 100px;
-                                                  font-size: 1em;
-                                                  font-weight: bolder;
-                                                  text-shadow: 0px 0px 10px #cdcdcd;
-                                                  border: 2px solid #cdcdcd;
-                                                  border-radius: 30px;
-                                                  padding: 5px 10px;"
-                                               )
-                                           ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_cross_table",
-                                               width = "100%",
-                                               height = "600px",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 1",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_cross_data1",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       ),
-                                       bs4Card(
-                                           # 1
-                                           inputId = NULL,
-                                           title = "| Data Table 2",
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = TRUE,
-                                           collapsed = TRUE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("table-list"),
-                                           boxToolSize = "sm",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           DTOutput(
-                                               "table_cross_data2",
-                                               width = "100%",
-                                               height = "auto",
-                                               fill = TRUE
-                                           )
-                                       )
-                                   )
-                               ))
                 }
             )
         )
@@ -13732,111 +4402,215 @@ server <- shinyServer(function(session, input, output) {
     
     # network_plot
     {
-        output$network_meta_data <- renderDT({
-            if (is.null(input$network_meta_data_input)) {
+        output$network_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$network_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
-                meta_data <- read.table(
-                    input$network_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
+                
+                write.table(meta_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(meta_data)
+        )
+        
+        output$network_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            return(head(gene_data, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
-        output$network_gene_data <- renderDT({
-            if (is.null(input$network_gene_data_input)) {
+        output$network_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("gene_dat")
                 gene_data <- gene_dat
-            } else{
-                gene_data <- read.table(
-                    input$network_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
+                
+                write.table(gene_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(gene_data)
+        )
+        
+        output$network_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            return(head(group_data, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
-        output$network_group_data <- renderDT({
-            if (is.null(input$network_group_data_input)) {
+        output$network_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("group")
                 group_data <- as.data.frame(group)
-            } else{
-                group_data <- read.table(
-                    input$network_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.data.frame(as.character(group_data[, 1]))
+                
+                write.table(group_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = FALSE,
+                            quote = FALSE)
             }
-            return(group_data)
-        })
+        )
         
-        output$network_plot <- renderPlot({
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+        output$network_user_meta_data <- renderDT({
+            req(input$network_user_meta_data_input)
+            meta_data <- read.table(
+                input$network_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$network_user_gene_data <- renderDT({
+            req(input$network_user_gene_data_input)
+            gene_data <- read.table(
+                input$network_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            if (is.null(input$network_meta_data_input)) {
+            return(head(gene_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$network_user_group_data <- renderDT({
+            req(input$network_user_group_data_input)
+            group_data <- read.table(
+                input$network_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            return(head(group_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        observeEvent(input$network_demo, {
+            output$network_user_meta_data <- renderDT({
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
+                
+                return(head(meta_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$network_user_gene_data <- renderDT({
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                return(head(gene_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$network_user_group_data <- renderDT({
+                data("group")
+                group_data <- as.data.frame(group)
+                
+                return(head(group_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$network_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                data("group")
+                group_data <- group
+                
+                progress$set(value = 100)
+                progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                names(diff_meta)[4] <- "p_value"
+                names(diff_gene)[4] <- "p_value"
+                
+                network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+                network_res
+            })
+        })
+        
+        observeEvent(input$network_submit, {
+            output$network_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
                 meta_data <- read.table(
-                    input$network_meta_data_input$datapath,
+                    input$network_user_meta_data_input$datapath,
                     header = T,
                     sep = "\t",
                     row.names = 1,
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$network_gene_data_input)) {
-                data("gene_dat")
-                gene_data <- gene_dat
-            } else{
+                
                 gene_data <- read.table(
-                    input$network_gene_data_input$datapath,
+                    input$network_user_gene_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$network_group_data_input)) {
-                data("group")
-                group_data <- group
-            } else{
+                
                 group_data <- read.table(
-                    input$network_group_data_input$datapath,
+                    input$network_user_group_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
                 group_data <- as.character(group_data[, 1])
-            }
-            
-            progress$set(value = 100)
-            progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
-            
-            diff_meta <- mlimma(meta_data, group_data)
-            diff_gene <- mlimma(gene_data, group_data)
-            
-            names(diff_meta)[4] <- "p_value"
-            names(diff_gene)[4] <- "p_value"
-            
-            network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-            network_res
+                
+                progress$set(value = 100)
+                progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                names(diff_meta)[4] <- "p_value"
+                names(diff_gene)[4] <- "p_value"
+                
+                network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+                network_res
+            })
         })
         
         output$network_plot_download <- downloadHandler(
@@ -13853,43 +4627,28 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 10)
                     progress$set(message = "Reading data ...", detail = "Reading data ...")
                     
-                    if (is.null(input$network_meta_data_input)) {
-                        data("meta_dat")
-                        meta_data <- meta_dat
-                    } else{
-                        meta_data <- read.table(
-                            input$network_meta_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                    }
+                    meta_data <- read.table(
+                        input$network_user_meta_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        row.names = 1,
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$network_gene_data_input)) {
-                        data("gene_dat")
-                        gene_data <- gene_dat
-                    } else{
-                        gene_data <- read.table(
-                            input$network_gene_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                    }
+                    gene_data <- read.table(
+                        input$network_user_gene_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$network_group_data_input)) {
-                        data("group")
-                        group_data <- group
-                    } else{
-                        group_data <- read.table(
-                            input$network_group_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                        group_data <- as.character(group_data[, 1])
-                    }
+                    group_data <- read.table(
+                        input$network_user_group_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
+                    group_data <- as.character(group_data[, 1])
                     
                     progress$set(value = 100)
                     progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
@@ -15064,129 +5823,251 @@ server <- shinyServer(function(session, input, output) {
     
     # ePDA
     {
-        output$epda_meta_data <- renderDT({
-            if (is.null(input$epda_meta_data_input)) {
+        output$epda_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epda_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
-                meta_data <- read.table(
-                    input$epda_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
+                
+                write.table(meta_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(meta_data)
+        )
+        
+        output$epda_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            return(head(gene_data, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
-        output$epda_gene_data <- renderDT({
-            if (is.null(input$epda_gene_data_input)) {
+        output$epda_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("gene_dat")
                 gene_data <- gene_dat
-            } else{
-                gene_data <- read.table(
-                    input$epda_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
+                
+                write.table(gene_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = TRUE,
+                            quote = FALSE)
             }
-            return(gene_data)
+        )
+        
+        output$epda_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            return(head(group_data, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
-        output$epda_group_data <- renderDT({
-            if (is.null(input$epda_group_data_input)) {
+        output$epda_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
                 data("group")
                 group_data <- as.data.frame(group)
-            } else{
-                group_data <- read.table(
-                    input$epda_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.data.frame(as.character(group_data[, 1]))
+                
+                write.table(group_data, 
+                            file, 
+                            sep = "\t",
+                            col.names = TRUE,
+                            row.names = FALSE,
+                            quote = FALSE)
             }
-            return(group_data)
-        })
+        )
         
-        output$epda_plot <- renderPlot({
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+        output$epda_user_meta_data <- renderDT({
+            req(input$epda_user_meta_data_input)
+            meta_data <- read.table(
+                input$epda_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            return(head(meta_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epda_user_gene_data <- renderDT({
+            req(input$epda_user_gene_data_input)
+            gene_data <- read.table(
+                input$epda_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
             
-            if (is.null(input$epda_meta_data_input)) {
+            return(head(gene_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$epda_user_group_data <- renderDT({
+            req(input$epda_user_group_data_input)
+            group_data <- read.table(
+                input$epda_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            return(head(group_data, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        observeEvent(input$epda_demo, {
+            output$epda_user_meta_data <- renderDT({
                 data("meta_dat")
                 meta_data <- meta_dat
-            } else{
+                
+                return(head(meta_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epda_user_gene_data <- renderDT({
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                return(head(gene_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epda_user_group_data <- renderDT({
+                data("group")
+                group_data <- as.data.frame(group)
+                
+                return(head(group_data, 100))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epda_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                data("group")
+                group_data <- group
+                
+                progress$set(value = 100)
+                progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                diff_gene_increase <-  diff_gene %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                diff_gene_decrease <- diff_gene %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_increase <- diff_meta %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_decrease <- diff_meta %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                epda_res <- DAscore(
+                    c(diff_gene_increase$name, diff_meta_increase$name),
+                    c(diff_gene_decrease$name, diff_meta_decrease$name),
+                    c(diff_gene$name, diff_meta$name),
+                    min_measured_num = 2,
+                    out = "Extended"
+                )
+                epda_res
+            })
+        })
+        
+        observeEvent(input$epda_submit, {
+            output$epda_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
                 meta_data <- read.table(
-                    input$epda_meta_data_input$datapath,
+                    input$epda_user_meta_data_input$datapath,
                     header = T,
                     sep = "\t",
                     row.names = 1,
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$epda_gene_data_input)) {
-                data("gene_dat")
-                gene_data <- gene_dat
-            } else{
+                
                 gene_data <- read.table(
-                    input$epda_gene_data_input$datapath,
+                    input$epda_user_gene_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
-            }
-            
-            if (is.null(input$epda_group_data_input)) {
-                data("group")
-                group_data <- group
-            } else{
+                
                 group_data <- read.table(
-                    input$epda_group_data_input$datapath,
+                    input$epda_user_group_data_input$datapath,
                     header = T,
                     sep = "\t",
                     stringsAsFactors = F
                 )
                 group_data <- as.character(group_data[, 1])
-            }
-            
-            progress$set(value = 100)
-            progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
-            
-            diff_meta <- mlimma(meta_data, group_data)
-            diff_gene <- mlimma(gene_data, group_data)
-            
-            diff_gene_increase <-  diff_gene %>%
-                filter(logFC > input$epda_logfc) %>%
-                filter(adj.P.Val < input$epda_padj)
-            diff_gene_decrease <- diff_gene %>%
-                filter(logFC < -(input$epda_logfc)) %>%
-                filter(adj.P.Val < input$epda_padj)
-            
-            diff_meta_increase <- diff_meta %>%
-                filter(logFC > input$epda_logfc) %>%
-                filter(adj.P.Val < input$epda_padj)
-            
-            diff_meta_decrease <- diff_meta %>%
-                filter(logFC < -(input$epda_logfc)) %>%
-                filter(adj.P.Val < input$epda_padj)
-            
-            epda_res <- DAscore(
-                c(diff_gene_increase$name, diff_meta_increase$name),
-                c(diff_gene_decrease$name, diff_meta_decrease$name),
-                c(diff_gene$name, diff_meta$name),
-                min_measured_num = 2,
-                out = "Extended"
+                
+                progress$set(value = 100)
+                progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                diff_gene_increase <-  diff_gene %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                diff_gene_decrease <- diff_gene %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_increase <- diff_meta %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_decrease <- diff_meta %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                epda_res <- DAscore(
+                    c(diff_gene_increase$name, diff_meta_increase$name),
+                    c(diff_gene_decrease$name, diff_meta_decrease$name),
+                    c(diff_gene$name, diff_meta$name),
+                    min_measured_num = 2,
+                    out = "Extended"
                 )
-            epda_res
+                epda_res
+            })
         })
         
         output$epda_plot_download <- downloadHandler(
@@ -15203,43 +6084,28 @@ server <- shinyServer(function(session, input, output) {
                     progress$set(value = 10)
                     progress$set(message = "Reading data ...", detail = "Reading data ...")
                     
-                    if (is.null(input$epda_meta_data_input)) {
-                        data("meta_dat")
-                        meta_data <- meta_dat
-                    } else{
-                        meta_data <- read.table(
-                            input$epda_meta_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                    }
+                    meta_data <- read.table(
+                        input$epda_user_meta_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        row.names = 1,
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$epda_gene_data_input)) {
-                        data("gene_dat")
-                        gene_data <- gene_dat
-                    } else{
-                        gene_data <- read.table(
-                            input$epda_gene_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                    }
+                    gene_data <- read.table(
+                        input$epda_user_gene_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
                     
-                    if (is.null(input$epda_group_data_input)) {
-                        data("group")
-                        group_data <- group
-                    } else{
-                        group_data <- read.table(
-                            input$epda_group_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                        group_data <- as.character(group_data[, 1])
-                    }
+                    group_data <- read.table(
+                        input$epda_user_group_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
+                    group_data <- as.character(group_data[, 1])
                     
                     progress$set(value = 100)
                     progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
