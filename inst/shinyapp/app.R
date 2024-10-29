@@ -1543,7 +1543,7 @@ ui <- shinyUI(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Manual",
                                                tags$iframe(
-                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   src = "http://www.mnet4all.com/mnet_manual/",
                                                    width = "100%",
                                                    height = "720",
                                                    frameborder = 0
@@ -2526,7 +2526,7 @@ ui <- shinyUI(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Manual",
                                                tags$iframe(
-                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   src = "http://www.mnet4all.com/mnet_manual/",
                                                    width = "100%",
                                                    height = "720",
                                                    frameborder = 0
@@ -2963,7 +2963,7 @@ ui <- shinyUI(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Manual",
                                                tags$iframe(
-                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   src = "http://www.mnet4all.com/mnet_manual/",
                                                    width = "100%",
                                                    height = "720",
                                                    frameborder = 0
@@ -3300,7 +3300,7 @@ ui <- shinyUI(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Manual",
                                                tags$iframe(
-                                                   src = "http://www.xgrm.pro/XGRmbooklet/relyser.html",
+                                                   src = "http://www.mnet4all.com/mnet_manual/",
                                                    width = "100%",
                                                    height = "720",
                                                    frameborder = 0
