@@ -19,6 +19,13 @@ library(MNet)
 library(dplyr)
 library(markdown)
 
+log_file <- "user_access_log.txt"
+
+if (!file.exists(log_file)) {
+    write.table(data.frame(IP = character(), VisitTime = character()), log_file, 
+                sep = "\t", row.names = FALSE, col.names = TRUE)
+}
+
 ui <- shinyUI(
     #=== 1.bs4DashPage
     bs4DashPage(
@@ -480,11 +487,11 @@ ui <- shinyUI(
         },
         #=== 1.4 bs4DashFooter
         {
-            # footer = bs4DashFooter(
-            #     left = span("Copyright: @MNet", style = "font-weight:bold"),
-            #     right = NULL,
-            #     fixed = TRUE
-            # )
+            footer = bs4DashFooter(
+                left = verbatimTextOutput("stats"),
+                right = NULL,
+                fixed = TRUE
+            )
         },
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
@@ -1294,6 +1301,12 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Groups (TXT)"
                                        ),
+                                       
+                                       # h3("访问统计"),
+                                       # verbatimTextOutput("stats"),
+                                       # h3("最近的访问记录"),
+                                       # tableOutput("log_table"),
+                                       
                                        # actionButton(
                                        #     inputId = "network_demo",
                                        #     label = "Demo",
@@ -1527,11 +1540,11 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               tags$p(tags$b("Figure 1"), "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."),
                                                icon = shiny::icon("image")
                                            ),
                                            tabPanel(
@@ -1655,6 +1668,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("network_plot", width = "100%", height = "1000px"),
+                                               tags$p(tags$b("Figure 1"), "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -2510,11 +2524,11 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               tags$p(tags$b("Figure 1"), "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."),
                                                icon = shiny::icon("image")
                                            ),
                                            tabPanel(
@@ -2638,6 +2652,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("epea_plot", width = "100%", height = "1000px"),
+                                               tags$p(tags$b("Figure 1"), "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -2947,11 +2962,11 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("FIGURE 1"), "ePEA Pathway."),
+                                               tags$p(tags$b("Figure 1"), "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."),
                                                icon = shiny::icon("image")
                                            ),
                                            tabPanel(
@@ -3075,6 +3090,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("epda_plot", width = "100%", height = "1000px"),
+                                               tags$p(tags$b("Figure 1"), "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -3284,11 +3300,11 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("FIGURE 1"), "eSEA Pathway."),
+                                               tags$p(tags$b("Figure 1"), "Extended pathway set enrichment analysis."),
                                                icon = shiny::icon("image")
                                            ),
                                            tabPanel(
@@ -3377,6 +3393,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("esea_plot", width = "100%", height = "1000px"),
+                                               tags$p(tags$b("Figure 1"), "Extended pathway set enrichment analysis."),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -3910,6 +3927,70 @@ ui <- shinyUI(
 )
 
 server <- shinyServer(function(session, input, output) {
+    observe({
+        user_ip <- session$clientData$url_hostname
+        visit_time <- Sys.time()
+        
+        log_data <- data.frame(
+            IP = user_ip,
+            VisitTime = as.character(visit_time),
+            stringsAsFactors = FALSE
+        )
+        
+        # 追加记录到 TXT 文件
+        write.table(
+            log_data, 
+            log_file, 
+            append = TRUE, 
+            sep = "\t", 
+            row.names = FALSE, 
+            col.names = !file.exists(log_file)
+        )
+    })
+    
+    # 从日志文件中读取并统计数据
+    get_stats <- reactive({
+        req(file.exists(log_file))
+        log_data <- read.table(log_file, header = TRUE, sep = "\t")
+        
+        # 转换访问时间为 POSIXct 格式
+        log_data$VisitTime <- as.POSIXct(log_data$VisitTime)
+        
+        # 计算总访问量
+        total_visits <- nrow(log_data)
+        
+        # 统计唯一用户数量
+        unique_users <- n_distinct(log_data$IP)
+        
+        # 统计最近24小时的访问量
+        last_24h <- Sys.time() - 24 * 60 * 60
+        recent_visits <- log_data %>% filter(VisitTime >= last_24h) %>% nrow()
+        
+        # 返回统计数据
+        list(
+            total_visits = total_visits,
+            unique_users = unique_users,
+            recent_visits = recent_visits
+        )
+    })
+    
+    # 自动更新访问统计数据
+    output$stats <- renderPrint({
+        stats <- get_stats()
+        cat("Total Visits:", stats$total_visits, " ")
+        cat("Unique Visits:", stats$unique_users, " ")
+        cat("Recent 24h:", stats$recent_visits)
+    })
+    
+    # 显示最近的访问记录
+    output$log_table <- renderTable({
+        req(file.exists(log_file))
+        log_data <- read.table(log_file, header = TRUE, sep = "\t")
+        log_data$VisitTime <- as.POSIXct(log_data$VisitTime)
+        log_data <- log_data %>% arrange(desc(VisitTime)) %>% head(10)  # 显示最近10条记录
+        log_data
+    })
+    
     # home_markdown
     output$home_markdown <- renderUI({
         file_content <- markdown::renderMarkdown(file = "./README.md")

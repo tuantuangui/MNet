@@ -49,5 +49,13 @@ a {
 }
 
 .main-footer {
-  display: none !important;
+  padding: 2px 2px 0px 2px;
+}
+
+.shiny-text-output {
+  background-color: #cdcdcd;
+  box-shadow: 0px 0px 0px #ffffff;
+  border: solid 1px #cdcdcd;
+  color: #000000;
+  font-weight: bold;
 }
