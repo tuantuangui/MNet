@@ -1,5 +1,0 @@
-name	kegg_id
-2-Hydroxybutyric acid	C05984
-1-Methyladenosine	C02494
-tt	NA
-2-Aminooctanoic acid	NA

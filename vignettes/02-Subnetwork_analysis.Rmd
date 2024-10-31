@@ -12,7 +12,7 @@ vignette: >
 # <font size="5">Differential Information</font>
 The case study by Liao et al. (2022) integrated metabolic and transcriptional analysis to reveal elevated pyrimidine metabolism and glutaminolysis in TNBC among 31 breast tumors, and classified them into two clusters. We utilize MNet to identify a set of features whose activities significantly differ between these two clusters. This result will hopefully hint at some specific biological activities that are pathologically altered in tumoral samples.
 
-```{r,eval=FALSE}
+```{r include=FALSE}
 library(MNet)
 library(dplyr)
 
@@ -30,7 +30,7 @@ diff_gene <- mlimma(gene_dat,group)
 # <font size="5">Subnetwork identified by dnet</font>
 Input data must include the "name" column, with "p_value" required and "logFC" optional. If "logFC" exists, it dictates color; otherwise, use blue for metabolites and red for genes.
 
-```{r,eval=FALSE}
+```{r fig.keep='all', network, warning=FALSE, fig.width=10.00, fig.height=6.18}
 ## change the name in diff_meta 'P.Value' to 'p_value'
 names(diff_meta)[4]  <- "p_value"
 
@@ -48,39 +48,38 @@ diff_gene1 <- diff_gene %>%
   filter(abs(logFC)>1)
 
 dir.create("result_v0131")
-png("result_v0131/subnetwork_important.png",width = 8, height = 7, units = 'in', res = 200)
+# png("result_v0131/subnetwork_important.png",width = 8, height = 7, units = 'in', res = 200)
 
 ## identify the core metabolism-related subnetwork
 a <- pdnet(diff_meta,diff_gene,nsize=100)
-dev.off()
+a
+# dev.off()
 write.table(a$node_result,"result_v0131/subnetwork_important_node.txt",quote=F,row.names=F,sep="\t")
 write.table(a$edge_result,"result_v0131/subnetwork_important_edge.txt",quote=F,row.names=F,sep="\t")
 
 ```
-![](result_v0131/subnetwork_important.png){width=60%}
 
 # <font size="5">Subnetwork extraction of interested metabolites and genes</font>
 Input data requires the "name" column but excludes the "p_value" column.
 
-```{r,eval=FALSE}
-
-png("result_v0131/subnetwork_interested.png",width = 8, height = 7, units = 'in', res = 200)
+```{r fig.keep='all', network_diff, warning=FALSE, fig.width=10.00, fig.height=6.18}
+# png("result_v0131/subnetwork_interested.png",width = 8, height = 7, units = 'in', res = 200)
 
 ## get 500 differential expression gene
 a <- pdnet(diff_metabolite[,8],diff_gene1[1:500,8])
-dev.off()
+a
+# dev.off()
 write.table(a,"result_v0131/subnetwork_interested_edge.txt",quote=F,row.names=F,sep="\t")
 ```
-![](result_v0131/subnetwork_interested.png){width=60%}
 
 # <font size="5">Subnetwork extraction using correlation</font>
 
-```{r,eval=FALSE}
-png("result_v0131/subnetwork_correlation.png",width = 8, height = 7, units = 'in', res = 200)
+```{r fig.keep='all', network_corr, warning=FALSE, fig.width=10.00, fig.height=6.18}
+# png("result_v0131/subnetwork_correlation.png",width = 8, height = 7, units = 'in', res = 200)
 ## extract the correlation subnetwork
 a <- pNetCor(meta_dat,gene_dat,cor_threshold=0.95)
-dev.off()
+a
+# dev.off()
 write.table(a$result,"result_v0131/subnetwork_correlation.txt",quote=F,row.names=F,sep="\t")
 ```
-![](result_v0131/subnetwork_correlation-0.95.png){width=60%}
 

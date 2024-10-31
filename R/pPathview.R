@@ -18,7 +18,7 @@
 #' names(value) <- kegg_id
 #' cpd.data <- value
 #' 
-#' pPathview(cpd.data,outdir="test")
+#' pPathview(cpd.data, outdir="./")
 #' 
 pPathview <- function(cpd.data,
                       gene.data = NULL,

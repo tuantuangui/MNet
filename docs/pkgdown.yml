@@ -6,4 +6,7 @@ articles:
   02-Subnetwork_analysis: 02-Subnetwork_analysis.html
   03-Routine_analysis: 03-Routine_analysis.html
   MNet: MNet.html
-last_built: 2024-10-31T01:27Z
+last_built: 2024-10-31T04:47Z
+urls:
+  reference: https://github.com/tuantuangui/MNet/reference
+  article: https://github.com/tuantuangui/MNet/articles

@@ -21,7 +21,7 @@
 ">
 <meta property="og:description" content="the subnetwork analysis
 ">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="https://github.com/tuantuangui/MNet/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -56,6 +56,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="nav-link" href="https://github.com/tuantuangui/MNet/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -71,7 +72,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Metabolism-related subnetwork analysis</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/tuantuangui/MNet/blob/HEAD/vignettes/02-Subnetwork_analysis.Rmd"><code>vignettes/02-Subnetwork_analysis.Rmd</code></a></small>
       <div class="d-none name"><code>02-Subnetwork_analysis.Rmd</code></div>
     </div>
 
@@ -88,18 +89,6 @@ two clusters. We utilize MNet to identify a set of features whose
 activities significantly differ between these two clusters. This result
 will hopefully hint at some specific biological activities that are
 pathologically altered in tumoral samples.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## meta_dat is the metabolic data of the 31 samples</span></span>
-<span><span class="co">## gene_dat is the transcriptional data of the 31 samples</span></span>
-<span><span class="co">## group is the group information of the 31 samples</span></span>
-<span></span>
-<span><span class="co">## mlimma is the function of Differential Metabolite analysis by limma</span></span>
-<span></span>
-<span><span class="va">diff_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span>
-<span><span class="va">diff_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">gene_dat</span>,<span class="va">group</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-identified-by-dnet">
@@ -108,7 +97,7 @@ pathologically altered in tumoral samples.</p>
 <p>Input data must include the “name” column, with “p_value” required
 and “logFC” optional. If “logFC” exists, it dictates color; otherwise,
 use blue for metabolites and red for genes.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## change the name in diff_meta 'P.Value' to 'p_value'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="st">"p_value"</span></span>
 <span></span>
@@ -126,14 +115,429 @@ use blue for metabolites and red for genes.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">"result_v0131"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"result_v0131/subnetwork_important.png"</span>,width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">7</span>, units <span class="op">=</span> <span class="st">'in'</span>, res <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="co"># png("result_v0131/subnetwork_important.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span></span>
 <span><span class="co">## identify the core metabolism-related subnetwork</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_meta</span>,<span class="va">diff_gene</span>,nsize<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_meta</span>,<span class="va">diff_gene</span>,nsize<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Start at 2024-10-31 12:53:05.127453</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span></code></pre>
+<pre><code><span><span class="co">## First, fit the input p-value distribution under beta-uniform mixture model (2024-10-31 12:53:05.130136)...</span></span></code></pre>
+<pre><code><span><span class="co">##  A total of p-values: 17978</span></span></code></pre>
+<pre><code><span><span class="co">##  Maximum Log-Likelihood: 29984.0</span></span></code></pre>
+<pre><code><span><span class="co">##  Mixture parameter (lambda): 0.109</span></span></code></pre>
+<pre><code><span><span class="co">##  Shape parameter (a): 0.225</span></span></code></pre>
+<pre><code><span><span class="co">## Second, determine the significance threshold (2024-10-31 12:53:05.234454)...</span></span></code></pre>
+<pre><code><span><span class="co">##  Via constraint on the size of subnetwork to be identified (100 nodes)</span></span></code></pre>
+<pre><code><span><span class="co">##  Scanning significance threshold at rough stage (2024-10-31 12:53:05.235229)...</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.243891)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.248931)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.253842)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-10-31 12:53:05.354352)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-10-31 12:53:05.661525)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-10-31 12:53:06.580918)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-10-31 12:53:09.114075)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-10-31 12:53:15.080259)</span></span></code></pre>
+<pre><code><span><span class="co">##  Scanning significance threshold at finetuning stage (2024-10-31 12:53:15.080859)...</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-10-31 12:53:18.069818)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-10-31 12:53:21.030782)</span></span></code></pre>
+<pre><code><span><span class="co">##      significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-10-31 12:53:24.242569)</span></span></code></pre>
+<pre><code><span><span class="co">##  significance threshold: 2.50e-05</span></span></code></pre>
+<pre><code><span><span class="co">## Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-10-31 12:53:24.243492)...</span></span></code></pre>
+<pre><code><span><span class="co">##  Amongst 17978 scores, there are 920 positives.</span></span></code></pre>
+<pre><code><span><span class="co">## Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-10-31 12:53:24.246704)...</span></span></code></pre>
+<pre><code><span><span class="co">##  Size of the subgraph: 110 nodes and 156 edges</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Finish at 2024-10-31 12:53:27.323443</span></span></code></pre>
+<pre><code><span><span class="co">## Runtime in total is: 22 secs</span></span></code></pre>
+<p><img src="02-Subnetwork_analysis_files/figure-html/network-1.png" width="960"></p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
+<pre><code><span><span class="co">## $node_result</span></span>
+<span><span class="co">##            name       type  logFC   AveExpr         t      p_value    adj.P.Val</span></span>
+<span><span class="co">## 1        C00004 metabolite  -2.32 21.727047 -4.043754 3.105194e-04 9.855615e-04</span></span>
+<span><span class="co">## 2        C00008 metabolite  -1.61 26.915728 -2.558933 1.544157e-02 2.749352e-02</span></span>
+<span><span class="co">## 3        C00010 metabolite  -6.77 17.135068 -6.060921 9.173483e-07 1.912691e-05</span></span>
+<span><span class="co">## 4        C00013 metabolite  -2.26 26.993427 -5.547469 4.064386e-06 5.235885e-05</span></span>
+<span><span class="co">## 5        C00015 metabolite  -2.35 25.255687 -3.450511 1.594418e-03 4.013535e-03</span></span>
+<span><span class="co">## 6        C00016 metabolite  -0.77 19.350309 -1.675330 1.036357e-01 1.473781e-01</span></span>
+<span><span class="co">## 7        C00025 metabolite  -1.52 30.828161 -5.098364 1.500590e-05 1.060094e-04</span></span>
+<span><span class="co">## 8        C00365 metabolite  -4.49 19.519903 -5.795534 1.977561e-06 2.706787e-05</span></span>
+<span><span class="co">## 9        C02985 metabolite  -3.00 22.074992 -6.328344 4.247004e-07 1.328706e-05</span></span>
+<span><span class="co">## 10       C00022 metabolite   1.44 24.204231  5.959762 1.228914e-06 2.070247e-05</span></span>
+<span><span class="co">## 11       C00106 metabolite  -3.11 26.684736 -6.154394 7.005083e-07 1.704570e-05</span></span>
+<span><span class="co">## 12       C00255 metabolite  -2.20 21.357147 -6.579475 2.070069e-07 9.066904e-06</span></span>
+<span><span class="co">## 13       C00148 metabolite  -1.40 30.504922 -5.866104 1.611709e-06 2.353096e-05</span></span>
+<span><span class="co">## 14       C00267 metabolite   2.44 26.228537  7.801170 6.831988e-09 7.481027e-07</span></span>
+<span><span class="co">## 15       C00073 metabolite  -1.82 27.121139 -6.800424 1.104723e-07 6.216787e-06</span></span>
+<span><span class="co">## 16       C00242 metabolite  -2.37 21.589952 -6.451754 2.981604e-07 1.088285e-05</span></span>
+<span><span class="co">## 17       C02291 metabolite  -7.05 19.394642 -6.002475 1.086113e-06 1.982156e-05</span></span>
+<span><span class="co">## 18       C02045 metabolite   2.86 22.643320  9.246113 1.517272e-10 3.322827e-08</span></span>
+<span><span class="co">## 19       C18170 metabolite  -1.41 30.500751 -5.916654 1.392209e-06 2.177813e-05</span></span>
+<span><span class="co">## 20        ABCA8       gene  17.72 21.429976  7.927899 1.249085e-08 1.509014e-06</span></span>
+<span><span class="co">## 21        ACACB       gene  10.75 26.910121  6.322806 4.302487e-07 1.575420e-05</span></span>
+<span><span class="co">## 22        ADCY5       gene  10.80 17.439272  6.446905 3.014049e-07 1.233330e-05</span></span>
+<span><span class="co">## 23          AK7       gene   5.04  9.457650  6.487978 3.619592e-07 1.385352e-05</span></span>
+<span><span class="co">## 24       ATP2B1       gene   4.47 29.300110  5.567432 3.826994e-06 7.890137e-05</span></span>
+<span><span class="co">## 25      ATP5F1C       gene  -4.98 35.514591 -6.082839 8.588031e-07 2.589386e-05</span></span>
+<span><span class="co">## 26        AURKA       gene -10.91 22.465755 -7.954966 4.477682e-09 8.738369e-07</span></span>
+<span><span class="co">## 27        AURKB       gene -11.36 19.110752 -8.415370 1.304025e-09 4.927271e-07</span></span>
+<span><span class="co">## 28          BMX       gene   8.87 10.651736  6.999877 7.462994e-08 4.837055e-06</span></span>
+<span><span class="co">## 29         BUB1       gene -11.71 23.210846 -8.194952 2.346136e-09 6.720167e-07</span></span>
+<span><span class="co">## 30        BUB1B       gene -10.30 22.881880 -6.355195 3.920415e-07 1.475056e-05</span></span>
+<span><span class="co">## 31         CDC7       gene  -7.02 22.392840 -7.229880 3.289644e-08 2.752749e-06</span></span>
+<span><span class="co">## 32         CDK1       gene -11.01 26.430882 -7.405320 2.019378e-08 2.061043e-06</span></span>
+<span><span class="co">## 33        CDK16       gene  -4.90 33.659519 -7.768899 7.426455e-09 1.135382e-06</span></span>
+<span><span class="co">## 34         CDK8       gene  -3.66 22.779754 -5.668001 2.856973e-06 6.279329e-05</span></span>
+<span><span class="co">## 35        CHEK1       gene  -8.41 22.346608 -7.027941 5.792127e-08 4.081841e-06</span></span>
+<span><span class="co">## 36          CIT       gene  -6.87 22.564460 -6.157121 6.931174e-07 2.242090e-05</span></span>
+<span><span class="co">## 37         CPS1       gene   7.39 14.277831  5.996249 1.102995e-06 3.114164e-05</span></span>
+<span><span class="co">## 38        CTPS1       gene  -7.25 27.931682 -6.443127 3.046838e-07 1.241027e-05</span></span>
+<span><span class="co">## 39        DCLK1       gene  14.01 23.498349  6.545858 2.639923e-07 1.123154e-05</span></span>
+<span><span class="co">## 40        DTYMK       gene  -3.91 22.038522 -5.812212 1.879693e-06 4.541696e-05</span></span>
+<span><span class="co">## 41  FPGT-TNNI3K       gene   8.35 12.342927  8.127066 4.562409e-09 8.806937e-07</span></span>
+<span><span class="co">## 42         GRK3       gene   4.84 27.363790  7.126857 7.717556e-08 4.965800e-06</span></span>
+<span><span class="co">## 43       HASPIN       gene  -7.20 14.494119 -7.240705 3.191759e-08 2.736790e-06</span></span>
+<span><span class="co">## 44      MAP3K12       gene   7.54 24.538204  6.109944 7.941649e-07 2.483024e-05</span></span>
+<span><span class="co">## 45        MASTL       gene  -7.12 25.792464 -9.568097 6.693370e-11 1.485844e-07</span></span>
+<span><span class="co">## 46         MELK       gene -12.39 21.556778 -7.969245 4.307904e-09 8.595963e-07</span></span>
+<span><span class="co">## 47         NEK2       gene -11.86 20.658434 -7.064147 5.231846e-08 3.871348e-06</span></span>
+<span><span class="co">## 48         NEK5       gene   6.98 13.398510  6.674515 1.574017e-07 7.963808e-06</span></span>
+<span><span class="co">## 49         NME1       gene  -5.39 29.622976 -7.284423 2.825566e-08 2.586558e-06</span></span>
+<span><span class="co">## 50          PBK       gene  -9.74 19.095824 -5.765918 2.149913e-06 5.017122e-05</span></span>
+<span><span class="co">## 51         PDK4       gene  19.91 25.564214  8.415999 1.301851e-09 4.927271e-07</span></span>
+<span><span class="co">## 52       PKMYT1       gene -10.18 20.944080 -7.292234 2.764777e-08 2.557060e-06</span></span>
+<span><span class="co">## 53         PLK1       gene -10.59 22.624463 -6.755705 1.249762e-07 6.856534e-06</span></span>
+<span><span class="co">## 54         PLK4       gene  -7.96 21.251613 -6.672628 1.582489e-07 7.983927e-06</span></span>
+<span><span class="co">## 55        PRKG1       gene  10.38 19.049114  5.520254 4.389791e-06 8.694848e-05</span></span>
+<span><span class="co">## 56         RRM2       gene -10.65 26.406588 -6.735381 1.323980e-07 7.146676e-06</span></span>
+<span><span class="co">## 57      SLC17A7       gene   6.80  9.548279  7.083092 5.933446e-08 4.132238e-06</span></span>
+<span><span class="co">## 58      SLC27A1       gene   6.12 24.168456  6.250211 5.301011e-07 1.835101e-05</span></span>
+<span><span class="co">## 59        SRPK1       gene  -6.23 32.110850 -8.740017 5.552561e-10 3.521712e-07</span></span>
+<span><span class="co">## 60       STK32B       gene  10.17 15.665397  6.888633 1.449981e-07 7.551383e-06</span></span>
+<span><span class="co">## 61          TEK       gene  11.94 19.310413  6.691351 1.500427e-07 7.745953e-06</span></span>
+<span><span class="co">## 62       TGFBR2       gene   9.47 35.070723  7.622292 1.109599e-08 1.449666e-06</span></span>
+<span><span class="co">## 63          TK1       gene  -9.85 24.293472 -6.591871 1.991773e-07 9.382466e-06</span></span>
+<span><span class="co">## 64          TK2       gene   4.61 26.796432  7.228577 3.301625e-08 2.752749e-06</span></span>
+<span><span class="co">## 65          TTK       gene -10.76 20.572338 -7.612819 1.138862e-08 1.456454e-06</span></span>
+<span><span class="co">## 66      ALDH1A1       gene  14.49 22.024927  5.718473 2.467395e-06 5.574868e-05</span></span>
+<span><span class="co">## 67      CYP4F12       gene  10.04 12.190344  6.235201 9.807376e-07 2.878830e-05</span></span>
+<span><span class="co">## 68        GAPDH       gene  -6.76 50.561018 -5.517560 4.424322e-06 8.730170e-05</span></span>
+<span><span class="co">## 69         GLDC       gene -14.89 17.466434 -6.850337 9.558377e-08 5.813261e-06</span></span>
+<span><span class="co">## 70        GLUD1       gene   4.87 33.841440  6.005386 1.074230e-06 3.057251e-05</span></span>
+<span><span class="co">## 71         GPD1       gene  16.24 19.173724  6.363837 3.824380e-07 1.448127e-05</span></span>
+<span><span class="co">## 72        GPD1L       gene   6.03 27.548533  6.895382 8.415573e-08 5.264169e-06</span></span>
+<span><span class="co">## 73         H6PD       gene   5.57 32.217726  7.306868 2.654418e-08 2.507437e-06</span></span>
+<span><span class="co">## 74     HSD17B10       gene  -4.14 28.572926 -6.081707 8.616159e-07 2.593464e-05</span></span>
+<span><span class="co">## 75        PDHA1       gene  -3.76 31.935650 -5.740920 2.311714e-06 5.345537e-05</span></span>
+<span><span class="co">## 76         RDH5       gene   8.56 14.448947  5.995533 1.105279e-06 3.115659e-05</span></span>
+<span><span class="co">## 77          ME3       gene   5.02 21.964317  6.121416 1.149209e-06 3.213986e-05</span></span>
+<span><span class="co">## 78         NOS3       gene   5.68 18.890199  5.592183 3.561261e-06 7.457999e-05</span></span>
+<span><span class="co">## 79          TXN       gene  -4.94 33.816196 -6.677388 1.561207e-07 7.921563e-06</span></span>
+<span><span class="co">## 80        PNPT1       gene  -4.56 28.953012 -5.520102 4.391733e-06 8.694848e-05</span></span>
+<span><span class="co">## 81        CPT1A       gene   5.55 29.734599  6.098122 8.217325e-07 2.516060e-05</span></span>
+<span><span class="co">## 82         YOD1       gene  -5.81 25.782081 -5.973874 1.176750e-06 3.272703e-05</span></span>
+<span><span class="co">## 83      ZDHHC24       gene   4.07 21.947734  5.793109 1.986798e-06 4.734971e-05</span></span>
+<span><span class="co">## 84        HPRT1       gene  -4.73 26.038333 -5.525826 4.319227e-06 8.608883e-05</span></span>
+<span><span class="co">## 85         NPR1       gene   9.96 20.181792  7.187340 3.704698e-08 2.977002e-06</span></span>
+<span><span class="co">## 86        PDSS1       gene  -6.37 18.246207 -7.257323 3.047208e-08 2.692307e-06</span></span>
+<span><span class="co">## 87         POLE       gene  -3.14 30.147049 -5.973631 1.177576e-06 3.272703e-05</span></span>
+<span><span class="co">## 88         POLK       gene   2.87 26.124109  6.023414 1.019670e-06 2.939661e-05</span></span>
+<span><span class="co">## 89         POLN       gene   7.10 11.987359  6.212211 5.913774e-07 1.977829e-05</span></span>
+<span><span class="co">## 90         POLQ       gene  -9.85 20.506744 -8.439654 1.222778e-09 4.927271e-07</span></span>
+<span><span class="co">## 91         FMOD       gene  15.43 28.243500  7.110280 4.596636e-08 3.503505e-06</span></span>
+<span><span class="co">## 92      GALNT15       gene  12.32 18.290691  6.689610 2.467245e-07 1.079454e-05</span></span>
+<span><span class="co">## 93          OGN       gene  18.20 22.806139  7.806057 8.355314e-09 1.223776e-06</span></span>
+<span><span class="co">## 94        PDIA4       gene  -5.68 36.460830 -6.919181 7.868660e-08 4.990698e-06</span></span>
+<span><span class="co">## 95        PLOD3       gene  -4.43 29.982526 -5.859541 1.638652e-06 4.130951e-05</span></span>
+<span><span class="co">## 96       ACADSB       gene   7.89 28.574986  6.154348 6.986819e-07 2.255980e-05</span></span>
+<span><span class="co">## 97         AOX1       gene  14.53 18.984377  8.633552 9.578291e-10 4.476339e-07</span></span>
+<span><span class="co">## 98         CAV1       gene   9.26 32.804468  6.952892 7.154898e-08 4.736178e-06</span></span>
+<span><span class="co">## 99         MAOA       gene  12.46 20.677373  7.194953 3.626696e-08 2.940936e-06</span></span>
+<span><span class="co">## 100     NOSTRIN       gene  10.62 19.919745  7.276692 2.887075e-08 2.615896e-06</span></span>
+<span><span class="co">## 101   EEF1AKMT4       gene  -7.15 17.236700 -7.604358 1.165661e-08 1.460507e-06</span></span>
+<span><span class="co">## 102     ETFBKMT       gene   4.95 17.269675  6.032199 9.941029e-07 2.903663e-05</span></span>
+<span><span class="co">## 103        TRMO       gene   3.29 20.426508  6.498542 2.600062e-07 1.118027e-05</span></span>
+<span><span class="co">## 104        GPT2       gene  -8.56 28.350456 -6.001599 1.086059e-06 3.079845e-05</span></span>
+<span><span class="co">## 105        ABAT       gene  10.38 21.786314  5.960613 1.222784e-06 3.325485e-05</span></span>
+<span><span class="co">## 106         GGH       gene  -8.08 24.429955 -6.679856 1.550285e-07 7.894588e-06</span></span>
+<span><span class="co">## 107     NAALAD2       gene   9.17 13.369770  7.245719 3.147429e-08 2.736790e-06</span></span>
+<span><span class="co">## 108       PSAT1       gene -11.58 22.681462 -7.665064 9.866820e-09 1.358332e-06</span></span>
+<span><span class="co">## 109      SLC7A5       gene -10.07 30.536982 -5.815316 1.862848e-06 4.514744e-05</span></span>
+<span><span class="co">## 110         CBS       gene -12.49 19.845748 -5.804015 1.924921e-06 4.613317e-05</span></span>
+<span><span class="co">##              B      logP  colors</span></span>
+<span><span class="co">## 1   -0.1284396 3.0063163 #8F8FCE</span></span>
+<span><span class="co">## 2   -3.8094665 1.5607697 #8F8FCE</span></span>
+<span><span class="co">## 3    5.5544799 4.7183551 #0000FF</span></span>
+<span><span class="co">## 4    4.0931288 4.2810099 #8F8FCE</span></span>
+<span><span class="co">## 5   -1.6936270 2.3964730 #8F8FCE</span></span>
+<span><span class="co">## 6   -5.4722678 0.8315672 #BEBEBE</span></span>
+<span><span class="co">## 7    2.8143804 3.9746554 #8F8FCE</span></span>
+<span><span class="co">## 8    4.7999437 4.5675459 #3030EF</span></span>
+<span><span class="co">## 9    6.3116406 4.8765713 #5F5FDF</span></span>
+<span><span class="co">## 10   5.2671639 4.6839779 #CECE8F</span></span>
+<span><span class="co">## 11   5.8195612 4.7683851 #5F5FDF</span></span>
+<span><span class="co">## 12   7.0186328 5.0425410 #8F8FCE</span></span>
+<span><span class="co">## 13   5.0008122 4.6283604 #BEBEBE</span></span>
+<span><span class="co">## 14  10.3759397 6.1260388 #CECE8F</span></span>
+<span><span class="co">## 15   7.6366728 5.2064340 #8F8FCE</span></span>
+<span><span class="co">## 16   6.6596209 4.9632572 #8F8FCE</span></span>
+<span><span class="co">## 17   5.3885292 4.7028621 #0000FF</span></span>
+<span><span class="co">## 18  14.1148491 7.4784923 #DFDF5F</span></span>
+<span><span class="co">## 19   5.1446045 4.6619794 #BEBEBE</span></span>
+<span><span class="co">## 20   9.4447939 5.8213067 #FF0000</span></span>
+<span><span class="co">## 21   6.3507309 4.8026036 #DF5F5F</span></span>
+<span><span class="co">## 22   6.6776761 4.9089209 #DF5F5F</span></span>
+<span><span class="co">## 23   6.4936485 4.8584398 #CE8F8F</span></span>
+<span><span class="co">## 24   4.3363288 4.1029154 #CE8F8F</span></span>
+<span><span class="co">## 25   5.7148032 4.5868032 #8FCE8F</span></span>
+<span><span class="co">## 26  10.5086690 6.0585696 #5FDF5F</span></span>
+<span><span class="co">## 27  11.6156772 6.3073935 #5FDF5F</span></span>
+<span><span class="co">## 28   7.9426935 5.3154190 #DF5F5F</span></span>
+<span><span class="co">## 29  11.0896899 6.1726199 #5FDF5F</span></span>
+<span><span class="co">## 30   6.4361943 4.8311914 #5FDF5F</span></span>
+<span><span class="co">## 31   8.7028791 5.5602333 #8FCE8F</span></span>
+<span><span class="co">## 32   9.1464490 5.6859130 #5FDF5F</span></span>
+<span><span class="co">## 33  10.0523401 5.9448581 #8FCE8F</span></span>
+<span><span class="co">## 34   4.6063033 4.2020868 #BEBEBE</span></span>
+<span><span class="co">## 35   8.1874004 5.3891440 #5FDF5F</span></span>
+<span><span class="co">## 36   5.9121429 4.6493471 #8FCE8F</span></span>
+<span><span class="co">## 37   5.4842676 4.5066585 #CE8F8F</span></span>
+<span><span class="co">## 38   6.6677424 4.9062187 #8FCE8F</span></span>
+<span><span class="co">## 39   6.7917319 4.9495605 #EF3030</span></span>
+<span><span class="co">## 40   4.9927198 4.3427819 #BEBEBE</span></span>
+<span><span class="co">## 41  10.4262958 6.0551751 #DF5F5F</span></span>
+<span><span class="co">## 42   7.8707177 5.3040108 #CE8F8F</span></span>
+<span><span class="co">## 43   8.7303662 5.5627586 #8FCE8F</span></span>
+<span><span class="co">## 44   5.7868585 4.6050191 #CE8F8F</span></span>
+<span><span class="co">## 45  14.2429889 6.8280267 #8FCE8F</span></span>
+<span><span class="co">## 46  10.5434788 6.0657055 #30EF30</span></span>
+<span><span class="co">## 47   8.2801962 5.4121378 #5FDF5F</span></span>
+<span><span class="co">## 48   7.2734511 5.0988792 #CE8F8F</span></span>
+<span><span class="co">## 49   8.8412176 5.5872777 #8FCE8F</span></span>
+<span><span class="co">## 50   4.8687772 4.2995453 #5FDF5F</span></span>
+<span><span class="co">## 51  11.6171684 6.3073935 #FF0000</span></span>
+<span><span class="co">## 52   8.8609945 5.5922591 #5FDF5F</span></span>
+<span><span class="co">## 53   7.4846599 5.1638954 #5FDF5F</span></span>
+<span><span class="co">## 54   7.2685339 5.0977834 #8FCE8F</span></span>
+<span><span class="co">## 55   4.2095724 4.0607380 #DF5F5F</span></span>
+<span><span class="co">## 56   7.4318569 5.1458959 #5FDF5F</span></span>
+<span><span class="co">## 57   8.1509319 5.3838147 #CE8F8F</span></span>
+<span><span class="co">## 58   6.1588423 4.7363401 #CE8F8F</span></span>
+<span><span class="co">## 59  12.3767570 6.4532462 #8FCE8F</span></span>
+<span><span class="co">## 60   7.3045373 5.1219735 #DF5F5F</span></span>
+<span><span class="co">## 61   7.3173064 5.1109251 #DF5F5F</span></span>
+<span><span class="co">## 62   9.6892781 5.8387321 #DF5F5F</span></span>
+<span><span class="co">## 63   7.0577370 5.0276830 #5FDF5F</span></span>
+<span><span class="co">## 64   8.6995706 5.5602333 #CE8F8F</span></span>
+<span><span class="co">## 65   9.6657153 5.8367031 #5FDF5F</span></span>
+<span><span class="co">## 66   4.7416485 4.2537654 #EF3030</span></span>
+<span><span class="co">## 67   5.5631188 4.5407840 #DF5F5F</span></span>
+<span><span class="co">## 68   4.2023329 4.0589773 #8FCE8F</span></span>
+<span><span class="co">## 69   7.7299151 5.2355802 #30EF30</span></span>
+<span><span class="co">## 70   5.5086185 4.5146689 #CE8F8F</span></span>
+<span><span class="co">## 71   6.4589825 4.8391933 #FF0000</span></span>
+<span><span class="co">## 72   7.8462984 5.2786702 #CE8F8F</span></span>
+<span><span class="co">## 73   8.8980300 5.6007700 #CE8F8F</span></span>
+<span><span class="co">## 74   5.7117918 4.5861198 #8FCE8F</span></span>
+<span><span class="co">## 75   4.8018073 4.2720087 #BEBEBE</span></span>
+<span><span class="co">## 76   5.4823613 4.5064500 #DF5F5F</span></span>
+<span><span class="co">## 77   5.4324636 4.4929560 #CE8F8F</span></span>
+<span><span class="co">## 78   4.4028047 4.1273777 #CE8F8F</span></span>
+<span><span class="co">## 79   7.2809364 5.1011891 #8FCE8F</span></span>
+<span><span class="co">## 80   4.2091638 4.0607380 #8FCE8F</span></span>
+<span><span class="co">## 81   5.7554373 4.5992790 #CE8F8F</span></span>
+<span><span class="co">## 82   5.4246151 4.4850935 #8FCE8F</span></span>
+<span><span class="co">## 83   4.9415889 4.3246827 #CE8F8F</span></span>
+<span><span class="co">## 84   4.2245452 4.0650532 #8FCE8F</span></span>
+<span><span class="co">## 85   8.5947181 5.5262209 #DF5F5F</span></span>
+<span><span class="co">## 86   8.7725319 5.5698754 #8FCE8F</span></span>
+<span><span class="co">## 87   5.4239687 4.4850935 #BEBEBE</span></span>
+<span><span class="co">## 88   5.5566472 4.5317027 #BEBEBE</span></span>
+<span><span class="co">## 89   6.0582219 4.7038113 #CE8F8F</span></span>
+<span><span class="co">## 90  11.6731716 6.3073935 #5FDF5F</span></span>
+<span><span class="co">## 91   8.3982019 5.4554973 #EF3030</span></span>
+<span><span class="co">## 92   6.8257119 4.9667958 #EF3030</span></span>
+<span><span class="co">## 93   9.9205805 5.9122981 #FF0000</span></span>
+<span><span class="co">## 94   7.9076912 5.3018387 #8FCE8F</span></span>
+<span><span class="co">## 95   5.1193175 4.3839499 #8FCE8F</span></span>
+<span><span class="co">## 96   5.9047829 4.6466647 #CE8F8F</span></span>
+<span><span class="co">## 97  11.8513772 6.3490771 #EF3030</span></span>
+<span><span class="co">## 98   7.9945403 5.3245720 #DF5F5F</span></span>
+<span><span class="co">## 99   8.6140929 5.5315145 #EF3030</span></span>
+<span><span class="co">## 100  8.8216332 5.5823795 #DF5F5F</span></span>
+<span><span class="co">## 101  9.6446578 5.8354963 #8FCE8F</span></span>
+<span><span class="co">## 102  5.5800425 4.5370537 #CE8F8F</span></span>
+<span><span class="co">## 103  6.8132900 4.9515479 #BEBEBE</span></span>
+<span><span class="co">## 104  5.4985270 4.5114711 #5FDF5F</span></span>
+<span><span class="co">## 105  5.3892457 4.4781450 #DF5F5F</span></span>
+<span><span class="co">## 106  7.2873669 5.1026705 #5FDF5F</span></span>
+<span><span class="co">## 107  8.7430918 5.5627586 #DF5F5F</span></span>
+<span><span class="co">## 108  9.7955156 5.8669940 #5FDF5F</span></span>
+<span><span class="co">## 109  5.0010250 4.3453668 #5FDF5F</span></span>
+<span><span class="co">## 110  4.9707823 4.3359867 #30EF30</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $edge_result</span></span>
+<span><span class="co">##         X1          X2</span></span>
+<span><span class="co">## 1   C00004      C00008</span></span>
+<span><span class="co">## 2   C00004      C00010</span></span>
+<span><span class="co">## 3   C00008      C00010</span></span>
+<span><span class="co">## 4   C00008      C00013</span></span>
+<span><span class="co">## 5   C00010      C00013</span></span>
+<span><span class="co">## 6   C00008      C00015</span></span>
+<span><span class="co">## 7   C00004      C00016</span></span>
+<span><span class="co">## 8   C00010      C00016</span></span>
+<span><span class="co">## 9   C00013      C00016</span></span>
+<span><span class="co">## 10  C00004      C00025</span></span>
+<span><span class="co">## 11  C00008      C00025</span></span>
+<span><span class="co">## 12  C00010      C00025</span></span>
+<span><span class="co">## 13  C00013      C00025</span></span>
+<span><span class="co">## 14  C00008      C00365</span></span>
+<span><span class="co">## 15  C00013      C02985</span></span>
+<span><span class="co">## 16  C00004      C00022</span></span>
+<span><span class="co">## 17  C00008      C00022</span></span>
+<span><span class="co">## 18  C00010      C00022</span></span>
+<span><span class="co">## 19  C00013      C00022</span></span>
+<span><span class="co">## 20  C00015      C00022</span></span>
+<span><span class="co">## 21  C00016      C00022</span></span>
+<span><span class="co">## 22  C00025      C00022</span></span>
+<span><span class="co">## 23  C00013      C00106</span></span>
+<span><span class="co">## 24  C00016      C00106</span></span>
+<span><span class="co">## 25  C00008      C00255</span></span>
+<span><span class="co">## 26  C00016      C00255</span></span>
+<span><span class="co">## 27  C00004      C00148</span></span>
+<span><span class="co">## 28  C00008      C00148</span></span>
+<span><span class="co">## 29  C00013      C00148</span></span>
+<span><span class="co">## 30  C00025      C00148</span></span>
+<span><span class="co">## 31  C00008      C00267</span></span>
+<span><span class="co">## 32  C00015      C00267</span></span>
+<span><span class="co">## 33  C00008      C00073</span></span>
+<span><span class="co">## 34  C00010      C00073</span></span>
+<span><span class="co">## 35  C00013      C00073</span></span>
+<span><span class="co">## 36  C00025      C00073</span></span>
+<span><span class="co">## 37  C00022      C00073</span></span>
+<span><span class="co">## 38  C00148      C00073</span></span>
+<span><span class="co">## 39  C00013      C00242</span></span>
+<span><span class="co">## 40  C00022      C02291</span></span>
+<span><span class="co">## 41  C00008      C02045</span></span>
+<span><span class="co">## 42  C00016      C18170</span></span>
+<span><span class="co">## 43  C00008       ABCA8</span></span>
+<span><span class="co">## 44  C00008       ACACB</span></span>
+<span><span class="co">## 45  C00013       ACACB</span></span>
+<span><span class="co">## 46  C00013       ADCY5</span></span>
+<span><span class="co">## 47  C00008         AK7</span></span>
+<span><span class="co">## 48  C00008      ATP2B1</span></span>
+<span><span class="co">## 49  C00008     ATP5F1C</span></span>
+<span><span class="co">## 50  C00008       AURKA</span></span>
+<span><span class="co">## 51  C00008       AURKB</span></span>
+<span><span class="co">## 52  C00008         BMX</span></span>
+<span><span class="co">## 53  C00008        BUB1</span></span>
+<span><span class="co">## 54  C00008       BUB1B</span></span>
+<span><span class="co">## 55  C00008        CDC7</span></span>
+<span><span class="co">## 56  C00008        CDK1</span></span>
+<span><span class="co">## 57  C00008       CDK16</span></span>
+<span><span class="co">## 58  C00008        CDK8</span></span>
+<span><span class="co">## 59  C00008       CHEK1</span></span>
+<span><span class="co">## 60  C00008         CIT</span></span>
+<span><span class="co">## 61  C00008        CPS1</span></span>
+<span><span class="co">## 62  C00008       CTPS1</span></span>
+<span><span class="co">## 63  C00025       CTPS1</span></span>
+<span><span class="co">## 64  C00008       DCLK1</span></span>
+<span><span class="co">## 65  C00008       DTYMK</span></span>
+<span><span class="co">## 66  C00365       DTYMK</span></span>
+<span><span class="co">## 67  C00008 FPGT-TNNI3K</span></span>
+<span><span class="co">## 68  C00008        GRK3</span></span>
+<span><span class="co">## 69  C00008      HASPIN</span></span>
+<span><span class="co">## 70  C00008     MAP3K12</span></span>
+<span><span class="co">## 71  C00008       MASTL</span></span>
+<span><span class="co">## 72  C00008        MELK</span></span>
+<span><span class="co">## 73  C00008        NEK2</span></span>
+<span><span class="co">## 74  C00008        NEK5</span></span>
+<span><span class="co">## 75  C00008        NME1</span></span>
+<span><span class="co">## 76  C00015        NME1</span></span>
+<span><span class="co">## 77  C00008         PBK</span></span>
+<span><span class="co">## 78  C00008        PDK4</span></span>
+<span><span class="co">## 79  C00016        PDK4</span></span>
+<span><span class="co">## 80  C00008      PKMYT1</span></span>
+<span><span class="co">## 81  C00008        PLK1</span></span>
+<span><span class="co">## 82  C00008        PLK4</span></span>
+<span><span class="co">## 83  C00008       PRKG1</span></span>
+<span><span class="co">## 84  C00008        RRM2</span></span>
+<span><span class="co">## 85  C00015        RRM2</span></span>
+<span><span class="co">## 86  C00008     SLC17A7</span></span>
+<span><span class="co">## 87  C00025     SLC17A7</span></span>
+<span><span class="co">## 88  C00008     SLC27A1</span></span>
+<span><span class="co">## 89  C00010     SLC27A1</span></span>
+<span><span class="co">## 90  C00013     SLC27A1</span></span>
+<span><span class="co">## 91  C00008       SRPK1</span></span>
+<span><span class="co">## 92  C00008      STK32B</span></span>
+<span><span class="co">## 93  C00008         TEK</span></span>
+<span><span class="co">## 94  C00008      TGFBR2</span></span>
+<span><span class="co">## 95  C00008         TK1</span></span>
+<span><span class="co">## 96  C00365         TK1</span></span>
+<span><span class="co">## 97  C00008         TK2</span></span>
+<span><span class="co">## 98  C00365         TK2</span></span>
+<span><span class="co">## 99  C00008         TTK</span></span>
+<span><span class="co">## 100 C00004     ALDH1A1</span></span>
+<span><span class="co">## 101 C00004     CYP4F12</span></span>
+<span><span class="co">## 102 C00004       GAPDH</span></span>
+<span><span class="co">## 103 C00004        GLDC</span></span>
+<span><span class="co">## 104 C00004       GLUD1</span></span>
+<span><span class="co">## 105 C00025       GLUD1</span></span>
+<span><span class="co">## 106 C00004        GPD1</span></span>
+<span><span class="co">## 107 C00004       GPD1L</span></span>
+<span><span class="co">## 108 C00004        H6PD</span></span>
+<span><span class="co">## 109 C00004    HSD17B10</span></span>
+<span><span class="co">## 110 C00010    HSD17B10</span></span>
+<span><span class="co">## 111 C00016    HSD17B10</span></span>
+<span><span class="co">## 112 C00004       PDHA1</span></span>
+<span><span class="co">## 113 C00010       PDHA1</span></span>
+<span><span class="co">## 114 C00016       PDHA1</span></span>
+<span><span class="co">## 115 C00022       PDHA1</span></span>
+<span><span class="co">## 116 C00004        RDH5</span></span>
+<span><span class="co">## 117 C00022         ME3</span></span>
+<span><span class="co">## 118 C00016        NOS3</span></span>
+<span><span class="co">## 119 C00008         TXN</span></span>
+<span><span class="co">## 120 C00016         TXN</span></span>
+<span><span class="co">## 121 C00073         TXN</span></span>
+<span><span class="co">## 122 C00008       PNPT1</span></span>
+<span><span class="co">## 123 C00015       PNPT1</span></span>
+<span><span class="co">## 124 C00010       CPT1A</span></span>
+<span><span class="co">## 125 C00010        YOD1</span></span>
+<span><span class="co">## 126 C00010     ZDHHC24</span></span>
+<span><span class="co">## 127 C00013       HPRT1</span></span>
+<span><span class="co">## 128 C00242       HPRT1</span></span>
+<span><span class="co">## 129 C00013        NPR1</span></span>
+<span><span class="co">## 130 C00013       PDSS1</span></span>
+<span><span class="co">## 131 C00013        POLE</span></span>
+<span><span class="co">## 132 C00013        POLK</span></span>
+<span><span class="co">## 133 C00013        POLN</span></span>
+<span><span class="co">## 134 C00013        POLQ</span></span>
+<span><span class="co">## 135 C00015        FMOD</span></span>
+<span><span class="co">## 136 C00015     GALNT15</span></span>
+<span><span class="co">## 137 C00015         OGN</span></span>
+<span><span class="co">## 138 C00015       PDIA4</span></span>
+<span><span class="co">## 139 C00015       PLOD3</span></span>
+<span><span class="co">## 140 C00016      ACADSB</span></span>
+<span><span class="co">## 141 C00016        AOX1</span></span>
+<span><span class="co">## 142 C00016        CAV1</span></span>
+<span><span class="co">## 143 C00016        MAOA</span></span>
+<span><span class="co">## 144 C00016     NOSTRIN</span></span>
+<span><span class="co">## 145 C00073   EEF1AKMT4</span></span>
+<span><span class="co">## 146 C00073     ETFBKMT</span></span>
+<span><span class="co">## 147 C00073        TRMO</span></span>
+<span><span class="co">## 148 C00025        GPT2</span></span>
+<span><span class="co">## 149 C00022        GPT2</span></span>
+<span><span class="co">## 150 C00025        ABAT</span></span>
+<span><span class="co">## 151 C00025         GGH</span></span>
+<span><span class="co">## 152 C00025     NAALAD2</span></span>
+<span><span class="co">## 153 C00025       PSAT1</span></span>
+<span><span class="co">## 154 C00148      SLC7A5</span></span>
+<span><span class="co">## 155 C00073      SLC7A5</span></span>
+<span><span class="co">## 156 C02291         CBS</span></span></code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">node_result</span>,<span class="st">"result_v0131/subnetwork_important_node.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">edge_result</span>,<span class="st">"result_v0131/subnetwork_important_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fsubnetwork_important.png" style="width:60.0%"></p>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-extraction-of-interested-metabolites-and-genes">
@@ -142,26 +546,512 @@ genes</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-o
 </h2>
 <p>Input data requires the “name” column but excludes the “p_value”
 column.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"result_v0131/subnetwork_interested.png"</span>,width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">7</span>, units <span class="op">=</span> <span class="st">'in'</span>, res <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># png("result_v0131/subnetwork_interested.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span></span>
 <span><span class="co">## get 500 differential expression gene</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_metabolite</span><span class="op">[</span>,<span class="fl">8</span><span class="op">]</span>,<span class="va">diff_gene1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="fl">8</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_metabolite</span><span class="op">[</span>,<span class="fl">8</span><span class="op">]</span>,<span class="va">diff_gene1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="02-Subnetwork_analysis_files/figure-html/network_diff-1.png" width="960"></p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
+<pre><code><span><span class="co">##         X1            X2</span></span>
+<span><span class="co">## 1   C00010        C00004</span></span>
+<span><span class="co">## 2   C00020        C00004</span></span>
+<span><span class="co">## 3   C00022        C00004</span></span>
+<span><span class="co">## 4   C00025        C00004</span></span>
+<span><span class="co">## 5   C00029        C00004</span></span>
+<span><span class="co">## 6   C00051        C00004</span></span>
+<span><span class="co">## 7   C00062        C00004</span></span>
+<span><span class="co">## 8   C00093        C00004</span></span>
+<span><span class="co">## 9   C00097        C00004</span></span>
+<span><span class="co">## 10  C00148        C00004</span></span>
+<span><span class="co">## 11  C00149        C00004</span></span>
+<span><span class="co">## 12  C00167        C00004</span></span>
+<span><span class="co">## 13  C00186        C00004</span></span>
+<span><span class="co">## 14  C00385        C00004</span></span>
+<span><span class="co">## 15  C00429        C00004</span></span>
+<span><span class="co">## 16  C00800        C00004</span></span>
+<span><span class="co">## 17  C05581        C00004</span></span>
+<span><span class="co">## 18  C00010        C00013</span></span>
+<span><span class="co">## 19  C00010        C00019</span></span>
+<span><span class="co">## 20  C00010        C00020</span></span>
+<span><span class="co">## 21  C00010        C00025</span></span>
+<span><span class="co">## 22  C00010        C00035</span></span>
+<span><span class="co">## 23  C00010        C00047</span></span>
+<span><span class="co">## 24  C00010        C00051</span></span>
+<span><span class="co">## 25  C00010        C00073</span></span>
+<span><span class="co">## 26  C00010        C00093</span></span>
+<span><span class="co">## 27  C00010        C00097</span></span>
+<span><span class="co">## 28  C00010        C00111</span></span>
+<span><span class="co">## 29  C00010        C00245</span></span>
+<span><span class="co">## 30  C00010        C00352</span></span>
+<span><span class="co">## 31  C00010        C00407</span></span>
+<span><span class="co">## 32  C00013        C00042</span></span>
+<span><span class="co">## 33  C00013        C00073</span></span>
+<span><span class="co">## 34  C00097        C00013</span></span>
+<span><span class="co">## 35  C00013        C00106</span></span>
+<span><span class="co">## 36  C00013        C00153</span></span>
+<span><span class="co">## 37  C00013        C00242</span></span>
+<span><span class="co">## 38  C00013        C00245</span></span>
+<span><span class="co">## 39  C00013        C00295</span></span>
+<span><span class="co">## 40  C00385        C00013</span></span>
+<span><span class="co">## 41  C00429        C00013</span></span>
+<span><span class="co">## 42  C00013        C00588</span></span>
+<span><span class="co">## 43  C00013        C02985</span></span>
+<span><span class="co">## 44  C00013        C05378</span></span>
+<span><span class="co">## 45  C00029        C00015</span></span>
+<span><span class="co">## 46  C00043        C00015</span></span>
+<span><span class="co">## 47  C00055        C00015</span></span>
+<span><span class="co">## 48  C00105        C00015</span></span>
+<span><span class="co">## 49  C00167        C00015</span></span>
+<span><span class="co">## 50  C00190        C00015</span></span>
+<span><span class="co">## 51  C05382        C00015</span></span>
+<span><span class="co">## 52  C00013        C00019</span></span>
+<span><span class="co">## 53  C00020        C00019</span></span>
+<span><span class="co">## 54  C00051        C00019</span></span>
+<span><span class="co">## 55  C00019        C00073</span></span>
+<span><span class="co">## 56  C00167        C00019</span></span>
+<span><span class="co">## 57  C00019        C00170</span></span>
+<span><span class="co">## 58  C00019        C00300</span></span>
+<span><span class="co">## 59  C00019        C00588</span></span>
+<span><span class="co">## 60  C00019        C00788</span></span>
+<span><span class="co">## 61  C00019        C01210</span></span>
+<span><span class="co">## 62  C00019        C05660</span></span>
+<span><span class="co">## 63  C00019        C13482</span></span>
+<span><span class="co">## 64  C00020        C00013</span></span>
+<span><span class="co">## 65  C00020        C00015</span></span>
+<span><span class="co">## 66  C00020        C00042</span></span>
+<span><span class="co">## 67  C00020        C00051</span></span>
+<span><span class="co">## 68  C00020        C00097</span></span>
+<span><span class="co">## 69  C00020        C00245</span></span>
+<span><span class="co">## 70  C00010        C00022</span></span>
+<span><span class="co">## 71  C00022        C00013</span></span>
+<span><span class="co">## 72  C00022        C00015</span></span>
+<span><span class="co">## 73  C00022        C00019</span></span>
+<span><span class="co">## 74  C00020        C00022</span></span>
+<span><span class="co">## 75  C00022        C00035</span></span>
+<span><span class="co">## 76  C00022        C00073</span></span>
+<span><span class="co">## 77  C00022        C00097</span></span>
+<span><span class="co">## 78  C00022        C00149</span></span>
+<span><span class="co">## 79  C00022        C00186</span></span>
+<span><span class="co">## 80  C00025        C00013</span></span>
+<span><span class="co">## 81  C00020        C00025</span></span>
+<span><span class="co">## 82  C00022        C00025</span></span>
+<span><span class="co">## 83  C00025        C00035</span></span>
+<span><span class="co">## 84  C00025        C00042</span></span>
+<span><span class="co">## 85  C00025        C00051</span></span>
+<span><span class="co">## 86  C00025        C00073</span></span>
+<span><span class="co">## 87  C00025        C00079</span></span>
+<span><span class="co">## 88  C00025        C00097</span></span>
+<span><span class="co">## 89  C00025        C00148</span></span>
+<span><span class="co">## 90  C00025        C00295</span></span>
+<span><span class="co">## 91  C00025        C00407</span></span>
+<span><span class="co">## 92  C00025        C00624</span></span>
+<span><span class="co">## 93  C00025        C04376</span></span>
+<span><span class="co">## 94  C00029        C00105</span></span>
+<span><span class="co">## 95  C00029        C00167</span></span>
+<span><span class="co">## 96  C00013        C00035</span></span>
+<span><span class="co">## 97  C00020        C00035</span></span>
+<span><span class="co">## 98  C00035        C00042</span></span>
+<span><span class="co">## 99  C00035        C00055</span></span>
+<span><span class="co">## 100 C00035        C00096</span></span>
+<span><span class="co">## 101 C00035        C00105</span></span>
+<span><span class="co">## 102 C00042        C00004</span></span>
+<span><span class="co">## 103 C00097        C00042</span></span>
+<span><span class="co">## 104 C00042        C00122</span></span>
+<span><span class="co">## 105 C00148        C00042</span></span>
+<span><span class="co">## 106 C00042        C03793</span></span>
+<span><span class="co">## 107 C00043        C00004</span></span>
+<span><span class="co">## 108 C00043        C00105</span></span>
+<span><span class="co">## 109 C00047        C00004</span></span>
+<span><span class="co">## 110 C00013        C00047</span></span>
+<span><span class="co">## 111 C00020        C00047</span></span>
+<span><span class="co">## 112 C00025        C00047</span></span>
+<span><span class="co">## 113 C00047        C00042</span></span>
+<span><span class="co">## 114 C00062        C00047</span></span>
+<span><span class="co">## 115 C00047        C00073</span></span>
+<span><span class="co">## 116 C00047        C00078</span></span>
+<span><span class="co">## 117 C00047        C00079</span></span>
+<span><span class="co">## 118 C00097        C00047</span></span>
+<span><span class="co">## 119 C00148        C00047</span></span>
+<span><span class="co">## 120 C00047        C00407</span></span>
+<span><span class="co">## 121 C00051        C00097</span></span>
+<span><span class="co">## 122 C00051        C01419</span></span>
+<span><span class="co">## 123 C00093        C00055</span></span>
+<span><span class="co">## 124 C00097        C00055</span></span>
+<span><span class="co">## 125 C00055        C00307</span></span>
+<span><span class="co">## 126 C00055        C00570</span></span>
+<span><span class="co">## 127 C00010        C00062</span></span>
+<span><span class="co">## 128 C00062        C00013</span></span>
+<span><span class="co">## 129 C00020        C00062</span></span>
+<span><span class="co">## 130 C00062        C00042</span></span>
+<span><span class="co">## 131 C00062        C00073</span></span>
+<span><span class="co">## 132 C00062        C00078</span></span>
+<span><span class="co">## 133 C00062        C00079</span></span>
+<span><span class="co">## 134 C00062        C00097</span></span>
+<span><span class="co">## 135 C00062        C00148</span></span>
+<span><span class="co">## 136 C00062        C00407</span></span>
+<span><span class="co">## 137 C00062        C03406</span></span>
+<span><span class="co">## 138 C00020        C00073</span></span>
+<span><span class="co">## 139 C00073        C00078</span></span>
+<span><span class="co">## 140 C00073        C00079</span></span>
+<span><span class="co">## 141 C00097        C00073</span></span>
+<span><span class="co">## 142 C00148        C00073</span></span>
+<span><span class="co">## 143 C00073        C00407</span></span>
+<span><span class="co">## 144 C00078        C00004</span></span>
+<span><span class="co">## 145 C00013        C00078</span></span>
+<span><span class="co">## 146 C00020        C00078</span></span>
+<span><span class="co">## 147 C00022        C00078</span></span>
+<span><span class="co">## 148 C00025        C00078</span></span>
+<span><span class="co">## 149 C00079        C00078</span></span>
+<span><span class="co">## 150 C00097        C00078</span></span>
+<span><span class="co">## 151 C00148        C00078</span></span>
+<span><span class="co">## 152 C00407        C00078</span></span>
+<span><span class="co">## 153 C00079        C00004</span></span>
+<span><span class="co">## 154 C00010        C00079</span></span>
+<span><span class="co">## 155 C00013        C00079</span></span>
+<span><span class="co">## 156 C00020        C00079</span></span>
+<span><span class="co">## 157 C00097        C00079</span></span>
+<span><span class="co">## 158 C00148        C00079</span></span>
+<span><span class="co">## 159 C00407        C00079</span></span>
+<span><span class="co">## 160 C00093        C00013</span></span>
+<span><span class="co">## 161 C00093        C00015</span></span>
+<span><span class="co">## 162 C00093        C00111</span></span>
+<span><span class="co">## 163 C00093        C00670</span></span>
+<span><span class="co">## 164 C00096        C00004</span></span>
+<span><span class="co">## 165 C00097        C00148</span></span>
+<span><span class="co">## 166 C00097        C00407</span></span>
+<span><span class="co">## 167 C00097        C01419</span></span>
+<span><span class="co">## 168 C00097        C02291</span></span>
+<span><span class="co">## 169 C00042        C00105</span></span>
+<span><span class="co">## 170 C00106        C00105</span></span>
+<span><span class="co">## 171 C00167        C00105</span></span>
+<span><span class="co">## 172 C00105        C00190</span></span>
+<span><span class="co">## 173 C00429        C00106</span></span>
+<span><span class="co">## 174 C00013        C00122</span></span>
+<span><span class="co">## 175 C00020        C00122</span></span>
+<span><span class="co">## 176 C00022        C00122</span></span>
+<span><span class="co">## 177 C00062        C00122</span></span>
+<span><span class="co">## 178 C00149        C00122</span></span>
+<span><span class="co">## 179 C00295        C00122</span></span>
+<span><span class="co">## 180 C00122        C03406</span></span>
+<span><span class="co">## 181 C00148        C00013</span></span>
+<span><span class="co">## 182 C00020        C00148</span></span>
+<span><span class="co">## 183 C00148        C00407</span></span>
+<span><span class="co">## 184 C00149        C00042</span></span>
+<span><span class="co">## 185 C00149        C00186</span></span>
+<span><span class="co">## 186 C00167        C00190</span></span>
+<span><span class="co">## 187 C00073        C00170</span></span>
+<span><span class="co">## 188 C00042        C00178</span></span>
+<span><span class="co">## 189 C00178        C00906</span></span>
+<span><span class="co">## 190 C00385        C00242</span></span>
+<span><span class="co">## 191 C00025        C00245</span></span>
+<span><span class="co">## 192 C00245        C00042</span></span>
+<span><span class="co">## 193 C00097        C00245</span></span>
+<span><span class="co">## 194 C00267        C00015</span></span>
+<span><span class="co">## 195 C00020        C00267</span></span>
+<span><span class="co">## 196 C00093        C00307</span></span>
+<span><span class="co">## 197 C00588        C00307</span></span>
+<span><span class="co">## 198 C00385        C00042</span></span>
+<span><span class="co">## 199 C00385        C01762</span></span>
+<span><span class="co">## 200 C00407        C00004</span></span>
+<span><span class="co">## 201 C00013        C00407</span></span>
+<span><span class="co">## 202 C00020        C00407</span></span>
+<span><span class="co">## 203 C00407        C00042</span></span>
+<span><span class="co">## 204 C00111        C00447</span></span>
+<span><span class="co">## 205 C05382        C00447</span></span>
+<span><span class="co">## 206 C00245        C00519</span></span>
+<span><span class="co">## 207 C00588        C00670</span></span>
+<span><span class="co">## 208 C00588        C13482</span></span>
+<span><span class="co">## 209 C00035        C00788</span></span>
+<span><span class="co">## 210 C00906        C00004</span></span>
+<span><span class="co">## 211 C00013        C01210</span></span>
+<span><span class="co">## 212 C01210        C13482</span></span>
+<span><span class="co">## 213 C00022        C02291</span></span>
+<span><span class="co">## 214 C02630        C00004</span></span>
+<span><span class="co">## 215 C00047        C03793</span></span>
+<span><span class="co">## 216 C00111        C05378</span></span>
+<span><span class="co">## 217 C00013        C05385</span></span>
+<span><span class="co">## 218 C00167        C05385</span></span>
+<span><span class="co">## 219 C00020        C05512</span></span>
+<span><span class="co">## 220 C00055        C05673</span></span>
+<span><span class="co">## 221 C00055        C05674</span></span>
+<span><span class="co">## 222 C00020        C06192</span></span>
+<span><span class="co">## 223 C00004          GLDC</span></span>
+<span><span class="co">## 224 C00004          GPD1</span></span>
+<span><span class="co">## 225 C00004         GPD1L</span></span>
+<span><span class="co">## 226 C00004          H6PD</span></span>
+<span><span class="co">## 227 C00013         ACACB</span></span>
+<span><span class="co">## 228 C00013         ADCY5</span></span>
+<span><span class="co">## 229 C00013          NPR1</span></span>
+<span><span class="co">## 230 C00013         PDSS1</span></span>
+<span><span class="co">## 231 C00013          POLQ</span></span>
+<span><span class="co">## 232 C00015          FMOD</span></span>
+<span><span class="co">## 233 C00015       GALNT15</span></span>
+<span><span class="co">## 234 C00015          NME1</span></span>
+<span><span class="co">## 235 C00015           OGN</span></span>
+<span><span class="co">## 236 C00015         PDIA4</span></span>
+<span><span class="co">## 237 C00015          RRM2</span></span>
+<span><span class="co">## 238 C00019        DNMT3B</span></span>
+<span><span class="co">## 239 C00019     EEF1AKMT4</span></span>
+<span><span class="co">## 240 C00019          EZH2</span></span>
+<span><span class="co">## 241 C00019          TRMO</span></span>
+<span><span class="co">## 242 C00020         ACACB</span></span>
+<span><span class="co">## 243 C00020           AK7</span></span>
+<span><span class="co">## 244 C00020         PDE1A</span></span>
+<span><span class="co">## 245 C00020         PDE2A</span></span>
+<span><span class="co">## 246 C00025         CTPS1</span></span>
+<span><span class="co">## 247 C00025           GGH</span></span>
+<span><span class="co">## 248 C00025       NAALAD2</span></span>
+<span><span class="co">## 249 C00025         PSAT1</span></span>
+<span><span class="co">## 250 C00025       SLC17A7</span></span>
+<span><span class="co">## 251 C00035          NME1</span></span>
+<span><span class="co">## 252 C00035       RAPGEF3</span></span>
+<span><span class="co">## 253 C00035          RRM2</span></span>
+<span><span class="co">## 254 C00035      SECISBP2</span></span>
+<span><span class="co">## 255 C00035           TXN</span></span>
+<span><span class="co">## 256 C00043          FMOD</span></span>
+<span><span class="co">## 257 C00043           OGN</span></span>
+<span><span class="co">## 258 C00047        SLC7A2</span></span>
+<span><span class="co">## 259 C00055           AK7</span></span>
+<span><span class="co">## 260 C00055          FMOD</span></span>
+<span><span class="co">## 261 C00055           OGN</span></span>
+<span><span class="co">## 262 C00062        SLC7A2</span></span>
+<span><span class="co">## 263 C00073     EEF1AKMT4</span></span>
+<span><span class="co">## 264 C00073          TRMO</span></span>
+<span><span class="co">## 265 C00073           TXN</span></span>
+<span><span class="co">## 266 C00079        SLC7A2</span></span>
+<span><span class="co">## 267 C00093          GPD1</span></span>
+<span><span class="co">## 268 C00093         GPD1L</span></span>
+<span><span class="co">## 269 C00111          GPD1</span></span>
+<span><span class="co">## 270 C00111         GPD1L</span></span>
+<span><span class="co">## 271 C00153        TIPARP</span></span>
+<span><span class="co">## 272 C00167         PDIA4</span></span>
+<span><span class="co">## 273 C00365           TK1</span></span>
+<span><span class="co">## 274 C00365           TK2</span></span>
+<span><span class="co">## 275 C00670 JMJD7-PLA2G4B</span></span>
+<span><span class="co">## 276 C00788          MAOA</span></span>
+<span><span class="co">## 277 C03793       TRABD2B</span></span>
+<span><span class="co">## 278 C05382           TKT</span></span>
+<span><span class="co">## 279 C05581          MAOA</span></span></code></pre>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span>,<span class="st">"result_v0131/subnetwork_interested_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fsubnetwork_interested.png" style="width:60.0%"></p>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-extraction-using-correlation">
 <font size="5">Subnetwork extraction using correlation</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-using-correlation"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="st">"result_v0131/subnetwork_correlation.png"</span>,width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">7</span>, units <span class="op">=</span> <span class="st">'in'</span>, res <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># png("result_v0131/subnetwork_correlation.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span><span class="co">## extract the correlation subnetwork</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pNetCor.html">pNetCor</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">gene_dat</span>,cor_threshold<span class="op">=</span><span class="fl">0.95</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pNetCor.html">pNetCor</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">gene_dat</span>,cor_threshold<span class="op">=</span><span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "Starting correlation calculation"</span></span>
+<span><span class="co">## [1] "If the data is large, it will take some minutes"</span></span></code></pre>
+<p><img src="02-Subnetwork_analysis_files/figure-html/network_corr-1.png" width="960"></p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
+<pre><code><span><span class="co">## $result</span></span>
+<span><span class="co">##         name1    name2 cor_result            p      type1      type2</span></span>
+<span><span class="co">## 1      C05100   C00408  0.9938503 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 2      C00408   C00064  0.9938415 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 3     C06178    C00047  0.9980774 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 4      C02220   C01042  0.9745498 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 5      C00881   C00380  0.9543875 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 6      C02630   C00490  0.9519425 2.220446e-16 metabolite metabolite</span></span>
+<span><span class="co">## 7      C00632   C00299  0.9843097 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 8      C05100   C00064  0.9999999 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 9      C05635   C00328  0.9997317 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 10     C18170   C00148  0.9999757 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 11     C06192   C00096  0.9519796 2.220446e-16 metabolite metabolite</span></span>
+<span><span class="co">## 12     C06192   C00190  0.9570487 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 13     C02045   C00267  0.9521105 2.220446e-16 metabolite metabolite</span></span>
+<span><span class="co">## 14     C00075   C00002  0.9575343 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 15     C05851   C00180  0.9991263 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 16     C00180   C00079  0.9543253 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 17     C00180   C00082  0.9968227 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 18     C00601   C00180  0.9911016 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 19     C00475   C00120  0.9808235 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 20     C00570   C00307  0.9655488 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 21     C05851   C00079  0.9554133 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 22     C05851   C00082  0.9963136 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 23     C05851   C00601  0.9919686 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 24     C00149   C00122  0.9960786 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 25     C00035   C00015  0.9683562 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 26     C00190   C00096  0.9505742 4.440892e-16 metabolite metabolite</span></span>
+<span><span class="co">## 27     C00096   C00043  0.9574429 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 28     C01419   C00051  0.9698552 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 29    C00144    C00105  0.9568950 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 30    C00387    C00294  0.9619177 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 31    C05938    C00025  0.9999788 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 32     C02642   C00152  0.9999987 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 33     C00407   C00079  0.9825118 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 34     C00082   C00079  0.9524477 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 35     C00601   C00082  0.9902250 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 36     C00190   C00043  0.9645821 0.000000e+00 metabolite metabolite</span></span>
+<span><span class="co">## 37      PDE2A    ABCA8  0.9521911 2.220446e-14       gene       gene</span></span>
+<span><span class="co">## 38     ACVRL1    ABCC9  0.9611130 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 39      KCNJ8    ABCC9  0.9718499 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 40      MECOM    ABCC9  0.9695464 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 41      PDE1A    ABCC9  0.9599045 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 42      PRKG1    ABCC9  0.9612267 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 43      PTPRB    ABCC9  0.9703811 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 44      S1PR1    ABCC9  0.9528181 1.776357e-15       gene       gene</span></span>
+<span><span class="co">## 45        TEK    ABCC9  0.9596725 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 46       AKT3   ACVRL1  0.9512478 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 47        DCN   ACVRL1  0.9641382 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 48      GNG11   ACVRL1  0.9702326 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 49       GNG2   ACVRL1  0.9548637 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 50   HSD17B11   ACVRL1  0.9510524 2.664535e-15       gene       gene</span></span>
+<span><span class="co">## 51      PRKG1   ACVRL1  0.9513762 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 52      PTPRB   ACVRL1  0.9684628 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 53      S1PR1   ACVRL1  0.9702329 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 54        TEK   ACVRL1  0.9536665 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 55       AOC3   ADRA2A  0.9529137 5.329071e-15       gene       gene</span></span>
+<span><span class="co">## 56        DCN   ADRA2A  0.9510561 8.881784e-15       gene       gene</span></span>
+<span><span class="co">## 57      GNG11   ADRA2A  0.9558340 2.442491e-15       gene       gene</span></span>
+<span><span class="co">## 58      PDE1A   ADRA2A  0.9665477 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 59     PTGER3   ADRA2A  0.9515055 7.993606e-15       gene       gene</span></span>
+<span><span class="co">## 60      PTPRB   ADRA2A  0.9591008 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 61      S1PR1   ADRA2A  0.9674976 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 62        TEK   ADRA2A  0.9658895 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 63     AKR1C2   AKR1C1  0.9508092 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 64  EEF1AKMT4     ALG3  0.9617165 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 65    SLCO2B1  ALOX5AP  0.9540727 3.996803e-15       gene       gene</span></span>
+<span><span class="co">## 66    ST8SIA4  ALOX5AP  0.9622097 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 67       TPP1  ALOX5AP  0.9572490 1.554312e-15       gene       gene</span></span>
+<span><span class="co">## 68       FMOD     AOC3  0.9505416 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 69      MECOM     AOC3  0.9591528 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 70      PDE1A     AOC3  0.9612698 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 71      PTPRB     AOC3  0.9685499 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 72      S1PR1     AOC3  0.9608990 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 73        TEK     AOC3  0.9504502 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 74      PLIN1     AQP7  0.9645697 1.252332e-13       gene       gene</span></span>
+<span><span class="co">## 75      PDE2A     ASPA  0.9581644 1.332268e-15       gene       gene</span></span>
+<span><span class="co">## 76      NUDT5  ATP5F1C  0.9537685 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 77       BUB1    AURKA  0.9691365 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 78      BUB1B    AURKA  0.9542584 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 79     CDC25C    AURKA  0.9757903 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 80       CDK1    AURKA  0.9615361 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 81       MELK    AURKA  0.9553172 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 82      BUB1B    AURKB  0.9608279 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 83       MELK    AURKB  0.9569659 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 84        TTK    AURKB  0.9586561 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 85     PDGFRB      AXL  0.9507983 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 86     INPP5D      BTK  0.9568919 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 87     PIK3R5      BTK  0.9535169 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 88      PTPN7      BTK  0.9666415 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 89      PTPRC      BTK  0.9606287 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 90    ST8SIA4      BTK  0.9536160 1.332268e-15       gene       gene</span></span>
+<span><span class="co">## 91    TNFAIP8      BTK  0.9595595 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 92      BUB1B     BUB1  0.9624841 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 93     CDC25A     BUB1  0.9551371 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 94     CDC25C     BUB1  0.9711373 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 95       CDK1     BUB1  0.9568210 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 96       HMMR     BUB1  0.9667073 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 97       MELK     BUB1  0.9703135 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 98       NEK2     BUB1  0.9587695 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 99       PLK1     BUB1  0.9691279 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 100       TTK     BUB1  0.9608439 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 101    CDC25C    BUB1B  0.9627357 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 102      MELK    BUB1B  0.9666373 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 103       TTK    BUB1B  0.9675330 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 104      CDK1   CDC25C  0.9536671 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 105      MELK   CDC25C  0.9674048 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 106      EZH2     CDK1  0.9532571 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 107      NEK2     CDK1  0.9555746 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 108     CIDEC    CIDEA  0.9631204 4.005130e-11       gene       gene</span></span>
+<span><span class="co">## 109      GPD1    CIDEC  0.9552145 4.867884e-12       gene       gene</span></span>
+<span><span class="co">## 110      LIPE    CIDEC  0.9813491 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 111     PLIN1    CIDEC  0.9735118 2.753353e-14       gene       gene</span></span>
+<span><span class="co">## 112      CYBB    CSF1R  0.9642722 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 113    PIK3CG     CYBB  0.9531043 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 114    PIK3R5     CYBB  0.9534256 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 115     PTPRC     CYBB  0.9618130 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 116     PTPRO     CYBB  0.9641765 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 117    SLC7A7     CYBB  0.9685405 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 118     GNG11      DCN  0.9606695 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 119     PRKG1      DCN  0.9512348 2.664535e-15       gene       gene</span></span>
+<span><span class="co">## 120       PBK    ESCO2  0.9611330 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 121     FOLR2    F13A1  0.9539469 1.614264e-13       gene       gene</span></span>
+<span><span class="co">## 122     PRKG1     FMOD  0.9508807 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 123    PTGER3     FMOD  0.9542998 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 124      TPI1    GAPDH  0.9594477 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 125     MSRB3   GLT8D2  0.9703943 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 126     KCNJ8    GNG11  0.9530706 5.329071e-15       gene       gene</span></span>
+<span><span class="co">## 127     MECOM    GNG11  0.9554520 2.664535e-15       gene       gene</span></span>
+<span><span class="co">## 128     PDE1A    GNG11  0.9559116 8.215650e-15       gene       gene</span></span>
+<span><span class="co">## 129     PRKG1    GNG11  0.9557364 2.442491e-15       gene       gene</span></span>
+<span><span class="co">## 130     PTPRB    GNG11  0.9660518 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 131     S1PR1    GNG11  0.9631806 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 132       TEK    GNG11  0.9615761 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 133  HSD17B11     GNG2  0.9527556 1.776357e-15       gene       gene</span></span>
+<span><span class="co">## 134    PTGER4     GNG2  0.9682377 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 135    INPP5D     HCST  0.9547074 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 136    PIK3R5     HCST  0.9567257 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 137    PTGER4 HSD17B11  0.9591484 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 138    PIK3CG   INPP5D  0.9659720 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 139    PIK3R5   INPP5D  0.9597248 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 140    PTGER4   INPP5D  0.9565467 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 141     PTPN7   INPP5D  0.9599870 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 142     PTPRC   INPP5D  0.9698189 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 143     PTPRC     JAK3  0.9541770 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 144     PDE1B    KCNJ8  0.9535535 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 145     PRKG1    KCNJ8  0.9616117 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 146     PDE2A       KL  0.9570194 1.776357e-15       gene       gene</span></span>
+<span><span class="co">## 147     PRKCB      LCK  0.9662961 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 148   UBASH3A      LCK  0.9530990 6.696865e-13       gene       gene</span></span>
+<span><span class="co">## 149     ZAP70      LCK  0.9573878 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 150     PLIN1     LIPE  0.9628021 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 151    PTGER4    LRRK2  0.9694866 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 152     PTPN7   MAP4K1  0.9751826 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 153     ZAP70   MAP4K1  0.9612888 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 154     PDE1A    MECOM  0.9670994 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 155     PRKG1    MECOM  0.9620268 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 156     PTPRB    MECOM  0.9766969 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 157     S1PR1    MECOM  0.9647745 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 158       TEK    MECOM  0.9656955 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 159       TTK     MELK  0.9677622 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 160      OAS2     OAS1  0.9809053 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 161      OAS3     OAS1  0.9658351 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 162    PARP12     OAS1  0.9543994 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 163      OAS3     OAS2  0.9700924 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 164    PARP14   PARP12  0.9591643 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 165     PARP9   PARP14  0.9616310 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 166     PTPRC    PARP8  0.9618607 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 167     PTPRB    PDE1A  0.9657455 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 168     S1PR1    PDE1A  0.9677138 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 169       TEK    PDE1A  0.9675572 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 170    PTGER4   PIK3CG  0.9533792 1.332268e-15       gene       gene</span></span>
+<span><span class="co">## 171     PTPRC   PIK3CG  0.9611947 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 172     PTPN7   PIK3R5  0.9506781 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 173     PTPRC   PIK3R5  0.9788964 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 174    SLC7A7   PIK3R5  0.9557844 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 175   ST8SIA4   PIK3R5  0.9706706 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 176     PTPRB    PLCL1  0.9550180 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 177      RDH5    PLIN1  0.9500174 1.110223e-15       gene       gene</span></span>
+<span><span class="co">## 178      PLK4     PLK1  0.9668259 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 179     PROS1    PLPP1  0.9513904 2.442491e-15       gene       gene</span></span>
+<span><span class="co">## 180     PTPRC    PRKCB  0.9511774 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 181     PTPRB    PRKG1  0.9622456 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 182       TEK    PRKG1  0.9512029 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 183     PTPRC    PTPN7  0.9649503 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 184   TNFAIP8    PTPN7  0.9550097 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 185     ZAP70    PTPN7  0.9506275 4.440892e-16       gene       gene</span></span>
+<span><span class="co">## 186     S1PR1    PTPRB  0.9827064 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 187       TEK    PTPRB  0.9729261 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 188   ST8SIA4    PTPRC  0.9616076 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 189    SLC7A7    PTPRO  0.9599202 2.220446e-16       gene       gene</span></span>
+<span><span class="co">## 190   ST8SIA4    PTPRO  0.9554691 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 191       TPO  RAPGEF3  0.9506282 8.881784e-16       gene       gene</span></span>
+<span><span class="co">## 192       TEK    S1PR1  0.9775779 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## 193    SETDB2  SEPSECS  0.9587409 0.000000e+00       gene       gene</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $p</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">result</span>,<span class="st">"result_v0131/subnetwork_correlation.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fsubnetwork_correlation-0.95.png" style="width:60.0%"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

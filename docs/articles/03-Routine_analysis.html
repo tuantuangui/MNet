@@ -21,7 +21,7 @@
 ">
 <meta property="og:description" content="the example rountine analysis
 ">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="https://github.com/tuantuangui/MNet/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -56,6 +56,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="nav-link" href="https://github.com/tuantuangui/MNet/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -71,7 +72,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Rountine analysis</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/tuantuangui/MNet/blob/HEAD/vignettes/03-Routine_analysis.Rmd"><code>vignettes/03-Routine_analysis.Rmd</code></a></small>
       <div class="d-none name"><code>03-Routine_analysis.Rmd</code></div>
     </div>
 
@@ -93,27 +94,58 @@ main objective of RefMet is to provide a standardized reference
 nomenclature for both discrete metabolite structures and metabolite
 species identified by spectroscopic techniques in metabolomics
 experiments.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">compound_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-Hydroxybutyric acid"</span>,<span class="st">"1-Methyladenosine"</span>,<span class="st">"tt"</span>,<span class="st">"2-Aminooctanoic acid"</span><span class="op">)</span></span>
-<span><span class="co">## transform the compound name to refmet name</span></span>
-<span><span class="va">refmetid_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/name2refmet.html">name2refmet</a></span><span class="op">(</span><span class="va">compound_name</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: package 'dplyr' was built under R version 4.3.3</span></span></code></pre>
-<pre><code><span><span class="co">##              Input name           refmet_name    formula exactmass</span></span>
-<span><span class="co">## 1     1-Methyladenosine     1-Methyladenosine C11H15N5O4  281.1124</span></span>
-<span><span class="co">## 2 2-Hydroxybutyric acid 2-Hydroxybutyric acid     C4H8O3  104.0473</span></span>
-<span><span class="co">## 3                    tt                    tt       &lt;NA&gt;        NA</span></span>
-<span><span class="co">## 4  2-Aminooctanoic acid  2-Aminooctanoic acid   C8H17NO2  159.1259</span></span>
-<span><span class="co">##     super_class               main_class              sub_class class_index</span></span>
-<span><span class="co">## 1 Nucleic acids                  Purines Purine ribonucleosides        1330</span></span>
-<span><span class="co">## 2   Fatty Acyls              Fatty acids             Hydroxy FA         125</span></span>
-<span><span class="co">## 3          &lt;NA&gt;                     &lt;NA&gt;                   &lt;NA&gt;          NA</span></span>
-<span><span class="co">## 4 Organic acids Amino acids and peptides            Amino acids          NA</span></span></code></pre>
+<table class="table">
+<colgroup>
+<col width="21%">
+<col width="21%">
+<col width="10%">
+<col width="13%">
+<col width="11%">
+<col width="22%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Input_name</th>
+<th align="left">Refmet_name</th>
+<th align="left">Formula</th>
+<th align="left">Super_class</th>
+<th align="left">Main_class</th>
+<th align="left">Sub_class</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2-Hydroxybutyric acid</td>
+<td align="left">2-Hydroxybutyric acid</td>
+<td align="left">C4H8O3</td>
+<td align="left">Fatty Acyls</td>
+<td align="left">Fatty acids</td>
+<td align="left">Hydroxy FA</td>
+</tr>
+<tr class="even">
+<td align="left">1-Methyladenosine</td>
+<td align="left">1-Methyladenosine</td>
+<td align="left">C11H15N5O4</td>
+<td align="left">Nucleic acids</td>
+<td align="left">Purines</td>
+<td align="left">Purine ribonucleosides</td>
+</tr>
+<tr class="odd">
+<td align="left">tt</td>
+<td align="left">tt</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr class="even">
+<td align="left">2-Aminooctanoic acid</td>
+<td align="left">2-Aminocaprylic acid</td>
+<td align="left">C8H17NO2</td>
+<td align="left">Fatty Acyls</td>
+<td align="left">Fatty acids</td>
+<td align="left">Amino FA</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="metabolite-compound-name-transform-to-kegg-id">
@@ -123,16 +155,30 @@ ID</font><a class="anchor" aria-label="anchor" href="#metabolite-compound-name-t
 <p><font color="CadetBlue"><strong>This step requires
 networking</strong></font></p>
 <p>Transform the metabolites compound name to KEGG ID</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">compound_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-Hydroxybutyric acid"</span>,<span class="st">"1-Methyladenosine"</span>,<span class="st">"tt"</span>,<span class="st">"2-Aminooctanoic acid"</span><span class="op">)</span></span>
-<span><span class="co">## transform the compound name to KEGG ID, some metabolites have several KEGG ID</span></span>
-<span><span class="va">keggid_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/name2keggid.html">name2keggid</a></span><span class="op">(</span><span class="va">compound_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/separate_rows.html" class="external-link">separate_rows</a></span><span class="op">(</span><span class="va">KEGG_id</span>,sep<span class="op">=</span><span class="st">";"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                    name kegg_id</span></span>
-<span><span class="co">## 1 2-Hydroxybutyric acid  C05984</span></span>
-<span><span class="co">## 2     1-Methyladenosine  C02494</span></span>
-<span><span class="co">## 3                    tt    &lt;NA&gt;</span></span>
-<span><span class="co">## 4  2-Aminooctanoic acid    &lt;NA&gt;</span></span></code></pre>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="left">KEGG_id</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2-Hydroxybutyric acid</td>
+<td align="left">C05984</td>
+</tr>
+<tr class="even">
+<td align="left">1-Methyladenosine</td>
+<td align="left">C02494</td>
+</tr>
+<tr class="odd">
+<td align="left">tt</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2-Aminooctanoic acid</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="metabolite-name-corresponding-to-kegg-pathway">
@@ -142,36 +188,71 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-name-corre
 <p><font color="CadetBlue"><strong>This step requires
 networking</strong></font></p>
 <p>Search the kegg pathway corresponding to the metabolite name</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">compound_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2-Hydroxybutyric acid"</span>,<span class="st">"1-Methyladenosine"</span>,<span class="st">"tt"</span>,<span class="st">"2-Aminooctanoic acid"</span><span class="op">)</span></span>
-<span><span class="co">## Search the kegg pathway corresponding to the metabolite name</span></span>
-<span><span class="va">result_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/name2pathway.html">name2pathway</a></span><span class="op">(</span><span class="va">compound_name</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">##### Output is the each metabolite related pathway</span></span>
-<span><span class="va">result_name2pathway</span> <span class="op">&lt;-</span> <span class="va">result_all</span><span class="op">$</span><span class="va">name2pathway</span></span>
-<span></span>
-<span><span class="co">## the KEGG ID of the metabolite name</span></span>
-<span><span class="va">result_name2keggid</span> <span class="op">&lt;-</span> <span class="va">result_all</span><span class="op">$</span><span class="va">kegg_id</span></span>
-<span></span>
-<span><span class="co">## the pathway of the metabolite name</span></span>
-<span><span class="va">result_name2enrichpathway</span> <span class="op">&lt;-</span> <span class="va">result_all</span><span class="op">$</span><span class="va">pathway</span></span></code></pre></div>
-<pre><code><span><span class="co">##                    name kegg_id               PATHWAY pathwayid</span></span>
-<span><span class="co">## 1 2-Hydroxybutyric acid  C05984 Propanoate metabolism  hsa00640</span></span></code></pre>
-<pre><code><span><span class="co">##                    name kegg_id</span></span>
-<span><span class="co">## 1 2-Hydroxybutyric acid  C05984</span></span>
-<span><span class="co">## 2     1-Methyladenosine  C02494</span></span>
-<span><span class="co">## 3                    tt    &lt;NA&gt;</span></span>
-<span><span class="co">## 4  2-Aminooctanoic acid    &lt;NA&gt;</span></span></code></pre>
-<pre><code><span><span class="co">##                    name nAnno nOverlap   fc zscore pvalue adjp  or  CIl CIu</span></span>
-<span><span class="co">## 1 Propanoate metabolism    40        1 76.1   8.66  0.013    1 Inf 1.93 Inf</span></span>
-<span><span class="co">##   distance  namespace members_Overlap</span></span>
-<span><span class="co">## 1        1 Customised          C05984</span></span>
-<span><span class="co">##                                                                                                                                                                                                                                                                                                                     members_Anno</span></span>
-<span><span class="co">## 1 C00024, C00042, C00068, C00083, C00091, C00099, C00100, C00109, C00111, C00163, C00186, C00222, C00424, C00479, C00546, C00583, C00683, C00804, C00827, C00894, C01013, C01213, C02170, C02225, C02335, C02876, C04225, C04593, C05235, C05668, C05979, C05983, C05984, C05989, C06002, C15972, C15973, C21017, C21018, C21250</span></span>
-<span><span class="co">##    members_Overlap_name</span></span>
-<span><span class="co">## 1 2-Hydroxybutyric acid</span></span>
-<span><span class="co">##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              members_Anno_name</span></span>
-<span><span class="co">## 1 Acetyl-CoA;Succinate;Thiamin diphosphate;Malonyl-CoA;Succinyl-CoA;beta-Alanine;Propanoyl-CoA;2-Oxobutanoate;Glycerone phosphate;Propanoate;(S)-Lactate;3-Oxopropanoate;(S)-Lactaldehyde;Propanal;Methylglyoxal;Propane-1,2-diol;(S)-Methylmalonyl-CoA;Propynoate;Lactoyl-CoA;Propenoyl-CoA;3-Hydroxypropanoate;(R)-Methylmalonyl-CoA;Methylmalonate;2-Methylcitrate;beta-Alanyl-CoA;Propanoyl phosphate;(Z)-But-2-ene-1,2,3-tricarboxylate;(2S,3R)-3-Hydroxybutane-1,2,3-tricarboxylate;Hydroxyacetone;3-Hydroxypropionyl-CoA;Propane-1-ol;Propionyladenylate;2-Hydroxybutyric acid;3-Oxopropionyl-CoA;(S)-Methylmalonate semialdehyde;Enzyme N6-(lipoyl)lysine;Enzyme N6-(dihydrolipoyl)lysine;2-(alpha-Hydroxypropyl)thiamine diphosphate;Enzyme N6-(S-propyldihydrolipoyl)lysine;2-Methyl-trans-aconitate</span></span></code></pre>
+<pre><code><span><span class="co">## Start at 2024-10-31 12:54:28.533587</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## #######################################################</span></span></code></pre>
+<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:54:28.539337):</span></span></code></pre>
+<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
+<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:54:28.548193) ...</span></span></code></pre>
+<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:54:28.567914) ...</span></span></code></pre>
+<pre><code><span><span class="co">##  There are 1 genes/SNPs of interest tested against 3043 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:54:28.569467)</span></span></code></pre>
+<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:54:28.574179) ...</span></span></code></pre>
+<pre><code><span><span class="co">##  There are 81 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
+<pre><code><span><span class="co">## Last, adjust the p-values for 81 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:54:28.604333) ...</span></span></code></pre>
+<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
+<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:54:28.663996)!</span></span></code></pre>
+<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## End at 2024-10-31 12:54:28.665875</span></span></code></pre>
+<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="9%">
+<col width="25%">
+<col width="27%">
+<col width="12%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="left">KEGG_id</th>
+<th align="left">Pathway</th>
+<th align="left">Pathway_category</th>
+<th align="left">Pathway_id</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">2-Hydroxybutyric acid</td>
+<td align="left">C05984</td>
+<td align="left">Propanoate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+<td align="left">hsa00640</td>
+</tr></tbody>
+</table>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="left">KEGG_id</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2-Hydroxybutyric acid</td>
+<td align="left">C05984</td>
+</tr>
+<tr class="even">
+<td align="left">1-Methyladenosine</td>
+<td align="left">C02494</td>
+</tr>
+<tr class="odd">
+<td align="left">tt</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2-Aminooctanoic acid</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="metabolite-kegg-id-transform-to-kegg-pathway">
@@ -179,56 +260,134 @@ networking</strong></font></p>
 pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-transform-to-kegg-pathway"></a>
 </h3>
 <p>KEGG ID transform to KEGG pathway</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
-<span><span class="va">keggid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C05984"</span>,<span class="st">"C02494"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">keggid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C05984"</span>,<span class="st">"C02494"</span><span class="op">)</span></span>
 <span><span class="co">##### the output is the each metabolite related pathway</span></span>
 <span><span class="va">keggpathway_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keggid2pathway.html">keggid2pathway</a></span><span class="op">(</span><span class="va">keggid</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">keggpathway_result</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">##   ENTRY  NAME                                         PATHWAY pathway_type V2   </span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> C05984 2-Hydroxybutanoic acid;///2-Hydroxybutyrate… Propan… Carbohydrat… hsa0…</span></span></code></pre>
+<span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">keggpathway_result</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="5%">
+<col width="52%">
+<col width="16%">
+<col width="18%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">ENTRY</th>
+<th align="left">NAME</th>
+<th align="left">PATHWAY</th>
+<th align="left">pathway_type</th>
+<th align="left">V2</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">C05984</td>
+<td align="left">2-Hydroxybutanoic
+acid;///2-Hydroxybutyrate;///2-Hydroxybutyric acid</td>
+<td align="left">Propanoate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+<td align="left">hsa00640</td>
+</tr></tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="pathway-information">Pathway information<a class="anchor" aria-label="anchor" href="#pathway-information"></a>
 </h3>
 <p>Get the gene and the metabolite in the pathway</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
-<span><span class="co">## the genes and metabolites in pathway 'hsa00630'</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## the genes and metabolites in pathway 'hsa00630'</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"hsa00630"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the genes and metabolites in pathway 'Glyoxylate and dicarboxylate metabolism'</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathwayinfo.html">pathwayinfo</a></span><span class="op">(</span><span class="st">"Glyoxylate and dicarboxylate metabolism"</span><span class="op">)</span></span>
-<span><span class="va">result</span><span class="op">$</span><span class="va">gene_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##   type  name kegg_pathwayid                        kegg_pathwayname</span></span>
-<span><span class="co">## 1 gene ACSS1       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
-<span><span class="co">## 2 gene ACSS2       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
-<span><span class="co">##             kegg_category</span></span>
-<span><span class="co">## 1 Carbohydrate metabolism</span></span>
-<span><span class="co">## 2 Carbohydrate metabolism</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span><span class="op">$</span><span class="va">compound_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##         type   name kegg_pathwayid                        kegg_pathwayname</span></span>
-<span><span class="co">## 1 metabolite C00007       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
-<span><span class="co">## 2 metabolite C00011       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
-<span><span class="co">##             kegg_category</span></span>
-<span><span class="co">## 1 Carbohydrate metabolism</span></span>
-<span><span class="co">## 2 Carbohydrate metabolism</span></span></code></pre>
+<span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">gene_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="5%">
+<col width="6%">
+<col width="16%">
+<col width="44%">
+<col width="26%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">type</th>
+<th align="left">name</th>
+<th align="left">kegg_pathwayid</th>
+<th align="left">kegg_pathwayname</th>
+<th align="left">kegg_category</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">gene</td>
+<td align="left">ACSS1</td>
+<td align="left">hsa00630</td>
+<td align="left">Glyoxylate and dicarboxylate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+</tr>
+<tr class="even">
+<td align="left">gene</td>
+<td align="left">ACSS2</td>
+<td align="left">hsa00630</td>
+<td align="left">Glyoxylate and dicarboxylate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">compound_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="11%">
+<col width="7%">
+<col width="15%">
+<col width="41%">
+<col width="24%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">type</th>
+<th align="left">name</th>
+<th align="left">kegg_pathwayid</th>
+<th align="left">kegg_pathwayname</th>
+<th align="left">kegg_category</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">metabolite</td>
+<td align="left">C00007</td>
+<td align="left">hsa00630</td>
+<td align="left">Glyoxylate and dicarboxylate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+</tr>
+<tr class="even">
+<td align="left">metabolite</td>
+<td align="left">C00011</td>
+<td align="left">hsa00630</td>
+<td align="left">Glyoxylate and dicarboxylate metabolism</td>
+<td align="left">Carbohydrate metabolism</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="pathway-name-transform-to-pathway-id">
 <font size="4">Pathway name transform to pathway id</font><a class="anchor" aria-label="anchor" href="#pathway-name-transform-to-pathway-id"></a>
 </h3>
 <p>Transform the KEGG pathway name to KEGG pathway ID</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">MNet</span><span class="op">)</span></span>
-<span><span class="co">## the KEGG pathway ID of pathway name</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## the KEGG pathway ID of pathway name</span></span>
 <span><span class="va">pathwayid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pathway2pathwayid.html">pathway2pathwayid</a></span><span class="op">(</span><span class="st">"Glycolysis / Gluconeogenesis"</span><span class="op">)</span></span>
-<span><span class="va">pathwayid</span></span></code></pre></div>
-<pre><code><span><span class="co">##                        PATHWAY pathwayid</span></span>
-<span><span class="co">## 1 Glycolysis / Gluconeogenesis  hsa00010</span></span></code></pre>
+<span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pathwayid</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">PATHWAY</th>
+<th align="left">pathwayid</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">Glycolysis / Gluconeogenesis</td>
+<td align="left">hsa00010</td>
+</tr></tbody>
+</table>
 </div>
 </div>
 <div class="section level2">
@@ -240,10 +399,17 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <font size="4">PCA plot</font><a class="anchor" aria-label="anchor" href="#pca-plot"></a>
 </h3>
 <p>PCA of the data</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">### the pca plot</span></span>
-<span><span class="va">p_PCA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pPCA.html">pPCA</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2F1.PCA_1.png" style="width:30.0%"><img src="result_v0131%2F1.PCA_2.png" style="width:30.0%"><img src="result_v0131%2F1.PCA_3.png" style="width:30.0%"></p>
+<span><span class="va">p_PCA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pPCA.html">pPCA</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span>
+<span><span class="va">p_PCA</span><span class="op">$</span><span class="va">p1</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/PCA-1.png" width="960"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_PCA</span><span class="op">$</span><span class="va">p2</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/PCA-2.png" width="960"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_PCA</span><span class="op">$</span><span class="va">p3</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/PCA-3.png" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="differnetial-metabolite-analysis">
@@ -253,7 +419,7 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <h4 id="function-mlimma">
 <font size="3">Function ‘mlimma’</font><a class="anchor" aria-label="anchor" href="#function-mlimma"></a>
 </h4>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## mlimma is the function of Differential Metabolite analysis by limma</span></span>
 <span><span class="va">diff_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -261,16 +427,177 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <h4 id="function-dm">
 <font size="3">Function ‘DM’</font><a class="anchor" aria-label="anchor" href="#function-dm"></a>
 </h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## DM is the function of Differential Metabolite analysis by OPLS-DA</span></span>
-<span><span class="va">diff_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DM.html">DM</a></span><span class="op">(</span><span class="fl">2</span><span class="op">**</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## filter the differential metabolites by default fold change &gt;1.3 or &lt; 1/1.3 ,fdr &lt; 0.05 and VIP&gt;0.8</span></span>
+<span><span class="va">diff_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DM.html">DM</a></span><span class="op">(</span><span class="fl">2</span><span class="op">**</span><span class="va">meta_dat</span>,<span class="va">group</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## OPLS-DA</span></span>
+<span><span class="co">## 31 samples x 219 variables and 1 response</span></span>
+<span><span class="co">## standard scaling of predictors and response(s)</span></span>
+<span><span class="co">##       R2X(cum) R2Y(cum) Q2(cum) RMSEE pre ort pR2Y  pQ2</span></span>
+<span><span class="co">## Total    0.485    0.864   0.697 0.194   1   1 0.05 0.05</span></span></code></pre>
+<p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_result</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="9%">
+<col width="16%">
+<col width="13%">
+<col width="13%">
+<col width="18%">
+<col width="16%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="right">Fold_change</th>
+<th align="right">PValue_t</th>
+<th align="right">Padj_t</th>
+<th align="right">PValue_wilcox</th>
+<th align="right">Padj_wilcox</th>
+<th align="right">VIP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">C09642</td>
+<td align="right">0.8423768</td>
+<td align="right">0.1684116</td>
+<td align="right">0.2208512</td>
+<td align="right">0.1726519</td>
+<td align="right">0.2237323</td>
+<td align="right">0.5200893</td>
+</tr>
+<tr class="even">
+<td align="left">C05581</td>
+<td align="right">0.4022011</td>
+<td align="right">0.0007930</td>
+<td align="right">0.0022037</td>
+<td align="right">0.0019158</td>
+<td align="right">0.0049360</td>
+<td align="right">1.1231315</td>
+</tr>
+<tr class="odd">
+<td align="left">C03264</td>
+<td align="right">0.4340267</td>
+<td align="right">0.0000617</td>
+<td align="right">0.0003379</td>
+<td align="right">0.0001874</td>
+<td align="right">0.0008550</td>
+<td align="right">1.3302580</td>
+</tr>
+<tr class="even">
+<td align="left">C15025</td>
+<td align="right">0.6827449</td>
+<td align="right">0.0026618</td>
+<td align="right">0.0061363</td>
+<td align="right">0.0076265</td>
+<td align="right">0.0165367</td>
+<td align="right">0.9948296</td>
+</tr>
+<tr class="odd">
+<td align="left">C00408</td>
+<td align="right">1.6261110</td>
+<td align="right">0.0068829</td>
+<td align="right">0.0142203</td>
+<td align="right">0.0186756</td>
+<td align="right">0.0358768</td>
+<td align="right">1.0288242</td>
+</tr>
+<tr class="even">
+<td align="left">C02918</td>
+<td align="right">0.4974168</td>
+<td align="right">0.6768913</td>
+<td align="right">0.7338574</td>
+<td align="right">0.0855255</td>
+<td align="right">0.1248672</td>
+<td align="right">0.0628253</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## filter the differential metabolites by default fold change &gt;1.3 or &lt; 1/1.3 ,fdr &lt; 0.05 and VIP&gt;0.8</span></span>
 <span></span>
 <span><span class="va">diff_result_filter</span> <span class="op">&lt;-</span> <span class="va">diff_result</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Fold_change</span> <span class="op">&gt;</span><span class="fl">1.3</span> <span class="op">|</span> <span class="va">Fold_change</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1.3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Padj_wilcox</span> <span class="op">&lt;</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">VIP</span><span class="op">&gt;</span><span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">VIP</span><span class="op">&gt;</span><span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_result_filter</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="15%">
+<col width="13%">
+<col width="13%">
+<col width="18%">
+<col width="15%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="right">Fold_change</th>
+<th align="right">PValue_t</th>
+<th align="right">Padj_t</th>
+<th align="right">PValue_wilcox</th>
+<th align="right">Padj_wilcox</th>
+<th align="right">VIP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">C05581</td>
+<td align="right">0.4022011</td>
+<td align="right">0.0007930</td>
+<td align="right">0.0022037</td>
+<td align="right">0.0019158</td>
+<td align="right">0.0049360</td>
+<td align="right">1.1231315</td>
+</tr>
+<tr class="even">
+<td align="left">C03264</td>
+<td align="right">0.4340267</td>
+<td align="right">0.0000617</td>
+<td align="right">0.0003379</td>
+<td align="right">0.0001874</td>
+<td align="right">0.0008550</td>
+<td align="right">1.3302580</td>
+</tr>
+<tr class="odd">
+<td align="left">C15025</td>
+<td align="right">0.6827449</td>
+<td align="right">0.0026618</td>
+<td align="right">0.0061363</td>
+<td align="right">0.0076265</td>
+<td align="right">0.0165367</td>
+<td align="right">0.9948296</td>
+</tr>
+<tr class="even">
+<td align="left">C00408</td>
+<td align="right">1.6261110</td>
+<td align="right">0.0068829</td>
+<td align="right">0.0142203</td>
+<td align="right">0.0186756</td>
+<td align="right">0.0358768</td>
+<td align="right">1.0288242</td>
+</tr>
+<tr class="odd">
+<td align="left">C06178 </td>
+<td align="right">0.3973194</td>
+<td align="right">0.0000155</td>
+<td align="right">0.0001212</td>
+<td align="right">0.0000839</td>
+<td align="right">0.0005102</td>
+<td align="right">1.4137612</td>
+</tr>
+<tr class="even">
+<td align="left">C02220</td>
+<td align="right">0.4522355</td>
+<td align="right">0.0403365</td>
+<td align="right">0.0630977</td>
+<td align="right">0.0552213</td>
+<td align="right">0.0876338</td>
+<td align="right">0.9827198</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level3">
@@ -278,9 +605,12 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <font size="4">Differential metabolites’ volcano</font><a class="anchor" aria-label="anchor" href="#differential-metabolites-volcano"></a>
 </h3>
 <p>Volcano plot of metabolites using the function “pVolcano”</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_volcano</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pVolcano.html">pVolcano</a></span><span class="op">(</span><span class="va">diff_result</span>,foldchange_threshold<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2F3.volcano.png" style="width:50.0%"></p>
+<pre><code><span><span class="co">## [1] 1.5</span></span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_volcano</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/pVolcano-1.png" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="differential-metabolites-heatmap">
@@ -288,10 +618,13 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 </h3>
 <p>Heatmap plot of differentital metabolites using the function
 “pHeatmap”</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta_dat_diff</span> <span class="op">&lt;-</span> <span class="va">meta_dat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">meta_dat</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diff_result_filter</span><span class="op">$</span><span class="va">Name</span>,<span class="op">]</span></span>
 <span><span class="va">p_heatmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pHeatmap.html">pHeatmap</a></span><span class="op">(</span><span class="va">meta_dat_diff</span>,<span class="va">group</span>,fontsize_row<span class="op">=</span><span class="fl">5</span>,fontsize_col<span class="op">=</span><span class="fl">4</span>,clustering_method<span class="op">=</span><span class="st">"ward.D"</span>,clustering_distance_cols<span class="op">=</span><span class="st">"correlation"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2F3.heatmap.png" style="width:50.0%"></p>
+<p><img src="03-Routine_analysis_files/figure-html/pHeatmap-1.png" width="960"></p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_heatmap</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/pHeatmap-2.png" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="differential-metabolites-zscore">
@@ -299,10 +632,10 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 </h3>
 <p>Zscore plot of differentital metabolites using the function
 “pZscore”</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_zscore</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pZscore.html">pZscore</a></span><span class="op">(</span><span class="va">meta_dat_diff</span>,<span class="va">group</span>,ysize<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#p_zscore</span></span></code></pre></div>
-<p><img src="result_v0131%2F3.z_score.png" style="width:30.0%"></p>
+<span><span class="va">p_zscore</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/pZscore-1.png" width="960"></p>
 </div>
 </div>
 <div class="section level2">
@@ -314,49 +647,154 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <font size="4">Boruta</font><a class="anchor" aria-label="anchor" href="#boruta"></a>
 </h3>
 <p>Using machine learning “Boruta” for feature selection</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#group &lt;- rep("normal",length(names(meta_dat)))</span></span>
-<span><span class="co">#group[grep("TUMOR",names(meta_dat))] &lt;- "tumor"</span></span>
-<span><span class="va">meta_dat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">meta_dat</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>group<span class="op">=</span><span class="va">group</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">result_ML_Boruta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_Boruta.html">ML_Boruta</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="random-forest">
 <font size="4">Random Forest</font><a class="anchor" aria-label="anchor" href="#random-forest"></a>
 </h3>
 <p>Using machine learning “Random Forest” for feature selection</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_RF</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_RF.html">ML_RF</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span>
-<span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">p</span></span>
-<span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
+<span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
+<p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 114 × 6</span></span></span>
+<span><span class="co">##    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names   raw    </span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   4.54  4.16                 4.73            0.525 C00267  C00267 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>   4.21  3.68                 4.36            0.435 C00022  C00022 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>   4.24  3.53                 4.32            0.503 C00073  C00073 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>   4.36  3.29                 4.30            0.493 C05378  C05378 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>   4.31  3.65                 4.27            0.526 C00148  C00148 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>   3.85  3.04                 4.08            0.449 C05938. C05938 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>   3.59  3.84                 4.01            0.429 C05674  C05674 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   3.66  3.95                 4.00            0.529 C02045  C02045 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   4.06  3.16                 3.89            0.505 C02291  C02291 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>   3.73  3.22                 3.72            0.546 C02630  C02630 </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 104 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="xgboost">
 <font size="4">XGBoost</font><a class="anchor" aria-label="anchor" href="#xgboost"></a>
 </h3>
 <p>Using machine learning ” XGBoost” for feature selection</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_ML_xgboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_xgboost.html">ML_xgboost</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span>
-<span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">p</span></span>
-<span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1]  train-rmse:0.364289 test-rmse:0.472248 </span></span>
+<span><span class="co">## [2]  train-rmse:0.265516 test-rmse:0.429406 </span></span>
+<span><span class="co">## [3]  train-rmse:0.193648 test-rmse:0.426044 </span></span>
+<span><span class="co">## [4]  train-rmse:0.141421 test-rmse:0.381072 </span></span>
+<span><span class="co">## [5]  train-rmse:0.103794 test-rmse:0.350077 </span></span>
+<span><span class="co">## [6]  train-rmse:0.076715 test-rmse:0.355183 </span></span>
+<span><span class="co">## [7]  train-rmse:0.057393 test-rmse:0.360215 </span></span>
+<span><span class="co">## [8]  train-rmse:0.043156 test-rmse:0.347083 </span></span>
+<span><span class="co">## [9]  train-rmse:0.032688 test-rmse:0.341209 </span></span>
+<span><span class="co">## [10] train-rmse:0.025033 test-rmse:0.337016 </span></span>
+<span><span class="co">## [11] train-rmse:0.019458 test-rmse:0.335444 </span></span>
+<span><span class="co">## [12] train-rmse:0.015306 test-rmse:0.333113 </span></span>
+<span><span class="co">## [13] train-rmse:0.012178 test-rmse:0.331547 </span></span>
+<span><span class="co">## [14] train-rmse:0.009880 test-rmse:0.331698 </span></span>
+<span><span class="co">## [15] train-rmse:0.008085 test-rmse:0.332141 </span></span>
+<span><span class="co">## [16] train-rmse:0.006654 test-rmse:0.332480 </span></span>
+<span><span class="co">## [17] train-rmse:0.005551 test-rmse:0.332631 </span></span>
+<span><span class="co">## [18] train-rmse:0.004665 test-rmse:0.332850 </span></span>
+<span><span class="co">## [19] train-rmse:0.003930 test-rmse:0.332560 </span></span>
+<span><span class="co">## [20] train-rmse:0.003330 test-rmse:0.332356 </span></span>
+<span><span class="co">## [21] train-rmse:0.002841 test-rmse:0.332294 </span></span>
+<span><span class="co">## [22] train-rmse:0.002419 test-rmse:0.332307 </span></span>
+<span><span class="co">## [23] train-rmse:0.002072 test-rmse:0.332309 </span></span>
+<span><span class="co">## [24] train-rmse:0.001770 test-rmse:0.332341 </span></span>
+<span><span class="co">## [25] train-rmse:0.001524 test-rmse:0.332278 </span></span>
+<span><span class="co">## [26] train-rmse:0.001309 test-rmse:0.332300 </span></span>
+<span><span class="co">## [27] train-rmse:0.001119 test-rmse:0.332257 </span></span>
+<span><span class="co">## [28] train-rmse:0.000980 test-rmse:0.332319 </span></span>
+<span><span class="co">## [29] train-rmse:0.000849 test-rmse:0.332190 </span></span>
+<span><span class="co">## [30] train-rmse:0.000738 test-rmse:0.332188 </span></span>
+<span><span class="co">## [31] train-rmse:0.000646 test-rmse:0.332186 </span></span>
+<span><span class="co">## [32] train-rmse:0.000573 test-rmse:0.332282 </span></span>
+<span><span class="co">## [33] train-rmse:0.000508 test-rmse:0.332277 </span></span>
+<span><span class="co">## [34] train-rmse:0.000447 test-rmse:0.332277 </span></span>
+<span><span class="co">## [35] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [36] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [37] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [38] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [39] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [40] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [41] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [42] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [43] train-rmse:0.000418 test-rmse:0.332274 </span></span>
+<span><span class="co">## [44] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [45] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [46] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [47] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [48] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [49] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [50] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [51] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [52] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [53] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [54] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [55] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [56] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [57] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [58] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [59] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [60] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [61] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [62] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [63] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [64] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [65] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [66] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [67] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [68] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [69] train-rmse:0.000418 test-rmse:0.332273 </span></span>
+<span><span class="co">## [70] train-rmse:0.000418 test-rmse:0.332273</span></span></code></pre>
+<p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-12-1.png" width="700"><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-12-2.png" width="700"></p>
+<pre><code><span><span class="co">##     Feature         Gain      Cover  Frequency   Importance</span></span>
+<span><span class="co">##      &lt;fctr&gt;        &lt;num&gt;      &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
+<span><span class="co">##  1:  C00365 4.088605e-01 0.04187605 0.02941176 4.088605e-01</span></span>
+<span><span class="co">##  2:  C00073 2.171547e-01 0.04187605 0.02941176 2.171547e-01</span></span>
+<span><span class="co">##  3:  C00022 1.403271e-01 0.12562814 0.08823529 1.403271e-01</span></span>
+<span><span class="co">##  4:  C02045 9.207149e-02 0.08375209 0.05882353 9.207149e-02</span></span>
+<span><span class="co">##  5:  C15025 6.095240e-02 0.02177554 0.02941176 6.095240e-02</span></span>
+<span><span class="co">##  6:  C00408 3.186836e-02 0.02177554 0.02941176 3.186836e-02</span></span>
+<span><span class="co">##  7:  C05581 2.159998e-02 0.06532663 0.08823529 2.159998e-02</span></span>
+<span><span class="co">##  8:  C03264 1.478701e-02 0.04690117 0.05882353 1.478701e-02</span></span>
+<span><span class="co">##  9:  C02630 4.483714e-03 0.04187605 0.02941176 4.483714e-03</span></span>
+<span><span class="co">## 10:  C02291 3.784980e-03 0.08375209 0.05882353 3.784980e-03</span></span>
+<span><span class="co">## 11:  C00673 2.112304e-03 0.07035176 0.08823529 2.112304e-03</span></span>
+<span><span class="co">## 12:  C00149 7.211478e-04 0.04187605 0.02941176 7.211478e-04</span></span>
+<span><span class="co">## 13:  C00255 6.422986e-04 0.08375209 0.05882353 6.422986e-04</span></span>
+<span><span class="co">## 14:  C05635 2.121281e-04 0.02512563 0.02941176 2.121281e-04</span></span>
+<span><span class="co">## 15:  C00267 1.730394e-04 0.05025126 0.05882353 1.730394e-04</span></span>
+<span><span class="co">## 16:  C00074 1.567400e-04 0.08040201 0.11764706 1.567400e-04</span></span>
+<span><span class="co">## 17:  C05512 4.794052e-05 0.01842546 0.02941176 4.794052e-05</span></span>
+<span><span class="co">## 18:  C09642 2.385539e-05 0.03350084 0.05882353 2.385539e-05</span></span>
+<span><span class="co">## 19:  C01762 2.036129e-05 0.02177554 0.02941176 2.036129e-05</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="lasso">
 <font size="4">LASSO</font><a class="anchor" aria-label="anchor" href="#lasso"></a>
 </h3>
 <p>Using machine learning “LASSO” for feature selection</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_ML_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>,method<span class="op">=</span><span class="st">"lasso"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: lattice</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'lattice'</span></span></code></pre>
+<pre><code><span><span class="co">## The following object is masked from 'package:clusterProfiler':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     dotplot</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'caret'</span></span></code></pre>
+<pre><code><span><span class="co">## The following object is masked from 'package:survival':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     cluster</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="elastic-network">
 <font size="4">elastic network</font><a class="anchor" aria-label="anchor" href="#elastic-network"></a>
 </h3>
 <p>Using machine learning “elastic network” for feature selection</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_elastic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>,method<span class="op">=</span><span class="st">"elastic"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -368,28 +806,11 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <h3 id="pathview-only-metabolites">
 <font size="4">Pathview only metabolites</font><a class="anchor" aria-label="anchor" href="#pathview-only-metabolites"></a>
 </h3>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kegg_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C02494"</span>,<span class="st">"C03665"</span>,<span class="st">"C01546"</span>,<span class="st">"C05984"</span>,<span class="st">"C14088"</span>,<span class="st">"C00587"</span><span class="op">)</span></span>
-<span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.3824620</span>,<span class="fl">0.1823628</span>,<span class="op">-</span><span class="fl">1.1681486</span>,<span class="fl">0.5164899</span>,<span class="fl">1.6449798</span>,<span class="op">-</span><span class="fl">0.7340652</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">kegg_id</span></span>
-<span><span class="va">cpd.data</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
-<span></span>
-<span><span class="va">gene_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LDHA"</span>,<span class="st">"BCKDHB"</span>,<span class="st">"PCCA"</span>,<span class="st">"ACSS1"</span><span class="op">)</span></span>
-<span><span class="va">gene_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.5</span>,<span class="op">-</span><span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gene_value</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">gene_name</span></span>
-<span></span>
-<span><span class="co">## pathview plot of metabolites</span></span>
-<span><span class="fu"><a href="../reference/pPathview.html">pPathview</a></span><span class="op">(</span><span class="va">cpd.data</span>,outdir<span class="op">=</span><span class="st">"result_v0131"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fhsa00640.pathview.metabolite.png" style="width:70.0%"></p>
 </div>
 <div class="section level3">
 <h3 id="pathview-contains-metabolites-and-genes">
 <font size="4">Pathview contains metabolites and genes</font><a class="anchor" aria-label="anchor" href="#pathview-contains-metabolites-and-genes"></a>
 </h3>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## pathview plot of genes and metabolites</span></span>
-<span><span class="fu"><a href="../reference/pPathview.html">pPathview</a></span><span class="op">(</span>cpd.data<span class="op">=</span><span class="va">cpd.data</span>,gene.data<span class="op">=</span><span class="va">gene_value</span>,outdir<span class="op">=</span><span class="st">"result_v0131"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fhsa00640.pathview.gene.metabolite.png" style="width:70.0%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -402,35 +823,43 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 </h3>
 <p>Column contains the time, group, clinical index(such as ALT), low and
 high</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clinical_index</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span>
-<span><span class="va">time_series_ALT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pCliTS.html">pCliTS</a></span><span class="op">(</span><span class="va">clinical_index</span>,<span class="st">"ALT"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fclinical_time_series.png" style="width:50.0%"></p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">clinical_index</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">##   time group ALT low high</span></span>
+<span><span class="co">## 1    1     B  13  10   64</span></span>
+<span><span class="co">## 2    2     B  13  10   64</span></span>
+<span><span class="co">## 3    3     B  14  10   64</span></span>
+<span><span class="co">## 4    4     B  24  10   64</span></span>
+<span><span class="co">## 5    5     B 255  10   64</span></span></code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">time_series_ALT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pCliTS.html">pCliTS</a></span><span class="op">(</span><span class="va">clinical_index</span>,<span class="st">"ALT"</span><span class="op">)</span></span>
+<span><span class="va">time_series_ALT</span></span></code></pre></div>
+<pre><code><span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre>
+<p><img src="03-Routine_analysis_files/figure-html/pCliTS-1.png" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="survival-analysis">
 <font size="4">Survival analysis</font><a class="anchor" aria-label="anchor" href="#survival-analysis"></a>
 </h3>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">aml</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">=</span><span class="st">"group"</span></span>
 <span><span class="va">p</span><span class="op">=</span><span class="fu"><a href="../reference/survCli.html">survCli</a></span><span class="op">(</span><span class="va">aml</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="result_v0131%2Fsurvival.png" style="width:50.0%"></p>
+<p><img src="03-Routine_analysis_files/figure-html/survCli-1.png" width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="metabolites-survival-plot">
 <font size="4">Metabolites’ survival plot</font><a class="anchor" aria-label="anchor" href="#metabolites-survival-plot"></a>
 </h3>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metabolites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C03819"</span>,<span class="st">"C02918"</span>,<span class="st">"C03916"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/survMet.html">survMet</a></span><span class="op">(</span><span class="va">dat_surv</span>,<span class="va">metabolites</span>,cluster_method<span class="op">=</span><span class="st">"mean"</span>,out_dir<span class="op">=</span><span class="st">"result_v0131/survival/"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="result_v0131%2Fsurvival%2FC02918.survival.png" style="width:50.0%"></p>
 </div>
 <div class="section level3">
 <h3 id="cox-analysis">
 <font size="4">Cox analysis</font><a class="anchor" aria-label="anchor" href="#cox-analysis"></a>
 </h3>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MetCox.html">MetCox</a></span><span class="op">(</span><span class="va">dat_surv</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -438,7 +867,7 @@ high</p>
 <h2 id="session-information">
 <font size="5">Session information</font><a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.3.2 (2023-10-31 ucrt)</span></span>
 <span><span class="co">## Platform: x86_64-w64-mingw32/x64 (64-bit)</span></span>
@@ -462,11 +891,13 @@ high</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] survival_3.7-0         tibble_3.2.1           pathview_1.42.0       </span></span>
+<span><span class="co">##  [1] caret_6.0-94           lattice_0.22-6         pathview_1.42.0       </span></span>
 <span><span class="co">##  [4] org.Hs.eg.db_3.18.0    AnnotationDbi_1.64.1   IRanges_2.36.0        </span></span>
 <span><span class="co">##  [7] S4Vectors_0.40.2       Biobase_2.62.0         BiocGenerics_0.48.1   </span></span>
 <span><span class="co">## [10] clusterProfiler_4.10.1 RColorBrewer_1.1-3     ggplot2_3.5.1         </span></span>
-<span><span class="co">## [13] stringr_1.5.1          MNet_1.1.0             dplyr_1.1.4           </span></span>
+<span><span class="co">## [13] stringr_1.5.1          knitr_1.48             tidyr_1.3.1           </span></span>
+<span><span class="co">## [16] survival_3.7-0         tibble_3.2.1           dplyr_1.1.4           </span></span>
+<span><span class="co">## [19] MNet_1.1.0            </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] fs_1.6.4                    matrixStats_1.4.1          </span></span>
@@ -475,96 +906,98 @@ high</p>
 <span><span class="co">##   [7] httr_1.4.7                  Rgraphviz_2.46.0           </span></span>
 <span><span class="co">##   [9] tools_4.3.2                 backports_1.5.0            </span></span>
 <span><span class="co">##  [11] utf8_1.2.4                  R6_2.5.1                   </span></span>
-<span><span class="co">##  [13] lazyeval_0.2.2              withr_3.0.1                </span></span>
-<span><span class="co">##  [15] gridExtra_2.3               cli_3.6.3                  </span></span>
-<span><span class="co">##  [17] textshaping_0.4.0           scatterpie_0.2.4           </span></span>
-<span><span class="co">##  [19] sass_0.4.9                  KEGGgraph_1.62.0           </span></span>
-<span><span class="co">##  [21] filesstrings_3.4.0          survMisc_0.5.6             </span></span>
-<span><span class="co">##  [23] readr_2.1.5                 randomForest_4.7-1.2       </span></span>
-<span><span class="co">##  [25] pkgdown_2.1.1               systemfonts_1.1.0          </span></span>
-<span><span class="co">##  [27] yulab.utils_0.1.7           gson_0.1.0                 </span></span>
-<span><span class="co">##  [29] foreign_0.8-87              DOSE_3.28.2                </span></span>
-<span><span class="co">##  [31] DMwR2_0.0.2                 parallelly_1.38.0          </span></span>
-<span><span class="co">##  [33] limma_3.58.1                strex_2.0.1                </span></span>
-<span><span class="co">##  [35] TTR_0.24.4                  rstudioapi_0.17.0          </span></span>
-<span><span class="co">##  [37] RSQLite_2.3.7               gridGraphics_0.5-1         </span></span>
-<span><span class="co">##  [39] generics_0.1.3              car_3.1-3                  </span></span>
-<span><span class="co">##  [41] GO.db_3.18.0                Matrix_1.6-1.1             </span></span>
-<span><span class="co">##  [43] qqman_0.1.9                 fansi_1.0.6                </span></span>
-<span><span class="co">##  [45] abind_1.4-8                 lifecycle_1.0.4            </span></span>
-<span><span class="co">##  [47] yaml_2.3.10                 carData_3.0-5              </span></span>
-<span><span class="co">##  [49] SummarizedExperiment_1.32.0 recipes_1.1.0              </span></span>
-<span><span class="co">##  [51] qvalue_2.34.0               SparseArray_1.2.4          </span></span>
-<span><span class="co">##  [53] grid_4.3.2                  blob_1.2.4                 </span></span>
-<span><span class="co">##  [55] promises_1.3.0              crayon_1.5.3               </span></span>
-<span><span class="co">##  [57] lattice_0.22-6              MultiDataSet_1.30.0        </span></span>
-<span><span class="co">##  [59] cowplot_1.1.3               KEGGREST_1.42.0            </span></span>
-<span><span class="co">##  [61] pillar_1.9.0                knitr_1.48                 </span></span>
-<span><span class="co">##  [63] fgsea_1.28.0                GenomicRanges_1.54.1       </span></span>
-<span><span class="co">##  [65] xgboost_1.7.8.1             future.apply_1.11.2        </span></span>
-<span><span class="co">##  [67] codetools_0.2-20            fastmatch_1.1-4            </span></span>
-<span><span class="co">##  [69] glue_1.8.0                  ggfun_0.1.6                </span></span>
-<span><span class="co">##  [71] data.table_1.16.2           MultiAssayExperiment_1.28.0</span></span>
-<span><span class="co">##  [73] treeio_1.26.0               vctrs_0.6.5                </span></span>
-<span><span class="co">##  [75] png_0.1-8                   gtable_0.3.5               </span></span>
-<span><span class="co">##  [77] cachem_1.1.0                dnet_1.1.7                 </span></span>
-<span><span class="co">##  [79] gower_1.0.1                 xfun_0.48                  </span></span>
-<span><span class="co">##  [81] S4Arrays_1.2.1              mime_0.12                  </span></span>
-<span><span class="co">##  [83] prodlim_2024.06.25          tidygraph_1.3.1            </span></span>
-<span><span class="co">##  [85] timeDate_4041.110           pheatmap_1.0.12            </span></span>
-<span><span class="co">##  [87] iterators_1.0.14            KMsurv_0.1-5               </span></span>
-<span><span class="co">##  [89] hardhat_1.4.0               lava_1.8.0                 </span></span>
-<span><span class="co">##  [91] statmod_1.5.0               ipred_0.9-15               </span></span>
-<span><span class="co">##  [93] nlme_3.1-166                ggtree_3.10.1              </span></span>
-<span><span class="co">##  [95] xts_0.14.1                  bit64_4.5.2                </span></span>
-<span><span class="co">##  [97] GenomeInfoDb_1.38.8         bslib_0.8.0                </span></span>
-<span><span class="co">##  [99] rpart_4.1.23                colorspace_2.1-1           </span></span>
-<span><span class="co">## [101] DBI_1.2.3                   Hmisc_5.1-3                </span></span>
-<span><span class="co">## [103] nnet_7.3-19                 tidyselect_1.2.1           </span></span>
-<span><span class="co">## [105] bit_4.5.0                   compiler_4.3.2             </span></span>
-<span><span class="co">## [107] curl_5.2.3                  graph_1.80.0               </span></span>
-<span><span class="co">## [109] htmlTable_2.4.3             desc_1.4.3                 </span></span>
-<span><span class="co">## [111] DelayedArray_0.28.0         shadowtext_0.1.4           </span></span>
-<span><span class="co">## [113] checkmate_2.3.2             scales_1.3.0               </span></span>
-<span><span class="co">## [115] hexbin_1.28.4               supraHex_1.40.0            </span></span>
-<span><span class="co">## [117] digest_0.6.37               rmarkdown_2.28             </span></span>
-<span><span class="co">## [119] XVector_0.42.0              htmltools_0.5.8.1          </span></span>
-<span><span class="co">## [121] pkgconfig_2.0.3             base64enc_0.1-3            </span></span>
-<span><span class="co">## [123] MatrixGenerics_1.14.0       fastmap_1.2.0              </span></span>
-<span><span class="co">## [125] rlang_1.1.4                 htmlwidgets_1.6.4          </span></span>
-<span><span class="co">## [127] quantmod_0.4.26             shiny_1.9.1                </span></span>
-<span><span class="co">## [129] farver_2.1.2                jquerylib_0.1.4            </span></span>
-<span><span class="co">## [131] zoo_1.8-12                  jsonlite_1.8.9             </span></span>
-<span><span class="co">## [133] BiocParallel_1.36.0         GOSemSim_2.28.1            </span></span>
-<span><span class="co">## [135] ropls_1.34.0                ModelMetrics_1.2.2.2       </span></span>
-<span><span class="co">## [137] RCurl_1.98-1.16             magrittr_2.0.3             </span></span>
-<span><span class="co">## [139] ggplotify_0.1.2             Formula_1.2-5              </span></span>
-<span><span class="co">## [141] GenomeInfoDbData_1.2.11     patchwork_1.3.0            </span></span>
-<span><span class="co">## [143] munsell_0.5.1               Rcpp_1.0.13                </span></span>
-<span><span class="co">## [145] viridis_0.6.5               ape_5.8                    </span></span>
-<span><span class="co">## [147] stringi_1.8.4               pROC_1.18.5                </span></span>
-<span><span class="co">## [149] ggraph_2.2.1                zlibbioc_1.48.2            </span></span>
-<span><span class="co">## [151] MASS_7.3-60                 plyr_1.8.9                 </span></span>
-<span><span class="co">## [153] ggrepel_0.9.6               parallel_4.3.2             </span></span>
-<span><span class="co">## [155] listenv_0.9.1               survminer_0.4.9            </span></span>
-<span><span class="co">## [157] graphlayouts_1.2.0          Biostrings_2.70.3          </span></span>
-<span><span class="co">## [159] splines_4.3.2               hms_1.1.3                  </span></span>
-<span><span class="co">## [161] Boruta_8.0.0                igraph_2.0.3               </span></span>
-<span><span class="co">## [163] ggpubr_0.6.0                ggsignif_0.6.4             </span></span>
-<span><span class="co">## [165] reshape2_1.4.4              XML_3.99-0.17              </span></span>
-<span><span class="co">## [167] evaluate_1.0.1              calibrate_1.7.7            </span></span>
-<span><span class="co">## [169] tweenr_2.0.3                tzdb_0.4.0                 </span></span>
-<span><span class="co">## [171] foreach_1.5.2               httpuv_1.6.15              </span></span>
-<span><span class="co">## [173] polyclip_1.10-7             tidyr_1.3.1                </span></span>
-<span><span class="co">## [175] purrr_1.0.2                 future_1.34.0              </span></span>
-<span><span class="co">## [177] km.ci_0.5-6                 ggforce_0.4.2              </span></span>
-<span><span class="co">## [179] broom_1.0.7                 xtable_1.8-4               </span></span>
-<span><span class="co">## [181] tidytree_0.4.6              rstatix_0.7.2              </span></span>
-<span><span class="co">## [183] later_1.3.2                 viridisLite_0.4.2          </span></span>
-<span><span class="co">## [185] class_7.3-22                ragg_1.3.3                 </span></span>
-<span><span class="co">## [187] aplot_0.2.3                 memoise_2.0.1              </span></span>
-<span><span class="co">## [189] cluster_2.1.6               timechange_0.3.0           </span></span>
-<span><span class="co">## [191] globals_0.16.3              caret_6.0-94</span></span></code></pre>
+<span><span class="co">##  [13] mgcv_1.9-1                  lazyeval_0.2.2             </span></span>
+<span><span class="co">##  [15] withr_3.0.1                 gridExtra_2.3              </span></span>
+<span><span class="co">##  [17] cli_3.6.3                   textshaping_0.4.0          </span></span>
+<span><span class="co">##  [19] scatterpie_0.2.4            labeling_0.4.3             </span></span>
+<span><span class="co">##  [21] sass_0.4.9                  KEGGgraph_1.62.0           </span></span>
+<span><span class="co">##  [23] filesstrings_3.4.0          survMisc_0.5.6             </span></span>
+<span><span class="co">##  [25] readr_2.1.5                 randomForest_4.7-1.2       </span></span>
+<span><span class="co">##  [27] proxy_0.4-27                pkgdown_2.1.1              </span></span>
+<span><span class="co">##  [29] systemfonts_1.1.0           yulab.utils_0.1.7          </span></span>
+<span><span class="co">##  [31] gson_0.1.0                  foreign_0.8-87             </span></span>
+<span><span class="co">##  [33] DOSE_3.28.2                 DMwR2_0.0.2                </span></span>
+<span><span class="co">##  [35] parallelly_1.38.0           limma_3.58.1               </span></span>
+<span><span class="co">##  [37] strex_2.0.1                 TTR_0.24.4                 </span></span>
+<span><span class="co">##  [39] rstudioapi_0.17.0           RSQLite_2.3.7              </span></span>
+<span><span class="co">##  [41] shape_1.4.6.1               gridGraphics_0.5-1         </span></span>
+<span><span class="co">##  [43] generics_0.1.3              car_3.1-3                  </span></span>
+<span><span class="co">##  [45] GO.db_3.18.0                Matrix_1.6-1.1             </span></span>
+<span><span class="co">##  [47] qqman_0.1.9                 fansi_1.0.6                </span></span>
+<span><span class="co">##  [49] abind_1.4-8                 lifecycle_1.0.4            </span></span>
+<span><span class="co">##  [51] yaml_2.3.10                 carData_3.0-5              </span></span>
+<span><span class="co">##  [53] SummarizedExperiment_1.32.0 recipes_1.1.0              </span></span>
+<span><span class="co">##  [55] qvalue_2.34.0               SparseArray_1.2.4          </span></span>
+<span><span class="co">##  [57] grid_4.3.2                  blob_1.2.4                 </span></span>
+<span><span class="co">##  [59] promises_1.3.0              crayon_1.5.3               </span></span>
+<span><span class="co">##  [61] MultiDataSet_1.30.0         cowplot_1.1.3              </span></span>
+<span><span class="co">##  [63] KEGGREST_1.42.0             pillar_1.9.0               </span></span>
+<span><span class="co">##  [65] fgsea_1.28.0                GenomicRanges_1.54.1       </span></span>
+<span><span class="co">##  [67] xgboost_1.7.8.1             future.apply_1.11.2        </span></span>
+<span><span class="co">##  [69] codetools_0.2-20            fastmatch_1.1-4            </span></span>
+<span><span class="co">##  [71] glue_1.8.0                  ggfun_0.1.6                </span></span>
+<span><span class="co">##  [73] data.table_1.16.2           MultiAssayExperiment_1.28.0</span></span>
+<span><span class="co">##  [75] treeio_1.26.0               vctrs_0.6.5                </span></span>
+<span><span class="co">##  [77] png_0.1-8                   gtable_0.3.5               </span></span>
+<span><span class="co">##  [79] cachem_1.1.0                dnet_1.1.7                 </span></span>
+<span><span class="co">##  [81] gower_1.0.1                 xfun_0.48                  </span></span>
+<span><span class="co">##  [83] S4Arrays_1.2.1              mime_0.12                  </span></span>
+<span><span class="co">##  [85] prodlim_2024.06.25          tidygraph_1.3.1            </span></span>
+<span><span class="co">##  [87] timeDate_4041.110           pheatmap_1.0.12            </span></span>
+<span><span class="co">##  [89] iterators_1.0.14            KMsurv_0.1-5               </span></span>
+<span><span class="co">##  [91] hardhat_1.4.0               lava_1.8.0                 </span></span>
+<span><span class="co">##  [93] statmod_1.5.0               ipred_0.9-15               </span></span>
+<span><span class="co">##  [95] nlme_3.1-166                ggtree_3.10.1              </span></span>
+<span><span class="co">##  [97] xts_0.14.1                  bit64_4.5.2                </span></span>
+<span><span class="co">##  [99] GenomeInfoDb_1.38.8         bslib_0.8.0                </span></span>
+<span><span class="co">## [101] rpart_4.1.23                colorspace_2.1-1           </span></span>
+<span><span class="co">## [103] DBI_1.2.3                   Hmisc_5.1-3                </span></span>
+<span><span class="co">## [105] nnet_7.3-19                 tidyselect_1.2.1           </span></span>
+<span><span class="co">## [107] bit_4.5.0                   compiler_4.3.2             </span></span>
+<span><span class="co">## [109] curl_5.2.3                  glmnet_4.1-8               </span></span>
+<span><span class="co">## [111] graph_1.80.0                htmlTable_2.4.3            </span></span>
+<span><span class="co">## [113] desc_1.4.3                  DelayedArray_0.28.0        </span></span>
+<span><span class="co">## [115] shadowtext_0.1.4            checkmate_2.3.2            </span></span>
+<span><span class="co">## [117] scales_1.3.0                hexbin_1.28.4              </span></span>
+<span><span class="co">## [119] supraHex_1.40.0             digest_0.6.37              </span></span>
+<span><span class="co">## [121] rmarkdown_2.28              XVector_0.42.0             </span></span>
+<span><span class="co">## [123] htmltools_0.5.8.1           pkgconfig_2.0.3            </span></span>
+<span><span class="co">## [125] base64enc_0.1-3             MatrixGenerics_1.14.0      </span></span>
+<span><span class="co">## [127] highr_0.11                  fastmap_1.2.0              </span></span>
+<span><span class="co">## [129] rlang_1.1.4                 htmlwidgets_1.6.4          </span></span>
+<span><span class="co">## [131] quantmod_0.4.26             shiny_1.9.1                </span></span>
+<span><span class="co">## [133] farver_2.1.2                jquerylib_0.1.4            </span></span>
+<span><span class="co">## [135] zoo_1.8-12                  jsonlite_1.8.9             </span></span>
+<span><span class="co">## [137] BiocParallel_1.36.0         GOSemSim_2.28.1            </span></span>
+<span><span class="co">## [139] ropls_1.34.0                ModelMetrics_1.2.2.2       </span></span>
+<span><span class="co">## [141] RCurl_1.98-1.16             magrittr_2.0.3             </span></span>
+<span><span class="co">## [143] ggplotify_0.1.2             Formula_1.2-5              </span></span>
+<span><span class="co">## [145] GenomeInfoDbData_1.2.11     patchwork_1.3.0            </span></span>
+<span><span class="co">## [147] munsell_0.5.1               Rcpp_1.0.13                </span></span>
+<span><span class="co">## [149] viridis_0.6.5               ape_5.8                    </span></span>
+<span><span class="co">## [151] stringi_1.8.4               pROC_1.18.5                </span></span>
+<span><span class="co">## [153] ggraph_2.2.1                zlibbioc_1.48.2            </span></span>
+<span><span class="co">## [155] MASS_7.3-60                 plyr_1.8.9                 </span></span>
+<span><span class="co">## [157] ggrepel_0.9.6               parallel_4.3.2             </span></span>
+<span><span class="co">## [159] listenv_0.9.1               survminer_0.4.9            </span></span>
+<span><span class="co">## [161] graphlayouts_1.2.0          Biostrings_2.70.3          </span></span>
+<span><span class="co">## [163] splines_4.3.2               hms_1.1.3                  </span></span>
+<span><span class="co">## [165] Boruta_8.0.0                ranger_0.16.0              </span></span>
+<span><span class="co">## [167] igraph_2.0.3                ggpubr_0.6.0               </span></span>
+<span><span class="co">## [169] ggsignif_0.6.4              reshape2_1.4.4             </span></span>
+<span><span class="co">## [171] XML_3.99-0.17               evaluate_1.0.1             </span></span>
+<span><span class="co">## [173] calibrate_1.7.7             tweenr_2.0.3               </span></span>
+<span><span class="co">## [175] tzdb_0.4.0                  foreach_1.5.2              </span></span>
+<span><span class="co">## [177] httpuv_1.6.15               polyclip_1.10-7            </span></span>
+<span><span class="co">## [179] purrr_1.0.2                 future_1.34.0              </span></span>
+<span><span class="co">## [181] km.ci_0.5-6                 ggforce_0.4.2              </span></span>
+<span><span class="co">## [183] broom_1.0.7                 xtable_1.8-4               </span></span>
+<span><span class="co">## [185] e1071_1.7-16                tidytree_0.4.6             </span></span>
+<span><span class="co">## [187] rstatix_0.7.2               later_1.3.2                </span></span>
+<span><span class="co">## [189] viridisLite_0.4.2           class_7.3-22               </span></span>
+<span><span class="co">## [191] ragg_1.3.3                  aplot_0.2.3                </span></span>
+<span><span class="co">## [193] memoise_2.0.1               cluster_2.1.6              </span></span>
+<span><span class="co">## [195] timechange_0.3.0            globals_0.16.3</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
