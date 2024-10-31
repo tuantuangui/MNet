@@ -1,3 +1,4 @@
-url: ~
+url: https://github.com/tuantuangui/MNet/
 template:
   bootstrap: 5
+  theme: breeze-light
