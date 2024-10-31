@@ -3931,7 +3931,8 @@ ui <- shinyUI(
 
 server <- shinyServer(function(session, input, output) {
     observe({
-        user_ip <- session$clientData$url_hostname
+        # user_ip <- session$clientData$url_hostname
+        user_ip <- session$request$REMOTE_ADDR
         visit_time <- Sys.time()
         
         log_data <- data.frame(
