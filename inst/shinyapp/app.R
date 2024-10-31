@@ -84,7 +84,9 @@ ui <- shinyUI(
                 bs4SidebarUserPanel(name = strong("MNet"), image = "https://tuantuangui.github.io/MNet/logo.png"),
                 #=== 1.2.1.2 bs4SidebarHeader
                 # bs4SidebarHeader(title = strong("Function【4】")),
-                br(),
+                tags$div(
+                    verbatimTextOutput("stats")
+                ),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
                     id = NULL,
@@ -158,7 +160,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Meta-Gene Network",
+                            text = "| Met-Gene Network",
                             tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -459,6 +461,7 @@ ui <- shinyUI(
                     #     #     selected = NULL
                     #     # )
                     # )
+                    
                 ),
                 hr()
             )
@@ -487,11 +490,11 @@ ui <- shinyUI(
         },
         #=== 1.4 bs4DashFooter
         {
-            footer = bs4DashFooter(
-                left = verbatimTextOutput("stats"),
-                right = NULL,
-                fixed = TRUE
-            )
+            # footer = bs4DashFooter(
+            #     left = verbatimTextOutput("stats"),
+            #     right = NULL,
+            #     fixed = TRUE
+            # )
         },
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
@@ -1419,7 +1422,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("Demo", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -1444,12 +1447,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "network_demo_meta_data_download",
-                                                       label = "Metabolic Data",
+                                                       label = "Metabolite data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -1457,7 +1460,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -1488,7 +1491,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -1567,7 +1570,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("User", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -1592,10 +1595,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -1616,7 +1619,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -2403,7 +2406,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("Demo", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -2428,12 +2431,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "epea_demo_meta_data_download",
-                                                       label = "Metabolic Data",
+                                                       label = "Metabolite data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -2441,7 +2444,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -2472,7 +2475,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -2551,7 +2554,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("User", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -2576,10 +2579,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -2600,7 +2603,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -2841,7 +2844,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("Demo", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -2866,12 +2869,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "epda_demo_meta_data_download",
-                                                       label = "Metabolic Data",
+                                                       label = "Metabolite data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -2879,7 +2882,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -2910,7 +2913,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -2989,7 +2992,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("User", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -3014,10 +3017,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -3038,7 +3041,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to genes.
 
@@ -3234,7 +3237,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("Demo", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -3259,12 +3262,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "esea_demo_comp_gene_data_download",
-                                                       label = "Metabolic Data",
+                                                       label = "Metabolite data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -3272,7 +3275,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -3327,7 +3330,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolic Data",
+                                           selected = "Input: Metabolite data",
                                            title = tags$b("User", style = "color: #888888;"),
                                            width = 12,
                                            height = 800,
@@ -3352,10 +3355,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolic Data",
+                                               title = "Input: Metabolite data",
                                                markdown(
                                                    "
-                                                   **Metabolic Data:** [TXT] an interactive table for user-input metabolic data.
+                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
 
                                                    **Rows:** corresponding to metabolites.
 
@@ -3977,8 +3980,8 @@ server <- shinyServer(function(session, input, output) {
     # 自动更新访问统计数据
     output$stats <- renderPrint({
         stats <- get_stats()
-        cat("Total Visits:", stats$total_visits, " ")
-        cat("Unique Visits:", stats$unique_users, " ")
+        cat("Total Visits:", stats$total_visits, "\n")
+        cat("Unique Visits:", stats$unique_users, "\n")
         cat("Recent 24h:", stats$recent_visits)
     })
     
@@ -4704,8 +4707,8 @@ server <- shinyServer(function(session, input, output) {
                 )
                 group_data <- as.character(group_data[, 1])
                 
-                progress$set(value = 100)
-                progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
+                progress$set(value = 80)
+                progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
                 
                 diff_meta <- mlimma(meta_data, group_data)
                 diff_gene <- mlimma(gene_data, group_data)
@@ -4713,6 +4716,8 @@ server <- shinyServer(function(session, input, output) {
                 names(diff_meta)[4] <- "p_value"
                 names(diff_gene)[4] <- "p_value"
                 
+                progress$set(value = 100)
+                progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
                 network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
                 network_res
             })
@@ -4755,8 +4760,8 @@ server <- shinyServer(function(session, input, output) {
                     )
                     group_data <- as.character(group_data[, 1])
                     
-                    progress$set(value = 100)
-                    progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
+                    progress$set(value = 80)
+                    progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
                     
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
@@ -4764,6 +4769,8 @@ server <- shinyServer(function(session, input, output) {
                     names(diff_meta)[4] <- "p_value"
                     names(diff_gene)[4] <- "p_value"
                     
+                    progress$set(value = 100)
+                    progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
                     network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
                     network_res
                 })
