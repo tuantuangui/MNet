@@ -22,8 +22,13 @@ library(markdown)
 log_file <- "user_access_log.txt"
 
 if (!file.exists(log_file)) {
-    write.table(data.frame(IP = character(), VisitTime = character()), log_file, 
-                sep = "\t", row.names = FALSE, col.names = TRUE)
+    write.table(
+        data.frame(IP = character(), VisitTime = character()),
+        log_file,
+        sep = "\t",
+        row.names = FALSE,
+        col.names = TRUE
+    )
 }
 
 ui <- shinyUI(
@@ -42,7 +47,7 @@ ui <- shinyUI(
         {
             header = bs4DashNavbar(
                 brand = span(
-                    "| MNet App User Interface",
+                    "| MNet for integrative analysis of metabolomic and transcriptomic data",
                     style = "margin-left: 10px;
                               color: #555555;
                               font-weight: bolder;
@@ -84,8 +89,26 @@ ui <- shinyUI(
                 bs4SidebarUserPanel(name = strong("MNet"), image = "https://tuantuangui.github.io/MNet/logo.png"),
                 #=== 1.2.1.2 bs4SidebarHeader
                 # bs4SidebarHeader(title = strong("Function【4】")),
-                tags$div(
-                    verbatimTextOutput("stats")
+                tags$div(verbatimTextOutput("stats")),
+                actionButton(
+                    inputId = "open_window",
+                    label = "Manual",
+                    icon = shiny::icon("book-open"),
+                    width = "100%",
+                    status = "warning",
+                    gradient = FALSE,
+                    outline = FALSE,
+                    size = NULL,
+                    flat = FALSE,
+                    style = "margin: 0px;"
+                ),
+                hr(),
+                tags$script(
+                    '
+                        Shiny.addCustomMessageHandler("openNewWindow", function(params) {
+                            var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
+                        });
+                    '
                 ),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
@@ -101,6 +124,19 @@ ui <- shinyUI(
                         tabName = "home",
                         icon = icon("house"),
                         badgeLabel = "Intro",
+                        badgeColor = "danger",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = NULL,
+                        startExpanded = FALSE,
+                        condition = NULL
+                    ),
+                    bs4SidebarMenuItem(
+                        text = "Database",
+                        tabName = "database",
+                        icon = icon("database"),
+                        badgeLabel = "Database",
                         badgeColor = "danger",
                         href = NULL,
                         newTab = TRUE,
@@ -148,7 +184,7 @@ ui <- shinyUI(
                     #     )
                     # ),
                     bs4SidebarMenuItem(
-                        text = "1. Metabolic Network",
+                        text = "1. Metabolic Subnetwork",
                         tabName = NULL,
                         icon = icon("circle-nodes"),
                         # badgeLabel = "6",
@@ -160,7 +196,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Met-Gene Network",
+                            text = "| Met-Gene Subnetwork",
                             tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -510,7 +546,7 @@ ui <- shinyUI(
                             # 1
                             style = "padding: 10px;",
                             inputId = NULL,
-                            title = tags$b(" . MNet Documents"),
+                            title = tags$b("MNet Documents"),
                             footer = NULL,
                             width = 12,
                             height = NULL,
@@ -524,7 +560,7 @@ ui <- shinyUI(
                             closable = FALSE,
                             maximizable = FALSE,
                             icon = icon("passport"),
-                            boxToolSize = "sm",
+                            boxToolSize = "lg",
                             label = NULL,
                             dropdownMenu = NULL,
                             sidebar = NULL,
@@ -558,7 +594,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -667,7 +703,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -688,7 +724,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -715,7 +751,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -737,7 +773,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -767,7 +803,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -902,7 +938,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -923,7 +959,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -950,7 +986,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -972,7 +1008,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1002,7 +1038,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -1171,7 +1207,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -1192,7 +1228,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1219,7 +1255,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1241,7 +1277,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1271,7 +1307,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = FALSE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -1423,7 +1459,7 @@ ui <- shinyUI(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("Demo", style = "color: #888888;"),
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -1438,7 +1474,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 3,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -1547,31 +1583,34 @@ ui <- shinyUI(
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("Figure 1"), "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."),
-                                               icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "|",
-                                               icon = NULL
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Manual",
-                                               tags$iframe(
-                                                   src = "http://www.mnet4all.com/mnet_manual/",
-                                                   width = "100%",
-                                                   height = "720",
-                                                   frameborder = 0
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
                                                ),
-                                               icon = shiny::icon("book-open")
+                                               icon = shiny::icon("image")
                                            )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
                                        ),
                                        bs4TabCard(
-                                           ribbon(text = "User", color = "danger"),
+                                           # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("User", style = "color: #888888;"),
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -1586,7 +1625,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 0,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -1671,7 +1710,10 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("network_plot", width = "100%", height = "1000px"),
-                                               tags$p(tags$b("Figure 1"), "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."),
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
+                                               ),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -1698,7 +1740,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -1868,7 +1910,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -1889,7 +1931,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1916,7 +1958,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1943,7 +1985,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1965,7 +2007,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -1995,7 +2037,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -2122,7 +2164,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -2143,7 +2185,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -2170,7 +2212,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -2197,7 +2239,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -2227,7 +2269,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = FALSE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -2403,11 +2445,26 @@ ui <- shinyUI(
                                    ),
                                    column(
                                        width = 9,
+                                       # tags$script(
+                                       #     '
+                                       #          $(document).ready(function() {
+                                       #              $("#myTabCard").addClass("collapsed");
+                                       #              $(".tab-pane").click(function() {
+                                       #                  var tabCard = $(this).closest(".card");
+                                       #                  if (tabCard.hasClass("collapsed")) {
+                                       #                      tabCard.removeClass("collapsed");
+                                       #                  } else {
+                                       #                      tabCard.addClass("collapsed");
+                                       #                  }
+                                       #              });
+                                       #          });
+                                       #      '
+                                       # ), 
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
-                                           id = "examples_tabbox",
+                                           id = "myTabCard",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("Demo", style = "color: #888888;"),
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -2422,7 +2479,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 3,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -2531,31 +2588,34 @@ ui <- shinyUI(
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("Figure 1"), "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."),
-                                               icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "|",
-                                               icon = NULL
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Manual",
-                                               tags$iframe(
-                                                   src = "http://www.mnet4all.com/mnet_manual/",
-                                                   width = "100%",
-                                                   height = "720",
-                                                   frameborder = 0
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
                                                ),
-                                               icon = shiny::icon("book-open")
+                                               icon = shiny::icon("image")
                                            )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
                                        ),
                                        bs4TabCard(
-                                           ribbon(text = "User", color = "danger"),
+                                           # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("User", style = "color: #888888;"),
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -2570,7 +2630,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 0,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -2655,7 +2715,10 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("epea_plot", width = "100%", height = "1000px"),
-                                               tags$p(tags$b("Figure 1"), "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."),
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                               ),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -2682,7 +2745,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = FALSE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -2845,7 +2908,7 @@ ui <- shinyUI(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("Demo", style = "color: #888888;"),
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -2860,7 +2923,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 3,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -2969,31 +3032,34 @@ ui <- shinyUI(
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("Figure 1"), "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."),
-                                               icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "|",
-                                               icon = NULL
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Manual",
-                                               tags$iframe(
-                                                   src = "http://www.mnet4all.com/mnet_manual/",
-                                                   width = "100%",
-                                                   height = "720",
-                                                   frameborder = 0
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
                                                ),
-                                               icon = shiny::icon("book-open")
+                                               icon = shiny::icon("image")
                                            )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
                                        ),
                                        bs4TabCard(
-                                           ribbon(text = "User", color = "danger"),
+                                           # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("User", style = "color: #888888;"),
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -3008,7 +3074,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 0,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -3093,7 +3159,10 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("epda_plot", width = "100%", height = "1000px"),
-                                               tags$p(tags$b("Figure 1"), "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."),
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
+                                               ),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -3120,7 +3189,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = FALSE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -3238,7 +3307,7 @@ ui <- shinyUI(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("Demo", style = "color: #888888;"),
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -3253,7 +3322,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 3,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -3307,31 +3376,34 @@ ui <- shinyUI(
                                                    width = "100%",
                                                    height = "auto"
                                                ),
-                                               tags$p(tags$b("Figure 1"), "Extended pathway set enrichment analysis."),
-                                               icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "|",
-                                               icon = NULL
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Manual",
-                                               tags$iframe(
-                                                   src = "http://www.mnet4all.com/mnet_manual/",
-                                                   width = "100%",
-                                                   height = "720",
-                                                   frameborder = 0
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Extended pathway set enrichment analysis."
                                                ),
-                                               icon = shiny::icon("book-open")
+                                               icon = shiny::icon("image")
                                            )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
                                        ),
                                        bs4TabCard(
-                                           ribbon(text = "User", color = "danger"),
+                                           # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
                                            selected = "Input: Metabolite data",
-                                           title = tags$b("User", style = "color: #888888;"),
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
                                            side = "right",
@@ -3346,7 +3418,7 @@ ui <- shinyUI(
                                            maximizable = FALSE,
                                            icon = NULL,
                                            gradient = FALSE,
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            elevation = 0,
                                            headerBorder = TRUE,
                                            label = NULL,
@@ -3396,7 +3468,10 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                plotOutput("esea_plot", width = "100%", height = "1000px"),
-                                               tags$p(tags$b("Figure 1"), "Extended pathway set enrichment analysis."),
+                                               tags$p(
+                                                   tags$b("Figure 1"),
+                                                   "Extended pathway set enrichment analysis."
+                                               ),
                                                icon = shiny::icon("image")
                                            )
                                        )
@@ -3423,7 +3498,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -3584,7 +3659,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -3605,7 +3680,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3632,7 +3707,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3654,7 +3729,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3684,7 +3759,7 @@ ui <- shinyUI(
                                        closable = FALSE,
                                        maximizable = TRUE,
                                        icon = icon("gear"),
-                                       boxToolSize = "sm",
+                                       boxToolSize = "lg",
                                        label = NULL,
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
@@ -3845,7 +3920,7 @@ ui <- shinyUI(
                                            closable = FALSE,
                                            maximizable = TRUE,
                                            icon = icon("compass-drafting"),
-                                           boxToolSize = "sm",
+                                           boxToolSize = "lg",
                                            label = NULL,
                                            dropdownMenu = NULL,
                                            sidebar = NULL,
@@ -3866,7 +3941,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3893,7 +3968,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3915,7 +3990,7 @@ ui <- shinyUI(
                                                closable = FALSE,
                                                maximizable = TRUE,
                                                icon = icon("table-list"),
-                                               boxToolSize = "sm",
+                                               boxToolSize = "lg",
                                                label = NULL,
                                                dropdownMenu = NULL,
                                                sidebar = NULL,
@@ -3924,6 +3999,120 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
+                }, {
+                    bs4TabItem(tabName = "database", fluidRow(
+                        bs4Card(
+                            # 1
+                            style = "padding: 10px 10%;",
+                            inputId = NULL,
+                            title = tags$b("Database Update and Download"),
+                            footer = NULL,
+                            width = 12,
+                            height = NULL,
+                            status = "white",
+                            elevation = 1,
+                            solidHeader = FALSE,
+                            headerBorder = FALSE,
+                            gradient = FALSE,
+                            collapsible = FALSE,
+                            collapsed = FALSE,
+                            closable = FALSE,
+                            maximizable = FALSE,
+                            icon = icon("passport"),
+                            boxToolSize = "lg",
+                            label = NULL,
+                            dropdownMenu = NULL,
+                            sidebar = NULL,
+                            markdown(
+                                "
+                                ## **1. Database Introduction:**
+
+                                The knowledgebase dbMNet is a freely available knowledgebase that attempts to consolidate information 
+                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases, 
+                                dbNet and dbKEGG. 
+                                
+                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database, 
+                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**. 
+                                
+                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG, 
+                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented. 
+                                
+                                These pairs involve **3,964 genes**, and **11,932 metabolites**.
+                                
+                                The source code for compiling the knowledgebase dbMNet is available here:
+                                
+                                [**_https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet_**](https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet)
+                                
+                                <hr />
+                                
+                                ## **2. Database V202411**
+                                
+                                <br />
+                                
+                                #### **2.1 dbKEGG: _6,920 Rows; 553 KB_**
+                                
+                                [**_https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt_**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt)
+                                
+                                **Preview:**
+                                "
+                            ),
+                            DTOutput(
+                                "db_kegg",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            markdown(
+                                "
+                                #### **2.2 dbNet: _106,313 Rows; 4,216 KB_**
+                                
+                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt)
+                                
+                                **Preview:**
+                                "
+                            ),
+                            DTOutput(
+                                "db_net",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            hr(),
+                            markdown(
+                                "
+                                ## **3. Database History**
+                                
+                                <br />
+                                
+                                #### **3.1 Database V202404**
+                                
+                                <br />
+                                
+                                ##### **3.1.1 dbKEGG: _6,822 Rows; 544 KB_**
+                                
+                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt)
+                                
+                                ##### **3.1.2 dbNet: _105,949 Rows; 4,204 KB_**
+                                
+                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt)
+                                
+                                <hr />
+                                
+                                #### **3.2 Database V2022**
+                                
+                                <br />
+                                
+                                ##### **3.2.1 dbKEGG: _6,735 Rows; 537 KB_**
+                                
+                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt)
+                                
+                                ##### **3.2.2 dbNet: _128,005 Rows; 4,841 KB_**
+                                
+                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt)
+                                "
+                            )
+                        )
+                    ))
                 })
         )
     )
@@ -3947,11 +4136,11 @@ server <- shinyServer(function(session, input, output) {
         
         # 追加记录到 TXT 文件
         write.table(
-            log_data, 
-            log_file, 
-            append = TRUE, 
-            sep = "\t", 
-            row.names = FALSE, 
+            log_data,
+            log_file,
+            append = TRUE,
+            sep = "\t",
+            row.names = FALSE,
             col.names = !file.exists(log_file)
         )
     })
@@ -3986,7 +4175,7 @@ server <- shinyServer(function(session, input, output) {
     output$stats <- renderPrint({
         stats <- get_stats()
         cat("Total Visits:", stats$total_visits, "\n")
-        cat("Unique Visits:", stats$unique_users, "\n")
+        # cat("Unique Visits:", stats$unique_users, "\n")
         cat("Recent 24h:", stats$recent_visits)
     })
     
@@ -6499,6 +6688,40 @@ server <- shinyServer(function(session, input, output) {
                 }
             }
         )
+    }
+    
+    observeEvent(input$open_window, {
+        session$sendCustomMessage(
+            "openNewWindow",
+            list(
+                width = 1000,
+                height = 800,
+                url = "http://www.mnet4all.com/mnet_manual/"
+            )
+        )
+    })
+    
+    # database
+    {
+        output$db_kegg <- renderDT({
+            db_kegg <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbKEGG.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            return(head(db_kegg, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$db_net <- renderDT({
+            db_net <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbNet2.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            return(head(db_net, 100))
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
     }
 })
 
