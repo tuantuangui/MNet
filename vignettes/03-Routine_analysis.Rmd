@@ -17,7 +17,7 @@ vignette: >
 
 **RefMet: A Reference list of Metabolite names.**The main objective of RefMet is to provide a standardized reference nomenclature for both discrete metabolite structures and metabolite species identified by spectroscopic techniques in metabolomics experiments.
 
-```{r include=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(MNet)
 library(dplyr)
 library(tibble)
@@ -32,11 +32,14 @@ library(org.Hs.eg.db)
 library(pathview)
 ```
 
-```{r echo=FALSE, warning=FALSE}
-compound_name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt","2-Aminooctanoic acid")
+```{r message=FALSE, warning=FALSE}
+compound_name <- c("2-Hydroxybutyric acid",
+                   "1-Methyladenosine",
+                   "tt",
+                   "2-Aminooctanoic acid")
 ## transform the compound name to refmet name
 refmetid_result <- name2refmet(compound_name)
-kable(refmetid_result)
+head(refmetid_result)
 ```
 
 ## <font size="4">Metabolite compound name transform to KEGG ID</font>
@@ -45,12 +48,15 @@ kable(refmetid_result)
 
 Transform the metabolites compound name to KEGG ID
 
-```{r echo=FALSE, warning=FALSE}
-compound_name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt","2-Aminooctanoic acid")
+```{r message=FALSE, warning=FALSE}
+compound_name <- c("2-Hydroxybutyric acid",
+                   "1-Methyladenosine",
+                   "tt",
+                   "2-Aminooctanoic acid")
 ## transform the compound name to KEGG ID, some metabolites have several KEGG ID
 keggid_result <- name2keggid(compound_name) %>%
-  separate_rows(KEGG_id,sep=";")
-kable(head(keggid_result))
+  separate_rows(KEGG_id, sep = ";")
+head(keggid_result)
 ```
 
 ## <font size="4">Metabolite name corresponding to kegg pathway</font>
@@ -59,57 +65,60 @@ kable(head(keggid_result))
 
 Search the kegg pathway corresponding to the metabolite name
 
-```{r echo=FALSE, warning=FALSE}
-compound_name <- c("2-Hydroxybutyric acid","1-Methyladenosine","tt","2-Aminooctanoic acid")
+```{r message=FALSE, warning=FALSE}
+compound_name <- c("2-Hydroxybutyric acid",
+                   "1-Methyladenosine",
+                   "tt",
+                   "2-Aminooctanoic acid")
 ## Search the kegg pathway corresponding to the metabolite name
 result_all <- name2pathway(compound_name)
-# kable(head(result_all))
+head(result_all)
 
 ##### Output is the each metabolite related pathway
 result_name2pathway <- result_all$name2pathway
-kable(head(result_name2pathway))
+head(result_name2pathway)
 
 ## the KEGG ID of the metabolite name
 result_name2keggid <- result_all$kegg_id
-kable(head(result_name2keggid))
+head(result_name2keggid)
 
 ## the pathway of the metabolite name
 result_name2enrichpathway <- result_all$pathway
-# kable(head(result_name2enrichpathway))
+head(result_name2enrichpathway)
 ```
 
 ## <font size="4">Metabolite KEGG ID transform to KEGG pathway</font>
 
 KEGG ID transform to KEGG pathway
 
-```{r}
-keggid <- c("C05984","C02494")
+```{r message=FALSE, warning=FALSE}
+keggid <- c("C05984", "C02494")
 ##### the output is the each metabolite related pathway
 keggpathway_result <- keggid2pathway(keggid)
-kable(head(keggpathway_result))
+head(keggpathway_result)
 ```
 
 ## Pathway information
 Get the gene and the metabolite in the pathway
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## the genes and metabolites in pathway 'hsa00630'
 result <- pathwayinfo("hsa00630")
 
 ## the genes and metabolites in pathway 'Glyoxylate and dicarboxylate metabolism'
 result <- pathwayinfo("Glyoxylate and dicarboxylate metabolism")
 
-kable(head(result$gene_info[1:2,]))
-kable(head(result$compound_info[1:2,]))
+head(result$gene_info[1:2, ])
+head(result$compound_info[1:2, ])
 ```
 
 ## <font size="4">Pathway name transform to pathway id</font>
 Transform the KEGG pathway name to KEGG pathway ID
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## the KEGG pathway ID of pathway name
 pathwayid <- pathway2pathwayid("Glycolysis / Gluconeogenesis")
-kable(head(pathwayid))
+head(pathwayid)
 ```
 
 # <font size="5">Group-wise analyses</font>
@@ -117,9 +126,9 @@ kable(head(pathwayid))
 
 PCA of the data
 
-```{r fig.keep='all', PCA, warning=FALSE, fig.width=10.00, fig.height=6.18}
+```{r fig.keep='all', PCA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ### the pca plot
-p_PCA <- pPCA(meta_dat,group)
+p_PCA <- pPCA(meta_dat, group)
 p_PCA$p1
 p_PCA$p2
 p_PCA$p3
@@ -128,26 +137,26 @@ p_PCA$p3
 ## <font size="4">Differnetial metabolite analysis</font>
 
 ### <font size="3">Function 'mlimma'</font>
-```{r}
-
+```{r message=FALSE, warning=FALSE}
 ## mlimma is the function of Differential Metabolite analysis by limma
-diff_result <- mlimma(meta_dat,group)
+diff_result <- mlimma(meta_dat, group)
+head(diff_result)
 ```
 
 ### <font size="3">Function 'DM'</font>
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ## DM is the function of Differential Metabolite analysis by OPLS-DA
-diff_result <- DM(2**meta_dat,group)
-kable(head(diff_result))
+diff_result <- DM(2 ** meta_dat, group)
+head(diff_result)
 
 ## filter the differential metabolites by default fold change >1.3 or < 1/1.3 ,fdr < 0.05 and VIP>0.8
 
 diff_result_filter <- diff_result %>%
-  filter(Fold_change >1.3 | Fold_change < 1/1.3) %>%
+  filter(Fold_change > 1.3 | Fold_change < 1 / 1.3) %>%
   filter(Padj_wilcox < 0.1) %>%
-  filter(VIP>0.8)
-kable(head(diff_result_filter))
+  filter(VIP > 0.8)
+head(diff_result_filter)
 ```
 
 
@@ -155,8 +164,8 @@ kable(head(diff_result_filter))
 
 Volcano plot of metabolites using the function "pVolcano"
 
-```{r fig.keep='all', pVolcano, warning=FALSE, fig.width=10.00, fig.height=6.18}
-p_volcano <- pVolcano(diff_result,foldchange_threshold=1.5)
+```{r fig.keep='all', pVolcano, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+p_volcano <- pVolcano(diff_result, foldchange_threshold = 1.5)
 p_volcano
 ```
 
@@ -164,18 +173,24 @@ p_volcano
 
 Heatmap plot of differentital metabolites using the function "pHeatmap"
 
-```{r fig.keep='all', pHeatmap, warning=FALSE, fig.width=10.00, fig.height=6.18}
-meta_dat_diff <- meta_dat[rownames(meta_dat) %in% diff_result_filter$Name,]
-p_heatmap <- pHeatmap(meta_dat_diff,group,fontsize_row=5,fontsize_col=4,clustering_method="ward.D",clustering_distance_cols="correlation")
-p_heatmap
+```{r fig.keep='all', pHeatmap, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+meta_dat_diff <- meta_dat[rownames(meta_dat) %in% diff_result_filter$Name, ]
+p_heatmap <- pHeatmap(
+  meta_dat_diff,
+  group,
+  fontsize_row = 5,
+  fontsize_col = 4,
+  clustering_method = "ward.D",
+  clustering_distance_cols = "correlation"
+)
 ```
 
 ## <font size="4">Differential metabolites' zscore</font>
 
 Zscore plot of differentital metabolites using the function "pZscore"
 
-```{r fig.keep='all', pZscore, warning=FALSE, fig.width=10.00, fig.height=6.18}
-p_zscore <- pZscore(meta_dat_diff,group,ysize=3)
+```{r fig.keep='all', pZscore, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+p_zscore <- pZscore(meta_dat_diff, group, ysize = 3)
 p_zscore
 ```
 
@@ -184,20 +199,21 @@ p_zscore
 ## <font size="4">Boruta</font>
 Using machine learning "Boruta" for feature selection 
 
-```{r echo=FALSE, warning=FALSE, message=FALSE}
+```{r message=FALSE, warning=FALSE}
 #group <- rep("normal",length(names(meta_dat)))
 #group[grep("TUMOR",names(meta_dat))] <- "tumor"
 meta_dat1 <- t(meta_dat) %>%
   as.data.frame() %>%
-  mutate(group=group)
+  mutate(group = group)
 
 result_ML_Boruta <- ML_Boruta(meta_dat1)
+head(result_ML_Boruta)
 ```
 
 ## <font size="4">Random Forest</font>
 Using machine learning "Random Forest" for feature selection
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 result_ML_RF <- ML_RF(meta_dat1)
 result_ML_RF$p
 result_ML_RF$feature_result
@@ -206,7 +222,7 @@ result_ML_RF$feature_result
 ## <font size="4">XGBoost</font>
 Using machine learning "  XGBoost" for feature selection
 
-```{r echo=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 result_ML_xgboost <- ML_xgboost(meta_dat1)
 result_ML_xgboost$p
 result_ML_xgboost$feature_result
@@ -215,73 +231,85 @@ result_ML_xgboost$feature_result
 ## <font size="4">LASSO</font>
 Using machine learning "LASSO" for feature selection
 
-```{r echo=FALSE, warning=FALSE}
-result_ML_lasso <- ML_alpha(meta_dat1,method="lasso")
-
+```{r message=FALSE, warning=FALSE}
+result_ML_lasso <- ML_alpha(meta_dat1, method = "lasso")
+head(result_ML_lasso)
 ```
 
 ## <font size="4">elastic network</font>
 Using machine learning "elastic network" for feature selection
 
-```{r}
-result_ML_elastic <- ML_alpha(meta_dat1,method="elastic")
+```{r message=FALSE, warning=FALSE}
+result_ML_elastic <- ML_alpha(meta_dat1, method = "elastic")
+head(result_ML_elastic)
 ```
 # <font size="5">Pathway analysis</font>
 
 ## <font size="4">Pathview only metabolites</font>
 
-```{r eval=FALSE,echo=FALSE, warning=FALSE}
-kegg_id <- c("C02494","C03665","C01546","C05984","C14088","C00587")
-value <- c(-0.3824620,0.1823628,-1.1681486,0.5164899,1.6449798,-0.7340652)
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+kegg_id <- c("C02494", "C03665", "C01546", "C05984", "C14088", "C00587")
+value <- c(-0.3824620,
+           0.1823628,
+           -1.1681486,
+           0.5164899,
+           1.6449798,
+           -0.7340652)
 names(value) <- kegg_id
 cpd.data <- value
 
-gene_name <- c("LDHA","BCKDHB","PCCA","ACSS1")
-gene_value <- c(1,0.5,-1,-1)
+gene_name <- c("LDHA", "BCKDHB", "PCCA", "ACSS1")
+gene_value <- c(1, 0.5, -1, -1)
 names(gene_value) <- gene_name
 
 ## pathview plot of metabolites
-pPathview(cpd.data,outdir="result_v0131")
+pPathview(cpd.data, outdir = "result_v0131")
 ```
 
 ## <font size="4">Pathview contains metabolites and genes</font>
 
-```{r eval=FALSE, echo=FALSE, warning=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 ## pathview plot of genes and metabolites
-pPathview(cpd.data=cpd.data,gene.data=gene_value,outdir="result_v0131")
+pPathview(cpd.data = cpd.data,
+          gene.data = gene_value,
+          outdir = "result_v0131")
 ```
 
 # <font size="5">Clinical analysis</font>
 ## <font size="4">Time series of clinical</font>
 Column contains the time, group, clinical index(such as ALT), low and high
-```{r fig.keep='all', pCliTS, warning=FALSE, fig.width=10.00, fig.height=6.18}
-clinical_index[1:5,]
-time_series_ALT <- pCliTS(clinical_index,"ALT")
+```{r fig.keep='all', pCliTS, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+clinical_index[1:5, ]
+time_series_ALT <- pCliTS(clinical_index, "ALT")
 time_series_ALT
 ```
 
 ## <font size="4">Survival analysis</font>
-```{r fig.keep='all', survCli, warning=FALSE, fig.width=10.00, fig.height=6.18}
-names(aml)[3] ="group"
-p=survCli(aml)
+```{r fig.keep='all', survCli, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+names(aml)[3] = "group"
+p = survCli(aml)
 p
 ```
 
 ## <font size="4">Metabolites’ survival plot</font>
 
-```{r eval=FALSE}
-metabolites <- c("C03819","C02918","C03916")
-survMet(dat_surv,metabolites,cluster_method="mean",out_dir="result_v0131/survival/")
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+metabolites <- c("C03819", "C02918", "C03916")
+survMet(dat_surv,
+        metabolites,
+        cluster_method = "mean",
+        out_dir = "result_v0131/survival/")
 ```
 
 ## <font size="4">Cox analysis</font>
 
-```{r eval=FALSE}
+```{r message=FALSE, warning=FALSE}
 result <- MetCox(dat_surv)
+head(result)
 ```
 
 # <font size="5">Session information</font>
 
-```{r,eval=TRUE}
+```{r message=FALSE, warning=FALSE}
 sessionInfo()
 ```

@@ -89,6 +89,9 @@ two clusters. We utilize MNet to identify a set of features whose
 activities significantly differ between these two clusters. This result
 will hopefully hint at some specific biological activities that are
 pathologically altered in tumoral samples.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tuantuangui/MNet/">MNet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-identified-by-dnet">
@@ -97,60 +100,60 @@ pathologically altered in tumoral samples.</p>
 <p>Input data must include the “name” column, with “p_value” required
 and “logFC” optional. If “logFC” exists, it dictates color; otherwise,
 use blue for metabolites and red for genes.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## meta_dat is the metabolic data of the 31 samples</span></span>
+<span><span class="co">## gene_dat is the transcriptional data of the 31 samples</span></span>
+<span><span class="co">## group is the group information of the 31 samples</span></span>
+<span></span>
+<span><span class="co">## mlimma is the function of Differential Metabolite analysis by limma</span></span>
+<span></span>
+<span><span class="va">diff_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##   logFC AveExpr     t  P.Value    adj.P.Val     B  logP name  </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  2.86    22.6  9.25 1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 0.000<span style="text-decoration: underline;">000</span>033<span style="text-decoration: underline;">2</span> 14.1   7.48 C02045</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  2.44    26.2  7.80 6.83<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 0.000<span style="text-decoration: underline;">000</span>748  10.4   6.13 C00267</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">1.82</span>    27.1 -<span style="color: #BB0000;">6.80</span> 1.10<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">006</span>22    7.64  5.21 C00073</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">3.78</span>    20.9 -<span style="color: #BB0000;">6.79</span> 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">006</span>22    7.61  5.21 C05674</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">2.20</span>    21.4 -<span style="color: #BB0000;">6.58</span> 2.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">009</span>07    7.02  5.04 C00255</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">2.37</span>    21.6 -<span style="color: #BB0000;">6.45</span> 2.98<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">010</span>9     6.66  4.96 C00242</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">diff_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">gene_dat</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##    logFC AveExpr      t  P.Value    adj.P.Val     B  logP name  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   6.92   23.1   11.3  1.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>020<span style="text-decoration: underline;">3</span>  17.7  7.69 APH1B </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  21.4    23.4   10.6  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>045<span style="text-decoration: underline;">5</span>  16.5  7.34 GFRA1 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  -<span style="color: #BB0000;">5.76</span>   24.4  -<span style="color: #BB0000;">10.1</span>  1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.4  7.05 RFC4  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  10.5    14.8   10.1  2.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.3  7.05 FAM47E</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">10.8</span>    20.6   -<span style="color: #BB0000;">9.79</span> 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>137   14.7  6.86 ORC6  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span>   4.02    5.65   9.69 4.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>147   14.5  6.83 FAM87B</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## change the name in diff_meta 'P.Value' to 'p_value'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="st">"p_value"</span></span>
 <span></span>
-<span><span class="co">## filter the differential metabolites </span></span>
+<span><span class="co">## filter the differential metabolites</span></span>
 <span><span class="va">diff_metabolite</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## change the name in diff_gene 'P.Value' to 'p_value'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"p_value"</span></span>
 <span></span>
-<span><span class="co">## filter the differential expression genes                   </span></span>
+<span><span class="co">## filter the differential expression genes</span></span>
 <span><span class="va">diff_gene1</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="st">"result_v0131"</span><span class="op">)</span></span>
+<span><span class="co"># dir.create("result_v0131")</span></span>
 <span><span class="co"># png("result_v0131/subnetwork_important.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span></span>
 <span><span class="co">## identify the core metabolism-related subnetwork</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_meta</span>,<span class="va">diff_gene</span>,nsize<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:53:05.127453</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## First, fit the input p-value distribution under beta-uniform mixture model (2024-10-31 12:53:05.130136)...</span></span></code></pre>
-<pre><code><span><span class="co">##  A total of p-values: 17978</span></span></code></pre>
-<pre><code><span><span class="co">##  Maximum Log-Likelihood: 29984.0</span></span></code></pre>
-<pre><code><span><span class="co">##  Mixture parameter (lambda): 0.109</span></span></code></pre>
-<pre><code><span><span class="co">##  Shape parameter (a): 0.225</span></span></code></pre>
-<pre><code><span><span class="co">## Second, determine the significance threshold (2024-10-31 12:53:05.234454)...</span></span></code></pre>
-<pre><code><span><span class="co">##  Via constraint on the size of subnetwork to be identified (100 nodes)</span></span></code></pre>
-<pre><code><span><span class="co">##  Scanning significance threshold at rough stage (2024-10-31 12:53:05.235229)...</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.243891)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.248931)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-10-31 12:53:05.253842)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-10-31 12:53:05.354352)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-10-31 12:53:05.661525)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-10-31 12:53:06.580918)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-10-31 12:53:09.114075)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-10-31 12:53:15.080259)</span></span></code></pre>
-<pre><code><span><span class="co">##  Scanning significance threshold at finetuning stage (2024-10-31 12:53:15.080859)...</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-10-31 12:53:18.069818)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-10-31 12:53:21.030782)</span></span></code></pre>
-<pre><code><span><span class="co">##      significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-10-31 12:53:24.242569)</span></span></code></pre>
-<pre><code><span><span class="co">##  significance threshold: 2.50e-05</span></span></code></pre>
-<pre><code><span><span class="co">## Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-10-31 12:53:24.243492)...</span></span></code></pre>
-<pre><code><span><span class="co">##  Amongst 17978 scores, there are 920 positives.</span></span></code></pre>
-<pre><code><span><span class="co">## Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-10-31 12:53:24.246704)...</span></span></code></pre>
-<pre><code><span><span class="co">##  Size of the subgraph: 110 nodes and 156 edges</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Finish at 2024-10-31 12:53:27.323443</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total is: 22 secs</span></span></code></pre>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_meta</span>, <span class="va">diff_gene</span>, nsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02-Subnetwork_analysis_files/figure-html/network-1.png" width="960"></p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
 <pre><code><span><span class="co">## $node_result</span></span>
 <span><span class="co">##            name       type  logFC   AveExpr         t      p_value    adj.P.Val</span></span>
@@ -534,10 +537,23 @@ use blue for metabolites and red for genes.</p>
 <span><span class="co">## 154 C00148      SLC7A5</span></span>
 <span><span class="co">## 155 C00073      SLC7A5</span></span>
 <span><span class="co">## 156 C02291         CBS</span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">node_result</span>,<span class="st">"result_v0131/subnetwork_important_node.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">edge_result</span>,<span class="st">"result_v0131/subnetwork_important_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="co"># write.table(</span></span>
+<span><span class="co">#   a$node_result,</span></span>
+<span><span class="co">#   "result_v0131/subnetwork_important_node.txt",</span></span>
+<span><span class="co">#   quote = F,</span></span>
+<span><span class="co">#   row.names = F,</span></span>
+<span><span class="co">#   sep = "\t"</span></span>
+<span><span class="co"># )</span></span>
+<span><span class="co"># write.table(</span></span>
+<span><span class="co">#   a$edge_result,</span></span>
+<span><span class="co">#   "result_v0131/subnetwork_important_edge.txt",</span></span>
+<span><span class="co">#   quote = F,</span></span>
+<span><span class="co">#   row.names = F,</span></span>
+<span><span class="co">#   sep = "\t"</span></span>
+<span><span class="co"># )</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-extraction-of-interested-metabolites-and-genes">
@@ -546,13 +562,13 @@ genes</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-o
 </h2>
 <p>Input data requires the “name” column but excludes the “p_value”
 column.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># png("result_v0131/subnetwork_interested.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span></span>
 <span><span class="co">## get 500 differential expression gene</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_metabolite</span><span class="op">[</span>,<span class="fl">8</span><span class="op">]</span>,<span class="va">diff_gene1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pdnet.html">pdnet</a></span><span class="op">(</span><span class="va">diff_metabolite</span><span class="op">[</span>, <span class="fl">8</span><span class="op">]</span>, <span class="va">diff_gene1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="02-Subnetwork_analysis_files/figure-html/network_diff-1.png" width="960"></p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
 <pre><code><span><span class="co">##         X1            X2</span></span>
 <span><span class="co">## 1   C00010        C00004</span></span>
@@ -834,22 +850,22 @@ column.</p>
 <span><span class="co">## 277 C03793       TRABD2B</span></span>
 <span><span class="co">## 278 C05382           TKT</span></span>
 <span><span class="co">## 279 C05581          MAOA</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span>,<span class="st">"result_v0131/subnetwork_interested_edge.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># write.table(a,"result_v0131/subnetwork_interested_edge.txt",quote=F,row.names=F,sep="\t")</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="subnetwork-extraction-using-correlation">
 <font size="5">Subnetwork extraction using correlation</font><a class="anchor" aria-label="anchor" href="#subnetwork-extraction-using-correlation"></a>
 </h2>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># png("result_v0131/subnetwork_correlation.png",width = 8, height = 7, units = 'in', res = 200)</span></span>
 <span><span class="co">## extract the correlation subnetwork</span></span>
-<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pNetCor.html">pNetCor</a></span><span class="op">(</span><span class="va">meta_dat</span>,<span class="va">gene_dat</span>,cor_threshold<span class="op">=</span><span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pNetCor.html">pNetCor</a></span><span class="op">(</span><span class="va">meta_dat</span>, <span class="va">gene_dat</span>, cor_threshold <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Starting correlation calculation"</span></span>
 <span><span class="co">## [1] "If the data is large, it will take some minutes"</span></span></code></pre>
 <p><img src="02-Subnetwork_analysis_files/figure-html/network_corr-1.png" width="960"></p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a</span></span></code></pre></div>
 <pre><code><span><span class="co">## $result</span></span>
 <span><span class="co">##         name1    name2 cor_result            p      type1      type2</span></span>
@@ -1049,9 +1065,16 @@ column.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p</span></span>
 <span><span class="co">## NULL</span></span></code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># dev.off()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">$</span><span class="va">result</span>,<span class="st">"result_v0131/subnetwork_correlation.txt"</span>,quote<span class="op">=</span><span class="cn">F</span>,row.names<span class="op">=</span><span class="cn">F</span>,sep<span class="op">=</span><span class="st">"\t"</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="co"># write.table(</span></span>
+<span><span class="co">#   a$result,</span></span>
+<span><span class="co">#   "result_v0131/subnetwork_correlation.txt",</span></span>
+<span><span class="co">#   quote = F,</span></span>
+<span><span class="co">#   row.names = F,</span></span>
+<span><span class="co">#   sep = "\t"</span></span>
+<span><span class="co"># )</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

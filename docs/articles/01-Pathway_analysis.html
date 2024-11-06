@@ -89,6 +89,15 @@ two clusters. We utilize MNet to identify a set of features whose
 activities significantly differ between these two clusters. This result
 will hopefully hint at some specific biological activities that are
 pathologically altered in tumoral samples.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tuantuangui/MNet/">MNet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yulab-smu.top/biomedical-knowledge-mining-book/" class="external-link">clusterProfiler</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">org.Hs.eg.db</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/datapplab/pathview" class="external-link">pathview</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="pathway-enrichment-analysis">
@@ -99,6 +108,36 @@ analysis only focusing on genes, metabolite pathway enrichment analysis
 only focusing on metabolites and extended pathway enrichment analysis
 focusing on both genes and metabolites, using function “PathwayAnalysis”
 in MNet.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## meta_dat is the metabolic data of the 31 samples</span></span>
+<span><span class="co">## gene_dat is the transcriptional data of the 31 samples</span></span>
+<span><span class="co">## group is the group information of the 31 samples</span></span>
+<span></span>
+<span><span class="co">## mlimma is the function of Differential Metabolite analysis by limma</span></span>
+<span></span>
+<span><span class="va">diff_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">meta_dat</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##   logFC AveExpr     t  P.Value    adj.P.Val     B  logP name  </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  2.86    22.6  9.25 1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 0.000<span style="text-decoration: underline;">000</span>033<span style="text-decoration: underline;">2</span> 14.1   7.48 C02045</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  2.44    26.2  7.80 6.83<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 0.000<span style="text-decoration: underline;">000</span>748  10.4   6.13 C00267</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">1.82</span>    27.1 -<span style="color: #BB0000;">6.80</span> 1.10<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">006</span>22    7.64  5.21 C00073</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">3.78</span>    20.9 -<span style="color: #BB0000;">6.79</span> 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">006</span>22    7.61  5.21 C05674</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">2.20</span>    21.4 -<span style="color: #BB0000;">6.58</span> 2.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">009</span>07    7.02  5.04 C00255</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">2.37</span>    21.6 -<span style="color: #BB0000;">6.45</span> 2.98<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> 0.000<span style="text-decoration: underline;">010</span>9     6.66  4.96 C00242</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">diff_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mlimma.html">mlimma</a></span><span class="op">(</span><span class="va">gene_dat</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##    logFC AveExpr      t  P.Value    adj.P.Val     B  logP name  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   6.92   23.1   11.3  1.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>020<span style="text-decoration: underline;">3</span>  17.7  7.69 APH1B </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  21.4    23.4   10.6  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>045<span style="text-decoration: underline;">5</span>  16.5  7.34 GFRA1 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  -<span style="color: #BB0000;">5.76</span>   24.4  -<span style="color: #BB0000;">10.1</span>  1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.4  7.05 RFC4  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  10.5    14.8   10.1  2.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.3  7.05 FAM47E</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">10.8</span>    20.6   -<span style="color: #BB0000;">9.79</span> 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>137   14.7  6.86 ORC6  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span>   4.02    5.65   9.69 4.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>147   14.5  6.83 FAM87B</span></span></code></pre>
 <div class="section level3">
 <h3 id="extended-pathway-enrichment-analysis-epea">
 <font size="4">Extended pathway enrichment analysis
@@ -107,70 +146,44 @@ in MNet.</p>
 <p>Function ‘PathwayAnalysis’ with ‘Extended’ parameter, investigates
 metabolic pathway dysregulation considering both metabolites and genes,
 which we refer to as ePEA.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## combine the metabolite information and gene information</span></span>
 <span></span>
-<span><span class="va">all_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">diff_gene</span>,<span class="va">diff_meta</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## filter the increase differential genes and metabolites</span></span>
+<span><span class="va">all_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">diff_gene</span>, <span class="va">diff_meta</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">all_dat</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<span><span class="co">##    logFC AveExpr      t  P.Value    adj.P.Val     B  logP name  </span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   6.92   23.1   11.3  1.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>020<span style="text-decoration: underline;">3</span>  17.7  7.69 APH1B </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  21.4    23.4   10.6  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>045<span style="text-decoration: underline;">5</span>  16.5  7.34 GFRA1 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  -<span style="color: #BB0000;">5.76</span>   24.4  -<span style="color: #BB0000;">10.1</span>  1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.4  7.05 RFC4  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  10.5    14.8   10.1  2.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.3  7.05 FAM47E</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">10.8</span>    20.6   -<span style="color: #BB0000;">9.79</span> 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>137   14.7  6.86 ORC6  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span>   4.02    5.65   9.69 4.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>147   14.5  6.83 FAM87B</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## filter the increase differential genes and metabolites</span></span>
 <span><span class="va">all_dat1</span> <span class="op">&lt;-</span> <span class="va">all_dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">&gt;</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the increase pathway analysis of both genes and metabolites</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat1</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"Extended"</span>,p_cutoff<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:32.055366</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:32.060931):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:32.069638) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:32.094413) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 341 genes/SNPs of interest tested against 4715 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:32.096848)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:32.101771) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 84 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 84 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:32.189404) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:32.254033)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:32.255843</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## filter the decrease differential genes and metabolites</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## filter the decrease differential genes and metabolites</span></span>
 <span><span class="va">all_dat2</span> <span class="op">&lt;-</span> <span class="va">all_dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat2</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"Extended"</span>,p_cutoff<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:33.350913</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:33.354805):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:33.356992) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:33.378264) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 369 genes/SNPs of interest tested against 4715 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:33.381004)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:33.385893) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 84 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 84 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:33.454705) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:33.52414)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:33.526243</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>,<span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/ePEA-1.png" width="1728"></p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result1</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/ePEA-2.png" width="1728"></p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/ePEA-3.png" width="1728"></p>
 </div>
@@ -182,66 +195,32 @@ which we refer to as ePEA.</p>
 <p>Function ‘PathwayAnalysis’ with ‘metabolite’ parameter, investigates
 metabolic pathway dysregulation considering only metabolites, which we
 refer to as mPEA.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the increase differential metabolites</span></span>
 <span><span class="va">diff_meta1</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">&gt;</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta1</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"metabolite"</span>,p_cutoff<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:36.542427</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:36.547963):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:36.55086) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:36.566492) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 7 genes/SNPs of interest tested against 3047 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:36.568169)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:36.573098) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 81 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 81 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:36.609212) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:36.66668)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:36.668593</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## filter the decrease differential metabolites</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
+<span>                             <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## filter the decrease differential metabolites</span></span>
 <span><span class="va">diff_meta2</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta2</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"metabolite"</span>,p_cutoff<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:36.991762</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:36.995377):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:36.997278) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:37.012327) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 107 genes/SNPs of interest tested against 3047 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:37.014063)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:37.019084) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 81 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 81 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:37.068167) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:37.12669)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:37.128524</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 1 secs</span></span></code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>,<span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
+<span>                             <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/mPEA-1.png" width="1728"></p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result1</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/mPEA-2.png" width="1728"></p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/mPEA-3.png" width="1728"></p>
 </div>
@@ -252,66 +231,30 @@ refer to as mPEA.</p>
 <p>Function ‘PathwayAnalysis’ with ‘gene’ parameter, investigates
 metabolic pathway dysregulation considering only genes, which we refer
 to as gPEA.</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the increase differential expression genes</span></span>
 <span><span class="va">diff_gene1</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">&gt;</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene1</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"gene"</span>,p_cutoff<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:39.249429</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:39.253207):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:39.255371) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:39.268658) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 334 genes/SNPs of interest tested against 1668 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:39.270234)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:39.275081) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 84 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 84 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:39.332339) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:39.397178)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:39.399047</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## filter the decrease differential expression genes</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## filter the decrease differential expression genes</span></span>
 <span><span class="va">diff_gene2</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene2</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"gene"</span>,p_cutoff<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Start at 2024-10-31 12:51:39.708775</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' is being called (2024-10-31 12:51:39.712517):</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## First, generate a subgraph induced (via 'all_paths' mode) by the annotation data (2024-10-31 12:51:39.714498) ...</span></span></code></pre>
-<pre><code><span><span class="co">## Next, prepare enrichment analysis (2024-10-31 12:51:39.727553) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 262 genes/SNPs of interest tested against 1668 genes/SNPs as the background (annotatable only? TRUE) (2024-10-31 12:51:39.72905)</span></span></code></pre>
-<pre><code><span><span class="co">## Third, perform enrichment analysis using 'hypergeo' test (2024-10-31 12:51:39.733504) ...</span></span></code></pre>
-<pre><code><span><span class="co">##  There are 84 terms being used, each restricted within [1,2000] annotations</span></span></code></pre>
-<pre><code><span><span class="co">## Last, adjust the p-values for 84 terms (with 0 minimum overlaps) using the BH method (2024-10-31 12:51:39.789011) ...</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## 'xEnricher' has been finished (2024-10-31 12:51:39.855058)!</span></span></code></pre>
-<pre><code><span><span class="co">## #######################################################</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## End at 2024-10-31 12:51:39.856995</span></span></code></pre>
-<pre><code><span><span class="co">## Runtime in total (xEnricherYours): 0 secs</span></span></code></pre>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>,<span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/gPEA-1.png" width="1728"></p>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result1</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/gPEA-2.png" width="1728"></p>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result2</span><span class="op">$</span><span class="va">gp</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/gPEA-3.png" width="1728"></p>
 </div>
@@ -333,11 +276,11 @@ and metabolites, using function “DAscore” in MNet.</p>
 <p>Function ‘DAscore’ with ‘Extended’ parameter, investigates metabolic
 pathway dysregulation considering both metabolites and genes, which we
 refer to as ePDA (extended pathway differential abundance).</p>
-<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the differential expression genes</span></span>
 <span></span>
 <span><span class="va">diff_gene_increase</span> <span class="op">&lt;-</span>  <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">&gt;</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">diff_gene_decrease</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -346,7 +289,7 @@ refer to as ePDA (extended pathway differential abundance).</p>
 <span><span class="co">## filter the differential metabolites</span></span>
 <span></span>
 <span><span class="va">diff_meta_increase</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">&gt;</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">diff_meta_decrease</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -354,8 +297,14 @@ refer to as ePDA (extended pathway differential abundance).</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the extended pathway differential abundance analysis</span></span>
-<span> <span class="va">ExtendDAscore_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,min_measured_num <span class="op">=</span> <span class="fl">2</span>,out<span class="op">=</span><span class="st">"Extended"</span><span class="op">)</span></span>
-<span> </span>
+<span><span class="va">ExtendDAscore_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
+<span>  min_measured_num <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  out <span class="op">=</span> <span class="st">"Extended"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">ExtendDAscore_result</span></span></code></pre></div>
 <pre><code><span><span class="co">## $result</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 84 × 10</span></span></span>
@@ -387,7 +336,7 @@ refer to as ePDA (extended pathway differential abundance).</p>
 <p>Function ‘DAscore’ with ‘metabolite’ parameter, investigates
 metabolic pathway dysregulation considering only metabolites, which we
 refer to as mPDA (metabolite pathway differential abundance).</p>
-<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the differential metabolites</span></span>
 <span></span>
 <span><span class="va">diff_meta_increase</span> <span class="op">&lt;-</span> <span class="va">diff_meta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -399,7 +348,10 @@ refer to as mPDA (metabolite pathway differential abundance).</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the metabolite pathway differential abundance analysis</span></span>
-<span><span class="va">dascore_result_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"metabolite"</span><span class="op">)</span></span>
+<span><span class="va">dascore_result_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               <span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               <span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               out <span class="op">=</span> <span class="st">"metabolite"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dascore_result_meta</span></span></code></pre></div>
 <pre><code><span><span class="co">## $result</span></span>
@@ -432,7 +384,7 @@ refer to as mPDA (metabolite pathway differential abundance).</p>
 <p>Function ‘DAscore’ with ‘gene’ parameter, investigates metabolic
 pathway dysregulation considering only genes, which we refer to as gPDA
 (gene pathway differential abundance).</p>
-<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the differential genes</span></span>
 <span></span>
 <span><span class="va">diff_gene_increase</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -444,7 +396,10 @@ pathway dysregulation considering only genes, which we refer to as gPDA
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the gene pathway differential abundance analysis</span></span>
-<span><span class="va">dascore_result_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>,<span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>,out<span class="op">=</span><span class="st">"gene"</span><span class="op">)</span></span>
+<span><span class="va">dascore_result_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               <span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               <span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>,</span>
+<span>                               out <span class="op">=</span> <span class="st">"gene"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dascore_result_gene</span></span></code></pre></div>
 <pre><code><span><span class="co">## $result</span></span>
@@ -486,31 +441,33 @@ MNet.</p>
 </h3>
 <p>Extended pathway set enrichment analysis which includes genes and
 metabolites</p>
-<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## the data is from R package 'clusterProfiler'</span></span>
 <span><span class="co">## transform the gene's entrezid to symbol</span></span>
-<span><span class="va">gene_symbol</span> <span class="op">&lt;-</span> <span class="fu">clusterProfiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/clusterProfiler/man/bitr.html" class="external-link">bitr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">gse16873.d</span><span class="op">)</span>,fromType <span class="op">=</span><span class="st">"ENTREZID"</span>,toType<span class="op">=</span><span class="st">"SYMBOL"</span>,OrgDb <span class="op">=</span> <span class="va">org.Hs.eg.db</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 'select()' returned 1:1 mapping between keys and columns</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in clusterProfiler::bitr(rownames(gse16873.d), fromType = "ENTREZID", :</span></span>
-<span><span class="co">## 1.14% of input gene IDs are fail to map...</span></span></code></pre>
-<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">gse16873.d</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">gene_symbol</span> <span class="op">&lt;-</span> <span class="fu">clusterProfiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/clusterProfiler/man/bitr.html" class="external-link">bitr</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">gse16873.d</span><span class="op">)</span>,</span>
+<span>  fromType <span class="op">=</span> <span class="st">"ENTREZID"</span>,</span>
+<span>  toType <span class="op">=</span> <span class="st">"SYMBOL"</span>,</span>
+<span>  OrgDb <span class="op">=</span> <span class="va">org.Hs.eg.db</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">gse16873.d</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">rownames_to_column</span><span class="op">(</span>var<span class="op">=</span><span class="st">"ENTREZID"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">gene_symbol</span>,by<span class="op">=</span><span class="st">"ENTREZID"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ENTREZID"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">gene_symbol</span>, by <span class="op">=</span> <span class="st">"ENTREZID"</span><span class="op">)</span></span>
 <span><span class="va">gene.data</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">DCIS_1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gene.data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">SYMBOL</span></span>
 <span></span>
-<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sim.cpd.data</span>,<span class="va">gene.data</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sim.cpd.data</span>, <span class="va">gene.data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the Extended pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">dat</span>,out<span class="op">=</span><span class="st">"Extended"</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">dat</span>, out <span class="op">=</span> <span class="st">"Extended"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span><span class="op">)</span></span></code></pre></div>
 <p>eSEA plot of interested pathway which includes genes and
 metabolites</p>
-<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## The plot of Butanoate metabolism contains genes and metabolites</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>,<span class="va">dat</span>,out<span class="op">=</span><span class="st">"Extended"</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>, <span class="va">dat</span>, out <span class="op">=</span> <span class="st">"Extended"</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/pESEA-1.png" width="960"></p>
 </div>
@@ -520,14 +477,14 @@ metabolites</p>
 </h3>
 <p>Metabolite set enrichment analysis which only includes
 metabolites</p>
-<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## the metabolite pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">sim.cpd.data</span>,out<span class="op">=</span><span class="st">"metabolite"</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">sim.cpd.data</span>, out <span class="op">=</span> <span class="st">"metabolite"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span><span class="op">)</span></span></code></pre></div>
 <p>mSEA plot of interested pathway which only includes metabolites</p>
-<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## The plot of Butanoate metabolism contains metabolites</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>,<span class="va">sim.cpd.data</span>,out<span class="op">=</span><span class="st">"metabolite"</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>, <span class="va">sim.cpd.data</span>, out <span class="op">=</span> <span class="st">"metabolite"</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/mSEA-1.png" width="960"></p>
 </div>
@@ -536,14 +493,14 @@ metabolites</p>
 <font size="4">Gene set enrichment analysis (gSEA)</font><a class="anchor" aria-label="anchor" href="#gene-set-enrichment-analysis-gsea"></a>
 </h3>
 <p>Gene set enrichment analysis which only includes genes</p>
-<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## the gene pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">gene.data</span>,out<span class="op">=</span><span class="st">"gene"</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">gene.data</span>, out <span class="op">=</span> <span class="st">"gene"</span><span class="op">)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">leadingEdge</span><span class="op">)</span></span></code></pre></div>
 <p>gSEA plot of interested pathway which includes genes</p>
-<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## The plot of Butanoate metabolism contains genes</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>,<span class="va">gene.data</span>,out<span class="op">=</span><span class="st">"gene"</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pESEA.html">pESEA</a></span><span class="op">(</span><span class="st">"Butanoate metabolism"</span>, <span class="va">gene.data</span>, out <span class="op">=</span> <span class="st">"gene"</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <p><img src="01-Pathway_analysis_files/figure-html/gSEA-1.png" width="960"></p>
 </div>
