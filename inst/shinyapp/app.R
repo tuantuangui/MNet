@@ -133,10 +133,10 @@ ui <- shinyUI(
                         condition = NULL
                     ),
                     bs4SidebarMenuItem(
-                        text = "Database",
+                        text = "Knowledgebase",
                         tabName = "database",
                         icon = icon("database"),
-                        badgeLabel = "Database",
+                        badgeLabel = NULL,
                         badgeColor = "danger",
                         href = NULL,
                         newTab = TRUE,
@@ -4005,7 +4005,7 @@ ui <- shinyUI(
                             # 1
                             style = "padding: 10px 10%;",
                             inputId = NULL,
-                            title = tags$b("Database Update and Download"),
+                            title = tags$b("Knowledgebase Update and Download"),
                             footer = NULL,
                             width = 12,
                             height = NULL,
@@ -4025,11 +4025,11 @@ ui <- shinyUI(
                             sidebar = NULL,
                             markdown(
                                 "
-                                ## **1. Database Introduction:**
+                                ## **1. Knowledgebase Introduction:**
 
-                                The knowledgebase dbMNet is a freely available knowledgebase that attempts to consolidate information 
+                                The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information 
                                 on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases, 
-                                dbNet and dbKEGG. 
+                                **dbNet** and **dbKEGG**. 
                                 
                                 Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database, 
                                 encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**. 
@@ -4045,13 +4045,13 @@ ui <- shinyUI(
                                 
                                 <hr />
                                 
-                                ## **2. Database V202411**
+                                ## **2. Knowledgebase V202411**
                                 
                                 <br />
                                 
                                 #### **2.1 dbKEGG: _6,920 Rows; 553 KB_**
                                 
-                                [**_https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt_**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt)
+                                [**_http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt_**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt)
                                 
                                 **Preview:**
                                 "
@@ -4066,7 +4066,7 @@ ui <- shinyUI(
                                 "
                                 #### **2.2 dbNet: _106,313 Rows; 4,216 KB_**
                                 
-                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt)
+                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt)
                                 
                                 **Preview:**
                                 "
@@ -4080,35 +4080,35 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-                                ## **3. Database History**
+                                ## **3. Knowledgebase History**
                                 
                                 <br />
                                 
-                                #### **3.1 Database V202404**
+                                #### **3.1 Knowledgebase V202404**
                                 
                                 <br />
                                 
                                 ##### **3.1.1 dbKEGG: _6,822 Rows; 544 KB_**
                                 
-                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt)
+                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt)
                                 
                                 ##### **3.1.2 dbNet: _105,949 Rows; 4,204 KB_**
                                 
-                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt)
+                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt)
                                 
                                 <hr />
                                 
-                                #### **3.2 Database V2022**
+                                #### **3.2 Knowledgebase V2022**
                                 
                                 <br />
                                 
                                 ##### **3.2.1 dbKEGG: _6,735 Rows; 537 KB_**
                                 
-                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt)
+                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt)
                                 
                                 ##### **3.2.2 dbNet: _128,005 Rows; 4,841 KB_**
                                 
-                                [**https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt**](https://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt)
+                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt)
                                 "
                             )
                         )
