@@ -3324,13 +3324,31 @@ ui <- shinyUI(
                                        tags$p("An example can be found in Demo, and click on ➕ to open it."),
                                        hr(),
                                        fileInput(
-                                           inputId = "esea_user_comp_gene_data_input",
+                                           inputId = "esea_user_meta_data_input",
                                            label = "Metabolite Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
                                            placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "esea_user_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "esea_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        # actionButton(
                                        #     inputId = "esea_demo",
@@ -3463,7 +3481,7 @@ ui <- shinyUI(
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
-                                                       outputId = "esea_demo_comp_gene_data_download",
+                                                       outputId = "esea_demo_meta_data_download",
                                                        label = "Metabolite Data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
@@ -3477,11 +3495,78 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "esea_demo_comp_gene_data",
+                                                   "esea_demo_meta_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
                                                ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_demo_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Result Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_result_data_download",
+                                                       label = "Result Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Result Data**: Result of eSEA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_demo_result_data"),
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
@@ -3550,6 +3635,16 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_user_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
                                                markdown(
                                                    "
 						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
@@ -3557,11 +3652,78 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                DTOutput(
-                                                   "esea_user_comp_gene_data",
+                                                   "esea_user_meta_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
                                                ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_user_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_user_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Result Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_user_result_data_download",
+                                                       label = "Result Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Result Data**: Result of eSEA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_user_result_data"),
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
@@ -3583,7 +3745,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("esea_plot", width = "100%", height = "1000px"),
+                                               imageOutput("esea_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "Extended pathway set enrichment analysis."
@@ -7097,6 +7259,8 @@ server <- shinyServer(function(session, input, output) {
             # invalidateLater(1000, session)
             
             output$epda_user_result_data <- renderDT({
+                req(file.exists(paste(temp_epda, "/epda_result.txt", sep = "")))
+                
                 epda_result <- read.table(
                     paste(temp_epda, "/epda_result.txt", sep = ""),
                     header = TRUE,
@@ -7154,19 +7318,16 @@ server <- shinyServer(function(session, input, output) {
     
     # eSEA
     {
-        output$esea_demo_comp_gene_data <- renderDT({
-            comp_gene_data_df <- read.table(
-                "data-tables/sim.cpd.data.txt",
-                header = T,
-                sep = "\t",
-                row.names = 1,
-                stringsAsFactors = F
-            )
-            comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-            names(comp_gene_data) <- rownames(comp_gene_data_df)
-            comp_gene_data <- as.data.frame(comp_gene_data)
+        temp_esea <- file.path(tempdir(), "esea")
+        if (!dir.exists(temp_esea)) {
+            dir.create(temp_esea)
+        }
+        
+        output$esea_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
             
-            return(head(comp_gene_data, 100))
+            return(head(meta_data, 100))
         }, options = list(
             pageLength = 10,
             scrollX = TRUE,
@@ -7181,47 +7342,20 @@ server <- shinyServer(function(session, input, output) {
             ))
         ), server = TRUE)
         
-        output$esea_demo_comp_gene_data_download <- downloadHandler(
+        output$esea_demo_meta_data_download <- downloadHandler(
             filename = function() {
-                paste("esea_demo_comp_gene_data", ".txt", sep = "")
+                paste("esea_demo_meta_data", ".txt", sep = "")
             },
             content = function(file) {
-                comp_gene_data_df <- read.table(
-                    "data-tables/sim.cpd.data.txt",
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
-                comp_gene_data <- as.data.frame(comp_gene_data)
-                
-                write.table(
-                    comp_gene_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
             }
         )
         
-        output$esea_user_comp_gene_data <- renderDT({
-            req(input$esea_user_comp_gene_data_input)
-            comp_gene_data_df <- read.table(
-                input$esea_user_comp_gene_data_input$datapath,
-                header = T,
-                sep = "\t",
-                row.names = 1,
-                stringsAsFactors = F
-            )
-            comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-            names(comp_gene_data) <- rownames(comp_gene_data_df)
-            comp_gene_data <- as.data.frame(comp_gene_data)
+        output$esea_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
             
-            return(head(comp_gene_data, 100))
+            return(head(gene_data, 100))
         }, options = list(
             pageLength = 10,
             scrollX = TRUE,
@@ -7236,129 +7370,288 @@ server <- shinyServer(function(session, input, output) {
             ))
         ), server = TRUE)
         
-        observeEvent(input$esea_demo, {
-            output$esea_user_comp_gene_data <- renderDT({
-                comp_gene_data_df <- read.table(
-                    "data-tables/sim.cpd.data.txt",
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
-                comp_gene_data <- as.data.frame(comp_gene_data)
-                
-                return(head(comp_gene_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        output$esea_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
+            }
+        )
+        
+        output$esea_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
             
-            output$esea_plot <- renderPlot({
-                progress <- Progress$new(session, min = 1, max = 100)
-                on.exit(progress$close())
-                progress$set(value = 0)
-                progress$set(message = "Starting program ...", detail = "Starting program ...")
-                
-                progress$set(value = 10)
-                progress$set(message = "Reading data ...", detail = "Reading data ...")
-                
-                comp_gene_data_df <- read.table(
-                    "data-tables/sim.cpd.data.txt",
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
+            return(head(group_data, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
                 )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
-                
-                progress$set(value = 100)
-                progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
-                
-                plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
-                plot
-            })
-        })
+            ))
+        ), server = TRUE)
+        
+        output$esea_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        output$esea_demo_result_data <- renderDT({
+            esea_result <- read.table(
+                "www/demo/esea_result.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            return(head(esea_result, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
+        
+        output$esea_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/esea_result.txt", to = file)
+            }
+        )
+        
+        output$esea_user_meta_data <- renderDT({
+            req(input$esea_user_meta_data_input)
+            meta_data <- read.table(
+                input$esea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            return(head(meta_data, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
+        
+        output$esea_user_gene_data <- renderDT({
+            req(input$esea_user_gene_data_input)
+            gene_data <- read.table(
+                input$esea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            return(head(gene_data, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
+        
+        output$esea_user_group_data <- renderDT({
+            req(input$esea_user_group_data_input)
+            group_data <- read.table(
+                input$esea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            return(head(group_data, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
         
         observeEvent(input$esea_submit, {
-            output$esea_plot <- renderPlot({
-                progress <- Progress$new(session, min = 1, max = 100)
-                on.exit(progress$close())
-                progress$set(value = 0)
-                progress$set(message = "Starting program ...", detail = "Starting program ...")
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            meta_data <- read.table(
+                input$esea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$esea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$esea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            meta.data <- diff_meta$logFC
+            names(meta.data) <- diff_meta$name
+            
+            gene.data <- diff_gene$logFC
+            names(gene.data) <- diff_gene$name
+            
+            data <- c(meta.data, gene.data)
+            
+            result <- ESEA(data, out = "Extended")
+            result$leadingEdge <- as.character(result$leadingEdge)
+            
+            write.table(
+                result,
+                paste(temp_esea, "/esea_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
+            
+            plot <- function(){
+                pESEA(input$esea_pathway, data, out = "Extended")
+            }
+            
+            pdf(
+                file = paste(temp_esea, "/esea_plot.pdf", sep = ""),
+                width = input$esea_plot_width,
+                height = input$esea_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            jpeg(
+                filename = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
+                width = input$esea_plot_width,
+                height = input$esea_plot_height,
+                units = "in",
+                res = input$esea_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+        })
+        
+        observe({
+            # invalidateLater(1000, session)
+            
+            output$esea_user_result_data <- renderDT({
+                req(file.exists(paste(temp_esea, "/esea_result.txt", sep = "")))
                 
-                progress$set(value = 10)
-                progress$set(message = "Reading data ...", detail = "Reading data ...")
-                
-                comp_gene_data_df <- read.table(
-                    input$esea_user_comp_gene_data_input$datapath,
-                    header = T,
+                esea_result <- read.table(
+                    paste(temp_esea, "/esea_result.txt", sep = ""),
+                    header = TRUE,
                     sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
+                    stringsAsFactors = FALSE
                 )
-                comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                names(comp_gene_data) <- rownames(comp_gene_data_df)
                 
-                progress$set(value = 100)
-                progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
-                
-                plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
-                plot
-            })
+                return(head(esea_result, 100))
+            }, options = list(
+                pageLength = 10,
+                scrollX = TRUE,
+                columnDefs = list(list(
+                    targets = "_all",
+                    render = JS(
+                        "function(data, type, row, meta) {",
+                        "  if (data === null || data === '') return 'NA';",
+                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        "}"
+                    )
+                ))
+            ), server = TRUE)
+        })
+        
+        output$esea_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_esea, "/esea_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        observe({
+            # invalidateLater(1000, session)
+            
+            output$esea_plot <- renderImage({
+                list(
+                    src = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
         })
         
         output$esea_plot_download <- downloadHandler(
             filename = function() {
-                paste("eSEA", input$esea_plot_format, sep = ".")
+                paste("eSEAPlot", input$esea_plot_format, sep = ".")
             },
             content = function(file) {
-                plot <- reactive({
-                    progress <- Progress$new(session, min = 1, max = 100)
-                    on.exit(progress$close())
-                    progress$set(value = 0)
-                    progress$set(message = "Starting program ...", detail = "Starting program ...")
-                    
-                    progress$set(value = 10)
-                    progress$set(message = "Reading data ...", detail = "Reading data ...")
-                    
-                    comp_gene_data_df <- read.table(
-                        input$esea_user_comp_gene_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        row.names = 1,
-                        stringsAsFactors = F
-                    )
-                    comp_gene_data <- as.numeric(as.matrix(comp_gene_data_df))
-                    names(comp_gene_data) <- rownames(comp_gene_data_df)
-                    
-                    progress$set(value = 100)
-                    progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
-                    
-                    plot <- MNet::pESEA(input$esea_pathway, comp_gene_data, out = "Extended")
-                    plot
-                })
-                
-                if (input$esea_plot_format == "pdf") {
-                    pdf(
-                        file = file,
-                        width = input$esea_plot_width,
-                        height = input$esea_plot_height,
-                        onefile = FALSE
-                    )
-                    print(plot())
-                    dev.off()
-                } else if (input$esea_plot_format == "jpeg") {
-                    jpeg(
-                        filename = file,
-                        width = input$esea_plot_width,
-                        height = input$esea_plot_height,
-                        units = "in",
-                        res = input$esea_plot_dpi,
-                        quality = 100
-                    )
-                    print(plot())
-                    dev.off()
-                }
+                file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
             }
         )
     }
