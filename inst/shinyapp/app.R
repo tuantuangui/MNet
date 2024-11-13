@@ -89,7 +89,7 @@ ui <- shinyUI(
                 bs4SidebarUserPanel(name = strong("MNet"), image = "https://tuantuangui.github.io/MNet/logo.png"),
                 #=== 1.2.1.2 bs4SidebarHeader
                 # bs4SidebarHeader(title = strong("Function【4】")),
-                tags$div(verbatimTextOutput("stats")),
+                # tags$div(verbatimTextOutput("stats")),
                 actionButton(
                     inputId = "open_window",
                     label = "Manual",
@@ -120,7 +120,7 @@ ui <- shinyUI(
                     legacy = FALSE,
                     #=== 1.2.1.3 bs4SidebarMenuItem
                     bs4SidebarMenuItem(
-                        text = "Documents",
+                        text = "Home",
                         tabName = "home",
                         icon = icon("house"),
                         badgeLabel = "Intro",
@@ -234,7 +234,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| ePEA Pathway",
+                            text = "| ePEA Analysis",
                             tabName = "epea_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -242,7 +242,7 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| DAscore ePDA",
+                            text = "| ePDA Ananysis",
                             tabName = "epda_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -250,7 +250,7 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| eSEA Pathway",
+                            text = "| eSEA Analysis",
                             tabName = "esea_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -605,7 +605,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "pca_group_data_input",
@@ -614,7 +614,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        selectInput(
@@ -814,7 +814,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "volcano_group_data_input",
@@ -823,7 +823,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        selectInput(
@@ -1049,7 +1049,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "heatmap_group_data_input",
@@ -1058,7 +1058,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        selectInput(
@@ -1312,6 +1312,9 @@ ui <- shinyUI(
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
                                        tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
                                        hr(),
                                        fileInput(
                                            inputId = "network_user_meta_data_input",
@@ -1320,16 +1323,16 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "network_user_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "network_user_group_data_input",
@@ -1338,7 +1341,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        
                                        # h3("访问统计"),
@@ -1458,7 +1461,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -1483,12 +1486,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "network_demo_meta_data_download",
-                                                       label = "Metabolite data",
+                                                       label = "Metabolite Data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -1496,11 +1499,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+                                                   **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -1527,11 +1526,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -1556,13 +1551,9 @@ ui <- shinyUI(
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
                                                )),
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("network_demo_group_data"),
                                                icon = shiny::icon("table-list")
@@ -1572,11 +1563,9 @@ ui <- shinyUI(
                                                title = "Output: Subnetwork",
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+						                           A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
                                                    "
-                                               ),
+                                               ), 
                                                hr(),
                                                tags$img(
                                                    src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
@@ -1584,7 +1573,7 @@ ui <- shinyUI(
                                                    height = "auto"
                                                ),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
                                                ),
                                                icon = shiny::icon("image")
@@ -1609,7 +1598,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -1634,14 +1623,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -1658,11 +1643,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -1677,13 +1658,9 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("network_user_group_data"),
                                                icon = shiny::icon("table-list")
@@ -1703,15 +1680,13 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
                                                    "
                                                ),
                                                hr(),
                                                plotOutput("network_plot", width = "100%", height = "1000px"),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
                                                ),
                                                icon = shiny::icon("image")
@@ -1751,16 +1726,16 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "diff_network_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "diff_network_group_data_input",
@@ -1769,7 +1744,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        sliderInput(
@@ -2048,16 +2023,16 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "corr_network_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        hr(),
                                        sliderInput(
@@ -2274,6 +2249,9 @@ ui <- shinyUI(
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
                                        tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
                                        hr(),
                                        fileInput(
                                            inputId = "epea_user_meta_data_input",
@@ -2282,16 +2260,16 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "epea_user_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "epea_user_group_data_input",
@@ -2300,7 +2278,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        # actionButton(
                                        #     inputId = "epea_demo",
@@ -2459,11 +2437,11 @@ ui <- shinyUI(
                                        #              });
                                        #          });
                                        #      '
-                                       # ), 
+                                       # ),
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "myTabCard",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -2488,12 +2466,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "epea_demo_meta_data_download",
-                                                       label = "Metabolite data",
+                                                       label = "Metabolite Data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -2501,11 +2479,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -2532,11 +2506,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -2561,13 +2531,9 @@ ui <- shinyUI(
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
                                                )),
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("epea_demo_group_data"),
                                                icon = shiny::icon("table-list")
@@ -2577,9 +2543,7 @@ ui <- shinyUI(
                                                title = "Output: ePEA Pathway",
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+						                           Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -2589,7 +2553,7 @@ ui <- shinyUI(
                                                    height = "auto"
                                                ),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
                                                ),
                                                icon = shiny::icon("image")
@@ -2614,7 +2578,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -2639,14 +2603,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -2663,11 +2623,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -2682,13 +2638,9 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("epea_user_group_data"),
                                                icon = shiny::icon("table-list")
@@ -2708,15 +2660,13 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
                                                plotOutput("epea_plot", width = "100%", height = "1000px"),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
                                                ),
                                                icon = shiny::icon("image")
@@ -2750,6 +2700,9 @@ ui <- shinyUI(
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
                                        tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
                                        hr(),
                                        fileInput(
                                            inputId = "epda_user_meta_data_input",
@@ -2758,16 +2711,16 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "epda_user_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "epda_user_group_data_input",
@@ -2776,7 +2729,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        # actionButton(
                                        #     inputId = "epda_demo",
@@ -2907,7 +2860,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -2932,12 +2885,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "epda_demo_meta_data_download",
-                                                       label = "Metabolite data",
+                                                       label = "Metabolite Data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -2945,11 +2898,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -2976,11 +2925,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -3005,13 +2950,9 @@ ui <- shinyUI(
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
                                                    )
                                                )),
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("epda_demo_group_data"),
                                                icon = shiny::icon("table-list")
@@ -3021,9 +2962,7 @@ ui <- shinyUI(
                                                title = "Output: ePDA Pathway",
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+						                           A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -3033,7 +2972,7 @@ ui <- shinyUI(
                                                    height = "auto"
                                                ),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
                                                ),
                                                icon = shiny::icon("image")
@@ -3058,7 +2997,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -3083,14 +3022,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -3107,11 +3042,7 @@ ui <- shinyUI(
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
-                                                   **Gene Data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to genes.
-
-                                                   **Columns:** correspond to the samples.
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -3126,13 +3057,9 @@ ui <- shinyUI(
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
-                                               markdown(
-                                                   "
-                                                   **Group Data:** Group information.
-
-                                                   **Format:** TXT with tab separated.
-                                                   "
-                                               ),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
                                                hr(),
                                                DTOutput("epda_user_group_data"),
                                                icon = shiny::icon("table-list")
@@ -3152,15 +3079,13 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
                                                plotOutput("epda_plot", width = "100%", height = "1000px"),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
                                                ),
                                                icon = shiny::icon("image")
@@ -3194,15 +3119,18 @@ ui <- shinyUI(
                                        dropdownMenu = NULL,
                                        sidebar = NULL,
                                        tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
                                        hr(),
                                        fileInput(
                                            inputId = "esea_user_comp_gene_data_input",
-                                           label = "Compound Gene Stats",
+                                           label = "Metabolite Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Compound Gene (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        # actionButton(
                                        #     inputId = "esea_demo",
@@ -3306,7 +3234,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -3331,12 +3259,12 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
                                                        outputId = "esea_demo_comp_gene_data_download",
-                                                       label = "Metabolite data",
+                                                       label = "Metabolite Data",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
                                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
@@ -3344,11 +3272,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -3365,9 +3289,7 @@ ui <- shinyUI(
                                                title = "Output: eSEA Pathway",
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -3377,7 +3299,7 @@ ui <- shinyUI(
                                                    height = "auto"
                                                ),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Extended pathway set enrichment analysis."
                                                ),
                                                icon = shiny::icon("image")
@@ -3402,7 +3324,7 @@ ui <- shinyUI(
                                        bs4TabCard(
                                            # ribbon(text = "User", color = "danger"),
                                            id = "examples_tabbox",
-                                           selected = "Input: Metabolite data",
+                                           selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
                                            height = 800,
@@ -3427,14 +3349,10 @@ ui <- shinyUI(
                                            .list = NULL,
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Input: Metabolite data",
+                                               title = "Input: Metabolite Data",
                                                markdown(
                                                    "
-                                                   **Metabolite data:** [TXT] an interactive table for user-input Metabolite data.
-
-                                                   **Rows:** corresponding to metabolites.
-
-                                                   **Columns:** corresponding to samples.
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
                                                    "
                                                ),
                                                hr(),
@@ -3461,15 +3379,13 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   **Visualization:** analysis and visualization to figure.
-
-                                                   **Format:** PDF or JPEG with width, height, dpi setting.
+                                                   Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
                                                plotOutput("esea_plot", width = "100%", height = "1000px"),
                                                tags$p(
-                                                   tags$b("Figure 1"),
+                                                   tags$b("Figure 1."),
                                                    "Extended pathway set enrichment analysis."
                                                ),
                                                icon = shiny::icon("image")
@@ -3509,7 +3425,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Metabolites (TXT)"
+                                           placeholder = "Metabolite Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "mpea_group_data_input",
@@ -3518,7 +3434,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        sliderInput(
@@ -3765,12 +3681,12 @@ ui <- shinyUI(
                                        sidebar = NULL,
                                        fileInput(
                                            inputId = "gpea_gene_data_input",
-                                           label = "GeneExp Data",
+                                           label = "Gene Data",
                                            multiple = FALSE,
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "GeneExp (TXT)"
+                                           placeholder = "Gene Data (.txt format)"
                                        ),
                                        fileInput(
                                            inputId = "gpea_group_data_input",
@@ -3779,7 +3695,7 @@ ui <- shinyUI(
                                            accept = NULL,
                                            width = NULL,
                                            buttonLabel = "Browse",
-                                           placeholder = "Groups (TXT)"
+                                           placeholder = "Group Data (.txt format)"
                                        ),
                                        hr(),
                                        sliderInput(
@@ -4023,38 +3939,62 @@ ui <- shinyUI(
                             label = NULL,
                             dropdownMenu = NULL,
                             sidebar = NULL,
+                            markdown("
+				## **1. Knowledgebase Introduction:**
+
+			    "),
+                            br(),
                             markdown(
                                 "
-                                ## **1. Knowledgebase Introduction:**
+                               	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
+                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases,
+                                **dbNet** and **dbKEGG**.
 
-                                The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information 
-                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases, 
-                                **dbNet** and **dbKEGG**. 
-                                
-                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database, 
-                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**. 
-                                
-                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG, 
-                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented. 
-                                
+                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
+                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
+
+                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
+                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
+
                                 These pairs involve **3,964 genes**, and **11,932 metabolites**.
-                                
+
                                 The source code for compiling the knowledgebase dbMNet is available here:
-                                
+
                                 [**_https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet_**](https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet)
-                                
+
                                 <hr />
-                                
-                                ## **2. Knowledgebase V202411**
-                                
+
+                                ## **2. Knowledgebase dbMNet V202411 can be downloaded here.**
+
                                 <br />
-                                
-                                #### **2.1 dbKEGG: _6,920 Rows; 553 KB_**
-                                
-                                [**_http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt_**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbKEGG.txt)
-                                
-                                **Preview:**
                                 "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202411",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
+                                "
+				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
+
+				     <br />
+				     "
                             ),
                             DTOutput(
                                 "db_kegg",
@@ -4062,13 +4002,12 @@ ui <- shinyUI(
                                 height = "auto",
                                 fill = TRUE
                             ),
+                            br(),
                             markdown(
                                 "
-                                #### **2.2 dbNet: _106,313 Rows; 4,216 KB_**
-                                
-                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411/dbNet.txt)
-                                
-                                **Preview:**
+                                #### **2.2 dbNet, designed for metabolism-related subnetwork analysis.**
+
+                                <br />
                                 "
                             ),
                             DTOutput(
@@ -4080,37 +4019,64 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-                                ## **3. Knowledgebase History**
-                                
-                                <br />
-                                
-                                #### **3.1 Knowledgebase V202404**
-                                
-                                <br />
-                                
-                                ##### **3.1.1 dbKEGG: _6,822 Rows; 544 KB_**
-                                
-                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbKEGG.txt)
-                                
-                                ##### **3.1.2 dbNet: _105,949 Rows; 4,204 KB_**
-                                
-                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404/dbNet.txt)
-                                
-                                <hr />
-                                
-                                #### **3.2 Knowledgebase V2022**
-                                
-                                <br />
-                                
-                                ##### **3.2.1 dbKEGG: _6,735 Rows; 537 KB_**
-                                
-                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbKEGG.txt)
-                                
-                                ##### **3.2.2 dbNet: _128,005 Rows; 4,841 KB_**
-                                
-                                [**http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt**](http://www.mnet4all.com/MNet/dbMNet/dbMNet-V2022/dbNet.txt)
+				## **3. Knowledgebase History**
+
+				<br />
+
+				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
+
+				<br />
+				"
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202404",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
                                 "
-                            )
+                                <hr />
+
+                                #### **3.2 Knowledgebase dbMNet V202212 can be downloaded here.**
+
+                                <br />
+                               "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202212",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr()
                         )
                     ))
                 })
@@ -6722,6 +6688,33 @@ server <- shinyServer(function(session, input, output) {
             )
             return(head(db_net, 100))
         }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$download_db202411 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202411.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202411.zip", to = file)
+            }
+        )
+        
+        output$download_db202404 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202404.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202404.zip", to = file)
+            }
+        )
+        
+        output$download_db202212 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202212.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202212.zip", to = file)
+            }
+        )
     }
 })
 
