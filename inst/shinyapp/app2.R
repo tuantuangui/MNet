@@ -2312,7 +2312,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 2,
+                                       width = 3,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -2502,7 +2502,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 10,
+                                       width = 9,
                                        # tags$script(
                                        #     '
                                        #          $(document).ready(function() {
@@ -2620,46 +2620,6 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Up Data",
-                                               fluidRow(column(width = 9), column(
-                                                   width = 3,
-                                                   downloadButton(
-                                                       outputId = "epea_demo_up_data_download",
-                                                       label = "Up Data",
-                                                       class = NULL,
-                                                       icon = icon("circle-down"),
-                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                   )
-                                               )),
-                                               markdown("
-						                            **Up Data**: Up-regulated pathways.
-                                                   "),
-                                               hr(),
-                                               DTOutput("epea_demo_up_data"),
-                                               icon = shiny::icon("table-list")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Down Data",
-                                               fluidRow(column(width = 9), column(
-                                                   width = 3,
-                                                   downloadButton(
-                                                       outputId = "epea_demo_down_data_download",
-                                                       label = "Down Data",
-                                                       class = NULL,
-                                                       icon = icon("circle-down"),
-                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                   )
-                                               )),
-                                               markdown("
-						                            **Down Data**: Down-regulated pathways.
-                                                   "),
-                                               hr(),
-                                               DTOutput("epea_demo_down_data"),
-                                               icon = shiny::icon("table-list")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePEA Pathway",
                                                markdown(
                                                    "
@@ -2767,46 +2727,6 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Up Data",
-                                               fluidRow(column(width = 9), column(
-                                                   width = 3,
-                                                   downloadButton(
-                                                       outputId = "epea_user_up_data_download",
-                                                       label = "Up Data",
-                                                       class = NULL,
-                                                       icon = icon("circle-down"),
-                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                   )
-                                               )),
-                                               markdown("
-						                            **Up Data**: Up-regulated pathways.
-                                                   "),
-                                               hr(),
-                                               DTOutput("epea_user_up_data"),
-                                               icon = shiny::icon("table-list")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Down Data",
-                                               fluidRow(column(width = 9), column(
-                                                   width = 3,
-                                                   downloadButton(
-                                                       outputId = "epea_user_down_data_download",
-                                                       label = "Down Data",
-                                                       class = NULL,
-                                                       icon = icon("circle-down"),
-                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                                   )
-                                               )),
-                                               markdown("
-						                            **Down Data**: Down-regulated pathways.
-                                                   "),
-                                               hr(),
-                                               DTOutput("epea_user_down_data"),
-                                               icon = shiny::icon("table-list")
-                                           ),
-                                           tabPanel(
-                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePEA Pathway",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2824,7 +2744,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               imageOutput("epea_plot", width = "100%", height = "auto"),
+                                               plotOutput("epea_plot", width = "100%", height = "1000px"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
@@ -5191,7 +5111,7 @@ server <- shinyServer(function(session, input, output) {
         })
         
         observe({
-            # invalidateLater(1000, session)
+            invalidateLater(1000, session)
             
             output$network_plot <- renderImage({
                 list(
@@ -5213,7 +5133,7 @@ server <- shinyServer(function(session, input, output) {
         )
         
         observe({
-            # invalidateLater(1000, session)
+            invalidateLater(1000, session)
             
             output$network_user_nodes_data <- renderDT({
                 req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
@@ -5251,7 +5171,7 @@ server <- shinyServer(function(session, input, output) {
         )
         
         observe({
-            # invalidateLater(1000, session)
+            invalidateLater(1000, session)
             
             output$network_user_edges_data <- renderDT({
                 req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
@@ -5705,11 +5625,6 @@ server <- shinyServer(function(session, input, output) {
     
     # ePEA
     {
-        temp_epea <- file.path(tempdir(), "epea")
-        if (!dir.exists(temp_epea)) {
-            dir.create(temp_epea)
-        }
-        
         output$epea_demo_meta_data <- renderDT({
             data("meta_dat")
             meta_data <- meta_dat
@@ -5791,70 +5706,6 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = "www/demo/groups.txt", to = file)
-            }
-        )
-        
-        output$epea_demo_up_data <- renderDT({
-            epea_up <- read.table(
-                "www/demo/epea_up.txt",
-                header = TRUE,
-                sep = "\t",
-                stringsAsFactors = FALSE
-            )
-            
-            return(head(epea_up, 100))
-        }, options = list(
-            pageLength = 10,
-            scrollX = TRUE,
-            columnDefs = list(list(
-                targets = "_all",
-                render = JS(
-                    "function(data, type, row, meta) {",
-                    "  if (data === null || data === '') return 'NA';",
-                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                    "}"
-                )
-            ))
-        ), server = TRUE)
-        
-        output$epea_demo_up_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_demo_up_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = "www/demo/epea_up.txt", to = file)
-            }
-        )
-        
-        output$epea_demo_down_data <- renderDT({
-            epea_down <- read.table(
-                "www/demo/epea_down.txt",
-                header = TRUE,
-                sep = "\t",
-                stringsAsFactors = FALSE
-            )
-            
-            return(head(epea_down, 100))
-        }, options = list(
-            pageLength = 10,
-            scrollX = TRUE,
-            columnDefs = list(list(
-                targets = "_all",
-                render = JS(
-                    "function(data, type, row, meta) {",
-                    "  if (data === null || data === '') return 'NA';",
-                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                    "}"
-                )
-            ))
-        ), server = TRUE)
-        
-        output$epea_demo_down_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_demo_down_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = "www/demo/epea_down.txt", to = file)
             }
         )
         
@@ -6013,79 +5864,65 @@ server <- shinyServer(function(session, input, output) {
         })
         
         observeEvent(input$epea_submit, {
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
-            
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
-            
-            meta_data <- read.table(
-                input$epea_user_meta_data_input$datapath,
-                header = T,
-                sep = "\t",
-                row.names = 1,
-                stringsAsFactors = F
-            )
-            
-            gene_data <- read.table(
-                input$epea_user_gene_data_input$datapath,
-                header = T,
-                sep = "\t",
-                stringsAsFactors = F
-            )
-            
-            group_data <- read.table(
-                input$epea_user_group_data_input$datapath,
-                header = T,
-                sep = "\t",
-                stringsAsFactors = F
-            )
-            group_data <- as.character(group_data[, 1])
-            
-            progress$set(value = 100)
-            progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
-            
-            diff_meta <- mlimma(meta_data, group_data)
-            diff_gene <- mlimma(gene_data, group_data)
-            
-            all_data <- rbind(diff_gene, diff_meta)
-            
-            all_data_up <- all_data %>%
-                filter(logFC > input$epea_logfc) %>%
-                filter(adj.P.Val < input$epea_padj)
-            result_up <- PathwayAnalysis(
-                all_data_up$name,
-                out = "Extended",
-                p_cutoff = input$epea_p_cutoff
-            )
-            write.table(
-                as.data.frame(result_up$output),
-                file = paste(temp_epea, "/epea_up.txt", sep = ""),
-                sep = "\t",
-                quote = FALSE,
-                row.names = FALSE
-            )
-            
-            all_data_down <- all_data %>%
-                filter(logFC < -(input$epea_padj)) %>%
-                filter(adj.P.Val < input$epea_padj)
-            result_down <- PathwayAnalysis(
-                all_data_down$name,
-                out = "Extended",
-                p_cutoff = input$epea_p_cutoff
-            )
-            write.table(
-                as.data.frame(result_down$output),
-                file = paste(temp_epea, "/epea_down.txt", sep = ""),
-                sep = "\t",
-                quote = FALSE,
-                row.names = FALSE
-            )
-            
-            plot <- function() {
-                cowplot::plot_grid(
+            output$epea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                meta_data <- read.table(
+                    input$epea_user_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+                
+                gene_data <- read.table(
+                    input$epea_user_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                
+                group_data <- read.table(
+                    input$epea_user_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+                
+                progress$set(value = 100)
+                progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                all_data <- rbind(diff_gene, diff_meta)
+                
+                all_data_up <- all_data %>%
+                    filter(logFC > input$epea_logfc) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_up <- PathwayAnalysis(
+                    all_data_up$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                all_data_down <- all_data %>%
+                    filter(logFC < -(input$epea_padj)) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_down <- PathwayAnalysis(
+                    all_data_down$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                plot <- cowplot::plot_grid(
                     plotlist = list(
                         result_up$p_barplot,
                         result_up$gp,
@@ -6095,124 +5932,107 @@ server <- shinyServer(function(session, input, output) {
                     labels = "AUTO",
                     ncol = 1
                 )
-            }
-        
-            pdf(
-                file = paste(temp_epea, "/epea_plot.pdf", sep = ""),
-                width = input$epea_plot_width,
-                height = input$epea_plot_height,
-                onefile = FALSE
-            )
-            print(plot())
-            dev.off()
-            
-            jpeg(
-                filename = paste(temp_epea, "/epea_plot.jpeg", sep = ""),
-                width = input$epea_plot_width,
-                height = input$epea_plot_height,
-                units = "in",
-                res = input$epea_plot_dpi,
-                quality = 100
-            )
-            print(plot())
-            dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
-            
-            output$epea_user_up_data <- renderDT({
-                req(file.exists(paste(temp_epea, "/epea_up.txt", sep = "")))
-                
-                epea_up <- read.table(
-                    paste(temp_epea, "/epea_up.txt", sep = ""),
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-                
-                return(head(epea_up, 100))
-            }, options = list(
-                pageLength = 10,
-                scrollX = TRUE,
-                columnDefs = list(list(
-                    targets = "_all",
-                    render = JS(
-                        "function(data, type, row, meta) {",
-                        "  if (data === null || data === '') return 'NA';",
-                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                        "}"
-                    )
-                ))
-            ), server = TRUE)
-        })
-        
-        output$epea_user_up_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_up_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
-            
-            output$epea_user_down_data <- renderDT({
-                req(file.exists(paste(temp_epea, "/epea_down.txt", sep = "")))
-                
-                epea_down <- read.table(
-                    paste(temp_epea, "/epea_down.txt", sep = ""),
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-                
-                return(head(epea_down, 100))
-            }, options = list(
-                pageLength = 10,
-                scrollX = TRUE,
-                columnDefs = list(list(
-                    targets = "_all",
-                    render = JS(
-                        "function(data, type, row, meta) {",
-                        "  if (data === null || data === '') return 'NA';",
-                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                        "}"
-                    )
-                ))
-            ), server = TRUE)
-        })
-        
-        output$epea_user_down_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_down_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
-            
-            output$epea_plot <- renderImage({
-                list(
-                    src = paste(temp_epea, "/epea_plot.jpeg", sep = ""),
-                    contentType = "image/jpeg",
-                    width = "100%",
-                    height = "auto"
-                )
-            }, deleteFile = FALSE)
+                plot
+            })
         })
         
         output$epea_plot_download <- downloadHandler(
             filename = function() {
-                paste("ePEAPlot", input$epea_plot_format, sep = ".")
+                paste("ePEA", input$epea_plot_format, sep = ".")
             },
             content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_plot.", input$epea_plot_format, sep = ""), to = file)
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    meta_data <- read.table(
+                        input$epea_user_meta_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        row.names = 1,
+                        stringsAsFactors = F
+                    )
+                    
+                    gene_data <- read.table(
+                        input$epea_user_gene_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
+                    
+                    group_data <- read.table(
+                        input$epea_user_group_data_input$datapath,
+                        header = T,
+                        sep = "\t",
+                        stringsAsFactors = F
+                    )
+                    group_data <- as.character(group_data[, 1])
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    all_data <- rbind(diff_gene, diff_meta)
+                    
+                    all_data_up <- all_data %>%
+                        filter(logFC > input$epea_logfc) %>%
+                        filter(adj.P.Val < input$epea_padj)
+                    result_up <- PathwayAnalysis(
+                        all_data_up$name,
+                        out = "Extended",
+                        p_cutoff = input$epea_p_cutoff
+                    )
+                    
+                    all_data_down <- all_data %>%
+                        filter(logFC < -(input$epea_padj)) %>%
+                        filter(adj.P.Val < input$epea_padj)
+                    result_down <- PathwayAnalysis(
+                        all_data_down$name,
+                        out = "Extended",
+                        p_cutoff = input$epea_p_cutoff
+                    )
+                    
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        labels = "AUTO",
+                        ncol = 1
+                    )
+                    plot
+                })
+                
+                if (input$epea_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$epea_plot_width,
+                        height = input$epea_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$epea_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$epea_plot_width,
+                        height = input$epea_plot_height,
+                        units = "in",
+                        res = input$epea_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
             }
         )
     }
