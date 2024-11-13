@@ -3302,7 +3302,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 3,
+                                       width = 2,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -3448,7 +3448,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 9,
+                                       width = 10,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
