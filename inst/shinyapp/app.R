@@ -7701,16 +7701,16 @@ server <- shinyServer(function(session, input, output) {
             return(head(db_net, 100))
         }, options = list(
             pageLength = 10,
-            scrollX = TRUE
-            # columnDefs = list(list(
-            #     targets = "_all",
-            #     render = JS(
-            #         "function(data, type, row, meta) {",
-            #         "  if (data === null || data === '') return 'NA';",
-            #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-            #         "}"
-            #     )
-            # ))
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
         ), server = TRUE)
         
         output$download_db202411 <- downloadHandler(
