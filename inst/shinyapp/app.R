@@ -1295,7 +1295,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 3,
+                                       width = 2,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -1457,7 +1457,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 9,
+                                       width = 10,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
@@ -1556,6 +1556,46 @@ ui <- shinyUI(
                                                    "),
                                                hr(),
                                                DTOutput("network_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Nodes Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_nodes_data_download",
+                                                       label = "Nodes Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Nodes Data**: Nodes of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_demo_nodes_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Edges Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_edges_data_download",
+                                                       label = "Edges Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Edges Data**: Edges of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_demo_edges_data"),
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
@@ -1667,6 +1707,46 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Nodes Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_user_nodes_data_download",
+                                                       label = "Nodes Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Nodes Data**: Nodes of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_user_nodes_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Edges Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_user_edges_data_download",
+                                                       label = "Edges Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Edges Data**: Edges of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_user_edges_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Subnetwork",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1684,7 +1764,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("network_plot", width = "100%", height = "1000px"),
+                                               imageOutput("network_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
@@ -4664,6 +4744,11 @@ server <- shinyServer(function(session, input, output) {
     
     # network_plot
     {
+        temp_network <- file.path(tempdir(), "network")
+        if (!dir.exists(temp_network)) {
+            dir.create(temp_network)
+        }
+        
         output$network_demo_meta_data <- renderDT({
             data("meta_dat")
             meta_data <- meta_dat
@@ -4688,17 +4773,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("network_demo_meta_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("meta_dat")
-                meta_data <- meta_dat
-                
-                write.table(
-                    meta_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
             }
         )
         
@@ -4726,17 +4801,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("network_demo_gene_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("gene_dat")
-                gene_data <- gene_dat
-                
-                write.table(
-                    gene_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
             }
         )
         
@@ -4764,17 +4829,71 @@ server <- shinyServer(function(session, input, output) {
                 paste("network_demo_group_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("group")
-                group_data <- as.data.frame(group)
-                
-                write.table(
-                    group_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = FALSE,
-                    quote = FALSE
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        output$network_demo_nodes_data <- renderDT({
+            nodes <- read.table(
+                "www/demo/nodes.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            return(head(nodes, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
                 )
+            ))
+        ), server = TRUE)
+        
+        output$network_demo_nodes_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_nodes_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/nodes.txt", to = file)
+            }
+        )
+        
+        output$network_demo_edges_data <- renderDT({
+            edges <- read.table(
+                "www/demo/edges.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            return(head(edges, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
+        
+        output$network_demo_edges_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_edges_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/edges.txt", to = file)
             }
         )
         
@@ -4907,52 +5026,101 @@ server <- shinyServer(function(session, input, output) {
         })
         
         observeEvent(input$network_submit, {
-            output$network_plot <- renderPlot({
-                progress <- Progress$new(session, min = 1, max = 100)
-                on.exit(progress$close())
-                progress$set(value = 0)
-                progress$set(message = "Starting program ...", detail = "Starting program ...")
-                
-                progress$set(value = 10)
-                progress$set(message = "Reading data ...", detail = "Reading data ...")
-                
-                meta_data <- read.table(
-                    input$network_user_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            meta_data <- read.table(
+                input$network_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$network_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$network_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 80)
+            progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            names(diff_meta)[4] <- "p_value"
+            names(diff_gene)[4] <- "p_value"
+            
+            progress$set(value = 100)
+            progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
+            
+            network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+            
+            pdf(
+                file = paste(temp_network, "/network_plot.pdf", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                onefile = FALSE
+            )
+            pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+            
+            jpeg(
+                filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                units = "in",
+                res = input$network_plot_dpi,
+                quality = 100
+            )
+            pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+            
+            write.table(
+                network_res$node_result,
+                file = paste(temp_network, "/node_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+            
+            write.table(
+                network_res$edge_result,
+                file = paste(temp_network, "/edge_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+        })
+        
+        observe({
+            invalidateLater(1000, session)
+            
+            output$network_plot <- renderImage({
+                list(
+                    src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
                 )
-                
-                gene_data <- read.table(
-                    input$network_user_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                
-                group_data <- read.table(
-                    input$network_user_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.character(group_data[, 1])
-                
-                progress$set(value = 80)
-                progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
-                
-                diff_meta <- mlimma(meta_data, group_data)
-                diff_gene <- mlimma(gene_data, group_data)
-                
-                names(diff_meta)[4] <- "p_value"
-                names(diff_gene)[4] <- "p_value"
-                
-                progress$set(value = 100)
-                progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
-                network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-                network_res
-            })
+            }, deleteFile = FALSE)
         })
         
         output$network_plot_download <- downloadHandler(
@@ -4960,74 +5128,83 @@ server <- shinyServer(function(session, input, output) {
                 paste("NetworkPlot", input$network_plot_format, sep = ".")
             },
             content = function(file) {
-                plot <- reactive({
-                    progress <- Progress$new(session, min = 1, max = 100)
-                    on.exit(progress$close())
-                    progress$set(value = 0)
-                    progress$set(message = "Starting program ...", detail = "Starting program ...")
-                    
-                    progress$set(value = 10)
-                    progress$set(message = "Reading data ...", detail = "Reading data ...")
-                    
-                    meta_data <- read.table(
-                        input$network_user_meta_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        row.names = 1,
-                        stringsAsFactors = F
-                    )
-                    
-                    gene_data <- read.table(
-                        input$network_user_gene_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        stringsAsFactors = F
-                    )
-                    
-                    group_data <- read.table(
-                        input$network_user_group_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        stringsAsFactors = F
-                    )
-                    group_data <- as.character(group_data[, 1])
-                    
-                    progress$set(value = 80)
-                    progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
-                    
-                    diff_meta <- mlimma(meta_data, group_data)
-                    diff_gene <- mlimma(gene_data, group_data)
-                    
-                    names(diff_meta)[4] <- "p_value"
-                    names(diff_gene)[4] <- "p_value"
-                    
-                    progress$set(value = 100)
-                    progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
-                    network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-                    network_res
-                })
+                file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
+            }
+        )
+        
+        observe({
+            invalidateLater(1000, session)
+            
+            output$network_user_nodes_data <- renderDT({
+                req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
                 
-                if (input$network_plot_format == "pdf") {
-                    pdf(
-                        file = file,
-                        width = input$network_plot_width,
-                        height = input$network_plot_height,
-                        onefile = FALSE
+                nodes <- read.table(
+                    paste(temp_network, "/node_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                return(head(nodes, 100))
+            }, options = list(
+                pageLength = 10,
+                scrollX = TRUE,
+                columnDefs = list(list(
+                    targets = "_all",
+                    render = JS(
+                        "function(data, type, row, meta) {",
+                        "  if (data === null || data === '') return 'NA';",
+                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        "}"
                     )
-                    print(plot())
-                    dev.off()
-                } else if (input$network_plot_format == "jpeg") {
-                    jpeg(
-                        filename = file,
-                        width = input$network_plot_width,
-                        height = input$network_plot_height,
-                        units = "in",
-                        res = input$network_plot_dpi,
-                        quality = 100
+                ))
+            ), server = TRUE)
+        })
+        
+        output$network_user_nodes_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_nodes_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        observe({
+            invalidateLater(1000, session)
+            
+            output$network_user_edges_data <- renderDT({
+                req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+                
+                edges <- read.table(
+                    paste(temp_network, "/edge_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                return(head(edges, 100))
+            }, options = list(
+                pageLength = 10,
+                scrollX = TRUE,
+                columnDefs = list(list(
+                    targets = "_all",
+                    render = JS(
+                        "function(data, type, row, meta) {",
+                        "  if (data === null || data === '') return 'NA';",
+                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        "}"
                     )
-                    print(plot())
-                    dev.off()
-                }
+                ))
+            ), server = TRUE)
+        })
+        
+        output$network_user_edges_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_edges_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
             }
         )
     }
@@ -5472,17 +5649,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epea_demo_meta_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("meta_dat")
-                meta_data <- meta_dat
-                
-                write.table(
-                    meta_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
             }
         )
         
@@ -5510,17 +5677,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epea_demo_gene_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("gene_dat")
-                gene_data <- gene_dat
-                
-                write.table(
-                    gene_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
             }
         )
         
@@ -5548,17 +5705,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epea_demo_group_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("group")
-                group_data <- as.data.frame(group)
-                
-                write.table(
-                    group_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = FALSE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/groups.txt", to = file)
             }
         )
         
@@ -6345,17 +6492,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epda_demo_meta_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("meta_dat")
-                meta_data <- meta_dat
-                
-                write.table(
-                    meta_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
             }
         )
         
@@ -6383,17 +6520,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epda_demo_gene_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("gene_dat")
-                gene_data <- gene_dat
-                
-                write.table(
-                    gene_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = TRUE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
             }
         )
         
@@ -6421,17 +6548,7 @@ server <- shinyServer(function(session, input, output) {
                 paste("epda_demo_group_data", ".txt", sep = "")
             },
             content = function(file) {
-                data("group")
-                group_data <- as.data.frame(group)
-                
-                write.table(
-                    group_data,
-                    file,
-                    sep = "\t",
-                    col.names = TRUE,
-                    row.names = FALSE,
-                    quote = FALSE
-                )
+                file.copy(from = "www/demo/groups.txt", to = file)
             }
         )
         
@@ -7088,6 +7205,16 @@ server <- shinyServer(function(session, input, output) {
             }
         )
     }
+    
+    session$onSessionEnded(function() {
+        if (dir.exists(tempdir())) {
+            tryCatch({
+                unlink(tempdir(), recursive = TRUE)
+            }, error = function(e) {
+                cat(e$message)
+            })
+        }
+    })
 })
 
 # runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
