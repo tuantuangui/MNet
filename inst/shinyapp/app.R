@@ -2843,7 +2843,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 3,
+                                       width = 2,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -3016,7 +3016,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 9,
+                                       width = 10,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
@@ -3115,6 +3115,26 @@ ui <- shinyUI(
                                                    "),
                                                hr(),
                                                DTOutput("epda_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Result Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_result_data_download",
+                                                       label = "Result Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Result Data**: Result of ePDA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_demo_result_data"),
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
@@ -3226,6 +3246,26 @@ ui <- shinyUI(
                                            ),
                                            tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Result Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_user_result_data_download",
+                                                       label = "Result Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Result Data**: Result of ePDA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Pathway",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3243,7 +3283,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               plotOutput("epda_plot", width = "100%", height = "1000px"),
+                                               imageOutput("epda_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
@@ -6648,6 +6688,11 @@ server <- shinyServer(function(session, input, output) {
     
     # ePDA
     {
+        temp_epda <- file.path(tempdir(), "epda")
+        if (!dir.exists(temp_epda)) {
+            dir.create(temp_epda)
+        }
+        
         output$epda_demo_meta_data <- renderDT({
             data("meta_dat")
             meta_data <- meta_dat
@@ -6729,6 +6774,38 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        output$epda_demo_result_data <- renderDT({
+            epda_result <- read.table(
+                "www/demo/epda_result.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            return(head(epda_result, 100))
+        }, options = list(
+            pageLength = 10,
+            scrollX = TRUE,
+            columnDefs = list(list(
+                targets = "_all",
+                render = JS(
+                    "function(data, type, row, meta) {",
+                    "  if (data === null || data === '') return 'NA';",
+                    "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    "}"
+                )
+            ))
+        ), server = TRUE)
+        
+        output$epda_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/epda_result.txt", to = file)
             }
         )
         
@@ -6921,171 +6998,156 @@ server <- shinyServer(function(session, input, output) {
         })
         
         observeEvent(input$epda_submit, {
-            output$epda_plot <- renderPlot({
-                progress <- Progress$new(session, min = 1, max = 100)
-                on.exit(progress$close())
-                progress$set(value = 0)
-                progress$set(message = "Starting program ...", detail = "Starting program ...")
-                
-                progress$set(value = 10)
-                progress$set(message = "Reading data ...", detail = "Reading data ...")
-                
-                meta_data <- read.table(
-                    input$epda_user_meta_data_input$datapath,
-                    header = T,
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            meta_data <- read.table(
+                input$epda_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$epda_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$epda_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 100)
+            progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            diff_gene_increase <-  diff_gene %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            diff_gene_decrease <- diff_gene %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_increase <- diff_meta %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_decrease <- diff_meta %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            epda_res <- DAscore(
+                c(
+                    diff_gene_increase$name,
+                    diff_meta_increase$name
+                ),
+                c(
+                    diff_gene_decrease$name,
+                    diff_meta_decrease$name
+                ),
+                c(diff_gene$name, diff_meta$name),
+                min_measured_num = 2,
+                out = "Extended"
+            )
+            
+            write.table(
+                as.data.frame(epda_res$result),
+                file = paste(temp_epda, "/epda_result.txt", sep = ""),
+                sep = "\t",
+                quote = FALSE,
+                row.names = FALSE
+            )
+            
+            pdf(
+                file = paste(temp_epda, "/epda_plot.pdf", sep = ""),
+                width = input$epda_plot_width,
+                height = input$epda_plot_height,
+                onefile = FALSE
+            )
+            print(epda_res$p)
+            dev.off()
+            
+            jpeg(
+                filename = paste(temp_epda, "/epda_plot.jpeg", sep = ""),
+                width = input$epda_plot_width,
+                height = input$epda_plot_height,
+                units = "in",
+                res = input$epda_plot_dpi,
+                quality = 100
+            )
+            print(epda_res$p)
+            dev.off()
+        })
+        
+        observe({
+            # invalidateLater(1000, session)
+            
+            output$epda_user_result_data <- renderDT({
+                epda_result <- read.table(
+                    paste(temp_epda, "/epda_result.txt", sep = ""),
+                    header = TRUE,
                     sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
+                    stringsAsFactors = FALSE
                 )
                 
-                gene_data <- read.table(
-                    input$epda_user_gene_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
+                return(head(epda_result, 100))
+            }, options = list(
+                pageLength = 10,
+                scrollX = TRUE,
+                columnDefs = list(list(
+                    targets = "_all",
+                    render = JS(
+                        "function(data, type, row, meta) {",
+                        "  if (data === null || data === '') return 'NA';",
+                        "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        "}"
+                    )
+                ))
+            ), server = TRUE)
+        })
+        
+        output$epda_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        observe({
+            # invalidateLater(1000, session)
+            
+            output$epda_plot <- renderImage({
+                list(
+                    src = paste(temp_epda, "/epda_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
                 )
-                
-                group_data <- read.table(
-                    input$epda_user_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.character(group_data[, 1])
-                
-                progress$set(value = 100)
-                progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
-                
-                diff_meta <- mlimma(meta_data, group_data)
-                diff_gene <- mlimma(gene_data, group_data)
-                
-                diff_gene_increase <-  diff_gene %>%
-                    filter(logFC > input$epda_logfc) %>%
-                    filter(adj.P.Val < input$epda_padj)
-                diff_gene_decrease <- diff_gene %>%
-                    filter(logFC < -(input$epda_logfc)) %>%
-                    filter(adj.P.Val < input$epda_padj)
-                
-                diff_meta_increase <- diff_meta %>%
-                    filter(logFC > input$epda_logfc) %>%
-                    filter(adj.P.Val < input$epda_padj)
-                
-                diff_meta_decrease <- diff_meta %>%
-                    filter(logFC < -(input$epda_logfc)) %>%
-                    filter(adj.P.Val < input$epda_padj)
-                
-                epda_res <- DAscore(
-                    c(
-                        diff_gene_increase$name,
-                        diff_meta_increase$name
-                    ),
-                    c(
-                        diff_gene_decrease$name,
-                        diff_meta_decrease$name
-                    ),
-                    c(diff_gene$name, diff_meta$name),
-                    min_measured_num = 2,
-                    out = "Extended"
-                )
-                epda_res
-            })
+            }, deleteFile = FALSE)
         })
         
         output$epda_plot_download <- downloadHandler(
             filename = function() {
-                paste("ePDA", input$epda_plot_format, sep = ".")
+                paste("ePDAPlot", input$epda_plot_format, sep = ".")
             },
             content = function(file) {
-                plot <- reactive({
-                    progress <- Progress$new(session, min = 1, max = 100)
-                    on.exit(progress$close())
-                    progress$set(value = 0)
-                    progress$set(message = "Starting program ...", detail = "Starting program ...")
-                    
-                    progress$set(value = 10)
-                    progress$set(message = "Reading data ...", detail = "Reading data ...")
-                    
-                    meta_data <- read.table(
-                        input$epda_user_meta_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        row.names = 1,
-                        stringsAsFactors = F
-                    )
-                    
-                    gene_data <- read.table(
-                        input$epda_user_gene_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        stringsAsFactors = F
-                    )
-                    
-                    group_data <- read.table(
-                        input$epda_user_group_data_input$datapath,
-                        header = T,
-                        sep = "\t",
-                        stringsAsFactors = F
-                    )
-                    group_data <- as.character(group_data[, 1])
-                    
-                    progress$set(value = 100)
-                    progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
-                    
-                    diff_meta <- mlimma(meta_data, group_data)
-                    diff_gene <- mlimma(gene_data, group_data)
-                    
-                    diff_gene_increase <-  diff_gene %>%
-                        filter(logFC > input$epda_logfc) %>%
-                        filter(adj.P.Val < input$epda_padj)
-                    diff_gene_decrease <- diff_gene %>%
-                        filter(logFC < -(input$epda_logfc)) %>%
-                        filter(adj.P.Val < input$epda_padj)
-                    
-                    diff_meta_increase <- diff_meta %>%
-                        filter(logFC > input$epda_logfc) %>%
-                        filter(adj.P.Val < input$epda_padj)
-                    
-                    diff_meta_decrease <- diff_meta %>%
-                        filter(logFC < -(input$epda_logfc)) %>%
-                        filter(adj.P.Val < input$epda_padj)
-                    
-                    epda_res <- DAscore(
-                        c(
-                            diff_gene_increase$name,
-                            diff_meta_increase$name
-                        ),
-                        c(
-                            diff_gene_decrease$name,
-                            diff_meta_decrease$name
-                        ),
-                        c(diff_gene$name, diff_meta$name),
-                        min_measured_num = 2,
-                        out = "Extended"
-                    )
-                    epda_res
-                })
-                
-                if (input$epda_plot_format == "pdf") {
-                    pdf(
-                        file = file,
-                        width = input$epda_plot_width,
-                        height = input$epda_plot_height,
-                        onefile = FALSE
-                    )
-                    print(plot())
-                    dev.off()
-                } else if (input$epda_plot_format == "jpeg") {
-                    jpeg(
-                        filename = file,
-                        width = input$epda_plot_width,
-                        height = input$epda_plot_height,
-                        units = "in",
-                        res = input$epda_plot_dpi,
-                        quality = 100
-                    )
-                    print(plot())
-                    dev.off()
-                }
+                file.copy(from = paste(temp_epda, "/epda_plot.", input$epda_plot_format, sep = ""), to = file)
             }
         )
     }
