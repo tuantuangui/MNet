@@ -4538,7 +4538,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
         
         output$pca_group_data <- renderText({
             if (is.null(input$pca_group_data_input)) {
@@ -4686,7 +4686,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
         
         output$volcano_group_data <- renderText({
             if (is.null(input$volcano_group_data_input)) {
@@ -4848,7 +4848,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
         
         output$heatmap_group_data <- renderText({
             if (is.null(input$heatmap_group_data_input)) {
@@ -5048,7 +5048,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -5076,7 +5076,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -5104,7 +5104,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -5136,7 +5136,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_demo_nodes_data_download <- downloadHandler(
             filename = function() {
@@ -5168,7 +5168,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_demo_edges_data_download <- downloadHandler(
             filename = function() {
@@ -5202,7 +5202,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_user_gene_data <- renderDT({
             req(input$network_user_gene_data_input)
@@ -5227,7 +5227,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$network_user_group_data <- renderDT({
             req(input$network_user_group_data_input)
@@ -5251,7 +5251,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         observeEvent(input$network_demo, {
             output$network_user_meta_data <- renderDT({
@@ -5259,21 +5259,21 @@ server <- shinyServer(function(session, input, output) {
                 meta_data <- meta_dat
                 
                 return(head(meta_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$network_user_gene_data <- renderDT({
                 data("gene_dat")
                 gene_data <- gene_dat
                 
                 return(head(gene_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$network_user_group_data <- renderDT({
                 data("group")
                 group_data <- as.data.frame(group)
                 
                 return(head(group_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$network_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -5440,7 +5440,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$network_user_nodes_data_download <- downloadHandler(
@@ -5478,7 +5478,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$network_user_edges_data_download <- downloadHandler(
@@ -5519,7 +5519,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$diff_network_gene_data <- renderDT({
             if (is.null(input$diff_network_gene_data_input)) {
@@ -5546,7 +5546,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$diff_network_group_data <- renderText({
             if (is.null(input$diff_network_group_data_input)) {
@@ -5758,7 +5758,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$corr_network_gene_data <- renderDT({
             if (is.null(input$corr_network_gene_data_input)) {
@@ -5785,7 +5785,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$corr_network_plot <- renderPlot({
             progress <- Progress$new(session, min = 1, max = 100)
@@ -5929,7 +5929,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -5957,7 +5957,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -5985,7 +5985,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -6017,7 +6017,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_demo_up_data_download <- downloadHandler(
             filename = function() {
@@ -6049,7 +6049,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_demo_down_data_download <- downloadHandler(
             filename = function() {
@@ -6083,7 +6083,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_user_gene_data <- renderDT({
             req(input$epea_user_gene_data_input)
@@ -6108,7 +6108,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epea_user_group_data <- renderDT({
             req(input$epea_user_group_data_input)
@@ -6132,7 +6132,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         observeEvent(input$epea_demo, {
             output$epea_user_meta_data <- renderDT({
@@ -6140,21 +6140,21 @@ server <- shinyServer(function(session, input, output) {
                 meta_data <- meta_dat
                 
                 return(head(meta_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$epea_user_gene_data <- renderDT({
                 data("gene_dat")
                 gene_data <- gene_dat
                 
                 return(head(gene_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$epea_user_group_data <- renderDT({
                 data("group")
                 group_data <- as.data.frame(group)
                 
                 return(head(group_data, 100))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
             
             output$epea_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -6346,7 +6346,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$epea_user_up_data_download <- downloadHandler(
@@ -6384,7 +6384,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$epea_user_down_data_download <- downloadHandler(
@@ -6447,7 +6447,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$mpea_group_data <- renderText({
             if (is.null(input$mpea_group_data_input)) {
@@ -6662,7 +6662,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$gpea_group_data <- renderText({
             if (is.null(input$gpea_group_data_input)) {
@@ -6872,7 +6872,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -6900,7 +6900,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -6928,7 +6928,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -6960,7 +6960,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_demo_result_data_download <- downloadHandler(
             filename = function() {
@@ -6994,7 +6994,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_user_gene_data <- renderDT({
             req(input$epda_user_gene_data_input)
@@ -7019,7 +7019,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$epda_user_group_data <- renderDT({
             req(input$epda_user_group_data_input)
@@ -7043,7 +7043,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         observeEvent(input$epda_demo, {
             output$epda_user_meta_data <- renderDT({
@@ -7063,7 +7063,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
             
             output$epda_user_gene_data <- renderDT({
                 data("gene_dat")
@@ -7082,7 +7082,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
             
             output$epda_user_group_data <- renderDT({
                 data("group")
@@ -7101,7 +7101,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
             
             output$epda_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -7281,7 +7281,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$epda_user_result_data_download <- downloadHandler(
@@ -7340,7 +7340,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -7368,7 +7368,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -7396,7 +7396,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -7428,7 +7428,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_demo_result_data_download <- downloadHandler(
             filename = function() {
@@ -7462,7 +7462,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_user_gene_data <- renderDT({
             req(input$esea_user_gene_data_input)
@@ -7487,7 +7487,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$esea_user_group_data <- renderDT({
             req(input$esea_user_group_data_input)
@@ -7511,7 +7511,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         observeEvent(input$esea_submit, {
             progress <- Progress$new(session, min = 1, max = 100)
@@ -7621,7 +7621,7 @@ server <- shinyServer(function(session, input, output) {
                         "}"
                     )
                 ))
-            ), server = TRUE)
+            ), server = FALSE)
         })
         
         output$esea_user_result_data_download <- downloadHandler(
@@ -7689,7 +7689,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$db_net <- renderDT({
             db_net <- read.table(
@@ -7711,7 +7711,7 @@ server <- shinyServer(function(session, input, output) {
                     "}"
                 )
             ))
-        ), server = TRUE)
+        ), server = FALSE)
         
         output$download_db202411 <- downloadHandler(
             filename = function() {
