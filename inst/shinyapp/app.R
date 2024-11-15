@@ -7761,7 +7761,7 @@ server <- shinyServer(function(session, input, output) {
             
             write.table(
                 result,
-                # paste(temp_esea, "/esea_result.txt", sep = ""),
+                paste(temp_esea, "/esea_result.txt", sep = ""),
                 sep = "\t",
                 quote = F,
                 row.names = F
