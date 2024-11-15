@@ -5027,11 +5027,13 @@ server <- shinyServer(function(session, input, output) {
             data("gene_dat")
             gene_data <- gene_dat
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
                 options = list(pageLength = 10, scrollX = TRUE)
-                
             )
         }, server = TRUE)
         
@@ -5154,6 +5156,9 @@ server <- shinyServer(function(session, input, output) {
                 row.names = 1,
                 stringsAsFactors = F
             )
+            
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
             
             datatable(
                 head(gene_data, 30),
@@ -5456,6 +5461,9 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -5689,6 +5697,9 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -5853,6 +5864,9 @@ server <- shinyServer(function(session, input, output) {
             data("gene_dat")
             gene_data <- gene_dat
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -5983,6 +5997,9 @@ server <- shinyServer(function(session, input, output) {
                 row.names = 1,
                 stringsAsFactors = F
             )
+            
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
             
             datatable(
                 head(gene_data, 30),
@@ -6520,6 +6537,9 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -6750,6 +6770,9 @@ server <- shinyServer(function(session, input, output) {
             data("gene_dat")
             gene_data <- gene_dat
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -6853,6 +6876,9 @@ server <- shinyServer(function(session, input, output) {
                 stringsAsFactors = F
             )
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -6903,6 +6929,9 @@ server <- shinyServer(function(session, input, output) {
             output$epda_user_gene_data <- renderDT({
                 data("gene_dat")
                 gene_data <- gene_dat
+                
+                gene_data <- gene_data %>%
+                    mutate_all(~ ifelse(is.na(.), "NA", .))
                 
                 datatable(
                     head(gene_data, 30),
@@ -7174,6 +7203,9 @@ server <- shinyServer(function(session, input, output) {
             data("gene_dat")
             gene_data <- gene_dat
             
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
+            
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
@@ -7276,6 +7308,9 @@ server <- shinyServer(function(session, input, output) {
                 row.names = 1,
                 stringsAsFactors = F
             )
+            
+            gene_data <- gene_data %>%
+                mutate_all(~ ifelse(is.na(.), "NA", .))
             
             datatable(
                 head(gene_data, 30),
