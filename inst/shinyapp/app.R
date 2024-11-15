@@ -4509,7 +4509,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$pca_group_data <- renderText({
             if (is.null(input$pca_group_data_input)) {
@@ -4657,7 +4657,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$volcano_group_data <- renderText({
             if (is.null(input$volcano_group_data_input)) {
@@ -4819,7 +4819,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }
             return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
         
         output$heatmap_group_data <- renderText({
             if (is.null(input$heatmap_group_data_input)) {
@@ -5009,22 +5009,10 @@ server <- shinyServer(function(session, input, output) {
             datatable(
                 head(meta_data, 30),
                 rownames = TRUE,
-                options = list(
-                    pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
-                )
+                options = list(pageLength = 10, scrollX = TRUE)
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -5042,22 +5030,10 @@ server <- shinyServer(function(session, input, output) {
             datatable(
                 head(gene_data, 30),
                 rownames = TRUE,
-                options = list(
-                    pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
-                )
+                options = list(pageLength = 10, scrollX = TRUE)
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -5077,20 +5053,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -5114,20 +5081,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(nodes),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_demo_nodes_data_download <- downloadHandler(
             filename = function() {
@@ -5151,20 +5109,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(edges),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_demo_edges_data_download <- downloadHandler(
             filename = function() {
@@ -5190,20 +5139,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_user_gene_data <- renderDT({
             req(input$network_user_gene_data_input)
@@ -5220,20 +5160,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$network_user_group_data <- renderDT({
             req(input$network_user_group_data_input)
@@ -5249,20 +5180,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         observeEvent(input$network_demo, {
             output$network_user_meta_data <- renderDT({
@@ -5270,21 +5192,21 @@ server <- shinyServer(function(session, input, output) {
                 meta_data <- meta_dat
                 
                 return(head(meta_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$network_user_gene_data <- renderDT({
                 data("gene_dat")
                 gene_data <- gene_dat
                 
                 return(head(gene_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$network_user_group_data <- renderDT({
                 data("group")
                 group_data <- as.data.frame(group)
                 
                 return(head(group_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$network_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -5443,20 +5365,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(nodes),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$network_user_nodes_data_download <- downloadHandler(
@@ -5486,20 +5399,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(edges),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$network_user_edges_data_download <- downloadHandler(
@@ -5533,20 +5437,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$diff_network_gene_data <- renderDT({
             if (is.null(input$diff_network_gene_data_input)) {
@@ -5566,20 +5461,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$diff_network_group_data <- renderText({
             if (is.null(input$diff_network_group_data_input)) {
@@ -5784,20 +5670,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$corr_network_gene_data <- renderDT({
             if (is.null(input$corr_network_gene_data_input)) {
@@ -5817,20 +5694,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$corr_network_plot <- renderPlot({
             progress <- Progress$new(session, min = 1, max = 100)
@@ -5966,20 +5834,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -5999,20 +5858,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -6032,20 +5882,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -6069,20 +5910,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epea_up),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_demo_up_data_download <- downloadHandler(
             filename = function() {
@@ -6106,20 +5938,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epea_down),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_demo_down_data_download <- downloadHandler(
             filename = function() {
@@ -6145,20 +5968,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_user_gene_data <- renderDT({
             req(input$epea_user_gene_data_input)
@@ -6175,20 +5989,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epea_user_group_data <- renderDT({
             req(input$epea_user_group_data_input)
@@ -6204,20 +6009,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         observeEvent(input$epea_demo, {
             output$epea_user_meta_data <- renderDT({
@@ -6225,21 +6021,21 @@ server <- shinyServer(function(session, input, output) {
                 meta_data <- meta_dat
                 
                 return(head(meta_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$epea_user_gene_data <- renderDT({
                 data("gene_dat")
                 gene_data <- gene_dat
                 
                 return(head(gene_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$epea_user_group_data <- renderDT({
                 data("group")
                 group_data <- as.data.frame(group)
                 
                 return(head(group_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = FALSE)
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
             
             output$epea_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -6423,20 +6219,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epea_up),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$epea_user_up_data_download <- downloadHandler(
@@ -6466,20 +6253,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epea_down),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$epea_user_down_data_download <- downloadHandler(
@@ -6535,20 +6313,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$mpea_group_data <- renderText({
             if (is.null(input$mpea_group_data_input)) {
@@ -6756,20 +6525,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$gpea_group_data <- renderText({
             if (is.null(input$gpea_group_data_input)) {
@@ -6971,20 +6731,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -7004,20 +6755,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -7037,20 +6779,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -7074,20 +6807,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epda_result),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_demo_result_data_download <- downloadHandler(
             filename = function() {
@@ -7113,20 +6837,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_user_gene_data <- renderDT({
             req(input$epda_user_gene_data_input)
@@ -7143,20 +6858,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$epda_user_group_data <- renderDT({
             req(input$epda_user_group_data_input)
@@ -7172,20 +6878,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         observeEvent(input$epda_demo, {
             output$epda_user_meta_data <- renderDT({
@@ -7197,20 +6894,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(meta_data),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
             
             output$epda_user_gene_data <- renderDT({
                 data("gene_dat")
@@ -7221,20 +6909,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(gene_data),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
             
             output$epda_user_group_data <- renderDT({
                 data("group")
@@ -7245,20 +6924,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(group_data),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
             
             output$epda_plot <- renderPlot({
                 progress <- Progress$new(session, min = 1, max = 100)
@@ -7430,20 +7100,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epda_result),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$epda_user_result_data_download <- downloadHandler(
@@ -7494,20 +7155,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_demo_meta_data_download <- downloadHandler(
             filename = function() {
@@ -7527,20 +7179,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_demo_gene_data_download <- downloadHandler(
             filename = function() {
@@ -7560,20 +7203,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_demo_group_data_download <- downloadHandler(
             filename = function() {
@@ -7597,20 +7231,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(esea_result),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_demo_result_data_download <- downloadHandler(
             filename = function() {
@@ -7636,20 +7261,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(meta_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_user_gene_data <- renderDT({
             req(input$esea_user_gene_data_input)
@@ -7666,20 +7282,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(gene_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$esea_user_group_data <- renderDT({
             req(input$esea_user_group_data_input)
@@ -7695,20 +7302,11 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(group_data),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         observeEvent(input$esea_submit, {
             progress <- Progress$new(session, min = 1, max = 100)
@@ -7810,20 +7408,11 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(esea_result),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
                     )
                     
                 )
-            }, server = FALSE)
+            }, server = TRUE)
         })
         
         output$esea_user_result_data_download <- downloadHandler(
@@ -7883,20 +7472,20 @@ server <- shinyServer(function(session, input, output) {
                 head(db_kegg, 30),
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(db_kegg),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(db_kegg),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$db_net <- renderDT({
             db_net <- read.table(
@@ -7910,19 +7499,19 @@ server <- shinyServer(function(session, input, output) {
                 head(db_net, 30),
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(db_net),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(db_net),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
             )
-        }, server = FALSE)
+        }, server = TRUE)
         
         output$download_db202411 <- downloadHandler(
             filename = function() {
