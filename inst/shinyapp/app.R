@@ -4418,6 +4418,9 @@ ui <- shinyUI(
 )
 
 server <- shinyServer(function(session, input, output) {
+    session_temp_dir <- tempfile("session_temp_")
+    dir.create(session_temp_dir, recursive = TRUE, mode = "1777")
+    
     observe({
         # user_ip <- session$clientData$url_hostname
         # user_ip <- session$request$REMOTE_ADDR
@@ -4997,9 +5000,9 @@ server <- shinyServer(function(session, input, output) {
     
     # network_plot
     {
-        temp_network <- file.path(tempdir(), "network")
+        temp_network <- file.path(session_temp_dir, "network")
         if (!dir.exists(temp_network)) {
-            dir.create(temp_network, recursive = TRUE)
+            dir.create(temp_network, recursive = TRUE, mode = "1777")
         }
         
         output$network_demo_meta_data <- renderDT({
@@ -5952,9 +5955,9 @@ server <- shinyServer(function(session, input, output) {
     
     # ePEA
     {
-        temp_epea <- file.path(tempdir(), "epea")
+        temp_epea <- file.path(session_temp_dir, "epea")
         if (!dir.exists(temp_epea)) {
-            dir.create(temp_epea, recursive = TRUE)
+            dir.create(temp_epea, recursive = TRUE, mode = "1777")
         }
         
         output$epea_demo_meta_data <- renderDT({
@@ -6957,9 +6960,9 @@ server <- shinyServer(function(session, input, output) {
     
     # ePDA
     {
-        temp_epda <- file.path(tempdir(), "epda")
+        temp_epda <- file.path(session_temp_dir, "epda")
         if (!dir.exists(temp_epda)) {
-            dir.create(temp_epda, recursive = TRUE)
+            dir.create(temp_epda, recursive = TRUE, mode = "1777")
         }
         
         output$epda_demo_meta_data <- renderDT({
@@ -7480,9 +7483,9 @@ server <- shinyServer(function(session, input, output) {
     
     # eSEA
     {
-        temp_esea <- file.path(tempdir(), "esea")
+        temp_esea <- file.path(session_temp_dir, "esea")
         if (!dir.exists(temp_esea)) {
-            dir.create(temp_esea, recursive = TRUE)
+            dir.create(temp_esea, recursive = TRUE, mode = "1777")
         }
         
         output$esea_demo_meta_data <- renderDT({
@@ -7953,9 +7956,9 @@ server <- shinyServer(function(session, input, output) {
     }
     
     session$onSessionEnded(function() {
-        if (dir.exists(tempdir())) {
+        if (dir.exists(session_temp_dir)) {
             tryCatch({
-                unlink(tempdir(), recursive = TRUE)
+                unlink(session_temp_dir, recursive = TRUE)
             }, error = function(e) {
                 cat(e$message)
             })
