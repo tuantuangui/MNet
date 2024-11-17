@@ -1296,7 +1296,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 2,
+                                       width = 3,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -1458,7 +1458,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 10,
+                                       width = 9,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
@@ -2313,7 +2313,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 2,
+                                       width = 3,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -2503,7 +2503,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 10,
+                                       width = 9,
                                        # tags$script(
                                        #     '
                                        #          $(document).ready(function() {
@@ -2844,7 +2844,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 2,
+                                       width = 3,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -3017,7 +3017,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 10,
+                                       width = 9,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
@@ -3303,7 +3303,7 @@ ui <- shinyUI(
                                        id = NULL,
                                        title = "| Setting",
                                        footer = NULL,
-                                       width = 2,
+                                       width = 3,
                                        height = NULL,
                                        status = "white",
                                        elevation = 0,
@@ -3449,7 +3449,7 @@ ui <- shinyUI(
                                        )
                                    ),
                                    column(
-                                       width = 10,
+                                       width = 9,
                                        bs4TabCard(
                                            # ribbon(text = "Demo", color = "danger"),
                                            id = "examples_tabbox",
@@ -5117,16 +5117,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(nodes),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(nodes),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -5154,16 +5154,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(edges),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(edges),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -5446,16 +5446,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(nodes),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(nodes),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
@@ -5489,16 +5489,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(edges),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(edges),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
@@ -6072,16 +6072,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epea_up),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epea_up),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -6109,16 +6109,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epea_down),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epea_down),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -6426,16 +6426,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epea_up),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epea_up),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
@@ -6469,16 +6469,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epea_down),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epea_down),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
@@ -7077,16 +7077,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(epda_result),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epda_result),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -7433,16 +7433,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(epda_result),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epda_result),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
@@ -7600,16 +7600,16 @@ server <- shinyServer(function(session, input, output) {
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(esea_result),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(esea_result),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
                 )
                 
             )
@@ -7813,16 +7813,16 @@ server <- shinyServer(function(session, input, output) {
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
-                        scrollX = TRUE,
-                        columnDefs = list(list(
-                            targets = 1:ncol(esea_result),
-                            render = JS(
-                                "function(data, type, row, meta) {",
-                                "  if (data === null || data === '') return 'NA';",
-                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                                "}"
-                            )
-                        ))
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(esea_result),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
                     )
                     
                 )
