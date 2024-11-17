@@ -19,6 +19,11 @@ library(MNet)
 library(dplyr)
 library(markdown)
 library(Cairo)
+library(promises)
+library(future)
+
+plan(multisession)
+# future({})
 
 log_file <- "user_access_log.txt"
 
@@ -5267,6 +5272,63 @@ server <- shinyServer(function(session, input, output) {
             )
         }, server = TRUE)
         
+        read_safely <- function(filepath, ...) {
+            tryCatch(
+                read.table(filepath, ...),
+                error = function(e) NULL
+            )
+        }
+        
+        observeEvent({
+            req(input$network_user_meta_data_input, 
+                input$network_user_gene_data_input, 
+                input$network_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$network_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$network_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$network_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.**Gene Data** row count should match **Group Data** column count.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
         observeEvent(input$network_demo, {
             output$network_user_meta_data <- renderDT({
                 data("meta_dat")
@@ -5326,10 +5388,10 @@ server <- shinyServer(function(session, input, output) {
             on.exit(progress$close())
             progress$set(value = 0)
             progress$set(message = "Starting program ...", detail = "Starting program ...")
-            
+
             progress$set(value = 10)
             progress$set(message = "Reading data ...", detail = "Reading data ...")
-            
+
             meta_data <- read.table(
                 input$network_user_meta_data_input$datapath,
                 header = T,
@@ -5337,14 +5399,14 @@ server <- shinyServer(function(session, input, output) {
                 row.names = 1,
                 stringsAsFactors = F
             )
-            
+
             gene_data <- read.table(
                 input$network_user_gene_data_input$datapath,
                 header = T,
                 sep = "\t",
                 stringsAsFactors = F
             )
-            
+
             group_data <- read.table(
                 input$network_user_group_data_input$datapath,
                 header = T,
@@ -5352,18 +5414,15 @@ server <- shinyServer(function(session, input, output) {
                 stringsAsFactors = F
             )
             group_data <- as.character(group_data[, 1])
-            
-            progress$set(value = 80)
-            progress$set(message = "Running mlimma analysis ...", detail = "Running mlimma analysis ...")
-            
+
+            progress$set(value = 50)
+            progress$set(message = "Running mlimma and dnet analysis ...", detail = "Running mlimma and dnet analysis ...")
+
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
             
             names(diff_meta)[4] <- "p_value"
             names(diff_gene)[4] <- "p_value"
-            
-            progress$set(value = 100)
-            progress$set(message = "Running pdnet visualization ...", detail = "Running pdnet visualization ...")
             
             network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
             
@@ -5404,11 +5463,14 @@ server <- shinyServer(function(session, input, output) {
                 na = "NA",
                 row.names = F
             )
+
+            progress$set(value = 100)
+            progress$set(message = "Saving figure and table results ...", detail = "Saving figure and table results ...")
         })
-        
+
         observe({
             # invalidateLater(1000, session)
-            
+
             output$network_plot <- renderImage({
                 list(
                     src = paste(temp_network, "/network_plot.jpeg", sep = ""),
@@ -5418,7 +5480,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, deleteFile = FALSE)
         })
-        
+
         output$network_plot_download <- downloadHandler(
             filename = function() {
                 paste("NetworkPlot", input$network_plot_format, sep = ".")
@@ -5427,20 +5489,20 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
             }
         )
-        
+
         observe({
             # invalidateLater(1000, session)
-            
+
             output$network_user_nodes_data <- renderDT({
                 req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
-                
+
                 nodes <- read.table(
                     paste(temp_network, "/node_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
                     stringsAsFactors = FALSE
                 )
-                
+
                 datatable(
                     head(nodes, 30),
                     rownames = TRUE,
@@ -5457,11 +5519,11 @@ server <- shinyServer(function(session, input, output) {
                         #     )
                         # ))
                     )
-                    
+
                 )
             }, server = TRUE)
         })
-        
+
         output$network_user_nodes_data_download <- downloadHandler(
             filename = function() {
                 paste("network_user_nodes_data", ".txt", sep = "")
@@ -5470,20 +5532,20 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
             }
         )
-        
+
         observe({
             # invalidateLater(1000, session)
-            
+
             output$network_user_edges_data <- renderDT({
                 req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
-                
+
                 edges <- read.table(
                     paste(temp_network, "/edge_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
                     stringsAsFactors = FALSE
                 )
-                
+
                 datatable(
                     head(edges, 30),
                     rownames = TRUE,
@@ -5500,11 +5562,11 @@ server <- shinyServer(function(session, input, output) {
                         #     )
                         # ))
                     )
-                    
+
                 )
             }, server = TRUE)
         })
-        
+
         output$network_user_edges_data_download <- downloadHandler(
             filename = function() {
                 paste("network_user_edges_data", ".txt", sep = "")
@@ -6058,6 +6120,56 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = "www/demo/groups.txt", to = file)
             }
         )
+        
+        observeEvent({
+            req(input$epea_user_meta_data_input, 
+                input$epea_user_gene_data_input, 
+                input$epea_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$epea_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$epea_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$epea_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.**Gene Data** row count should match **Group Data** column count.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
         
         output$epea_demo_up_data <- renderDT({
             epea_up <- data.table::fread(
@@ -7064,6 +7176,56 @@ server <- shinyServer(function(session, input, output) {
             }
         )
         
+        observeEvent({
+            req(input$epda_user_meta_data_input, 
+                input$epda_user_gene_data_input, 
+                input$epda_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$epda_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$epda_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$epda_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.**Gene Data** row count should match **Group Data** column count.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
         output$epda_demo_result_data <- renderDT({
             epda_result <- read.table(
                 "www/demo/epda_result.txt",
@@ -7586,6 +7748,56 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = "www/demo/groups.txt", to = file)
             }
         )
+        
+        observeEvent({
+            req(input$esea_user_meta_data_input, 
+                input$esea_user_gene_data_input, 
+                input$esea_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$esea_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$esea_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$esea_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.**Gene Data** row count should match **Group Data** column count.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
         
         output$esea_demo_result_data <- renderDT({
             esea_result <- read.table(

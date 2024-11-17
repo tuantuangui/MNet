@@ -37,6 +37,10 @@ a {
   color: #ffffff;
 }
 
+.nav-link {
+   padding: 0.5rem 0.5rem;
+ }
+
 ::-webkit-scrollbar {
   width: 10px;
 }
