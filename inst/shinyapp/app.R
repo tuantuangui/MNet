@@ -248,7 +248,7 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| ePDA Ananysis",
+                            text = "| ePDA Analysis",
                             tabName = "epda_plot",
                             href = NULL,
                             newTab = TRUE,
