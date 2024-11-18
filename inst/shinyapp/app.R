@@ -19,10 +19,12 @@ library(MNet)
 library(dplyr)
 library(markdown)
 library(Cairo)
-library(promises)
-library(future)
+library(callr)
 
-plan(multisession)
+# library(promises)
+# library(future)
+
+# plan(multisession)
 # future({})
 
 log_file <- "user_access_log.txt"
@@ -1380,6 +1382,14 @@ ui <- shinyUI(
                                            flat = FALSE
                                        ),
                                        br(),
+                                       shinyWidgets::progressBar(
+                                           id = "network_progress",
+                                           value = 0,
+                                           total = 100,
+                                           title = "Progress",
+                                           display_pct = TRUE
+                                       ),
+                                       verbatimTextOutput("network_step"),
                                        br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
@@ -5383,104 +5393,383 @@ server <- shinyServer(function(session, input, output) {
             })
         })
         
+        # observeEvent(input$network_submit, {
+        #     progress <- Progress$new(session, min = 1, max = 100)
+        #     on.exit(progress$close())
+        #     progress$set(value = 0)
+        #     progress$set(message = "Starting program ...", detail = "Starting program ...")
+        # 
+        #     progress$set(value = 10)
+        #     progress$set(message = "Reading data ...", detail = "Reading data ...")
+        # 
+        #     meta_data <- read.table(
+        #         input$network_user_meta_data_input$datapath,
+        #         header = T,
+        #         sep = "\t",
+        #         row.names = 1,
+        #         stringsAsFactors = F
+        #     )
+        # 
+        #     gene_data <- read.table(
+        #         input$network_user_gene_data_input$datapath,
+        #         header = T,
+        #         sep = "\t",
+        #         stringsAsFactors = F
+        #     )
+        # 
+        #     group_data <- read.table(
+        #         input$network_user_group_data_input$datapath,
+        #         header = T,
+        #         sep = "\t",
+        #         stringsAsFactors = F
+        #     )
+        #     group_data <- as.character(group_data[, 1])
+        # 
+        #     progress$set(value = 50)
+        #     progress$set(message = "Running mlimma and dnet analysis ...", detail = "Running mlimma and dnet analysis ...")
+        # 
+        #     diff_meta <- mlimma(meta_data, group_data)
+        #     diff_gene <- mlimma(gene_data, group_data)
+        #     
+        #     names(diff_meta)[4] <- "p_value"
+        #     names(diff_gene)[4] <- "p_value"
+        #     
+        #     network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     
+        #     pdf(
+        #         file = paste(temp_network, "/network_plot.pdf", sep = ""),
+        #         width = input$network_plot_width,
+        #         height = input$network_plot_height,
+        #         onefile = FALSE
+        #     )
+        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     dev.off()
+        #     
+        #     CairoJPEG(
+        #         filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #         width = input$network_plot_width,
+        #         height = input$network_plot_height,
+        #         units = "in",
+        #         res = input$network_plot_dpi,
+        #         quality = 100
+        #     )
+        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     dev.off()
+        #     
+        #     write.table(
+        #         network_res$node_result,
+        #         file = paste(temp_network, "/node_result.txt", sep = ""),
+        #         quote = F,
+        #         sep = "\t",
+        #         na = "NA",
+        #         row.names = F
+        #     )
+        #     
+        #     write.table(
+        #         network_res$edge_result,
+        #         file = paste(temp_network, "/edge_result.txt", sep = ""),
+        #         quote = F,
+        #         sep = "\t",
+        #         na = "NA",
+        #         row.names = F
+        #     )
+        # 
+        #     progress$set(value = 100)
+        #     progress$set(message = "Saving figure and table results ...", detail = "Saving figure and table results ...")
+        # })
+        # 
+        # observe({
+        #     # invalidateLater(1000, session)
+        # 
+        #     output$network_plot <- renderImage({
+        #         list(
+        #             src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #             contentType = "image/jpeg",
+        #             width = "100%",
+        #             height = "auto"
+        #         )
+        #     }, deleteFile = FALSE)
+        # })
+        # 
+        # output$network_plot_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("NetworkPlot", input$network_plot_format, sep = ".")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
+        #     }
+        # )
+        # 
+        # observe({
+        #     # invalidateLater(1000, session)
+        # 
+        #     output$network_user_nodes_data <- renderDT({
+        #         req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
+        # 
+        #         nodes <- read.table(
+        #             paste(temp_network, "/node_result.txt", sep = ""),
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        # 
+        #         datatable(
+        #             head(nodes, 30),
+        #             rownames = TRUE,
+        #             options = list(
+        #                 pageLength = 10,
+        #                 scrollX = TRUE
+        #                 # columnDefs = list(list(
+        #                 #     targets = 1:ncol(nodes),
+        #                 #     render = JS(
+        #                 #         "function(data, type, row, meta) {",
+        #                 #         "  if (data === null || data === '') return 'NA';",
+        #                 #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+        #                 #         "}"
+        #                 #     )
+        #                 # ))
+        #             )
+        # 
+        #         )
+        #     }, server = TRUE)
+        # })
+        # 
+        # output$network_user_nodes_data_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("network_user_nodes_data", ".txt", sep = "")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
+        #     }
+        # )
+        # 
+        # observe({
+        #     # invalidateLater(1000, session)
+        # 
+        #     output$network_user_edges_data <- renderDT({
+        #         req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+        # 
+        #         edges <- read.table(
+        #             paste(temp_network, "/edge_result.txt", sep = ""),
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        # 
+        #         datatable(
+        #             head(edges, 30),
+        #             rownames = TRUE,
+        #             options = list(
+        #                 pageLength = 10,
+        #                 scrollX = TRUE
+        #                 # columnDefs = list(list(
+        #                 #     targets = 1:ncol(edges),
+        #                 #     render = JS(
+        #                 #         "function(data, type, row, meta) {",
+        #                 #         "  if (data === null || data === '') return 'NA';",
+        #                 #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+        #                 #         "}"
+        #                 #     )
+        #                 # ))
+        #             )
+        # 
+        #         )
+        #     }, server = TRUE)
+        # })
+        # 
+        # output$network_user_edges_data_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("network_user_edges_data", ".txt", sep = "")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
+        #     }
+        # )
+        
         observeEvent(input$network_submit, {
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
-
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
-
-            meta_data <- read.table(
-                input$network_user_meta_data_input$datapath,
-                header = T,
-                sep = "\t",
-                row.names = 1,
-                stringsAsFactors = F
-            )
-
-            gene_data <- read.table(
-                input$network_user_gene_data_input$datapath,
-                header = T,
-                sep = "\t",
-                stringsAsFactors = F
-            )
-
-            group_data <- read.table(
-                input$network_user_group_data_input$datapath,
-                header = T,
-                sep = "\t",
-                stringsAsFactors = F
-            )
-            group_data <- as.character(group_data[, 1])
-
-            progress$set(value = 50)
-            progress$set(message = "Running mlimma and dnet analysis ...", detail = "Running mlimma and dnet analysis ...")
-
-            diff_meta <- mlimma(meta_data, group_data)
-            diff_gene <- mlimma(gene_data, group_data)
             
-            names(diff_meta)[4] <- "p_value"
-            names(diff_gene)[4] <- "p_value"
+            network_step <- reactiveVal("Click Submit to start ...")
             
-            network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+            updateProgressBar(session, id = "network_progress", value = 0)
+            network_step("Start reading data ...")
             
-            pdf(
-                file = paste(temp_network, "/network_plot.pdf", sep = ""),
-                width = input$network_plot_width,
-                height = input$network_plot_height,
-                onefile = FALSE
-            )
-            pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-            dev.off()
+            meta_file <- input$network_user_meta_data_input$datapath
+            gene_file <- input$network_user_gene_data_input$datapath
+            group_file <- input$network_user_group_data_input$datapath
             
-            CairoJPEG(
-                filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
-                width = input$network_plot_width,
-                height = input$network_plot_height,
-                units = "in",
-                res = input$network_plot_dpi,
-                quality = 100
-            )
-            pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-            dev.off()
+            network_nsize <- input$network_nsize
+            network_plot_width <- input$network_plot_width
+            network_plot_height <- input$network_plot_height
+            network_plot_dpi <- input$network_plot_dpi
             
-            write.table(
-                network_res$node_result,
-                file = paste(temp_network, "/node_result.txt", sep = ""),
-                quote = F,
-                sep = "\t",
-                na = "NA",
-                row.names = F
-            )
-            
-            write.table(
-                network_res$edge_result,
-                file = paste(temp_network, "/edge_result.txt", sep = ""),
-                quote = F,
-                sep = "\t",
-                na = "NA",
-                row.names = F
-            )
-
-            progress$set(value = 100)
-            progress$set(message = "Saving figure and table results ...", detail = "Saving figure and table results ...")
-        })
-
-        observe({
-            # invalidateLater(1000, session)
-
-            output$network_plot <- renderImage({
-                list(
-                    src = paste(temp_network, "/network_plot.jpeg", sep = ""),
-                    contentType = "image/jpeg",
-                    width = "100%",
-                    height = "auto"
+            task1_read_data <- r_bg(function(meta_file, gene_file, group_file) {
+                meta_data <- read.table(
+                    meta_file,
+                    header = TRUE,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = FALSE
                 )
-            }, deleteFile = FALSE)
-        })
+                
+                gene_data <- read.table(
+                    gene_file,
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                group_data <- read.table(
+                    group_file,
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                group_data <- as.character(group_data[, 1])
 
+                return(list(
+                    meta_data = meta_data,
+                    gene_data = gene_data,
+                    group_data = group_data
+                ))
+                
+                cat(meta_data)
+            }, supervise = TRUE, args = list(meta_file = meta_file,
+                                             gene_file = gene_file,
+                                             group_file = group_file))
+            
+            observeEvent(task1_read_data$wait(), {
+                meta_data <- task1_read_data$get_result()$meta_data
+                gene_data <- task1_read_data$get_result()$gene_data
+                group_data <- task1_read_data$get_result()$group_data
+                
+                # print(meta_data)
+                
+                updateProgressBar(session, id = "network_progress", value = 30)
+                network_step("Running mlimma and pdnet ...")
+                
+                task2_run_analysis <- r_bg(function(meta_data, gene_data, group_data, network_nsize, network_plot_width, network_plot_height, network_plot_dpi, temp_network) {
+                    library(ggplot2)
+                    library(MNet)
+                    library(dplyr)
+                    library(Cairo)
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    names(diff_meta)[4] <- "p_value"
+                    names(diff_gene)[4] <- "p_value"
+                    
+                    network_res <- pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    
+                    pdf(
+                        file = paste(temp_network, "/network_plot.pdf", sep = ""),
+                        width = network_plot_width,
+                        height = network_plot_height,
+                        onefile = FALSE
+                    )
+                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    dev.off()
+                    
+                    CairoJPEG(
+                        filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                        width = network_plot_width,
+                        height = network_plot_height,
+                        units = "in",
+                        res = network_plot_dpi,
+                        quality = 100
+                    )
+                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    dev.off()
+                    
+                    write.table(
+                        network_res$node_result,
+                        file = paste(temp_network, "/node_result.txt", sep = ""),
+                        quote = FALSE,
+                        sep = "\t",
+                        na = "NA",
+                        row.names = FALSE
+                    )
+                    
+                    write.table(
+                        network_res$edge_result,
+                        file = paste(temp_network, "/edge_result.txt", sep = ""),
+                        quote = FALSE,
+                        sep = "\t",
+                        na = "NA",
+                        row.names = FALSE
+                    )
+                    
+                    return(list(
+                        diff_meta = diff_meta
+                    ))
+                }, supervise = TRUE, 
+                args = list(meta_data = meta_data,
+                            gene_data = gene_data,
+                            group_data = group_data,
+                            network_nsize = network_nsize,
+                            network_plot_width = network_plot_width,
+                            network_plot_height = network_plot_height,
+                            network_plot_dpi = network_plot_dpi,
+                            temp_network = temp_network))
+                
+                observeEvent(task2_run_analysis$wait(), {
+                    print(task2_run_analysis$get_result()$diff_meta)
+                    
+                    updateProgressBar(session, id = "network_progress", value = 100)
+                    network_step("Analysis complete ...")
+                    
+                    output$network_plot <- renderImage({
+                        list(
+                            src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                            contentType = "image/jpeg",
+                            width = "100%",
+                            height = "auto"
+                        )
+                    }, deleteFile = FALSE)
+                    
+                    output$network_user_nodes_data <- renderDT({
+                        req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
+                        
+                        nodes <- read.table(
+                            paste(temp_network, "/node_result.txt", sep = ""),
+                            header = TRUE,
+                            sep = "\t",
+                            stringsAsFactors = FALSE
+                        )
+                        
+                        datatable(
+                            head(nodes, 30),
+                            rownames = TRUE,
+                            options = list(
+                                pageLength = 10,
+                                scrollX = TRUE
+                            )
+                        )
+                    }, server = TRUE)
+
+                    output$network_user_edges_data <- renderDT({
+                        req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+                        
+                        edges <- read.table(
+                            paste(temp_network, "/edge_result.txt", sep = ""),
+                            header = TRUE,
+                            sep = "\t",
+                            stringsAsFactors = FALSE
+                        )
+                        
+                        datatable(
+                            head(edges, 30),
+                            rownames = TRUE,
+                            options = list(
+                                pageLength = 10,
+                                scrollX = TRUE
+                            )
+                        )
+                    }, server = TRUE)
+                })
+            })
+        })
+        
         output$network_plot_download <- downloadHandler(
             filename = function() {
                 paste("NetworkPlot", input$network_plot_format, sep = ".")
@@ -5489,41 +5778,7 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
             }
         )
-
-        observe({
-            # invalidateLater(1000, session)
-
-            output$network_user_nodes_data <- renderDT({
-                req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
-
-                nodes <- read.table(
-                    paste(temp_network, "/node_result.txt", sep = ""),
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-
-                datatable(
-                    head(nodes, 30),
-                    rownames = TRUE,
-                    options = list(
-                        pageLength = 10,
-                        scrollX = TRUE
-                        # columnDefs = list(list(
-                        #     targets = 1:ncol(nodes),
-                        #     render = JS(
-                        #         "function(data, type, row, meta) {",
-                        #         "  if (data === null || data === '') return 'NA';",
-                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                        #         "}"
-                        #     )
-                        # ))
-                    )
-
-                )
-            }, server = TRUE)
-        })
-
+        
         output$network_user_nodes_data_download <- downloadHandler(
             filename = function() {
                 paste("network_user_nodes_data", ".txt", sep = "")
@@ -5532,41 +5787,7 @@ server <- shinyServer(function(session, input, output) {
                 file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
             }
         )
-
-        observe({
-            # invalidateLater(1000, session)
-
-            output$network_user_edges_data <- renderDT({
-                req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
-
-                edges <- read.table(
-                    paste(temp_network, "/edge_result.txt", sep = ""),
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-
-                datatable(
-                    head(edges, 30),
-                    rownames = TRUE,
-                    options = list(
-                        pageLength = 10,
-                        scrollX = TRUE
-                        # columnDefs = list(list(
-                        #     targets = 1:ncol(edges),
-                        #     render = JS(
-                        #         "function(data, type, row, meta) {",
-                        #         "  if (data === null || data === '') return 'NA';",
-                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                        #         "}"
-                        #     )
-                        # ))
-                    )
-
-                )
-            }, server = TRUE)
-        })
-
+        
         output$network_user_edges_data_download <- downloadHandler(
             filename = function() {
                 paste("network_user_edges_data", ".txt", sep = "")
