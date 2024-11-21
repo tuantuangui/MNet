@@ -190,6 +190,8 @@ diff_meta_decrease <- diff_meta %>%
 dascore_result_meta <- DAscore(diff_meta_increase$name,
                                diff_meta_decrease$name,
                                diff_meta$name,
+                               sort_plot = "category",
+                               min_measured_num = 3,
                                out = "metabolite")
 
 dascore_result_meta
@@ -213,6 +215,8 @@ diff_gene_decrease <- diff_gene %>%
 dascore_result_gene <- DAscore(diff_gene_increase$name,
                                diff_gene_decrease$name,
                                diff_gene$name,
+                               sort_plot = "category",
+                               min_measured_num = 10,
                                out = "gene")
 
 dascore_result_gene
@@ -241,6 +245,22 @@ dat <- c(meta.data, gene.data)
 ## the Extended pathway set enrichment analysis
 result <- ESEA(dat, out = "Extended")
 
+```
+
+eSEA plot of all the pathway
+```{r fig.keep='all', plot, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+result_filter <- result %>%
+  dplyr::filter(pval < 0.1) %>%
+  arrange(NES) %>%
+  mutate(pathway=factor(pathway,levels=pathway))
+
+p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
+  geom_bar(stat="identity")+
+  scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
+  theme_bw()+
+  labs(x=NULL)+
+  coord_flip()
+p
 ```
 
 eSEA plot of interested pathway which includes genes and metabolites

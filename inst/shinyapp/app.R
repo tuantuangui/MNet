@@ -8192,8 +8192,7 @@ server <- shinyServer(function(session, input, output) {
             data <- c(meta.data, gene.data)
             
             result <- ESEA(data, out = "Extended")
-            result$leadingEdge <- sapply(result$leadingEdge, function(x) paste(x, collapse = ", "))
-            
+
             write.table(
                 result,
                 paste(temp_esea, "/esea_result.txt", sep = ""),
