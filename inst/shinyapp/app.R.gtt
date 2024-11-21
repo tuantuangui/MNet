@@ -3586,31 +3586,11 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                             title = "Output: eSEA Plot",
-                                             markdown(
-                                               "
-						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
-                                                   "
-                                             ),
-                                             hr(),
-                                             tags$img(
-                                               src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA.png",
-                                               width = "100%",
-                                               height = "auto"
-                                             ),
-                                             tags$p(
-                                               tags$b("Figure 1."),
-                                               "Extended pathway set enrichment analysis."
-                                             ),
-                                             icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Interested Plot",
+                                               title = "Output: eSEA Plot",
                                                markdown(
                                                    "
-						                           Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -3733,38 +3713,12 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                             title = "Output: eSEA Plot",
-                                             fluidRow(column(width = 9), column(
-                                               width = 3,
-                                               downloadButton(
-                                                 outputId = "esea_plot_download",
-                                                 label = "Figure Download",
-                                                 class = NULL,
-                                                 icon = icon("circle-down"),
-                                                 style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                               )
-                                             )),
-                                             markdown(
-                                               "
-                                                   Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
-                                                   "
-                                             ),
-                                             hr(),
-                                             imageOutput("esea_plot", width = "100%", height = "auto"),
-                                             tags$p(
-                                               tags$b("Figure 1."),
-                                               "Extended pathway set enrichment analysis."
-                                             ),
-                                             icon = shiny::icon("image")
-                                           ),
-                                           tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: Interested Plot",
+                                               title = "Output: eSEA Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
-                                                       outputId = "esea_interested_plot_download",
+                                                       outputId = "esea_plot_download",
                                                        label = "Figure Download",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
@@ -3777,7 +3731,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               imageOutput("esea_interested_plot", width = "100%", height = "auto"),
+                                               imageOutput("esea_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "Extended pathway set enrichment analysis."
@@ -8250,34 +8204,12 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 100)
             progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
             
-            result_filter <- result %>%
-              dplyr::filter(pval < 0.1) %>%
-              arrange(NES) %>%
-              mutate(pathway=factor(pathway,levels=pathway))
-            
-            p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
-              geom_bar(stat="identity")+
-              scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
-              theme_bw()+
-              labs(x=NULL)+
-              coord_flip()
-            
-            ggsave(paste0(temp_esea, "/esea_plot.pdf"),p,
-                   width = input$esea_plot_width,
-                   height = input$esea_plot_height)
-            ggsave(paste0(temp_esea, "/esea_plot.jpeg"),
-                   p,
-                   width = input$esea_plot_width,
-                   height = input$esea_plot_height,
-                   units = "in",
-                   dpi = input$esea_plot_dpi)
-            
             plot <- function(){
                 pESEA(input$esea_pathway, data, out = "Extended")
             }
             
             pdf(
-                file = paste(temp_esea, "/esea_interested_plot.pdf", sep = ""),
+                file = paste(temp_esea, "/esea_plot.pdf", sep = ""),
                 width = input$esea_plot_width,
                 height = input$esea_plot_height,
                 onefile = FALSE
@@ -8286,7 +8218,7 @@ server <- shinyServer(function(session, input, output) {
             dev.off()
             
             CairoJPEG(
-                filename = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                filename = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
                 width = input$esea_plot_width,
                 height = input$esea_plot_height,
                 units = "in",
@@ -8341,33 +8273,11 @@ server <- shinyServer(function(session, input, output) {
         )
         
         observe({
-          # invalidateLater(1000, session)
-          
-          output$esea_plot <- renderImage({
-            list(
-              src = paste0(temp_esea, "/esea_plot.jpeg"),
-              contentType = "image/jpeg",
-              width = "100%",
-              height = "auto"
-            )
-          }, deleteFile = FALSE)
-        })
-        
-        output$esea_plot_download <- downloadHandler(
-          filename = function() {
-            paste("eSEAPlot", input$esea_plot_format, sep = ".")
-          },
-          content = function(file) {
-            file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
-          }
-        )
-        
-        observe({
             # invalidateLater(1000, session)
             
-            output$esea_interested_plot <- renderImage({
+            output$esea_plot <- renderImage({
                 list(
-                    src = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                    src = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
                     contentType = "image/jpeg",
                     width = "100%",
                     height = "auto"
@@ -8375,12 +8285,12 @@ server <- shinyServer(function(session, input, output) {
             }, deleteFile = FALSE)
         })
         
-        output$esea_interested_plot_download <- downloadHandler(
+        output$esea_plot_download <- downloadHandler(
             filename = function() {
-                paste("eSEAPlot_interested", input$esea_plot_format, sep = ".")
+                paste("eSEAPlot", input$esea_plot_format, sep = ".")
             },
             content = function(file) {
-                file.copy(from = paste(temp_esea, "/esea_interested_plot.", input$esea_plot_format, sep = ""), to = file)
+                file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
             }
         )
     }
@@ -8492,4 +8402,3 @@ server <- shinyServer(function(session, input, output) {
 
 # runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
 shinyApp(ui = ui, server = server)
-
