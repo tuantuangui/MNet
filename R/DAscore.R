@@ -193,7 +193,7 @@ DAscore <- function(increase_members,
       ggplot2::theme_bw()
     
     if (out == "Extended") {
-      p <- p + ggplot2::ylab("EDA score")
+      p <- p + ggplot2::ylab("ePDA score")
     } else {
       p <- p + ggplot2::ylab("DA score")
     }

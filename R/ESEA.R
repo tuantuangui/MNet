@@ -52,5 +52,6 @@ ESEA <- function(Ranks_all,
       gseaParam = gseaParam
     )
   }
+  fgseaRes_all$leadingEdge <- sapply(fgseaRes_all$leadingEdge, function(x) paste(x, collapse = ", "))
   return(fgseaRes_all)
 }

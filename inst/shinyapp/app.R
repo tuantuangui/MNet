@@ -7695,7 +7695,8 @@ server <- shinyServer(function(session, input, output) {
                         diff_meta_decrease$name
                     ),
                     c(diff_gene$name, diff_meta$name),
-                    min_measured_num = 2,
+                    sort_plot = "category",
+                    min_measured_num = 20,
                     out = "Extended"
                 )
                 epda_res
@@ -7765,7 +7766,8 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_decrease$name
                 ),
                 c(diff_gene$name, diff_meta$name),
-                min_measured_num = 2,
+                sort_plot = "category",
+                min_measured_num = 20,
                 out = "Extended"
             )
             

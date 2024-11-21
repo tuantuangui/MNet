@@ -164,7 +164,8 @@ ExtendDAscore_result <- DAscore(
   c(diff_gene_increase$name, diff_meta_increase$name),
   c(diff_gene_decrease$name, diff_meta_decrease$name),
   c(diff_gene$name, diff_meta$name),
-  min_measured_num = 2,
+  sort_plot = "category",
+  min_measured_num = 20,
   out = "Extended"
 )
 
@@ -225,33 +226,27 @@ Pathway set enrichment analysis, includes gene set enrichment analysis only focu
 Extended pathway set enrichment analysis which includes genes and metabolites
 
 ```{r message=FALSE, warning=FALSE}
-## the data is from R package 'clusterProfiler'
-## transform the gene's entrezid to symbol
-gene_symbol <- clusterProfiler::bitr(
-  rownames(gse16873.d),
-  fromType = "ENTREZID",
-  toType = "SYMBOL",
-  OrgDb = org.Hs.eg.db
-)
+library(MNet)
+diff_meta <- mlimma(meta_dat, group)
+diff_gene <- mlimma(gene_dat, group)
 
-dat <- gse16873.d %>%
-  as.data.frame() %>%
-  rownames_to_column(var = "ENTREZID") %>%
-  inner_join(gene_symbol, by = "ENTREZID")
-gene.data <- dat$DCIS_1
-names(gene.data) <- dat$SYMBOL
+meta.data <- diff_meta$logFC
+names(meta.data) <- diff_meta$name
 
-dat <- c(sim.cpd.data, gene.data)
+gene.data <- diff_gene$logFC
+names(gene.data) <- diff_gene$name
+
+dat <- c(meta.data, gene.data)
 
 ## the Extended pathway set enrichment analysis
 result <- ESEA(dat, out = "Extended")
-result$leadingEdge <- as.character(result$leadingEdge)
+
 ```
 
 eSEA plot of interested pathway which includes genes and metabolites
 ```{r fig.keep='all', pESEA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ## The plot of Butanoate metabolism contains genes and metabolites
-p <- pESEA("Butanoate metabolism", dat, out = "Extended")
+p <- pESEA("Oxidative phosphorylation", dat, out = "Extended")
 p
 ```
 
@@ -260,14 +255,14 @@ Metabolite set enrichment analysis which only includes metabolites
 
 ```{r message=FALSE, warning=FALSE}
 ## the metabolite pathway set enrichment analysis
-result <- ESEA(sim.cpd.data, out = "metabolite")
-result$leadingEdge <- as.character(result$leadingEdge)
+result <- ESEA(meta.data, out = "metabolite")
+
 ```
 
 mSEA plot of interested pathway which only includes metabolites
 ```{r fig.keep='all', mSEA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ## The plot of Butanoate metabolism contains metabolites
-p <- pESEA("Butanoate metabolism", sim.cpd.data, out = "metabolite")
+p <- pESEA("Oxidative phosphorylation", meta.data, out = "metabolite")
 p
 ```
 
@@ -277,12 +272,11 @@ Gene set enrichment analysis which only includes genes
 ```{r message=FALSE, warning=FALSE}
 ## the gene pathway set enrichment analysis
 result <- ESEA(gene.data, out = "gene")
-result$leadingEdge <- as.character(result$leadingEdge)
 ```
 
 gSEA plot of interested pathway which includes genes
 ```{r fig.keep='all', gSEA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ## The plot of Butanoate metabolism contains genes
-p <- pESEA("Butanoate metabolism", gene.data, out = "gene")
+p <- pESEA("Oxidative phosphorylation", gene.data, out = "gene")
 p
 ```

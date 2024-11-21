@@ -21,7 +21,7 @@
 ">
 <meta property="og:description" content="the subnetwork analysis
 ">
-<meta property="og:image" content="https://github.com/tuantuangui/MNet/logo.png">
+<meta property="og:image" content="/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -56,7 +56,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="nav-link" href="https://github.com/tuantuangui/MNet/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tuantuangui/MNet/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -72,7 +72,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Metabolism-related subnetwork analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tuantuangui/MNet/blob/HEAD/vignettes/02-Subnetwork_analysis.Rmd"><code>vignettes/02-Subnetwork_analysis.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tuantuangui/MNet/blob/HEAD/vignettes/02-Subnetwork_analysis.Rmd" class="external-link"><code>vignettes/02-Subnetwork_analysis.Rmd</code></a></small>
       <div class="d-none name"><code>02-Subnetwork_analysis.Rmd</code></div>
     </div>
 
@@ -90,7 +90,7 @@ activities significantly differ between these two clusters. This result
 will hopefully hint at some specific biological activities that are
 pathologically altered in tumoral samples.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tuantuangui/MNet/">MNet</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tuantuangui/MNet/" class="external-link">MNet</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -124,12 +124,12 @@ use blue for metabolites and red for genes.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
 <span><span class="co">##    logFC AveExpr      t  P.Value    adj.P.Val     B  logP name  </span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   6.92   23.1   11.3  1.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>020<span style="text-decoration: underline;">3</span>  17.7  7.69 APH1B </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  21.4    23.4   10.6  5.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>045<span style="text-decoration: underline;">5</span>  16.5  7.34 GFRA1 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  -<span style="color: #BB0000;">5.76</span>   24.4  -<span style="color: #BB0000;">10.1</span>  1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.4  7.05 RFC4  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  10.5    14.8   10.1  2.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>089<span style="text-decoration: underline;">1</span>  15.3  7.05 FAM47E</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">10.8</span>    20.6   -<span style="color: #BB0000;">9.79</span> 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>137   14.7  6.86 ORC6  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span>   4.02    5.65   9.69 4.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>147   14.5  6.83 FAM87B</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   6.92   23.1   11.3  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>019<span style="text-decoration: underline;">0</span>  17.9  7.72 APH1B </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  21.4    23.4   10.6  5.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 0.000<span style="text-decoration: underline;">000</span>050<span style="text-decoration: underline;">6</span>  16.4  7.30 GFRA1 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  -<span style="color: #BB0000;">5.76</span>   24.4  -<span style="color: #BB0000;">10.2</span>  1.67<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>093<span style="text-decoration: underline;">7</span>  15.5  7.03 RFC4  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  10.5    14.8   10.1  2.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>093<span style="text-decoration: underline;">7</span>  15.3  7.03 FAM47E</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>   4.02    5.65   9.83 3.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>120   14.8  6.92 FAM87B</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> -<span style="color: #BB0000;">10.8</span>    20.6   -<span style="color: #BB0000;">9.79</span> 4.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 0.000<span style="text-decoration: underline;">000</span>120   14.7  6.92 ORC6</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## change the name in diff_meta 'P.Value' to 'p_value'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diff_meta</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>  <span class="op">&lt;-</span> <span class="st">"p_value"</span></span>
@@ -176,97 +176,97 @@ use blue for metabolites and red for genes.</p>
 <span><span class="co">## 17       C02291 metabolite  -7.05 19.394642 -6.002475 1.086113e-06 1.982156e-05</span></span>
 <span><span class="co">## 18       C02045 metabolite   2.86 22.643320  9.246113 1.517272e-10 3.322827e-08</span></span>
 <span><span class="co">## 19       C18170 metabolite  -1.41 30.500751 -5.916654 1.392209e-06 2.177813e-05</span></span>
-<span><span class="co">## 20        ABCA8       gene  17.72 21.429976  7.927899 1.249085e-08 1.509014e-06</span></span>
-<span><span class="co">## 21        ACACB       gene  10.75 26.910121  6.322806 4.302487e-07 1.575420e-05</span></span>
-<span><span class="co">## 22        ADCY5       gene  10.80 17.439272  6.446905 3.014049e-07 1.233330e-05</span></span>
-<span><span class="co">## 23          AK7       gene   5.04  9.457650  6.487978 3.619592e-07 1.385352e-05</span></span>
-<span><span class="co">## 24       ATP2B1       gene   4.47 29.300110  5.567432 3.826994e-06 7.890137e-05</span></span>
-<span><span class="co">## 25      ATP5F1C       gene  -4.98 35.514591 -6.082839 8.588031e-07 2.589386e-05</span></span>
-<span><span class="co">## 26        AURKA       gene -10.91 22.465755 -7.954966 4.477682e-09 8.738369e-07</span></span>
-<span><span class="co">## 27        AURKB       gene -11.36 19.110752 -8.415370 1.304025e-09 4.927271e-07</span></span>
-<span><span class="co">## 28          BMX       gene   8.87 10.651736  6.999877 7.462994e-08 4.837055e-06</span></span>
-<span><span class="co">## 29         BUB1       gene -11.71 23.210846 -8.194952 2.346136e-09 6.720167e-07</span></span>
-<span><span class="co">## 30        BUB1B       gene -10.30 22.881880 -6.355195 3.920415e-07 1.475056e-05</span></span>
-<span><span class="co">## 31         CDC7       gene  -7.02 22.392840 -7.229880 3.289644e-08 2.752749e-06</span></span>
-<span><span class="co">## 32         CDK1       gene -11.01 26.430882 -7.405320 2.019378e-08 2.061043e-06</span></span>
-<span><span class="co">## 33        CDK16       gene  -4.90 33.659519 -7.768899 7.426455e-09 1.135382e-06</span></span>
-<span><span class="co">## 34         CDK8       gene  -3.66 22.779754 -5.668001 2.856973e-06 6.279329e-05</span></span>
-<span><span class="co">## 35        CHEK1       gene  -8.41 22.346608 -7.027941 5.792127e-08 4.081841e-06</span></span>
-<span><span class="co">## 36          CIT       gene  -6.87 22.564460 -6.157121 6.931174e-07 2.242090e-05</span></span>
-<span><span class="co">## 37         CPS1       gene   7.39 14.277831  5.996249 1.102995e-06 3.114164e-05</span></span>
-<span><span class="co">## 38        CTPS1       gene  -7.25 27.931682 -6.443127 3.046838e-07 1.241027e-05</span></span>
-<span><span class="co">## 39        DCLK1       gene  14.01 23.498349  6.545858 2.639923e-07 1.123154e-05</span></span>
-<span><span class="co">## 40        DTYMK       gene  -3.91 22.038522 -5.812212 1.879693e-06 4.541696e-05</span></span>
-<span><span class="co">## 41  FPGT-TNNI3K       gene   8.35 12.342927  8.127066 4.562409e-09 8.806937e-07</span></span>
-<span><span class="co">## 42         GRK3       gene   4.84 27.363790  7.126857 7.717556e-08 4.965800e-06</span></span>
-<span><span class="co">## 43       HASPIN       gene  -7.20 14.494119 -7.240705 3.191759e-08 2.736790e-06</span></span>
-<span><span class="co">## 44      MAP3K12       gene   7.54 24.538204  6.109944 7.941649e-07 2.483024e-05</span></span>
-<span><span class="co">## 45        MASTL       gene  -7.12 25.792464 -9.568097 6.693370e-11 1.485844e-07</span></span>
-<span><span class="co">## 46         MELK       gene -12.39 21.556778 -7.969245 4.307904e-09 8.595963e-07</span></span>
-<span><span class="co">## 47         NEK2       gene -11.86 20.658434 -7.064147 5.231846e-08 3.871348e-06</span></span>
-<span><span class="co">## 48         NEK5       gene   6.98 13.398510  6.674515 1.574017e-07 7.963808e-06</span></span>
-<span><span class="co">## 49         NME1       gene  -5.39 29.622976 -7.284423 2.825566e-08 2.586558e-06</span></span>
-<span><span class="co">## 50          PBK       gene  -9.74 19.095824 -5.765918 2.149913e-06 5.017122e-05</span></span>
-<span><span class="co">## 51         PDK4       gene  19.91 25.564214  8.415999 1.301851e-09 4.927271e-07</span></span>
-<span><span class="co">## 52       PKMYT1       gene -10.18 20.944080 -7.292234 2.764777e-08 2.557060e-06</span></span>
-<span><span class="co">## 53         PLK1       gene -10.59 22.624463 -6.755705 1.249762e-07 6.856534e-06</span></span>
-<span><span class="co">## 54         PLK4       gene  -7.96 21.251613 -6.672628 1.582489e-07 7.983927e-06</span></span>
-<span><span class="co">## 55        PRKG1       gene  10.38 19.049114  5.520254 4.389791e-06 8.694848e-05</span></span>
-<span><span class="co">## 56         RRM2       gene -10.65 26.406588 -6.735381 1.323980e-07 7.146676e-06</span></span>
-<span><span class="co">## 57      SLC17A7       gene   6.80  9.548279  7.083092 5.933446e-08 4.132238e-06</span></span>
-<span><span class="co">## 58      SLC27A1       gene   6.12 24.168456  6.250211 5.301011e-07 1.835101e-05</span></span>
-<span><span class="co">## 59        SRPK1       gene  -6.23 32.110850 -8.740017 5.552561e-10 3.521712e-07</span></span>
-<span><span class="co">## 60       STK32B       gene  10.17 15.665397  6.888633 1.449981e-07 7.551383e-06</span></span>
-<span><span class="co">## 61          TEK       gene  11.94 19.310413  6.691351 1.500427e-07 7.745953e-06</span></span>
-<span><span class="co">## 62       TGFBR2       gene   9.47 35.070723  7.622292 1.109599e-08 1.449666e-06</span></span>
-<span><span class="co">## 63          TK1       gene  -9.85 24.293472 -6.591871 1.991773e-07 9.382466e-06</span></span>
-<span><span class="co">## 64          TK2       gene   4.61 26.796432  7.228577 3.301625e-08 2.752749e-06</span></span>
-<span><span class="co">## 65          TTK       gene -10.76 20.572338 -7.612819 1.138862e-08 1.456454e-06</span></span>
-<span><span class="co">## 66      ALDH1A1       gene  14.49 22.024927  5.718473 2.467395e-06 5.574868e-05</span></span>
-<span><span class="co">## 67      CYP4F12       gene  10.04 12.190344  6.235201 9.807376e-07 2.878830e-05</span></span>
-<span><span class="co">## 68        GAPDH       gene  -6.76 50.561018 -5.517560 4.424322e-06 8.730170e-05</span></span>
-<span><span class="co">## 69         GLDC       gene -14.89 17.466434 -6.850337 9.558377e-08 5.813261e-06</span></span>
-<span><span class="co">## 70        GLUD1       gene   4.87 33.841440  6.005386 1.074230e-06 3.057251e-05</span></span>
-<span><span class="co">## 71         GPD1       gene  16.24 19.173724  6.363837 3.824380e-07 1.448127e-05</span></span>
-<span><span class="co">## 72        GPD1L       gene   6.03 27.548533  6.895382 8.415573e-08 5.264169e-06</span></span>
-<span><span class="co">## 73         H6PD       gene   5.57 32.217726  7.306868 2.654418e-08 2.507437e-06</span></span>
-<span><span class="co">## 74     HSD17B10       gene  -4.14 28.572926 -6.081707 8.616159e-07 2.593464e-05</span></span>
-<span><span class="co">## 75        PDHA1       gene  -3.76 31.935650 -5.740920 2.311714e-06 5.345537e-05</span></span>
-<span><span class="co">## 76         RDH5       gene   8.56 14.448947  5.995533 1.105279e-06 3.115659e-05</span></span>
-<span><span class="co">## 77          ME3       gene   5.02 21.964317  6.121416 1.149209e-06 3.213986e-05</span></span>
-<span><span class="co">## 78         NOS3       gene   5.68 18.890199  5.592183 3.561261e-06 7.457999e-05</span></span>
-<span><span class="co">## 79          TXN       gene  -4.94 33.816196 -6.677388 1.561207e-07 7.921563e-06</span></span>
-<span><span class="co">## 80        PNPT1       gene  -4.56 28.953012 -5.520102 4.391733e-06 8.694848e-05</span></span>
-<span><span class="co">## 81        CPT1A       gene   5.55 29.734599  6.098122 8.217325e-07 2.516060e-05</span></span>
-<span><span class="co">## 82         YOD1       gene  -5.81 25.782081 -5.973874 1.176750e-06 3.272703e-05</span></span>
-<span><span class="co">## 83      ZDHHC24       gene   4.07 21.947734  5.793109 1.986798e-06 4.734971e-05</span></span>
-<span><span class="co">## 84        HPRT1       gene  -4.73 26.038333 -5.525826 4.319227e-06 8.608883e-05</span></span>
-<span><span class="co">## 85         NPR1       gene   9.96 20.181792  7.187340 3.704698e-08 2.977002e-06</span></span>
-<span><span class="co">## 86        PDSS1       gene  -6.37 18.246207 -7.257323 3.047208e-08 2.692307e-06</span></span>
-<span><span class="co">## 87         POLE       gene  -3.14 30.147049 -5.973631 1.177576e-06 3.272703e-05</span></span>
-<span><span class="co">## 88         POLK       gene   2.87 26.124109  6.023414 1.019670e-06 2.939661e-05</span></span>
-<span><span class="co">## 89         POLN       gene   7.10 11.987359  6.212211 5.913774e-07 1.977829e-05</span></span>
-<span><span class="co">## 90         POLQ       gene  -9.85 20.506744 -8.439654 1.222778e-09 4.927271e-07</span></span>
-<span><span class="co">## 91         FMOD       gene  15.43 28.243500  7.110280 4.596636e-08 3.503505e-06</span></span>
-<span><span class="co">## 92      GALNT15       gene  12.32 18.290691  6.689610 2.467245e-07 1.079454e-05</span></span>
-<span><span class="co">## 93          OGN       gene  18.20 22.806139  7.806057 8.355314e-09 1.223776e-06</span></span>
-<span><span class="co">## 94        PDIA4       gene  -5.68 36.460830 -6.919181 7.868660e-08 4.990698e-06</span></span>
-<span><span class="co">## 95        PLOD3       gene  -4.43 29.982526 -5.859541 1.638652e-06 4.130951e-05</span></span>
-<span><span class="co">## 96       ACADSB       gene   7.89 28.574986  6.154348 6.986819e-07 2.255980e-05</span></span>
-<span><span class="co">## 97         AOX1       gene  14.53 18.984377  8.633552 9.578291e-10 4.476339e-07</span></span>
-<span><span class="co">## 98         CAV1       gene   9.26 32.804468  6.952892 7.154898e-08 4.736178e-06</span></span>
-<span><span class="co">## 99         MAOA       gene  12.46 20.677373  7.194953 3.626696e-08 2.940936e-06</span></span>
-<span><span class="co">## 100     NOSTRIN       gene  10.62 19.919745  7.276692 2.887075e-08 2.615896e-06</span></span>
-<span><span class="co">## 101   EEF1AKMT4       gene  -7.15 17.236700 -7.604358 1.165661e-08 1.460507e-06</span></span>
-<span><span class="co">## 102     ETFBKMT       gene   4.95 17.269675  6.032199 9.941029e-07 2.903663e-05</span></span>
-<span><span class="co">## 103        TRMO       gene   3.29 20.426508  6.498542 2.600062e-07 1.118027e-05</span></span>
-<span><span class="co">## 104        GPT2       gene  -8.56 28.350456 -6.001599 1.086059e-06 3.079845e-05</span></span>
-<span><span class="co">## 105        ABAT       gene  10.38 21.786314  5.960613 1.222784e-06 3.325485e-05</span></span>
-<span><span class="co">## 106         GGH       gene  -8.08 24.429955 -6.679856 1.550285e-07 7.894588e-06</span></span>
-<span><span class="co">## 107     NAALAD2       gene   9.17 13.369770  7.245719 3.147429e-08 2.736790e-06</span></span>
-<span><span class="co">## 108       PSAT1       gene -11.58 22.681462 -7.665064 9.866820e-09 1.358332e-06</span></span>
-<span><span class="co">## 109      SLC7A5       gene -10.07 30.536982 -5.815316 1.862848e-06 4.514744e-05</span></span>
-<span><span class="co">## 110         CBS       gene -12.49 19.845748 -5.804015 1.924921e-06 4.613317e-05</span></span>
+<span><span class="co">## 20        ABCA8       gene  17.72 21.429976  7.911609 1.354128e-08 1.613957e-06</span></span>
+<span><span class="co">## 21        ACACB       gene  10.75 26.910121  6.313422 4.516557e-07 1.626968e-05</span></span>
+<span><span class="co">## 22        ADCY5       gene  10.80 17.439272  6.437534 3.166774e-07 1.271965e-05</span></span>
+<span><span class="co">## 23          AK7       gene   5.04  9.457650  6.506762 3.524098e-07 1.345902e-05</span></span>
+<span><span class="co">## 24       ATP2B1       gene   4.47 29.300110  5.578654 3.764011e-06 7.754650e-05</span></span>
+<span><span class="co">## 25      ATP5F1C       gene  -4.98 35.514591 -6.094144 8.479140e-07 2.565265e-05</span></span>
+<span><span class="co">## 26        AURKA       gene -10.91 22.465755 -7.947439 4.735183e-09 8.977915e-07</span></span>
+<span><span class="co">## 27        AURKB       gene -11.36 19.110752 -8.407832 1.384197e-09 5.343902e-07</span></span>
+<span><span class="co">## 28          BMX       gene   8.87 10.651736  6.995449 7.770982e-08 4.981215e-06</span></span>
+<span><span class="co">## 29         BUB1       gene -11.71 23.210846 -8.186199 2.494013e-09 6.920496e-07</span></span>
+<span><span class="co">## 30        BUB1B       gene -10.30 22.881880 -6.346401 4.109495e-07 1.526789e-05</span></span>
+<span><span class="co">## 31         CDC7       gene  -7.02 22.392840 -7.234139 3.347271e-08 2.817260e-06</span></span>
+<span><span class="co">## 32         CDK1       gene -11.01 26.430882 -7.396614 2.133124e-08 2.152395e-06</span></span>
+<span><span class="co">## 33        CDK16       gene  -4.90 33.659519 -7.806509 6.935946e-09 1.080486e-06</span></span>
+<span><span class="co">## 34         CDK8       gene  -3.66 22.779754 -5.693552 2.697715e-06 6.026254e-05</span></span>
+<span><span class="co">## 35        CHEK1       gene  -8.41 22.346608 -7.024691 6.008033e-08 4.174576e-06</span></span>
+<span><span class="co">## 36          CIT       gene  -6.87 22.564460 -6.156151 7.093574e-07 2.273913e-05</span></span>
+<span><span class="co">## 37         CPS1       gene   7.39 14.277831  5.992796 1.135548e-06 3.141152e-05</span></span>
+<span><span class="co">## 38        CTPS1       gene  -7.25 27.931682 -6.441867 3.127827e-07 1.268198e-05</span></span>
+<span><span class="co">## 39        DCLK1       gene  14.01 23.498349  6.533492 2.800217e-07 1.161478e-05</span></span>
+<span><span class="co">## 40        DTYMK       gene  -3.91 22.038522 -5.835299 1.789736e-06 4.401625e-05</span></span>
+<span><span class="co">## 41  FPGT-TNNI3K       gene   8.35 12.342927  8.131239 4.696583e-09 8.977915e-07</span></span>
+<span><span class="co">## 42         GRK3       gene   4.84 27.363790  7.163480 7.235965e-08 4.782652e-06</span></span>
+<span><span class="co">## 43       HASPIN       gene  -7.20 14.494119 -7.243967 3.257007e-08 2.769621e-06</span></span>
+<span><span class="co">## 44      MAP3K12       gene   7.54 24.538204  6.106373 8.185818e-07 2.497800e-05</span></span>
+<span><span class="co">## 45        MASTL       gene  -7.12 25.792464 -9.594579 6.589670e-11 1.376351e-07</span></span>
+<span><span class="co">## 46         MELK       gene -12.39 21.556778 -7.958982 4.589921e-09 8.977915e-07</span></span>
+<span><span class="co">## 47         NEK2       gene -11.86 20.658434 -7.053846 5.536721e-08 4.079943e-06</span></span>
+<span><span class="co">## 48         NEK5       gene   6.98 13.398510  6.675615 1.608072e-07 8.067159e-06</span></span>
+<span><span class="co">## 49         NME1       gene  -5.39 29.622976 -7.305005 2.749100e-08 2.556087e-06</span></span>
+<span><span class="co">## 50          PBK       gene  -9.74 19.095824 -5.757435 2.242037e-06 5.189385e-05</span></span>
+<span><span class="co">## 51         PDK4       gene  19.91 25.564214  8.399442 1.415235e-09 5.347482e-07</span></span>
+<span><span class="co">## 52       PKMYT1       gene -10.18 20.944080 -7.284947 2.906475e-08 2.666337e-06</span></span>
+<span><span class="co">## 53         PLK1       gene -10.59 22.624463 -6.746873 1.314085e-07 7.108426e-06</span></span>
+<span><span class="co">## 54         PLK4       gene  -7.96 21.251613 -6.669639 1.635564e-07 8.158984e-06</span></span>
+<span><span class="co">## 55         RRM2       gene -10.65 26.406588 -6.726438 1.392349e-07 7.359144e-06</span></span>
+<span><span class="co">## 56      SLC17A7       gene   6.80  9.548279  7.088822 6.012667e-08 4.174576e-06</span></span>
+<span><span class="co">## 57      SLC27A1       gene   6.12 24.168456  6.253613 5.361454e-07 1.852414e-05</span></span>
+<span><span class="co">## 58        SRPK1       gene  -6.23 32.110850 -8.768319 5.384049e-10 3.328580e-07</span></span>
+<span><span class="co">## 59       STK32B       gene  10.17 15.665397  6.881147 1.523235e-07 7.795716e-06</span></span>
+<span><span class="co">## 60          TEK       gene  11.94 19.310413  6.680809 1.584555e-07 7.994348e-06</span></span>
+<span><span class="co">## 61       TGFBR2       gene   9.47 35.070723  7.617670 1.161018e-08 1.509869e-06</span></span>
+<span><span class="co">## 62          TK1       gene  -9.85 24.293472 -6.584032 2.085826e-07 9.720281e-06</span></span>
+<span><span class="co">## 63          TK2       gene   4.61 26.796432  7.262399 3.094332e-08 2.707007e-06</span></span>
+<span><span class="co">## 64          TTK       gene -10.76 20.572338 -7.604942 1.202218e-08 1.514198e-06</span></span>
+<span><span class="co">## 65      ALDH1A1       gene  14.49 22.024927  5.706844 2.595805e-06 5.805906e-05</span></span>
+<span><span class="co">## 66        CRYL1       gene   4.60 20.724954  5.517996 4.488220e-06 8.846425e-05</span></span>
+<span><span class="co">## 67      CYP4F12       gene  10.04 12.190344  6.226939 1.027564e-06 2.981700e-05</span></span>
+<span><span class="co">## 68        GAPDH       gene  -6.76 50.561018 -5.514507 4.533881e-06 8.897630e-05</span></span>
+<span><span class="co">## 69         GLDC       gene -14.89 17.466434 -6.837514 1.017142e-07 6.041279e-06</span></span>
+<span><span class="co">## 70        GLUD1       gene   4.87 33.841440  6.017013 1.058943e-06 3.023436e-05</span></span>
+<span><span class="co">## 71         GPD1       gene  16.24 19.173724  6.350855 4.057439e-07 1.521514e-05</span></span>
+<span><span class="co">## 72        GPD1L       gene   6.03 27.548533  6.904397 8.423838e-08 5.286181e-06</span></span>
+<span><span class="co">## 73         H6PD       gene   5.57 32.217726  7.325256 2.598966e-08 2.442065e-06</span></span>
+<span><span class="co">## 74     HSD17B10       gene  -4.14 28.572926 -6.104926 8.219978e-07 2.500034e-05</span></span>
+<span><span class="co">## 75        PDHA1       gene  -3.76 31.935650 -5.765686 2.189113e-06 5.108602e-05</span></span>
+<span><span class="co">## 76         RDH5       gene   8.56 14.448947  5.989148 1.147564e-06 3.169453e-05</span></span>
+<span><span class="co">## 77          ME3       gene   5.02 21.964317  6.137682 1.124639e-06 3.137603e-05</span></span>
+<span><span class="co">## 78         NOS3       gene   5.68 18.890199  5.593991 3.600263e-06 7.469284e-05</span></span>
+<span><span class="co">## 79          TXN       gene  -4.94 33.816196 -6.696250 1.516682e-07 7.784614e-06</span></span>
+<span><span class="co">## 80        PNPT1       gene  -4.56 28.953012 -5.529923 4.335548e-06 8.622061e-05</span></span>
+<span><span class="co">## 81        CPT1A       gene   5.55 29.734599  6.104347 8.233680e-07 2.500034e-05</span></span>
+<span><span class="co">## 82         YOD1       gene  -5.81 25.782081 -5.977330 1.187367e-06 3.264156e-05</span></span>
+<span><span class="co">## 83      ZDHHC24       gene   4.07 21.947734  5.812928 1.909381e-06 4.600908e-05</span></span>
+<span><span class="co">## 84        HPRT1       gene  -4.73 26.038333 -5.533988 4.284716e-06 8.549694e-05</span></span>
+<span><span class="co">## 85         NPR1       gene   9.96 20.181792  7.180314 3.888535e-08 3.110653e-06</span></span>
+<span><span class="co">## 86        PDSS1       gene  -6.37 18.246207 -7.266648 3.058015e-08 2.700543e-06</span></span>
+<span><span class="co">## 87         POLE       gene  -3.14 30.147049 -6.022212 1.043187e-06 3.010673e-05</span></span>
+<span><span class="co">## 88         POLK       gene   2.87 26.124109  6.086482 8.668279e-07 2.600337e-05</span></span>
+<span><span class="co">## 89         POLN       gene   7.10 11.987359  6.210572 6.066559e-07 2.010403e-05</span></span>
+<span><span class="co">## 90         POLQ       gene  -9.85 20.506744 -8.436628 1.282846e-09 5.177740e-07</span></span>
+<span><span class="co">## 91         FMOD       gene  15.43 28.243500  7.096981 4.907142e-08 3.708338e-06</span></span>
+<span><span class="co">## 92      GALNT15       gene  12.32 18.290691  6.678378 2.613687e-07 1.120036e-05</span></span>
+<span><span class="co">## 93          OGN       gene  18.20 22.806139  7.790483 9.023024e-09 1.281919e-06</span></span>
+<span><span class="co">## 94        PDIA4       gene  -5.68 36.460830 -6.931848 7.797611e-08 4.981215e-06</span></span>
+<span><span class="co">## 95        PLOD3       gene  -4.43 29.982526 -5.874824 1.596457e-06 4.021487e-05</span></span>
+<span><span class="co">## 96       ACADSB       gene   7.89 28.574986  6.149912 7.221998e-07 2.306753e-05</span></span>
+<span><span class="co">## 97         AOX1       gene  14.53 18.984377  8.620853 1.032967e-09 4.703708e-07</span></span>
+<span><span class="co">## 98         CAV1       gene   9.26 32.804468  6.946964 7.473100e-08 4.915363e-06</span></span>
+<span><span class="co">## 99         MAOA       gene  12.46 20.677373  7.184017 3.848607e-08 3.101698e-06</span></span>
+<span><span class="co">## 100     NOSTRIN       gene  10.62 19.919745  7.268492 3.042382e-08 2.700543e-06</span></span>
+<span><span class="co">## 101   EEF1AKMT4       gene  -7.15 17.236700 -7.610448 1.184217e-08 1.512986e-06</span></span>
+<span><span class="co">## 102     ETFBKMT       gene   4.95 17.269675  6.043198 9.819487e-07 2.872887e-05</span></span>
+<span><span class="co">## 103        TRMO       gene   3.29 20.426508  6.557063 2.252186e-07 1.017724e-05</span></span>
+<span><span class="co">## 104        GPT2       gene  -8.56 28.350456 -5.995227 1.127614e-06 3.138760e-05</span></span>
+<span><span class="co">## 105        ABAT       gene  10.38 21.786314  5.951486 1.279323e-06 3.431949e-05</span></span>
+<span><span class="co">## 106         GGH       gene  -8.08 24.429955 -6.676473 1.604163e-07 8.067159e-06</span></span>
+<span><span class="co">## 107     NAALAD2       gene   9.17 13.369770  7.240810 3.285726e-08 2.778629e-06</span></span>
+<span><span class="co">## 108       PSAT1       gene -11.58 22.681462 -7.655738 1.046140e-08 1.429108e-06</span></span>
+<span><span class="co">## 109      SLC7A5       gene -10.07 30.536982 -5.806475 1.945362e-06 4.658300e-05</span></span>
+<span><span class="co">## 110         CBS       gene -12.49 19.845748 -5.793222 2.021413e-06 4.799235e-05</span></span>
 <span><span class="co">##              B      logP  colors</span></span>
 <span><span class="co">## 1   -0.1284396 3.0063163 #8F8FCE</span></span>
 <span><span class="co">## 2   -3.8094665 1.5607697 #8F8FCE</span></span>
@@ -287,97 +287,97 @@ use blue for metabolites and red for genes.</p>
 <span><span class="co">## 17   5.3885292 4.7028621 #0000FF</span></span>
 <span><span class="co">## 18  14.1148491 7.4784923 #DFDF5F</span></span>
 <span><span class="co">## 19   5.1446045 4.6619794 #BEBEBE</span></span>
-<span><span class="co">## 20   9.4447939 5.8213067 #FF0000</span></span>
-<span><span class="co">## 21   6.3507309 4.8026036 #DF5F5F</span></span>
-<span><span class="co">## 22   6.6776761 4.9089209 #DF5F5F</span></span>
-<span><span class="co">## 23   6.4936485 4.8584398 #CE8F8F</span></span>
-<span><span class="co">## 24   4.3363288 4.1029154 #CE8F8F</span></span>
-<span><span class="co">## 25   5.7148032 4.5868032 #8FCE8F</span></span>
-<span><span class="co">## 26  10.5086690 6.0585696 #5FDF5F</span></span>
-<span><span class="co">## 27  11.6156772 6.3073935 #5FDF5F</span></span>
-<span><span class="co">## 28   7.9426935 5.3154190 #DF5F5F</span></span>
-<span><span class="co">## 29  11.0896899 6.1726199 #5FDF5F</span></span>
-<span><span class="co">## 30   6.4361943 4.8311914 #5FDF5F</span></span>
-<span><span class="co">## 31   8.7028791 5.5602333 #8FCE8F</span></span>
-<span><span class="co">## 32   9.1464490 5.6859130 #5FDF5F</span></span>
-<span><span class="co">## 33  10.0523401 5.9448581 #8FCE8F</span></span>
-<span><span class="co">## 34   4.6063033 4.2020868 #BEBEBE</span></span>
-<span><span class="co">## 35   8.1874004 5.3891440 #5FDF5F</span></span>
-<span><span class="co">## 36   5.9121429 4.6493471 #8FCE8F</span></span>
-<span><span class="co">## 37   5.4842676 4.5066585 #CE8F8F</span></span>
-<span><span class="co">## 38   6.6677424 4.9062187 #8FCE8F</span></span>
-<span><span class="co">## 39   6.7917319 4.9495605 #EF3030</span></span>
-<span><span class="co">## 40   4.9927198 4.3427819 #BEBEBE</span></span>
-<span><span class="co">## 41  10.4262958 6.0551751 #DF5F5F</span></span>
-<span><span class="co">## 42   7.8707177 5.3040108 #CE8F8F</span></span>
-<span><span class="co">## 43   8.7303662 5.5627586 #8FCE8F</span></span>
-<span><span class="co">## 44   5.7868585 4.6050191 #CE8F8F</span></span>
-<span><span class="co">## 45  14.2429889 6.8280267 #8FCE8F</span></span>
-<span><span class="co">## 46  10.5434788 6.0657055 #30EF30</span></span>
-<span><span class="co">## 47   8.2801962 5.4121378 #5FDF5F</span></span>
-<span><span class="co">## 48   7.2734511 5.0988792 #CE8F8F</span></span>
-<span><span class="co">## 49   8.8412176 5.5872777 #8FCE8F</span></span>
-<span><span class="co">## 50   4.8687772 4.2995453 #5FDF5F</span></span>
-<span><span class="co">## 51  11.6171684 6.3073935 #FF0000</span></span>
-<span><span class="co">## 52   8.8609945 5.5922591 #5FDF5F</span></span>
-<span><span class="co">## 53   7.4846599 5.1638954 #5FDF5F</span></span>
-<span><span class="co">## 54   7.2685339 5.0977834 #8FCE8F</span></span>
-<span><span class="co">## 55   4.2095724 4.0607380 #DF5F5F</span></span>
-<span><span class="co">## 56   7.4318569 5.1458959 #5FDF5F</span></span>
-<span><span class="co">## 57   8.1509319 5.3838147 #CE8F8F</span></span>
-<span><span class="co">## 58   6.1588423 4.7363401 #CE8F8F</span></span>
-<span><span class="co">## 59  12.3767570 6.4532462 #8FCE8F</span></span>
-<span><span class="co">## 60   7.3045373 5.1219735 #DF5F5F</span></span>
-<span><span class="co">## 61   7.3173064 5.1109251 #DF5F5F</span></span>
-<span><span class="co">## 62   9.6892781 5.8387321 #DF5F5F</span></span>
-<span><span class="co">## 63   7.0577370 5.0276830 #5FDF5F</span></span>
-<span><span class="co">## 64   8.6995706 5.5602333 #CE8F8F</span></span>
-<span><span class="co">## 65   9.6657153 5.8367031 #5FDF5F</span></span>
-<span><span class="co">## 66   4.7416485 4.2537654 #EF3030</span></span>
-<span><span class="co">## 67   5.5631188 4.5407840 #DF5F5F</span></span>
-<span><span class="co">## 68   4.2023329 4.0589773 #8FCE8F</span></span>
-<span><span class="co">## 69   7.7299151 5.2355802 #30EF30</span></span>
-<span><span class="co">## 70   5.5086185 4.5146689 #CE8F8F</span></span>
-<span><span class="co">## 71   6.4589825 4.8391933 #FF0000</span></span>
-<span><span class="co">## 72   7.8462984 5.2786702 #CE8F8F</span></span>
-<span><span class="co">## 73   8.8980300 5.6007700 #CE8F8F</span></span>
-<span><span class="co">## 74   5.7117918 4.5861198 #8FCE8F</span></span>
-<span><span class="co">## 75   4.8018073 4.2720087 #BEBEBE</span></span>
-<span><span class="co">## 76   5.4823613 4.5064500 #DF5F5F</span></span>
-<span><span class="co">## 77   5.4324636 4.4929560 #CE8F8F</span></span>
-<span><span class="co">## 78   4.4028047 4.1273777 #CE8F8F</span></span>
-<span><span class="co">## 79   7.2809364 5.1011891 #8FCE8F</span></span>
-<span><span class="co">## 80   4.2091638 4.0607380 #8FCE8F</span></span>
-<span><span class="co">## 81   5.7554373 4.5992790 #CE8F8F</span></span>
-<span><span class="co">## 82   5.4246151 4.4850935 #8FCE8F</span></span>
-<span><span class="co">## 83   4.9415889 4.3246827 #CE8F8F</span></span>
-<span><span class="co">## 84   4.2245452 4.0650532 #8FCE8F</span></span>
-<span><span class="co">## 85   8.5947181 5.5262209 #DF5F5F</span></span>
-<span><span class="co">## 86   8.7725319 5.5698754 #8FCE8F</span></span>
-<span><span class="co">## 87   5.4239687 4.4850935 #BEBEBE</span></span>
-<span><span class="co">## 88   5.5566472 4.5317027 #BEBEBE</span></span>
-<span><span class="co">## 89   6.0582219 4.7038113 #CE8F8F</span></span>
-<span><span class="co">## 90  11.6731716 6.3073935 #5FDF5F</span></span>
-<span><span class="co">## 91   8.3982019 5.4554973 #EF3030</span></span>
-<span><span class="co">## 92   6.8257119 4.9667958 #EF3030</span></span>
-<span><span class="co">## 93   9.9205805 5.9122981 #FF0000</span></span>
-<span><span class="co">## 94   7.9076912 5.3018387 #8FCE8F</span></span>
-<span><span class="co">## 95   5.1193175 4.3839499 #8FCE8F</span></span>
-<span><span class="co">## 96   5.9047829 4.6466647 #CE8F8F</span></span>
-<span><span class="co">## 97  11.8513772 6.3490771 #EF3030</span></span>
-<span><span class="co">## 98   7.9945403 5.3245720 #DF5F5F</span></span>
-<span><span class="co">## 99   8.6140929 5.5315145 #EF3030</span></span>
-<span><span class="co">## 100  8.8216332 5.5823795 #DF5F5F</span></span>
-<span><span class="co">## 101  9.6446578 5.8354963 #8FCE8F</span></span>
-<span><span class="co">## 102  5.5800425 4.5370537 #CE8F8F</span></span>
-<span><span class="co">## 103  6.8132900 4.9515479 #BEBEBE</span></span>
-<span><span class="co">## 104  5.4985270 4.5114711 #5FDF5F</span></span>
-<span><span class="co">## 105  5.3892457 4.4781450 #DF5F5F</span></span>
-<span><span class="co">## 106  7.2873669 5.1026705 #5FDF5F</span></span>
-<span><span class="co">## 107  8.7430918 5.5627586 #DF5F5F</span></span>
-<span><span class="co">## 108  9.7955156 5.8669940 #5FDF5F</span></span>
-<span><span class="co">## 109  5.0010250 4.3453668 #5FDF5F</span></span>
-<span><span class="co">## 110  4.9707823 4.3359867 #30EF30</span></span>
+<span><span class="co">## 20   9.4064440 5.7921081 #FF0000</span></span>
+<span><span class="co">## 21   6.3180451 4.7886209 #DF5F5F</span></span>
+<span><span class="co">## 22   6.6453036 4.8955247 #DF5F5F</span></span>
+<span><span class="co">## 23   6.5336480 4.8709865 #CE8F8F</span></span>
+<span><span class="co">## 24   4.3575662 4.1104378 #CE8F8F</span></span>
+<span><span class="co">## 25   5.7366528 4.5908678 #8FCE8F</span></span>
+<span><span class="co">## 26  10.4851053 6.0468245 #5FDF5F</span></span>
+<span><span class="co">## 27  11.5936062 6.2721416 #5FDF5F</span></span>
+<span><span class="co">## 28   7.9249493 5.3026647 #DF5F5F</span></span>
+<span><span class="co">## 29  11.0639486 6.1598628 #5FDF5F</span></span>
+<span><span class="co">## 30   6.4051392 4.8162209 #5FDF5F</span></span>
+<span><span class="co">## 31   8.7071806 5.5501731 #8FCE8F</span></span>
+<span><span class="co">## 32   9.1182958 5.6670780 #5FDF5F</span></span>
+<span><span class="co">## 33  10.1395031 5.9663807 #8FCE8F</span></span>
+<span><span class="co">## 34   4.6660836 4.2199526 #BEBEBE</span></span>
+<span><span class="co">## 35   8.1722065 5.3793876 #5FDF5F</span></span>
+<span><span class="co">## 36   5.9014425 4.6432262 #8FCE8F</span></span>
+<span><span class="co">## 37   5.4667196 4.5029110 #CE8F8F</span></span>
+<span><span class="co">## 38   6.6567039 4.8968129 #8FCE8F</span></span>
+<span><span class="co">## 39   6.7527009 4.9349889 #EF3030</span></span>
+<span><span class="co">## 40   5.0459289 4.3563869 #BEBEBE</span></span>
+<span><span class="co">## 41  10.4318173 6.0468245 #DF5F5F</span></span>
+<span><span class="co">## 42   7.9516134 5.3203312 #CE8F8F</span></span>
+<span><span class="co">## 43   8.7321481 5.5575797 #8FCE8F</span></span>
+<span><span class="co">## 44   5.7691751 4.6024424 #CE8F8F</span></span>
+<span><span class="co">## 45  14.2998757 6.8612709 #8FCE8F</span></span>
+<span><span class="co">## 46  10.5132846 6.0468245 #30EF30</span></span>
+<span><span class="co">## 47   8.2470016 5.3893459 #5FDF5F</span></span>
+<span><span class="co">## 48   7.2689283 5.0932794 #CE8F8F</span></span>
+<span><span class="co">## 49   8.8869226 5.5924244 #8FCE8F</span></span>
+<span><span class="co">## 50   4.8373894 4.2848841 #5FDF5F</span></span>
+<span><span class="co">## 51  11.5736912 6.2718507 #FF0000</span></span>
+<span><span class="co">## 52   8.8361150 5.5740850 #5FDF5F</span></span>
+<span><span class="co">## 53   7.4544376 5.1482266 #5FDF5F</span></span>
+<span><span class="co">## 54   7.2533459 5.0883639 #8FCE8F</span></span>
+<span><span class="co">## 55   7.4012950 5.1331727 #5FDF5F</span></span>
+<span><span class="co">## 56   8.1587543 5.3793876 #CE8F8F</span></span>
+<span><span class="co">## 57   6.1598543 4.7322620 #CE8F8F</span></span>
+<span><span class="co">## 58  12.4389931 6.4777410 #8FCE8F</span></span>
+<span><span class="co">## 59   7.2806506 5.1081440 #DF5F5F</span></span>
+<span><span class="co">## 60   7.2824695 5.0972170 #DF5F5F</span></span>
+<span><span class="co">## 61   9.6719418 5.8210607 #DF5F5F</span></span>
+<span><span class="co">## 62   7.0297155 5.0123212 #5FDF5F</span></span>
+<span><span class="co">## 63   8.7789365 5.5675107 #CE8F8F</span></span>
+<span><span class="co">## 64   9.6402482 5.8198173 #5FDF5F</span></span>
+<span><span class="co">## 65   4.7017421 4.2361300 #EF3030</span></span>
+<span><span class="co">## 66   4.1945145 4.0532322 #CE8F8F</span></span>
+<span><span class="co">## 67   5.5367471 4.5255360 #DF5F5F</span></span>
+<span><span class="co">## 68   4.1851343 4.0507257 #8FCE8F</span></span>
+<span><span class="co">## 69   7.6895939 5.2188711 #30EF30</span></span>
+<span><span class="co">## 70   5.5312821 4.5194992 #CE8F8F</span></span>
+<span><span class="co">## 71   6.4168928 4.8177241 #FF0000</span></span>
+<span><span class="co">## 72   7.8625171 5.2768579 #CE8F8F</span></span>
+<span><span class="co">## 73   8.9381665 5.6122428 #CE8F8F</span></span>
+<span><span class="co">## 74   5.7653283 4.6020541 #8FCE8F</span></span>
+<span><span class="co">## 75   4.8595030 4.2916979 #BEBEBE</span></span>
+<span><span class="co">## 76   5.4569887 4.4990156 #DF5F5F</span></span>
+<span><span class="co">## 77   5.4656404 4.5034020 #CE8F8F</span></span>
+<span><span class="co">## 78   4.3987731 4.1267210 #CE8F8F</span></span>
+<span><span class="co">## 79   7.3227038 5.1087629 #8FCE8F</span></span>
+<span><span class="co">## 80   4.2265846 4.0643889 #8FCE8F</span></span>
+<span><span class="co">## 81   5.7637897 4.6020541 #CE8F8F</span></span>
+<span><span class="co">## 82   5.4254657 4.4862291 #8FCE8F</span></span>
+<span><span class="co">## 83   4.9860454 4.3371565 #CE8F8F</span></span>
+<span><span class="co">## 84   4.2375132 4.0680494 #8FCE8F</span></span>
+<span><span class="co">## 85   8.5702288 5.5071485 #DF5F5F</span></span>
+<span><span class="co">## 86   8.7897157 5.5685489 #8FCE8F</span></span>
+<span><span class="co">## 87   5.5451378 4.5213364 #BEBEBE</span></span>
+<span><span class="co">## 88   5.7162718 4.5849703 #BEBEBE</span></span>
+<span><span class="co">## 89   6.0458297 4.6967168 #CE8F8F</span></span>
+<span><span class="co">## 90  11.6618718 6.2858598 #5FDF5F</span></span>
+<span><span class="co">## 91   8.3574706 5.4308207 #EF3030</span></span>
+<span><span class="co">## 92   6.7922162 4.9507682 #EF3030</span></span>
+<span><span class="co">## 93   9.8780484 5.8921394 #FF0000</span></span>
+<span><span class="co">## 94   7.9333387 5.3026647 #8FCE8F</span></span>
+<span><span class="co">## 95   5.1516663 4.3956134 #8FCE8F</span></span>
+<span><span class="co">## 96   5.8848743 4.6369989 #CE8F8F</span></span>
+<span><span class="co">## 97  11.8192399 6.3275597 #EF3030</span></span>
+<span><span class="co">## 98   7.9723006 5.3084444 #DF5F5F</span></span>
+<span><span class="co">## 99   8.5796621 5.5084004 #EF3030</span></span>
+<span><span class="co">## 100  8.7943953 5.5685489 #DF5F5F</span></span>
+<span><span class="co">## 101  9.6539608 5.8201650 #8FCE8F</span></span>
+<span><span class="co">## 102  5.6010497 4.5416814 #CE8F8F</span></span>
+<span><span class="co">## 103  6.9591088 4.9923699 #BEBEBE</span></span>
+<span><span class="co">## 104  5.4732016 4.5032419 #5FDF5F</span></span>
+<span><span class="co">## 105  5.3564951 4.4644592 #DF5F5F</span></span>
+<span><span class="co">## 106  7.2711649 5.0932794 #5FDF5F</span></span>
+<span><span class="co">## 107  8.7241302 5.5561694 #DF5F5F</span></span>
+<span><span class="co">## 108  9.7666045 5.8449349 #5FDF5F</span></span>
+<span><span class="co">## 109  4.9687674 4.3317725 #5FDF5F</span></span>
+<span><span class="co">## 110  4.9332749 4.3188280 #30EF30</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $edge_result</span></span>
 <span><span class="co">##         X1          X2</span></span>
@@ -463,24 +463,24 @@ use blue for metabolites and red for genes.</p>
 <span><span class="co">## 80  C00008      PKMYT1</span></span>
 <span><span class="co">## 81  C00008        PLK1</span></span>
 <span><span class="co">## 82  C00008        PLK4</span></span>
-<span><span class="co">## 83  C00008       PRKG1</span></span>
-<span><span class="co">## 84  C00008        RRM2</span></span>
-<span><span class="co">## 85  C00015        RRM2</span></span>
-<span><span class="co">## 86  C00008     SLC17A7</span></span>
-<span><span class="co">## 87  C00025     SLC17A7</span></span>
-<span><span class="co">## 88  C00008     SLC27A1</span></span>
-<span><span class="co">## 89  C00010     SLC27A1</span></span>
-<span><span class="co">## 90  C00013     SLC27A1</span></span>
-<span><span class="co">## 91  C00008       SRPK1</span></span>
-<span><span class="co">## 92  C00008      STK32B</span></span>
-<span><span class="co">## 93  C00008         TEK</span></span>
-<span><span class="co">## 94  C00008      TGFBR2</span></span>
-<span><span class="co">## 95  C00008         TK1</span></span>
-<span><span class="co">## 96  C00365         TK1</span></span>
-<span><span class="co">## 97  C00008         TK2</span></span>
-<span><span class="co">## 98  C00365         TK2</span></span>
-<span><span class="co">## 99  C00008         TTK</span></span>
-<span><span class="co">## 100 C00004     ALDH1A1</span></span>
+<span><span class="co">## 83  C00008        RRM2</span></span>
+<span><span class="co">## 84  C00015        RRM2</span></span>
+<span><span class="co">## 85  C00008     SLC17A7</span></span>
+<span><span class="co">## 86  C00025     SLC17A7</span></span>
+<span><span class="co">## 87  C00008     SLC27A1</span></span>
+<span><span class="co">## 88  C00010     SLC27A1</span></span>
+<span><span class="co">## 89  C00013     SLC27A1</span></span>
+<span><span class="co">## 90  C00008       SRPK1</span></span>
+<span><span class="co">## 91  C00008      STK32B</span></span>
+<span><span class="co">## 92  C00008         TEK</span></span>
+<span><span class="co">## 93  C00008      TGFBR2</span></span>
+<span><span class="co">## 94  C00008         TK1</span></span>
+<span><span class="co">## 95  C00365         TK1</span></span>
+<span><span class="co">## 96  C00008         TK2</span></span>
+<span><span class="co">## 97  C00365         TK2</span></span>
+<span><span class="co">## 98  C00008         TTK</span></span>
+<span><span class="co">## 99  C00004     ALDH1A1</span></span>
+<span><span class="co">## 100 C00004       CRYL1</span></span>
 <span><span class="co">## 101 C00004     CYP4F12</span></span>
 <span><span class="co">## 102 C00004       GAPDH</span></span>
 <span><span class="co">## 103 C00004        GLDC</span></span>
