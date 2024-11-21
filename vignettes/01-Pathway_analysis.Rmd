@@ -248,7 +248,7 @@ result <- ESEA(dat, out = "Extended")
 ```
 
 eSEA plot of all the pathway
-```{r fig.keep='all', plot, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
+```{r fig.keep='all', p_pSEA_filter, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 result_filter <- result %>%
   dplyr::filter(pval < 0.1) %>%
   arrange(NES) %>%

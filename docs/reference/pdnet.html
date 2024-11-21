@@ -84,36 +84,36 @@
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">logFC</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">pdnet</span><span class="op">(</span><span class="va">diff_meta</span>, <span class="va">diff_gene</span>, nsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-11-21 18:04:07.170587</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Start at 2024-11-21 18:28:55.492762</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> First, fit the input p-value distribution under beta-uniform mixture model (2024-11-21 18:04:07.175334)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> First, fit the input p-value distribution under beta-uniform mixture model (2024-11-21 18:28:55.497645)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	A total of p-values: 17978</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Maximum Log-Likelihood: 29984.0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Mixture parameter (lambda): 0.109</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Shape parameter (a): 0.225</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Second, determine the significance threshold (2024-11-21 18:04:07.211727)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Second, determine the significance threshold (2024-11-21 18:28:55.540887)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Via constraint on the size of subnetwork to be identified (100 nodes)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at rough stage (2024-11-21 18:04:07.212459)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-11-21 18:04:07.222098)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-11-21 18:04:07.228615)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-11-21 18:04:07.234804)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-11-21 18:04:07.381066)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-11-21 18:04:07.639886)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-11-21 18:04:08.429742)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-11-21 18:04:10.794346)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-11-21 18:04:16.003027)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at finetuning stage (2024-11-21 18:04:16.003618)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-11-21 18:04:18.778989)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-11-21 18:04:21.586411)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-11-21 18:04:24.635722)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at rough stage (2024-11-21 18:28:55.541643)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-11, corresponding to the network size (0 nodes) (2024-11-21 18:28:55.551424)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-10, corresponding to the network size (0 nodes) (2024-11-21 18:28:55.557253)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-09, corresponding to the network size (0 nodes) (2024-11-21 18:28:55.563216)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-08, corresponding to the network size (1 nodes) (2024-11-21 18:28:55.70074)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-07, corresponding to the network size (1 nodes) (2024-11-21 18:28:55.965994)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-06, corresponding to the network size (30 nodes) (2024-11-21 18:28:56.895194)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-05, corresponding to the network size (84 nodes) (2024-11-21 18:28:59.320568)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.00e-04, corresponding to the network size (198 nodes) (2024-11-21 18:29:04.749201)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 	Scanning significance threshold at finetuning stage (2024-11-21 18:29:04.749771)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 1.50e-05, corresponding to the network size (95 nodes) (2024-11-21 18:29:07.547039)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.00e-05, corresponding to the network size (96 nodes) (2024-11-21 18:29:10.327073)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 		significance threshold: 2.50e-05, corresponding to the network size (110 nodes) (2024-11-21 18:29:13.459093)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	significance threshold: 2.50e-05</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-11-21 18:04:24.636514)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Third, calculate the scores according to the fitted BUM and FDR threshold (if any) (2024-11-21 18:29:13.459893)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Amongst 17978 scores, there are 920 positives.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-11-21 18:04:24.638116)...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, find the subgraph from the input graph with 2796 nodes and 8507 edges (2024-11-21 18:29:13.461281)...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	Size of the subgraph: 110 nodes and 156 edges</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish at 2024-11-21 18:04:27.673965</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total is: 20 secs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish at 2024-11-21 18:29:16.515362</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Runtime in total is: 21 secs</span>
 <span class="r-plt img"><img src="pdnet-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $node_result</span>
