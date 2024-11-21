@@ -204,7 +204,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Met-Gene Subnetwork",
+                            text = "| Subnetworklyser",
                             tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -242,7 +242,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| ePEA Analysis",
+                            text = "| ePEAlyser",
                             tabName = "epea_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -250,7 +250,7 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| ePDA Analysis",
+                            text = "| ePDAlyser",
                             tabName = "epda_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -258,7 +258,7 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| eSEA Analysis",
+                            text = "| eSEAlyser",
                             tabName = "esea_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -3169,7 +3169,7 @@ ui <- shinyUI(
                                                ),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two groups."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -3302,7 +3302,7 @@ ui <- shinyUI(
                                                imageOutput("epda_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two group."
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two groups."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -5329,7 +5329,7 @@ server <- shinyServer(function(session, input, output) {
                         "
                         1.**Metabolite Data** and **Gene Data** should have the same columns.
                         
-                        2.**Gene Data** row count should match **Group Data** column count.
+                        2. The column count in **Metabolite Data** and **Gene Data** should match the row count in **Group Data**.
                         
                         3.**Group Data** should have only one column.
                         "

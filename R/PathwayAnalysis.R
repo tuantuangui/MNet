@@ -11,7 +11,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select filter arrange distinct mutate rename pull summarise group_by left_join inner_join cross_join
 #' @importFrom tidyr separate_rows
-#' @importFrom RColorBrewer brewer.pal
 #' @export
 #'
 #' @examples
@@ -144,10 +143,22 @@ PathwayAnalysis <- function(name,
   result_1$pathway_type <- factor(result_1$pathway_type,
                                   levels = unique(kegg_pathway_uniq$pathway_type))
   
+  colp <- c("Amino acid metabolism" ="#1B9E77",
+            "Carbohydrate metabolism"="#D95F02",
+            "Glycan biosynthesis and metabolism"="#1F78B4",
+            "Metabolism of cofactors and vitamins"="#7570B3",
+            "Metabolism of terpenoids and polyketides"="#BC80BD",
+            "Metabolism of other amino acids"="#8DD3C7",
+            "Energy metabolism"="#E7298A",
+            "Lipid metabolism"="#66A61E",
+            "Nucleotide metabolism"="#E6AB02",
+            "Biosynthesis of other secondary metabolites"="#A6761D",
+            "Xenobiotics biodegradation and metabolism"="#666666")
+  
   p1 <- ggplot(result_1, aes(.data$name, -log10(.data$pvalue))) +
     geom_bar(stat = "identity", aes(fill = .data$pathway_type)) +
     scale_fill_manual(
-      values = RColorBrewer::brewer.pal(11, "Set3"),
+      values = colp,
       name = "Pathway Category",
       breaks = unique(kegg_pathway_uniq$pathway_type)
     ) +

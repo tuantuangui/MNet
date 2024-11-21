@@ -15,7 +15,6 @@
 #' @importFrom dplyr filter pull left_join select arrange rename
 #' @importFrom tibble as_tibble
 #' @import ggplot2
-#' @importFrom RColorBrewer brewer.pal
 #' @export
 #'
 #' @examples
@@ -155,6 +154,18 @@ DAscore <- function(increase_members,
       result_filter$pathway <- factor(result_filter$pathway, levels = result_filter$pathway)
     }
     
+    colp <- c("Amino acid metabolism" ="#1B9E77",
+              "Carbohydrate metabolism"="#D95F02",
+              "Glycan biosynthesis and metabolism"="#1F78B4",
+              "Metabolism of cofactors and vitamins"="#7570B3",
+              "Metabolism of terpenoids and polyketides"="#BC80BD",
+              "Metabolism of other amino acids"="#8DD3C7",
+              "Energy metabolism"="#E7298A",
+              "Lipid metabolism"="#66A61E",
+              "Nucleotide metabolism"="#E6AB02",
+              "Biosynthesis of other secondary metabolites"="#A6761D",
+              "Xenobiotics biodegradation and metabolism"="#666666")
+    
     p <- ggplot2::ggplot(result_filter) +
       ggplot2::geom_point(ggplot2::aes(
         x = pathway,
@@ -172,7 +183,7 @@ DAscore <- function(increase_members,
         )
       ) +
       scale_color_manual(
-        values = RColorBrewer::brewer.pal(11, "Set3"),
+        values = colp,
         name = "Pathway Category",
         breaks = unique(pathway_data$kegg_category)
       ) +
