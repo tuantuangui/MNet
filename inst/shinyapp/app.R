@@ -5759,7 +5759,7 @@ server <- shinyServer(function(session, input, output) {
                             temp_network = temp_network))
                 
                 observeEvent(task2_run_analysis$wait(), {
-                    print(task2_run_analysis$get_result()$diff_meta)
+                    # print(task2_run_analysis$get_result()$diff_meta)
                     
                     updateProgressBar(session, id = "network_progress", value = 100)
                     network_step("Analysis complete ...")
