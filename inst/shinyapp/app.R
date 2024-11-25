@@ -6757,9 +6757,9 @@ server <- shinyServer(function(session, input, output) {
                 cowplot::plot_grid(
                     plotlist = list(
                         result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
+                        # result_up$gp,
+                        result_down$p_barplot
+                        # result_down$gp
                     ),
                     labels = "AUTO",
                     ncol = 1
@@ -6785,10 +6785,6 @@ server <- shinyServer(function(session, input, output) {
             )
             print(plot())
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epea_user_up_data <- renderDT({
                 req(file.exists(paste(temp_epea, "/epea_up.txt", sep = "")))
@@ -6819,19 +6815,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epea_user_up_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_up_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epea_user_down_data <- renderDT({
                 req(file.exists(paste(temp_epea, "/epea_down.txt", sep = "")))
@@ -6862,19 +6845,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epea_user_down_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_down_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epea_plot <- renderImage({
                 list(
@@ -6885,6 +6855,24 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, deleteFile = FALSE)
         })
+        
+        output$epea_user_up_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_up_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$epea_user_down_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_down_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
+            }
+        )
         
         output$epea_plot_download <- downloadHandler(
             filename = function() {
@@ -7844,10 +7832,6 @@ server <- shinyServer(function(session, input, output) {
             )
             print(epda_res$p)
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epda_user_result_data <- renderDT({
                 req(file.exists(paste(temp_epda, "/epda_result.txt", sep = "")))
@@ -7878,19 +7862,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epda_user_result_data_download <- downloadHandler(
-            filename = function() {
-                paste("epda_user_result_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epda_plot <- renderImage({
                 list(
@@ -7901,6 +7872,15 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, deleteFile = FALSE)
         })
+        
+        output$epda_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
+            }
+        )
         
         output$epda_plot_download <- downloadHandler(
             filename = function() {
@@ -8295,10 +8275,6 @@ server <- shinyServer(function(session, input, output) {
             )
             print(plot())
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$esea_user_result_data <- renderDT({
                 req(file.exists(paste(temp_esea, "/esea_result.txt", sep = "")))
@@ -8329,6 +8305,24 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
+            
+            output$esea_plot <- renderImage({
+                list(
+                    src = paste0(temp_esea, "/esea_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            
+            output$esea_interested_plot <- renderImage({
+                list(
+                    src = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
         })
         
         output$esea_user_result_data_download <- downloadHandler(
@@ -8340,19 +8334,6 @@ server <- shinyServer(function(session, input, output) {
             }
         )
         
-        observe({
-          # invalidateLater(1000, session)
-          
-          output$esea_plot <- renderImage({
-            list(
-              src = paste0(temp_esea, "/esea_plot.jpeg"),
-              contentType = "image/jpeg",
-              width = "100%",
-              height = "auto"
-            )
-          }, deleteFile = FALSE)
-        })
-        
         output$esea_plot_download <- downloadHandler(
           filename = function() {
             paste("eSEAPlot", input$esea_plot_format, sep = ".")
@@ -8361,19 +8342,6 @@ server <- shinyServer(function(session, input, output) {
             file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
           }
         )
-        
-        observe({
-            # invalidateLater(1000, session)
-            
-            output$esea_interested_plot <- renderImage({
-                list(
-                    src = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
-                    contentType = "image/jpeg",
-                    width = "100%",
-                    height = "auto"
-                )
-            }, deleteFile = FALSE)
-        })
         
         output$esea_interested_plot_download <- downloadHandler(
             filename = function() {
