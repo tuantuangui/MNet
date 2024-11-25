@@ -20,6 +20,7 @@ library(dplyr)
 library(markdown)
 library(Cairo)
 library(callr)
+library(shinyjs)
 
 # library(promises)
 # library(future)
@@ -82,6 +83,7 @@ ui <- shinyUI(
         #=== 1.2 bs4DashSidebar
         {
             sidebar = bs4DashSidebar(
+                useShinyjs(),
                 disable = FALSE,
                 width = NULL,
                 skin = "dark",
@@ -123,11 +125,11 @@ ui <- shinyUI(
                     document.getElementById('open_window').addEventListener('click', function() {
                         window.open('http://www.mnet4all.com/mnet_manual/', '_blank', 'width=1000,height=800');
                     });
-                "
-                ), 
+                    "
+                ),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
-                    id = NULL,
+                    id = "sidebar_menu",
                     .list = NULL,
                     flat = FALSE,
                     compact = FALSE,
@@ -559,7 +561,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "home", fluidRow(
                         bs4Card(
                             # 1
-                            style = "padding: 10px;",
+                            style = "padding: 10px 10%;",
                             inputId = NULL,
                             title = tags$b("MNet Documents"),
                             footer = NULL,
@@ -580,12 +582,107 @@ ui <- shinyUI(
                             dropdownMenu = NULL,
                             sidebar = NULL,
                             # htmlOutput("home_markdown")
-                            tags$iframe(
-                                src = "https://tuantuangui.github.io/MNet/index.html",
-                                width = "100%",
-                                height = "840px",
-                                style = "border: none; border-radius: 10px;"
-                            )
+                            # tags$iframe(
+                            #     src = "https://tuantuangui.github.io/MNet/index.html",
+                            #     width = "100%",
+                            #     height = "840px",
+                            #     style = "border: none; border-radius: 10px;"
+                            # )
+                            tags$p("MNet", style = "font-size: 2.5rem; font-weight: bold; text-align: center;"),
+                            tags$p("MNet: an R package and website for integrative analysis of metabolomic and transcriptomic data.", 
+                                   style = "font-size: 1rem; font-weight: bold; text-align: center;"),
+                            br(),
+                            tags$p("Introduction", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$span("Based on the knowledgebase", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span("and an ", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$a(href = "https://github.com/tuantuangui/MNet", "R package as the backend (https://github.com/tuantuangui/MNet)", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span("
+                                   MNet offers one subnetwork analyser and three extended pathway analysers for user-input metabolomics 
+                                   and transcriptomic data. The subnetwork analyser rely on our previously established network 
+                                   algorithm dnet to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics 
+                                   and transcriptomic data", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("Subnetworklyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", leveraging network information about either 
+                                   functional interactions or pathway-derived interactions. The extended pathway analysers 
+                                   extend pathway analysis algorithms, which contain extended Pathway Enrichment Analyser",
+                                      style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", extended Pathway Differential Abundance analyser", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePDAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", and extended pathway Set Enrichment Analyser", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("eSEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", with the aim to identify dysregulated metabolic pathways by considering both 
+                                   metabolites and genes.",
+                                   style = "font-size: 1.2rem; text-align: justify;"),
+                            br(),br(),
+                            tags$img(src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.jpg",
+                                     # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                     style = "width: 100%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
+                            br(),br(),
+                            tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
+                                   "Functions (https://tuantuangui.github.io/MNet/reference/index.html)", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("1. Subnetworklyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Visualization of the identified optimal subnetwork that best explains the biological processes 
+                                           comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red 
+                                           and green indicating different expression levels.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("2. ePEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding 
+                                           to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to 
+                                           metabolites and genes.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("3. ePDAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
+                                           are statistically significant differences between two groups.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Intested Plot: Result of interested pathway set enrichment analysis can be downloaded as a PDF or 
+                                           JPEG file with specified width, height, and dpi settings.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            tags$p("Documents", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$p("1. MNet Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
+                                   "MNet Server Manual (http://www.mnet4all.com/mnet_manual/)", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$p("2. MNet Package References", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/", 
+                                   "MNet Package References (https://tuantuangui.github.io/MNet/)", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;")
                         )
                     ))
                 }, #=== 1.5.1.2 bs4TabItem
@@ -2697,7 +2794,7 @@ ui <- shinyUI(
                                                ),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. "
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -2850,7 +2947,7 @@ ui <- shinyUI(
                                                imageOutput("epea_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -4340,11 +4437,7 @@ ui <- shinyUI(
                             label = NULL,
                             dropdownMenu = NULL,
                             sidebar = NULL,
-                            markdown("
-				## **1. Knowledgebase Introduction:**
-
-			    "),
-                            br(),
+                            markdown("## **1. Knowledgebase Introduction:**"), br(), 
                             markdown(
                                 "
                                	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
@@ -4392,10 +4485,10 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
-
-				     <br />
-				     "
+            				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
+            
+            				     <br />
+            				     "
                             ),
                             DTOutput(
                                 "db_kegg",
@@ -4420,14 +4513,14 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-				## **3. Knowledgebase History**
-
-				<br />
-
-				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
-
-				<br />
-				"
+                				## **3. Knowledgebase History**
+                
+                				<br />
+                
+                				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
+                
+                				<br />
+                				"
                             ),
                             fluidRow(
                                 column(
