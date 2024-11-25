@@ -3595,7 +3595,7 @@ ui <- shinyUI(
                                              ),
                                              hr(),
                                              tags$img(
-                                               src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA.png",
+                                               src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
                                                width = "100%",
                                                height = "auto"
                                              ),
@@ -3615,7 +3615,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
