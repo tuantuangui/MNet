@@ -111,13 +111,20 @@ ui <- shinyUI(
                     style = "margin: 0px;"
                 ),
                 hr(),
+                # tags$script(
+                #     '
+                #         Shiny.addCustomMessageHandler("openNewWindow", function(params) {
+                #             var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
+                #         });
+                #     '
+                # ),
                 tags$script(
-                    '
-                        Shiny.addCustomMessageHandler("openNewWindow", function(params) {
-                            var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
-                        });
-                    '
-                ),
+                    "
+                    document.getElementById('open_window').addEventListener('click', function() {
+                        window.open('http://www.mnet4all.com/mnet_manual/', '_blank', 'width=1000,height=800');
+                    });
+                "
+                ), 
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
                     id = NULL,
@@ -8353,16 +8360,16 @@ server <- shinyServer(function(session, input, output) {
         )
     }
     
-    observeEvent(input$open_window, {
-        session$sendCustomMessage(
-            "openNewWindow",
-            list(
-                width = 1000,
-                height = 800,
-                url = "http://www.mnet4all.com/mnet_manual/"
-            )
-        )
-    })
+    # observeEvent(input$open_window, {
+    #     session$sendCustomMessage(
+    #         "openNewWindow",
+    #         list(
+    #             width = 1000,
+    #             height = 800,
+    #             url = "http://www.mnet4all.com/mnet_manual/"
+    #         )
+    #     )
+    # })
     
     # database
     {
