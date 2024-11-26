@@ -1,3 +1,9 @@
+## MNet 1.2.0
+
+1. Change the function name.
+
+2. Change the Home page.
+
 ## MNet 1.1.0
 
 1. Added a `NEWS.md` file to track changes to the package.

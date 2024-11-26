@@ -20,6 +20,7 @@ library(dplyr)
 library(markdown)
 library(Cairo)
 library(callr)
+library(shinyjs)
 
 # library(promises)
 # library(future)
@@ -82,6 +83,7 @@ ui <- shinyUI(
         #=== 1.2 bs4DashSidebar
         {
             sidebar = bs4DashSidebar(
+                useShinyjs(),
                 disable = FALSE,
                 width = NULL,
                 skin = "dark",
@@ -111,16 +113,23 @@ ui <- shinyUI(
                     style = "margin: 0px;"
                 ),
                 hr(),
+                # tags$script(
+                #     '
+                #         Shiny.addCustomMessageHandler("openNewWindow", function(params) {
+                #             var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
+                #         });
+                #     '
+                # ),
                 tags$script(
-                    '
-                        Shiny.addCustomMessageHandler("openNewWindow", function(params) {
-                            var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
-                        });
-                    '
+                    "
+                    document.getElementById('open_window').addEventListener('click', function() {
+                        window.open('http://www.mnet4all.com/mnet_manual/', '_blank', 'width=1000,height=800');
+                    });
+                    "
                 ),
                 #=== 1.2.1 bs4SidebarMenu
                 bs4SidebarMenu(
-                    id = NULL,
+                    id = "sidebar_menu",
                     .list = NULL,
                     flat = FALSE,
                     compact = FALSE,
@@ -204,7 +213,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Subnetworklyser",
+                            text = "| sNETlyser",
                             tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -552,7 +561,7 @@ ui <- shinyUI(
                     bs4TabItem(tabName = "home", fluidRow(
                         bs4Card(
                             # 1
-                            style = "padding: 10px;",
+                            style = "padding: 10px 10%;",
                             inputId = NULL,
                             title = tags$b("MNet Documents"),
                             footer = NULL,
@@ -573,12 +582,107 @@ ui <- shinyUI(
                             dropdownMenu = NULL,
                             sidebar = NULL,
                             # htmlOutput("home_markdown")
-                            tags$iframe(
-                                src = "https://tuantuangui.github.io/MNet/index.html",
-                                width = "100%",
-                                height = "840px",
-                                style = "border: none; border-radius: 10px;"
-                            )
+                            # tags$iframe(
+                            #     src = "https://tuantuangui.github.io/MNet/index.html",
+                            #     width = "100%",
+                            #     height = "840px",
+                            #     style = "border: none; border-radius: 10px;"
+                            # )
+                            tags$p("MNet", style = "font-size: 2.5rem; font-weight: bold; text-align: center;"),
+                            tags$p("MNet: an R package and website for integrative analysis of metabolomic and transcriptomic data", 
+                                   style = "font-size: 1rem; font-weight: bold; text-align: center;"),
+                            br(),
+                            tags$p("Introduction", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$span("Based on the knowledgebase", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span("and an ", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$a(href = "https://github.com/tuantuangui/MNet", "R package as the backend", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span("
+                                   MNet offers one subnetwork analyser and three extended pathway analysers for user-input metabolomics 
+                                   and transcriptomic data. The subnetwork analyser rely on our previously established network 
+                                   algorithm dnet to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics 
+                                   and transcriptomic data", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("sNETlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", leveraging network information about either 
+                                   functional interactions or pathway-derived interactions. The extended pathway analysers 
+                                   extend pathway analysis algorithms, which contain extended Pathway Enrichment Analyser",
+                                      style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", extended Pathway Differential Abundance analyser", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePDAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", and extended pathway Set Enrichment Analyser", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("eSEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span(", with the aim to identify dysregulated metabolic pathways by considering both 
+                                   metabolites and genes.",
+                                   style = "font-size: 1.2rem; text-align: justify;"),
+                            br(),br(),
+                            tags$img(src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.jpg",
+                                     # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                     style = "width: 100%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
+                            br(),br(),
+                            tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
+                                   "Functions", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("1. sNETlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Visualization of the identified optimal subnetwork that best explains the biological processes 
+                                           comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red 
+                                           and green indicating different expression levels.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("2. ePEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding 
+                                           to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to 
+                                           metabolites and genes.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("3. ePDAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
+                                           are statistically significant differences between two groups.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("Intested Plot: Result of interested pathway set enrichment analysis can be downloaded as a PDF or 
+                                           JPEG file with specified width, height, and dpi settings.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            tags$p("Documents", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$p("1. MNet Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
+                                   "MNet Server Manual", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$p("2. MNet Package References", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/", 
+                                   "MNet Package References", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;")
                         )
                     ))
                 }, #=== 1.5.1.2 bs4TabItem
@@ -1382,15 +1486,16 @@ ui <- shinyUI(
                                            flat = FALSE
                                        ),
                                        br(),
-                                       shinyWidgets::progressBar(
-                                           id = "network_progress",
-                                           value = 0,
-                                           total = 100,
-                                           title = "Progress",
-                                           display_pct = TRUE
-                                       ),
-                                       verbatimTextOutput("network_step"),
                                        br(),
+                                       # shinyWidgets::progressBar(
+                                       #     id = "network_progress",
+                                       #     value = 0,
+                                       #     total = 100,
+                                       #     title = "Progress",
+                                       #     display_pct = TRUE
+                                       # ),
+                                       # verbatimTextOutput("network_step"),
+                                       # br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
                                        sliderInput(
@@ -2690,7 +2795,7 @@ ui <- shinyUI(
                                                ),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. "
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -2843,7 +2948,7 @@ ui <- shinyUI(
                                                imageOutput("epea_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Dotplot of up-regulated metabolic pathways corresponding to metabolites and genes. (C) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. (D) Dotplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -3586,16 +3691,36 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                             title = "Output: eSEA Plot",
+                                             markdown(
+                                               "
+						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                             ),
+                                             hr(),
+                                             tags$img(
+                                               src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                               width = "100%",
+                                               height = "auto"
+                                             ),
+                                             tags$p(
+                                               tags$b("Figure 1."),
+                                               "Extended pathway set enrichment analysis."
+                                             ),
+                                             icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: eSEA Plot",
+                                               title = "Output: Interested Plot",
                                                markdown(
                                                    "
-						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+						                           Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -3713,12 +3838,38 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                             title = "Output: eSEA Plot",
+                                             fluidRow(column(width = 9), column(
+                                               width = 3,
+                                               downloadButton(
+                                                 outputId = "esea_plot_download",
+                                                 label = "Figure Download",
+                                                 class = NULL,
+                                                 icon = icon("circle-down"),
+                                                 style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                               )
+                                             )),
+                                             markdown(
+                                               "
+                                                   Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                             ),
+                                             hr(),
+                                             imageOutput("esea_plot", width = "100%", height = "auto"),
+                                             tags$p(
+                                               tags$b("Figure 1."),
+                                               "Extended pathway set enrichment analysis."
+                                             ),
+                                             icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
                                                style = "height: 750px; overflow-y: auto; overflow-x: hidden",
-                                               title = "Output: eSEA Plot",
+                                               title = "Output: Interested Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
                                                    downloadButton(
-                                                       outputId = "esea_plot_download",
+                                                       outputId = "esea_interested_plot_download",
                                                        label = "Figure Download",
                                                        class = NULL,
                                                        icon = icon("circle-down"),
@@ -3731,7 +3882,7 @@ ui <- shinyUI(
                                                    "
                                                ),
                                                hr(),
-                                               imageOutput("esea_plot", width = "100%", height = "auto"),
+                                               imageOutput("esea_interested_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
                                                    "Extended pathway set enrichment analysis."
@@ -4287,11 +4438,7 @@ ui <- shinyUI(
                             label = NULL,
                             dropdownMenu = NULL,
                             sidebar = NULL,
-                            markdown("
-				## **1. Knowledgebase Introduction:**
-
-			    "),
-                            br(),
+                            markdown("## **1. Knowledgebase Introduction:**"), br(), 
                             markdown(
                                 "
                                	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
@@ -4339,10 +4486,10 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
-
-				     <br />
-				     "
+            				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
+            
+            				     <br />
+            				     "
                             ),
                             DTOutput(
                                 "db_kegg",
@@ -4367,14 +4514,14 @@ ui <- shinyUI(
                             hr(),
                             markdown(
                                 "
-				## **3. Knowledgebase History**
-
-				<br />
-
-				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
-
-				<br />
-				"
+                				## **3. Knowledgebase History**
+                
+                				<br />
+                
+                				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
+                
+                				<br />
+                				"
                             ),
                             fluidRow(
                                 column(
@@ -5339,156 +5486,372 @@ server <- shinyServer(function(session, input, output) {
             }
         })
         
-        observeEvent(input$network_demo, {
-            output$network_user_meta_data <- renderDT({
-                data("meta_dat")
-                meta_data <- meta_dat
-                
-                return(head(meta_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        observeEvent(input$network_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "sNETlyser starting ...", detail = "sNETlyser starting ...")
+
+            progress$set(value = 10)
+            progress$set(message = "sNETlyser reading datasets ...", detail = "sNETlyser reading datasets ...")
+
+            meta_data <- read.table(
+                input$network_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+
+            gene_data <- read.table(
+                input$network_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+
+            group_data <- read.table(
+                input$network_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+
+            progress$set(value = 50)
+            progress$set(message = "sNETlyser running mlimma and dnet analysis ...", detail = "sNETlyser running mlimma and dnet analysis ...")
+
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+
+            names(diff_meta)[4] <- "p_value"
+            names(diff_gene)[4] <- "p_value"
+
+            network_res <- sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
             
-            output$network_user_gene_data <- renderDT({
-                data("gene_dat")
-                gene_data <- gene_dat
-                
-                return(head(gene_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            progress$set(value = 80)
+            progress$set(message = "sNETlyser visualizing ...", detail = "sNETlyser visualizing ...")
             
-            output$network_user_group_data <- renderDT({
-                data("group")
-                group_data <- as.data.frame(group)
-                
-                return(head(group_data, 30))
-            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            pdf(
+                file = paste(temp_network, "/network_plot.pdf", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                onefile = FALSE
+            )
+            sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+
+            CairoJPEG(
+                filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                units = "in",
+                res = input$network_plot_dpi,
+                quality = 100
+            )
+            sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+
+            write.table(
+                network_res$node_result,
+                file = paste(temp_network, "/node_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+
+            write.table(
+                network_res$edge_result,
+                file = paste(temp_network, "/edge_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+
+            progress$set(value = 100)
+            progress$set(message = "sNETlyser task complete ...", detail = "sNETlyser task complete ...")
             
-            output$network_plot <- renderPlot({
-                progress <- Progress$new(session, min = 1, max = 100)
-                on.exit(progress$close())
-                progress$set(value = 0)
-                progress$set(message = "Starting program ...", detail = "Starting program ...")
+            output$network_plot <- renderImage({
+                list(
+                    src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            
+            output$network_user_nodes_data <- renderDT({
+                req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
                 
-                progress$set(value = 10)
-                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                nodes <- read.table(
+                    paste(temp_network, "/node_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
                 
-                data("meta_dat")
-                meta_data <- meta_dat
+                datatable(
+                    head(nodes, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(nodes),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$network_user_edges_data <- renderDT({
+                req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
                 
-                data("gene_dat")
-                gene_data <- gene_dat
+                edges <- read.table(
+                    paste(temp_network, "/edge_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
                 
-                data("group")
-                group_data <- group
-                
-                progress$set(value = 100)
-                progress$set(message = "Metabolism-Gene related subnetwork ...", detail = "Metabolism-Gene related subnetwork ...")
-                
-                diff_meta <- mlimma(meta_data, group_data)
-                diff_gene <- mlimma(gene_data, group_data)
-                
-                names(diff_meta)[4] <- "p_value"
-                names(diff_gene)[4] <- "p_value"
-                
-                network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-                network_res
-            })
+                datatable(
+                    head(edges, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(edges),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
         })
+
+        output$network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("NetworkPlot", input$network_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
+            }
+        )
+
+        output$network_user_nodes_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_nodes_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
+            }
+        )
+
+        output$network_user_edges_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_edges_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
+            }
+        )
         
         # observeEvent(input$network_submit, {
-        #     progress <- Progress$new(session, min = 1, max = 100)
-        #     on.exit(progress$close())
-        #     progress$set(value = 0)
-        #     progress$set(message = "Starting program ...", detail = "Starting program ...")
-        # 
-        #     progress$set(value = 10)
-        #     progress$set(message = "Reading data ...", detail = "Reading data ...")
-        # 
-        #     meta_data <- read.table(
-        #         input$network_user_meta_data_input$datapath,
-        #         header = T,
-        #         sep = "\t",
-        #         row.names = 1,
-        #         stringsAsFactors = F
-        #     )
-        # 
-        #     gene_data <- read.table(
-        #         input$network_user_gene_data_input$datapath,
-        #         header = T,
-        #         sep = "\t",
-        #         stringsAsFactors = F
-        #     )
-        # 
-        #     group_data <- read.table(
-        #         input$network_user_group_data_input$datapath,
-        #         header = T,
-        #         sep = "\t",
-        #         stringsAsFactors = F
-        #     )
-        #     group_data <- as.character(group_data[, 1])
-        # 
-        #     progress$set(value = 50)
-        #     progress$set(message = "Running mlimma and dnet analysis ...", detail = "Running mlimma and dnet analysis ...")
-        # 
-        #     diff_meta <- mlimma(meta_data, group_data)
-        #     diff_gene <- mlimma(gene_data, group_data)
         #     
-        #     names(diff_meta)[4] <- "p_value"
-        #     names(diff_gene)[4] <- "p_value"
+        #     network_step <- reactiveVal("Click Submit to start ...")
         #     
-        #     network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     updateProgressBar(session, id = "network_progress", value = 0)
+        #     network_step("Start reading data ...")
         #     
-        #     pdf(
-        #         file = paste(temp_network, "/network_plot.pdf", sep = ""),
-        #         width = input$network_plot_width,
-        #         height = input$network_plot_height,
-        #         onefile = FALSE
-        #     )
-        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-        #     dev.off()
+        #     meta_file <- input$network_user_meta_data_input$datapath
+        #     gene_file <- input$network_user_gene_data_input$datapath
+        #     group_file <- input$network_user_group_data_input$datapath
         #     
-        #     CairoJPEG(
-        #         filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
-        #         width = input$network_plot_width,
-        #         height = input$network_plot_height,
-        #         units = "in",
-        #         res = input$network_plot_dpi,
-        #         quality = 100
-        #     )
-        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
-        #     dev.off()
+        #     network_nsize <- input$network_nsize
+        #     network_plot_width <- input$network_plot_width
+        #     network_plot_height <- input$network_plot_height
+        #     network_plot_dpi <- input$network_plot_dpi
         #     
-        #     write.table(
-        #         network_res$node_result,
-        #         file = paste(temp_network, "/node_result.txt", sep = ""),
-        #         quote = F,
-        #         sep = "\t",
-        #         na = "NA",
-        #         row.names = F
-        #     )
-        #     
-        #     write.table(
-        #         network_res$edge_result,
-        #         file = paste(temp_network, "/edge_result.txt", sep = ""),
-        #         quote = F,
-        #         sep = "\t",
-        #         na = "NA",
-        #         row.names = F
-        #     )
-        # 
-        #     progress$set(value = 100)
-        #     progress$set(message = "Saving figure and table results ...", detail = "Saving figure and table results ...")
-        # })
-        # 
-        # observe({
-        #     # invalidateLater(1000, session)
-        # 
-        #     output$network_plot <- renderImage({
-        #         list(
-        #             src = paste(temp_network, "/network_plot.jpeg", sep = ""),
-        #             contentType = "image/jpeg",
-        #             width = "100%",
-        #             height = "auto"
+        #     task1_read_data <- r_bg(function(meta_file, gene_file, group_file) {
+        #         meta_data <- read.table(
+        #             meta_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             row.names = 1,
+        #             stringsAsFactors = FALSE
         #         )
-        #     }, deleteFile = FALSE)
+        #         
+        #         gene_data <- read.table(
+        #             gene_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        #         
+        #         group_data <- read.table(
+        #             group_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        #         group_data <- as.character(group_data[, 1])
+        # 
+        #         return(list(
+        #             meta_data = meta_data,
+        #             gene_data = gene_data,
+        #             group_data = group_data
+        #         ))
+        #         
+        #         cat(meta_data)
+        #     }, supervise = TRUE, args = list(meta_file = meta_file,
+        #                                      gene_file = gene_file,
+        #                                      group_file = group_file))
+        #     
+        #     observeEvent(task1_read_data$wait(), {
+        #         meta_data <- task1_read_data$get_result()$meta_data
+        #         gene_data <- task1_read_data$get_result()$gene_data
+        #         group_data <- task1_read_data$get_result()$group_data
+        #         
+        #         # print(meta_data)
+        #         
+        #         updateProgressBar(session, id = "network_progress", value = 30)
+        #         network_step("Running mlimma and sNETlyser ...")
+        #         
+        #         task2_run_analysis <- r_bg(function(meta_data, gene_data, group_data, network_nsize, network_plot_width, network_plot_height, network_plot_dpi, temp_network) {
+        #             library(ggplot2)
+        #             library(MNet)
+        #             library(dplyr)
+        #             library(Cairo)
+        #             
+        #             diff_meta <- mlimma(meta_data, group_data)
+        #             diff_gene <- mlimma(gene_data, group_data)
+        #             
+        #             names(diff_meta)[4] <- "p_value"
+        #             names(diff_gene)[4] <- "p_value"
+        #             
+        #             network_res <- sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             
+        #             pdf(
+        #                 file = paste(temp_network, "/network_plot.pdf", sep = ""),
+        #                 width = network_plot_width,
+        #                 height = network_plot_height,
+        #                 onefile = FALSE
+        #             )
+        #             sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             dev.off()
+        #             
+        #             CairoJPEG(
+        #                 filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #                 width = network_plot_width,
+        #                 height = network_plot_height,
+        #                 units = "in",
+        #                 res = network_plot_dpi,
+        #                 quality = 100
+        #             )
+        #             sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             dev.off()
+        #             
+        #             write.table(
+        #                 network_res$node_result,
+        #                 file = paste(temp_network, "/node_result.txt", sep = ""),
+        #                 quote = FALSE,
+        #                 sep = "\t",
+        #                 na = "NA",
+        #                 row.names = FALSE
+        #             )
+        #             
+        #             write.table(
+        #                 network_res$edge_result,
+        #                 file = paste(temp_network, "/edge_result.txt", sep = ""),
+        #                 quote = FALSE,
+        #                 sep = "\t",
+        #                 na = "NA",
+        #                 row.names = FALSE
+        #             )
+        #             
+        #             return(list(
+        #                 diff_meta = diff_meta
+        #             ))
+        #         }, supervise = TRUE, 
+        #         args = list(meta_data = meta_data,
+        #                     gene_data = gene_data,
+        #                     group_data = group_data,
+        #                     network_nsize = network_nsize,
+        #                     network_plot_width = network_plot_width,
+        #                     network_plot_height = network_plot_height,
+        #                     network_plot_dpi = network_plot_dpi,
+        #                     temp_network = temp_network))
+        #         
+        #         observeEvent(task2_run_analysis$wait(), {
+        #             # print(task2_run_analysis$get_result()$diff_meta)
+        #             
+        #             updateProgressBar(session, id = "network_progress", value = 100)
+        #             network_step("Analysis complete ...")
+        #             
+        #             output$network_plot <- renderImage({
+        #                 list(
+        #                     src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #                     contentType = "image/jpeg",
+        #                     width = "100%",
+        #                     height = "auto"
+        #                 )
+        #             }, deleteFile = FALSE)
+        #             
+        #             output$network_user_nodes_data <- renderDT({
+        #                 req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
+        #                 
+        #                 nodes <- read.table(
+        #                     paste(temp_network, "/node_result.txt", sep = ""),
+        #                     header = TRUE,
+        #                     sep = "\t",
+        #                     stringsAsFactors = FALSE
+        #                 )
+        #                 
+        #                 datatable(
+        #                     head(nodes, 30),
+        #                     rownames = TRUE,
+        #                     options = list(
+        #                         pageLength = 10,
+        #                         scrollX = TRUE
+        #                     )
+        #                 )
+        #             }, server = TRUE)
+        # 
+        #             output$network_user_edges_data <- renderDT({
+        #                 req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+        #                 
+        #                 edges <- read.table(
+        #                     paste(temp_network, "/edge_result.txt", sep = ""),
+        #                     header = TRUE,
+        #                     sep = "\t",
+        #                     stringsAsFactors = FALSE
+        #                 )
+        #                 
+        #                 datatable(
+        #                     head(edges, 30),
+        #                     rownames = TRUE,
+        #                     options = list(
+        #                         pageLength = 10,
+        #                         scrollX = TRUE
+        #                     )
+        #                 )
+        #             }, server = TRUE)
+        #         })
+        #     })
         # })
         # 
         # output$network_plot_download <- downloadHandler(
@@ -5500,40 +5863,6 @@ server <- shinyServer(function(session, input, output) {
         #     }
         # )
         # 
-        # observe({
-        #     # invalidateLater(1000, session)
-        # 
-        #     output$network_user_nodes_data <- renderDT({
-        #         req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
-        # 
-        #         nodes <- read.table(
-        #             paste(temp_network, "/node_result.txt", sep = ""),
-        #             header = TRUE,
-        #             sep = "\t",
-        #             stringsAsFactors = FALSE
-        #         )
-        # 
-        #         datatable(
-        #             head(nodes, 30),
-        #             rownames = TRUE,
-        #             options = list(
-        #                 pageLength = 10,
-        #                 scrollX = TRUE
-        #                 # columnDefs = list(list(
-        #                 #     targets = 1:ncol(nodes),
-        #                 #     render = JS(
-        #                 #         "function(data, type, row, meta) {",
-        #                 #         "  if (data === null || data === '') return 'NA';",
-        #                 #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-        #                 #         "}"
-        #                 #     )
-        #                 # ))
-        #             )
-        # 
-        #         )
-        #     }, server = TRUE)
-        # })
-        # 
         # output$network_user_nodes_data_download <- downloadHandler(
         #     filename = function() {
         #         paste("network_user_nodes_data", ".txt", sep = "")
@@ -5543,40 +5872,6 @@ server <- shinyServer(function(session, input, output) {
         #     }
         # )
         # 
-        # observe({
-        #     # invalidateLater(1000, session)
-        # 
-        #     output$network_user_edges_data <- renderDT({
-        #         req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
-        # 
-        #         edges <- read.table(
-        #             paste(temp_network, "/edge_result.txt", sep = ""),
-        #             header = TRUE,
-        #             sep = "\t",
-        #             stringsAsFactors = FALSE
-        #         )
-        # 
-        #         datatable(
-        #             head(edges, 30),
-        #             rownames = TRUE,
-        #             options = list(
-        #                 pageLength = 10,
-        #                 scrollX = TRUE
-        #                 # columnDefs = list(list(
-        #                 #     targets = 1:ncol(edges),
-        #                 #     render = JS(
-        #                 #         "function(data, type, row, meta) {",
-        #                 #         "  if (data === null || data === '') return 'NA';",
-        #                 #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-        #                 #         "}"
-        #                 #     )
-        #                 # ))
-        #             )
-        # 
-        #         )
-        #     }, server = TRUE)
-        # })
-        # 
         # output$network_user_edges_data_download <- downloadHandler(
         #     filename = function() {
         #         paste("network_user_edges_data", ".txt", sep = "")
@@ -5585,217 +5880,6 @@ server <- shinyServer(function(session, input, output) {
         #         file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
         #     }
         # )
-        
-        observeEvent(input$network_submit, {
-            
-            network_step <- reactiveVal("Click Submit to start ...")
-            
-            updateProgressBar(session, id = "network_progress", value = 0)
-            network_step("Start reading data ...")
-            
-            meta_file <- input$network_user_meta_data_input$datapath
-            gene_file <- input$network_user_gene_data_input$datapath
-            group_file <- input$network_user_group_data_input$datapath
-            
-            network_nsize <- input$network_nsize
-            network_plot_width <- input$network_plot_width
-            network_plot_height <- input$network_plot_height
-            network_plot_dpi <- input$network_plot_dpi
-            
-            task1_read_data <- r_bg(function(meta_file, gene_file, group_file) {
-                meta_data <- read.table(
-                    meta_file,
-                    header = TRUE,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = FALSE
-                )
-                
-                gene_data <- read.table(
-                    gene_file,
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-                
-                group_data <- read.table(
-                    group_file,
-                    header = TRUE,
-                    sep = "\t",
-                    stringsAsFactors = FALSE
-                )
-                group_data <- as.character(group_data[, 1])
-
-                return(list(
-                    meta_data = meta_data,
-                    gene_data = gene_data,
-                    group_data = group_data
-                ))
-                
-                cat(meta_data)
-            }, supervise = TRUE, args = list(meta_file = meta_file,
-                                             gene_file = gene_file,
-                                             group_file = group_file))
-            
-            observeEvent(task1_read_data$wait(), {
-                meta_data <- task1_read_data$get_result()$meta_data
-                gene_data <- task1_read_data$get_result()$gene_data
-                group_data <- task1_read_data$get_result()$group_data
-                
-                # print(meta_data)
-                
-                updateProgressBar(session, id = "network_progress", value = 30)
-                network_step("Running mlimma and pdnet ...")
-                
-                task2_run_analysis <- r_bg(function(meta_data, gene_data, group_data, network_nsize, network_plot_width, network_plot_height, network_plot_dpi, temp_network) {
-                    library(ggplot2)
-                    library(MNet)
-                    library(dplyr)
-                    library(Cairo)
-                    
-                    diff_meta <- mlimma(meta_data, group_data)
-                    diff_gene <- mlimma(gene_data, group_data)
-                    
-                    names(diff_meta)[4] <- "p_value"
-                    names(diff_gene)[4] <- "p_value"
-                    
-                    network_res <- pdnet(diff_meta, diff_gene, nsize = network_nsize)
-                    
-                    pdf(
-                        file = paste(temp_network, "/network_plot.pdf", sep = ""),
-                        width = network_plot_width,
-                        height = network_plot_height,
-                        onefile = FALSE
-                    )
-                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
-                    dev.off()
-                    
-                    CairoJPEG(
-                        filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
-                        width = network_plot_width,
-                        height = network_plot_height,
-                        units = "in",
-                        res = network_plot_dpi,
-                        quality = 100
-                    )
-                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
-                    dev.off()
-                    
-                    write.table(
-                        network_res$node_result,
-                        file = paste(temp_network, "/node_result.txt", sep = ""),
-                        quote = FALSE,
-                        sep = "\t",
-                        na = "NA",
-                        row.names = FALSE
-                    )
-                    
-                    write.table(
-                        network_res$edge_result,
-                        file = paste(temp_network, "/edge_result.txt", sep = ""),
-                        quote = FALSE,
-                        sep = "\t",
-                        na = "NA",
-                        row.names = FALSE
-                    )
-                    
-                    return(list(
-                        diff_meta = diff_meta
-                    ))
-                }, supervise = TRUE, 
-                args = list(meta_data = meta_data,
-                            gene_data = gene_data,
-                            group_data = group_data,
-                            network_nsize = network_nsize,
-                            network_plot_width = network_plot_width,
-                            network_plot_height = network_plot_height,
-                            network_plot_dpi = network_plot_dpi,
-                            temp_network = temp_network))
-                
-                observeEvent(task2_run_analysis$wait(), {
-                    print(task2_run_analysis$get_result()$diff_meta)
-                    
-                    updateProgressBar(session, id = "network_progress", value = 100)
-                    network_step("Analysis complete ...")
-                    
-                    output$network_plot <- renderImage({
-                        list(
-                            src = paste(temp_network, "/network_plot.jpeg", sep = ""),
-                            contentType = "image/jpeg",
-                            width = "100%",
-                            height = "auto"
-                        )
-                    }, deleteFile = FALSE)
-                    
-                    output$network_user_nodes_data <- renderDT({
-                        req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
-                        
-                        nodes <- read.table(
-                            paste(temp_network, "/node_result.txt", sep = ""),
-                            header = TRUE,
-                            sep = "\t",
-                            stringsAsFactors = FALSE
-                        )
-                        
-                        datatable(
-                            head(nodes, 30),
-                            rownames = TRUE,
-                            options = list(
-                                pageLength = 10,
-                                scrollX = TRUE
-                            )
-                        )
-                    }, server = TRUE)
-
-                    output$network_user_edges_data <- renderDT({
-                        req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
-                        
-                        edges <- read.table(
-                            paste(temp_network, "/edge_result.txt", sep = ""),
-                            header = TRUE,
-                            sep = "\t",
-                            stringsAsFactors = FALSE
-                        )
-                        
-                        datatable(
-                            head(edges, 30),
-                            rownames = TRUE,
-                            options = list(
-                                pageLength = 10,
-                                scrollX = TRUE
-                            )
-                        )
-                    }, server = TRUE)
-                })
-            })
-        })
-        
-        output$network_plot_download <- downloadHandler(
-            filename = function() {
-                paste("NetworkPlot", input$network_plot_format, sep = ".")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
-            }
-        )
-        
-        output$network_user_nodes_data_download <- downloadHandler(
-            filename = function() {
-                paste("network_user_nodes_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
-            }
-        )
-        
-        output$network_user_edges_data_download <- downloadHandler(
-            filename = function() {
-                paste("network_user_edges_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
-            }
-        )
     }
     
     # diff_network
@@ -5946,7 +6030,7 @@ server <- shinyServer(function(session, input, output) {
                 filter(adj.P.Val < input$diff_network_padj) %>%
                 filter(abs(logFC) > input$diff_network_logfc)
             
-            diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+            diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
             diff_network_res
         })
         
@@ -6020,7 +6104,7 @@ server <- shinyServer(function(session, input, output) {
                         filter(adj.P.Val < input$diff_network_padj) %>%
                         filter(abs(logFC) > input$diff_network_logfc)
                     
-                    diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+                    diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
                     diff_network_res
                 })
                 
@@ -6606,7 +6690,7 @@ server <- shinyServer(function(session, input, output) {
                 all_data_up <- all_data %>%
                     filter(logFC > input$epea_logfc) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_up <- PathwayAnalysis(
+                result_up <- ePEAlyser(
                     all_data_up$name,
                     out = "Extended",
                     p_cutoff = input$epea_p_cutoff
@@ -6615,7 +6699,7 @@ server <- shinyServer(function(session, input, output) {
                 all_data_down <- all_data %>%
                     filter(logFC < -(input$epea_padj)) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_down <- PathwayAnalysis(
+                result_down <- ePEAlyser(
                     all_data_down$name,
                     out = "Extended",
                     p_cutoff = input$epea_p_cutoff
@@ -6639,10 +6723,10 @@ server <- shinyServer(function(session, input, output) {
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            progress$set(message = "ePEAlyser starting ...", detail = "ePEAlyser starting ...")
             
             progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            progress$set(message = "ePEAlyser reading datasets ...", detail = "ePEAlyser reading datasets ...")
             
             meta_data <- read.table(
                 input$epea_user_meta_data_input$datapath,
@@ -6667,8 +6751,8 @@ server <- shinyServer(function(session, input, output) {
             )
             group_data <- as.character(group_data[, 1])
             
-            progress$set(value = 100)
-            progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+            progress$set(value = 50)
+            progress$set(message = "ePEAlyser analyzing ...", detail = "ePEAlyser analyzing ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -6678,7 +6762,7 @@ server <- shinyServer(function(session, input, output) {
             all_data_up <- all_data %>%
                 filter(logFC > input$epea_logfc) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_up <- PathwayAnalysis(
+            result_up <- ePEAlyser(
                 all_data_up$name,
                 out = "Extended",
                 p_cutoff = input$epea_p_cutoff
@@ -6694,7 +6778,7 @@ server <- shinyServer(function(session, input, output) {
             all_data_down <- all_data %>%
                 filter(logFC < -(input$epea_padj)) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 all_data_down$name,
                 out = "Extended",
                 p_cutoff = input$epea_p_cutoff
@@ -6707,13 +6791,16 @@ server <- shinyServer(function(session, input, output) {
                 row.names = FALSE
             )
             
+            progress$set(value = 80)
+            progress$set(message = "ePEAlyser visualizing ...", detail = "ePEAlyser visualizing ...")
+            
             plot <- function() {
                 cowplot::plot_grid(
                     plotlist = list(
                         result_up$p_barplot,
-                        result_up$gp,
-                        result_down$p_barplot,
-                        result_down$gp
+                        # result_up$gp,
+                        result_down$p_barplot
+                        # result_down$gp
                     ),
                     labels = "AUTO",
                     ncol = 1
@@ -6739,10 +6826,9 @@ server <- shinyServer(function(session, input, output) {
             )
             print(plot())
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
+            
+            progress$set(value = 100)
+            progress$set(message = "ePEAlyser task complete ...", detail = "ePEAlyser task complete ...")
             
             output$epea_user_up_data <- renderDT({
                 req(file.exists(paste(temp_epea, "/epea_up.txt", sep = "")))
@@ -6773,19 +6859,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epea_user_up_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_up_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epea_user_down_data <- renderDT({
                 req(file.exists(paste(temp_epea, "/epea_down.txt", sep = "")))
@@ -6816,19 +6889,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epea_user_down_data_download <- downloadHandler(
-            filename = function() {
-                paste("epea_user_down_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epea_plot <- renderImage({
                 list(
@@ -6839,6 +6899,24 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, deleteFile = FALSE)
         })
+        
+        output$epea_user_up_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_up_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$epea_user_down_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_down_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
+            }
+        )
         
         output$epea_plot_download <- downloadHandler(
             filename = function() {
@@ -6945,14 +7023,14 @@ server <- shinyServer(function(session, input, output) {
             diff_meta_up <- diff_meta %>%
                 filter(logFC > input$mpea_logfc) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_up <- PathwayAnalysis(diff_meta_up$name,
+            result_up <- ePEAlyser(diff_meta_up$name,
                                          out = "metabolite",
                                          p_cutoff = input$mpea_p_cutoff)
             
             diff_meta_down <- diff_meta %>%
                 filter(logFC < -(input$mpea_padj)) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 diff_meta_down$name,
                 out = "metabolite",
                 p_cutoff = input$mpea_p_cutoff
@@ -7019,7 +7097,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_up <- diff_meta %>%
                         filter(logFC > input$mpea_logfc) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_up <- PathwayAnalysis(
+                    result_up <- ePEAlyser(
                         diff_meta_up$name,
                         out = "metabolite",
                         p_cutoff = input$mpea_p_cutoff
@@ -7028,7 +7106,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_down <- diff_meta %>%
                         filter(logFC < -(input$mpea_padj)) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_down <- PathwayAnalysis(
+                    result_down <- ePEAlyser(
                         diff_meta_down$name,
                         out = "metabolite",
                         p_cutoff = input$mpea_p_cutoff
@@ -7165,14 +7243,14 @@ server <- shinyServer(function(session, input, output) {
             diff_gene_up <- diff_gene %>%
                 filter(logFC > input$gpea_logfc) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_up <- PathwayAnalysis(diff_gene_up$name,
+            result_up <- ePEAlyser(diff_gene_up$name,
                                          out = "gene",
                                          p_cutoff = input$gpea_p_cutoff)
             
             diff_gene_down <- diff_gene %>%
                 filter(logFC < -(input$gpea_padj)) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 diff_gene_down$name,
                 out = "gene",
                 p_cutoff = input$gpea_p_cutoff
@@ -7238,7 +7316,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_gene_up <- diff_gene %>%
                         filter(logFC > input$gpea_logfc) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_up <- PathwayAnalysis(
+                    result_up <- ePEAlyser(
                         diff_gene_up$name,
                         out = "gene",
                         p_cutoff = input$gpea_p_cutoff
@@ -7247,7 +7325,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_gene_down <- diff_gene %>%
                         filter(logFC < -(input$gpea_padj)) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_down <- PathwayAnalysis(
+                    result_down <- ePEAlyser(
                         diff_gene_down$name,
                         out = "gene",
                         p_cutoff = input$gpea_p_cutoff
@@ -7685,7 +7763,7 @@ server <- shinyServer(function(session, input, output) {
                     filter(logFC < -(input$epda_logfc)) %>%
                     filter(adj.P.Val < input$epda_padj)
                 
-                epda_res <- DAscore(
+                epda_res <- ePDAlyser(
                     c(
                         diff_gene_increase$name,
                         diff_meta_increase$name
@@ -7707,10 +7785,10 @@ server <- shinyServer(function(session, input, output) {
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            progress$set(message = "ePDAlyser starting ...", detail = "ePDAlyser starting ...")
             
             progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            progress$set(message = "ePDAlyser reading datasets ...", detail = "ePDAlyser reading datasets ...")
             
             meta_data <- read.table(
                 input$epda_user_meta_data_input$datapath,
@@ -7735,8 +7813,8 @@ server <- shinyServer(function(session, input, output) {
             )
             group_data <- as.character(group_data[, 1])
             
-            progress$set(value = 100)
-            progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
+            progress$set(value = 50)
+            progress$set(message = "ePDAlyser analyzing ...", detail = "ePDAlyser analyzing ...")
             
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
@@ -7756,7 +7834,7 @@ server <- shinyServer(function(session, input, output) {
                 filter(logFC < -(input$epda_logfc)) %>%
                 filter(adj.P.Val < input$epda_padj)
             
-            epda_res <- DAscore(
+            epda_res <- ePDAlyser(
                 c(
                     diff_gene_increase$name,
                     diff_meta_increase$name
@@ -7779,6 +7857,9 @@ server <- shinyServer(function(session, input, output) {
                 row.names = FALSE
             )
             
+            progress$set(value = 80)
+            progress$set(message = "ePDAlyser visualizing ...", detail = "ePDAlyser visualizing ...")
+            
             pdf(
                 file = paste(temp_epda, "/epda_plot.pdf", sep = ""),
                 width = input$epda_plot_width,
@@ -7798,10 +7879,9 @@ server <- shinyServer(function(session, input, output) {
             )
             print(epda_res$p)
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
+            
+            progress$set(value = 100)
+            progress$set(message = "ePDAlyser task complete ...", detail = "ePDAlyser task complete ...")
             
             output$epda_user_result_data <- renderDT({
                 req(file.exists(paste(temp_epda, "/epda_result.txt", sep = "")))
@@ -7832,19 +7912,6 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
-        })
-        
-        output$epda_user_result_data_download <- downloadHandler(
-            filename = function() {
-                paste("epda_user_result_data", ".txt", sep = "")
-            },
-            content = function(file) {
-                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
-            }
-        )
-        
-        observe({
-            # invalidateLater(1000, session)
             
             output$epda_plot <- renderImage({
                 list(
@@ -7855,6 +7922,15 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, deleteFile = FALSE)
         })
+        
+        output$epda_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
+            }
+        )
         
         output$epda_plot_download <- downloadHandler(
             filename = function() {
@@ -8152,10 +8228,10 @@ server <- shinyServer(function(session, input, output) {
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            progress$set(message = "eSEAlyser starting ...", detail = "eSEAlyser starting ...")
             
             progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            progress$set(message = "eSEAlyser reading datasets ...", detail = "eSEAlyser reading datasets ...")
             
             meta_data <- read.table(
                 input$esea_user_meta_data_input$datapath,
@@ -8191,7 +8267,7 @@ server <- shinyServer(function(session, input, output) {
             
             data <- c(meta.data, gene.data)
             
-            result <- ESEA(data, out = "Extended")
+            result <- eSEAlyser(data, out = "Extended")
 
             write.table(
                 result,
@@ -8201,15 +8277,40 @@ server <- shinyServer(function(session, input, output) {
                 row.names = F
             )
             
-            progress$set(value = 100)
-            progress$set(message = "eSEA Pathway ...", detail = "eSEA Pathway ...")
+            progress$set(value = 50)
+            progress$set(message = "eSEAlyser analyzing ...", detail = "eSEAlyser analyzing ...")
+            
+            result_filter <- result %>%
+              dplyr::filter(pval < 0.1) %>%
+              arrange(NES) %>%
+              mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 80)
+            progress$set(message = "eSEAlyser visualizing ...", detail = "eSEAlyser visualizing ...")
+            
+            p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
+              geom_bar(stat="identity")+
+              scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
+              theme_bw()+
+              labs(x=NULL)+
+              coord_flip()
+            
+            ggsave(paste0(temp_esea, "/esea_plot.pdf"),p,
+                   width = input$esea_plot_width,
+                   height = input$esea_plot_height)
+            ggsave(paste0(temp_esea, "/esea_plot.jpeg"),
+                   p,
+                   width = input$esea_plot_width,
+                   height = input$esea_plot_height,
+                   units = "in",
+                   dpi = input$esea_plot_dpi)
             
             plot <- function(){
                 pESEA(input$esea_pathway, data, out = "Extended")
             }
             
             pdf(
-                file = paste(temp_esea, "/esea_plot.pdf", sep = ""),
+                file = paste(temp_esea, "/esea_interested_plot.pdf", sep = ""),
                 width = input$esea_plot_width,
                 height = input$esea_plot_height,
                 onefile = FALSE
@@ -8218,7 +8319,7 @@ server <- shinyServer(function(session, input, output) {
             dev.off()
             
             CairoJPEG(
-                filename = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
+                filename = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
                 width = input$esea_plot_width,
                 height = input$esea_plot_height,
                 units = "in",
@@ -8227,10 +8328,9 @@ server <- shinyServer(function(session, input, output) {
             )
             print(plot())
             dev.off()
-        })
-        
-        observe({
-            # invalidateLater(1000, session)
+            
+            progress$set(value = 100)
+            progress$set(message = "eSEAlyser task complete ...", detail = "eSEAlyser task complete ...")
             
             output$esea_user_result_data <- renderDT({
                 req(file.exists(paste(temp_esea, "/esea_result.txt", sep = "")))
@@ -8261,6 +8361,24 @@ server <- shinyServer(function(session, input, output) {
                     
                 )
             }, server = TRUE)
+            
+            output$esea_plot <- renderImage({
+                list(
+                    src = paste0(temp_esea, "/esea_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            
+            output$esea_interested_plot <- renderImage({
+                list(
+                    src = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
         })
         
         output$esea_user_result_data_download <- downloadHandler(
@@ -8272,39 +8390,35 @@ server <- shinyServer(function(session, input, output) {
             }
         )
         
-        observe({
-            # invalidateLater(1000, session)
-            
-            output$esea_plot <- renderImage({
-                list(
-                    src = paste(temp_esea, "/esea_plot.jpeg", sep = ""),
-                    contentType = "image/jpeg",
-                    width = "100%",
-                    height = "auto"
-                )
-            }, deleteFile = FALSE)
-        })
-        
         output$esea_plot_download <- downloadHandler(
+          filename = function() {
+            paste("eSEAPlot", input$esea_plot_format, sep = ".")
+          },
+          content = function(file) {
+            file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
+          }
+        )
+        
+        output$esea_interested_plot_download <- downloadHandler(
             filename = function() {
-                paste("eSEAPlot", input$esea_plot_format, sep = ".")
+                paste("eSEAPlot_interested", input$esea_plot_format, sep = ".")
             },
             content = function(file) {
-                file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
+                file.copy(from = paste(temp_esea, "/esea_interested_plot.", input$esea_plot_format, sep = ""), to = file)
             }
         )
     }
     
-    observeEvent(input$open_window, {
-        session$sendCustomMessage(
-            "openNewWindow",
-            list(
-                width = 1000,
-                height = 800,
-                url = "http://www.mnet4all.com/mnet_manual/"
-            )
-        )
-    })
+    # observeEvent(input$open_window, {
+    #     session$sendCustomMessage(
+    #         "openNewWindow",
+    #         list(
+    #             width = 1000,
+    #             height = 800,
+    #             url = "http://www.mnet4all.com/mnet_manual/"
+    #         )
+    #     )
+    # })
     
     # database
     {
@@ -8402,3 +8516,4 @@ server <- shinyServer(function(session, input, output) {
 
 # runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
 shinyApp(ui = ui, server = server)
+

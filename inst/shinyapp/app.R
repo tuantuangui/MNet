@@ -201,10 +201,10 @@ ui <- shinyUI(
                     #     )
                     # ),
                     bs4SidebarMenuItem(
-                        text = "1. Metabolic Subnetwork",
+                        text = "1. Metabolic Subnetwork Analyser",
                         tabName = NULL,
-                        icon = icon("circle-nodes"),
-                        # badgeLabel = "6",
+                        # icon = icon("circle-nodes"),
+                        # badgeLabel = "3",
                         # badgeColor = "warning",
                         href = NULL,
                         newTab = TRUE,
@@ -239,9 +239,9 @@ ui <- shinyUI(
                     ),
                     br(),
                     bs4SidebarMenuItem(
-                        text = "2. Extended Pathway",
+                        text = "2. Extended Pathway Analysers",
                         tabName = NULL,
-                        icon = icon("dna"),
+                        # icon = icon("dna"),
                         # badgeLabel = "6",
                         # badgeColor = "warning",
                         href = NULL,
@@ -589,33 +589,24 @@ ui <- shinyUI(
                             #     style = "border: none; border-radius: 10px;"
                             # )
                             tags$p("MNet", style = "font-size: 2.5rem; font-weight: bold; text-align: center;"),
-                            tags$p("MNet: an R package and website for integrative analysis of metabolomic and transcriptomic data", 
+                            tags$p("MNet: a metabolic network-centered tool for interpreting metabolomic and transcriptomic data", 
                                    style = "font-size: 1rem; font-weight: bold; text-align: center;"),
                             br(),
                             tags$p("Introduction", style = "font-size: 2rem; font-weight: bold;"),
-                            tags$span("Based on the knowledgebase", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span("and an ", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$a(href = "https://github.com/tuantuangui/MNet", "R package as the backend", 
-                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span("
-                                   MNet offers one subnetwork analyser and three extended pathway analysers for user-input metabolomics 
-                                   and transcriptomic data. The subnetwork analyser rely on our previously established network 
-                                   algorithm dnet to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics 
-                                   and transcriptomic data", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("sNETlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span(", leveraging network information about either 
-                                   functional interactions or pathway-derived interactions. The extended pathway analysers 
-                                   extend pathway analysis algorithms, which contain extended Pathway Enrichment Analyser",
-                                      style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("ePEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span(", extended Pathway Differential Abundance analyser", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("ePDAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span(", and extended pathway Set Enrichment Analyser", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("eSEAlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
-                            tags$span(", with the aim to identify dysregulated metabolic pathways by considering both 
-                                   metabolites and genes.",
-                                   style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("MNet features a built-in knowledgebase, ", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-weight: bold; color: darkblue;"),
+                            tags$span("which is manually curated and provides information on metabolomics, including almost all currently
+                                      available human metabolic interactions (gene-metabolite and metabolite-metabolite). Grounded in this
+                                      knowledgebase, MNet offers one subnetwork analyser (", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("sNETlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(") and three extended pathway analysers (",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePEAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(",",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePDAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(", and ",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("eSEAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(") for user-input metabolomic and transcriptomic data.",style = "font-size: 1.2rem; text-align: justify;"),
+                            
                             br(),br(),
                             tags$img(src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.jpg",
                                      # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
@@ -623,16 +614,16 @@ ui <- shinyUI(
                             br(),br(),
                             tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
-                                   "Functions", 
-                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                                   "Backend Functions", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
                             br(),br(),
                             fluidRow(
                                 column(
                                     width = 6,
                                     tags$p("1. sNETlyser", style = "font-size: 1.2rem; font-weight: bold;"),
-                                    tags$p("Visualization of the identified optimal subnetwork that best explains the biological processes 
-                                           comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red 
-                                           and green indicating different expression levels.",
+                                    tags$p("The subnetwork analyser extends the dnet subnetwork algorithm 
+                                           to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics
+                                           and transcriptomic data, capitalising our curated dbMNet metabolic network information.",
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
@@ -641,7 +632,7 @@ ui <- shinyUI(
                                 column(
                                     width = 6,
                                     tags$p("2. ePEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
-                                    tags$p("Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding 
+                                    tags$p("The extended Pathway Enrichment Analyser. (A) Barplot of up-regulated metabolic pathways corresponding 
                                            to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to 
                                            metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
@@ -655,7 +646,7 @@ ui <- shinyUI(
                                 column(
                                     width = 6,
                                     tags$p("3. ePDAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
-                                    tags$p("ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
+                                    tags$p("The extended Pathway Differential Abundance analyser. The ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
                                            are statistically significant differences between two groups.",
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
@@ -665,8 +656,7 @@ ui <- shinyUI(
                                 column(
                                     width = 6,
                                     tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
-                                    tags$p("Intested Plot: Result of interested pathway set enrichment analysis can be downloaded as a PDF or 
-                                           JPEG file with specified width, height, and dpi settings.",
+                                    tags$p("The extended pathway Set Enrichment Analyser, which aim to identify dysregulated metabolic pathways by considering both metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
@@ -678,11 +668,11 @@ ui <- shinyUI(
                             tags$p("1. MNet Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
                                    "MNet Server Manual", 
-                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
                             tags$p("2. MNet Package References", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/", 
                                    "MNet Package References", 
-                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;")
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;")
                         )
                     ))
                 }, #=== 1.5.1.2 bs4TabItem
