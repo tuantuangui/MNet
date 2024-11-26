@@ -18,6 +18,9 @@
 <url><loc>/reference/ML_xgboost.html</loc></url>
 <url><loc>/reference/MetCox.html</loc></url>
 <url><loc>/reference/PathwayAnalysis.html</loc></url>
+<url><loc>/reference/ePDAlyser.html</loc></url>
+<url><loc>/reference/ePEAlyser.html</loc></url>
+<url><loc>/reference/eSEAlyser.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/keggid2pathway.html</loc></url>
 <url><loc>/reference/meta_impute.html</loc></url>
@@ -38,6 +41,7 @@
 <url><loc>/reference/pathway2pathwayid.html</loc></url>
 <url><loc>/reference/pathwayinfo.html</loc></url>
 <url><loc>/reference/pdnet.html</loc></url>
+<url><loc>/reference/sNETlyser.html</loc></url>
 <url><loc>/reference/survCli.html</loc></url>
 <url><loc>/reference/survMet.html</loc></url>
 <url><loc>/reference/xEnrichViewer.html</loc></url>

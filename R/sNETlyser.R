@@ -25,14 +25,14 @@
 #'   dplyr::filter(adj.P.Val < 0.01) %>%
 #'   dplyr::filter(abs(logFC) > 1)
 #'   
-#' res <- pdnet(diff_meta, diff_gene, nsize = 100)
+#' res <- sNETlyser(diff_meta, diff_gene, nsize = 100)
 #' res
 #' 
-#' res <- pdnet(diff_metabolite[, 8], diff_gene1[1:500, 8])
+#' res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:500, 8])
 #' res
 #'
 
-pdnet <- function(diff_metabolite, diff_gene, nsize = 10) {
+sNETlyser <- function(diff_metabolite, diff_gene, nsize = 10) {
   keggId <- gene <- logFC <- type <- cor_result <- NULL
   gene_metabolite_1 <- gene_metabolite %>%
     as.data.frame() %>%

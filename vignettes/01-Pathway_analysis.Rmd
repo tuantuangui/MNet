@@ -25,7 +25,7 @@ library(tibble)
 
 # <font size="5">Pathway enrichment analysis</font>
 
-Pathway enrichment analysis, includes gene pathway enrichment analysis only focusing on genes, metabolite pathway enrichment analysis only focusing on metabolites and extended pathway enrichment analysis focusing on both genes and metabolites, using function "PathwayAnalysis" in MNet.
+Pathway enrichment analysis, includes gene pathway enrichment analysis only focusing on genes, metabolite pathway enrichment analysis only focusing on metabolites and extended pathway enrichment analysis focusing on both genes and metabolites, using function "ePEAlyser" in MNet.
 
 ```{r message=FALSE, warning=FALSE}
 ## meta_dat is the metabolic data of the 31 samples
@@ -41,7 +41,7 @@ diff_gene <- mlimma(gene_dat, group)
 head(diff_gene)
 ```
 ## <font size="4">Extended pathway enrichment analysis (ePEA)</font>
-Function 'PathwayAnalysis' with 'Extended' parameter, investigates metabolic pathway dysregulation considering both metabolites and genes, which we refer to as ePEA.
+Function 'ePEAlyser' with 'Extended' parameter, investigates metabolic pathway dysregulation considering both metabolites and genes, which we refer to as ePEA.
 
 ```{r fig.keep='all', ePEA, fig.width=18.00, fig.height=4.00, message=FALSE, warning = FALSE}
 
@@ -56,15 +56,15 @@ all_dat1 <- all_dat %>%
   filter(adj.P.Val < 0.05)
 
 ## the increase pathway analysis of both genes and metabolites
-result1 <- PathwayAnalysis(all_dat1$name, out = "Extended", p_cutoff = 0.01)
+result1 <- ePEAlyser(all_dat1$name, out = "Extended", p_cutoff = 0.01)
 
 ## filter the decrease differential genes and metabolites
 all_dat2 <- all_dat %>%
   filter(logFC < -0.58) %>%
   filter(adj.P.Val < 0.05)
 
-## PathwayAnalysis performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter
-result2 <- PathwayAnalysis(all_dat2$name, out = "Extended", p_cutoff = 0.01)
+## ePEAlyser performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter
+result2 <- ePEAlyser(all_dat2$name, out = "Extended", p_cutoff = 0.01)
 
 p <- cowplot::plot_grid(plotlist = list(result1$p_barplot, result2$p_barplot))
 p
@@ -74,7 +74,7 @@ result2$gp
 ```
 
 ## <font size="4">Metabolite pathway enrichment analysis (mPEA)</font>
-Function 'PathwayAnalysis' with 'metabolite' parameter, investigates metabolic pathway dysregulation considering only metabolites, which we refer to as mPEA.
+Function 'ePEAlyser' with 'metabolite' parameter, investigates metabolic pathway dysregulation considering only metabolites, which we refer to as mPEA.
 
 ```{r fig.keep='all', mPEA, fig.width=18.00, fig.height=4.00, message=FALSE, warning=FALSE}
 
@@ -83,8 +83,8 @@ diff_meta1 <- diff_meta %>%
   filter(logFC > 0.58) %>%
   filter(adj.P.Val < 0.05)
 
-## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
-result1 <- PathwayAnalysis(diff_meta1$name, out = "metabolite", p_cutoff =
+## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
+result1 <- ePEAlyser(diff_meta1$name, out = "metabolite", p_cutoff =
                              0.1)
 
 ## filter the decrease differential metabolites
@@ -92,8 +92,8 @@ diff_meta2 <- diff_meta %>%
   filter(logFC < -0.58) %>%
   filter(adj.P.Val < 0.05)
 
-## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
-result2 <- PathwayAnalysis(diff_meta2$name, out = "metabolite", p_cutoff =
+## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
+result2 <- ePEAlyser(diff_meta2$name, out = "metabolite", p_cutoff =
                              0.1)
 
 p <- cowplot::plot_grid(plotlist = list(result1$p_barplot, result2$p_barplot))
@@ -104,7 +104,7 @@ result2$gp
 ```
 
 ## <font size="4">Gene pathway enrichment analysis (gPEA)</font>
-Function 'PathwayAnalysis' with 'gene' parameter, investigates metabolic pathway dysregulation considering only genes, which we refer to as gPEA.
+Function 'ePEAlyser' with 'gene' parameter, investigates metabolic pathway dysregulation considering only genes, which we refer to as gPEA.
 
 ```{r fig.keep='all', gPEA, fig.width=18.00, fig.height=4.00, message=FALSE, warning=FALSE}
 
@@ -113,16 +113,16 @@ diff_gene1 <- diff_gene %>%
   filter(logFC > 0.58) %>%
   filter(adj.P.Val < 0.05)
 
-## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
-result1 <- PathwayAnalysis(diff_gene1$name, out = "gene", p_cutoff = 0.1)
+## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
+result1 <- ePEAlyser(diff_gene1$name, out = "gene", p_cutoff = 0.1)
 
 ## filter the decrease differential expression genes
 diff_gene2 <- diff_gene %>%
   filter(logFC < -0.58) %>%
   filter(adj.P.Val < 0.05)
 
-## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
-result2 <- PathwayAnalysis(diff_gene2$name, out = "gene", p_cutoff = 0.1)
+## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
+result2 <- ePEAlyser(diff_gene2$name, out = "gene", p_cutoff = 0.1)
 
 p <- cowplot::plot_grid(plotlist = list(result1$p_barplot, result2$p_barplot))
 p
@@ -132,10 +132,10 @@ result2$gp
 ```
 
 # <font size="5">Pathway differential abundance analysis</font>
-Pathway differential abundance analysis, includes gene pathway differential abundance analysis only focusing on genes, metabolite pathway differential abundance analysis only focusing on metabolites and extended pathway differential abundance analysis focusing on both genes and metabolites, using function "DAscore" in MNet.
+Pathway differential abundance analysis, includes gene pathway differential abundance analysis only focusing on genes, metabolite pathway differential abundance analysis only focusing on metabolites and extended pathway differential abundance analysis focusing on both genes and metabolites, using function "ePDAlyser" in MNet.
 
 ## <font size="4">Extended pathway differential abundance score (ePDA)</font>
-Function 'DAscore' with 'Extended' parameter, investigates metabolic pathway dysregulation considering both metabolites and genes, which we refer to as ePDA (extended pathway differential abundance).
+Function 'ePDAlyser' with 'Extended' parameter, investigates metabolic pathway dysregulation considering both metabolites and genes, which we refer to as ePDA (extended pathway differential abundance).
 
 
 ```{r fig.keep='all', ePDA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
@@ -160,7 +160,7 @@ diff_meta_decrease <- diff_meta %>%
   filter(adj.P.Val < 0.05)
 
 ## the extended pathway differential abundance analysis
-ExtendDAscore_result <- DAscore(
+ExtendDAscore_result <- ePDAlyser(
   c(diff_gene_increase$name, diff_meta_increase$name),
   c(diff_gene_decrease$name, diff_meta_decrease$name),
   c(diff_gene$name, diff_meta$name),
@@ -173,7 +173,7 @@ ExtendDAscore_result
 ```
 
 ## <font size="4">Metabolite pathway differential abundance score (mPDA)</font>
-Function 'DAscore' with 'metabolite' parameter, investigates metabolic pathway dysregulation considering only metabolites, which we refer to as mPDA (metabolite pathway differential abundance).
+Function 'ePDAlyser' with 'metabolite' parameter, investigates metabolic pathway dysregulation considering only metabolites, which we refer to as mPDA (metabolite pathway differential abundance).
 
 ```{r fig.keep='all', mPDA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ## filter the differential metabolites
@@ -187,7 +187,7 @@ diff_meta_decrease <- diff_meta %>%
   filter(adj.P.Val < 0.05)
 
 ## the metabolite pathway differential abundance analysis
-dascore_result_meta <- DAscore(diff_meta_increase$name,
+dascore_result_meta <- ePDAlyser(diff_meta_increase$name,
                                diff_meta_decrease$name,
                                diff_meta$name,
                                sort_plot = "category",
@@ -198,7 +198,7 @@ dascore_result_meta
 ```
 
 ## <font size="4">Gene pathway differential abundance score (gPDA)</font>
-Function 'DAscore' with 'gene' parameter, investigates metabolic pathway dysregulation considering only genes, which we refer to as gPDA (gene pathway differential abundance).
+Function 'ePDAlyser' with 'gene' parameter, investigates metabolic pathway dysregulation considering only genes, which we refer to as gPDA (gene pathway differential abundance).
 
 ```{r fig.keep='all', gPDA, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 ## filter the differential genes
@@ -212,7 +212,7 @@ diff_gene_decrease <- diff_gene %>%
   filter(adj.P.Val < 0.05)
 
 ## the gene pathway differential abundance analysis
-dascore_result_gene <- DAscore(diff_gene_increase$name,
+dascore_result_gene <- ePDAlyser(diff_gene_increase$name,
                                diff_gene_decrease$name,
                                diff_gene$name,
                                sort_plot = "category",
@@ -223,7 +223,7 @@ dascore_result_gene
 ```
 
 # <font size="5">Pathway set enrichment analysis</font>
-Pathway set enrichment analysis, includes gene set enrichment analysis only focusing on genes, metabolite set enrichment analysis only focusing on metabolites and extended pathway set enrichment analysis focusing on both genes and metabolites, using function "ESEA" in MNet.
+Pathway set enrichment analysis, includes gene set enrichment analysis only focusing on genes, metabolite set enrichment analysis only focusing on metabolites and extended pathway set enrichment analysis focusing on both genes and metabolites, using function "eSEAlyser" in MNet.
 
 ## <font size="4">Extended pathway set enrichment analysis (eSEA)</font>
 
@@ -243,7 +243,7 @@ names(gene.data) <- diff_gene$name
 dat <- c(meta.data, gene.data)
 
 ## the Extended pathway set enrichment analysis
-result <- ESEA(dat, out = "Extended")
+result <- eSEAlyser(dat, out = "Extended")
 
 ```
 
@@ -275,7 +275,7 @@ Metabolite set enrichment analysis which only includes metabolites
 
 ```{r message=FALSE, warning=FALSE}
 ## the metabolite pathway set enrichment analysis
-result <- ESEA(meta.data, out = "metabolite")
+result <- eSEAlyser(meta.data, out = "metabolite")
 
 ```
 
@@ -291,7 +291,7 @@ Gene set enrichment analysis which only includes genes
 
 ```{r message=FALSE, warning=FALSE}
 ## the gene pathway set enrichment analysis
-result <- ESEA(gene.data, out = "gene")
+result <- eSEAlyser(gene.data, out = "gene")
 ```
 
 gSEA plot of interested pathway which includes genes

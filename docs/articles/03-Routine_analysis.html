@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MNet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -440,20 +440,20 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 120 × 6</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 122 × 6</span></span></span>
 <span><span class="co">##    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names   raw    </span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   5.10  5.29                 5.28            0.805 C00073  C00073 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>   4.67  4.38                 4.78            0.633 C02045  C02045 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>   4.17  3.61                 4.34            0.433 C00025  C00025 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>   4.24  4.01                 4.29            0.481 C00267  C00267 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>   3.60  3.71                 4.04            0.396 C00042  C00042 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>   3.80  3.41                 4.02            0.475 C05938. C05938 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>   3.57  2.57                 3.90            0.543 C00022  C00022 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   3.13  3.53                 3.68            0.347 C00255  C00255 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   3.40  3.63                 3.67            0.392 C00242  C00242 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>   3.38  3.39                 3.65            0.458 C02985  C02985 </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 110 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   4.23  4.04                 4.64            0.548 C00025  C00025 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>   4.34  4.22                 4.55            0.561 C02045  C02045 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>   4.38  3.67                 4.43            0.527 C05938. C05938 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>   3.58  3.79                 4.08            0.470 C02985  C02985 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>   4.22  3.35                 4.02            0.517 C00022  C00022 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>   3.41  3.77                 3.97            0.458 C05674  C05674 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>   3.55  3.89                 3.91            0.452 C00073  C00073 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   3.90  2.62                 3.79            0.415 C02630  C02630 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   3.70  3.26                 3.75            0.368 C03413  C03413 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>   3.45  3.40                 3.70            0.390 C02291  C02291 </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 112 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="xgboost">
@@ -462,85 +462,96 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <p>Using machine learning ” XGBoost” for feature selection</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_xgboost.html">ML_xgboost</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1]  train-rmse:0.361110 test-rmse:0.472304 </span></span>
-<span><span class="co">## [2]  train-rmse:0.260802 test-rmse:0.477148 </span></span>
-<span><span class="co">## [3]  train-rmse:0.188357 test-rmse:0.493459 </span></span>
-<span><span class="co">## [4]  train-rmse:0.136036 test-rmse:0.511313 </span></span>
-<span><span class="co">## [5]  train-rmse:0.098249 test-rmse:0.527046 </span></span>
-<span><span class="co">## [6]  train-rmse:0.070959 test-rmse:0.539751 </span></span>
-<span><span class="co">## [7]  train-rmse:0.051248 test-rmse:0.549573 </span></span>
-<span><span class="co">## [8]  train-rmse:0.037013 test-rmse:0.556982 </span></span>
-<span><span class="co">## [9]  train-rmse:0.026732 test-rmse:0.562489 </span></span>
-<span><span class="co">## [10] train-rmse:0.019307 test-rmse:0.566543 </span></span>
-<span><span class="co">## [11] train-rmse:0.013944 test-rmse:0.569510 </span></span>
-<span><span class="co">## [12] train-rmse:0.010071 test-rmse:0.571671 </span></span>
-<span><span class="co">## [13] train-rmse:0.007274 test-rmse:0.573241 </span></span>
-<span><span class="co">## [14] train-rmse:0.005253 test-rmse:0.574380 </span></span>
-<span><span class="co">## [15] train-rmse:0.003794 test-rmse:0.575204 </span></span>
-<span><span class="co">## [16] train-rmse:0.002740 test-rmse:0.575800 </span></span>
-<span><span class="co">## [17] train-rmse:0.001979 test-rmse:0.576231 </span></span>
-<span><span class="co">## [18] train-rmse:0.001430 test-rmse:0.576543 </span></span>
-<span><span class="co">## [19] train-rmse:0.001032 test-rmse:0.576767 </span></span>
-<span><span class="co">## [20] train-rmse:0.000746 test-rmse:0.576930 </span></span>
-<span><span class="co">## [21] train-rmse:0.000539 test-rmse:0.577047 </span></span>
-<span><span class="co">## [22] train-rmse:0.000389 test-rmse:0.577131 </span></span>
-<span><span class="co">## [23] train-rmse:0.000281 test-rmse:0.577192 </span></span>
-<span><span class="co">## [24] train-rmse:0.000203 test-rmse:0.577236 </span></span>
-<span><span class="co">## [25] train-rmse:0.000203 test-rmse:0.577237 </span></span>
-<span><span class="co">## [26] train-rmse:0.000203 test-rmse:0.577237 </span></span>
-<span><span class="co">## [27] train-rmse:0.000203 test-rmse:0.577237 </span></span>
-<span><span class="co">## [28] train-rmse:0.000203 test-rmse:0.577237 </span></span>
-<span><span class="co">## [29] train-rmse:0.000203 test-rmse:0.577237 </span></span>
-<span><span class="co">## [30] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [31] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [32] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [33] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [34] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [35] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [36] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [37] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [38] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [39] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [40] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [41] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [42] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [43] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [44] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [45] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [46] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [47] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [48] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [49] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [50] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [51] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [52] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [53] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [54] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [55] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [56] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [57] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [58] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [59] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [60] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [61] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [62] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [63] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [64] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [65] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [66] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [67] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [68] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [69] train-rmse:0.000203 test-rmse:0.577238 </span></span>
-<span><span class="co">## [70] train-rmse:0.000203 test-rmse:0.577238</span></span></code></pre>
+<pre><code><span><span class="co">## [1]  train-rmse:0.364289 test-rmse:0.549992 </span></span>
+<span><span class="co">## [2]  train-rmse:0.265516 test-rmse:0.535074 </span></span>
+<span><span class="co">## [3]  train-rmse:0.193648 test-rmse:0.536247 </span></span>
+<span><span class="co">## [4]  train-rmse:0.141421 test-rmse:0.518435 </span></span>
+<span><span class="co">## [5]  train-rmse:0.103574 test-rmse:0.539353 </span></span>
+<span><span class="co">## [6]  train-rmse:0.076240 test-rmse:0.517378 </span></span>
+<span><span class="co">## [7]  train-rmse:0.056624 test-rmse:0.509748 </span></span>
+<span><span class="co">## [8]  train-rmse:0.042572 test-rmse:0.506916 </span></span>
+<span><span class="co">## [9]  train-rmse:0.032249 test-rmse:0.499201 </span></span>
+<span><span class="co">## [10] train-rmse:0.024705 test-rmse:0.498236 </span></span>
+<span><span class="co">## [11] train-rmse:0.019147 test-rmse:0.500697 </span></span>
+<span><span class="co">## [12] train-rmse:0.014733 test-rmse:0.502704 </span></span>
+<span><span class="co">## [13] train-rmse:0.011439 test-rmse:0.504271 </span></span>
+<span><span class="co">## [14] train-rmse:0.009015 test-rmse:0.505542 </span></span>
+<span><span class="co">## [15] train-rmse:0.007161 test-rmse:0.506894 </span></span>
+<span><span class="co">## [16] train-rmse:0.005807 test-rmse:0.507730 </span></span>
+<span><span class="co">## [17] train-rmse:0.004745 test-rmse:0.508582 </span></span>
+<span><span class="co">## [18] train-rmse:0.003928 test-rmse:0.509305 </span></span>
+<span><span class="co">## [19] train-rmse:0.003291 test-rmse:0.510078 </span></span>
+<span><span class="co">## [20] train-rmse:0.002775 test-rmse:0.510652 </span></span>
+<span><span class="co">## [21] train-rmse:0.002346 test-rmse:0.510730 </span></span>
+<span><span class="co">## [22] train-rmse:0.002007 test-rmse:0.510676 </span></span>
+<span><span class="co">## [23] train-rmse:0.001711 test-rmse:0.511044 </span></span>
+<span><span class="co">## [24] train-rmse:0.001457 test-rmse:0.511389 </span></span>
+<span><span class="co">## [25] train-rmse:0.001240 test-rmse:0.511672 </span></span>
+<span><span class="co">## [26] train-rmse:0.001068 test-rmse:0.511877 </span></span>
+<span><span class="co">## [27] train-rmse:0.000922 test-rmse:0.512052 </span></span>
+<span><span class="co">## [28] train-rmse:0.000799 test-rmse:0.512173 </span></span>
+<span><span class="co">## [29] train-rmse:0.000688 test-rmse:0.512132 </span></span>
+<span><span class="co">## [30] train-rmse:0.000592 test-rmse:0.512268 </span></span>
+<span><span class="co">## [31] train-rmse:0.000530 test-rmse:0.512363 </span></span>
+<span><span class="co">## [32] train-rmse:0.000481 test-rmse:0.512445 </span></span>
+<span><span class="co">## [33] train-rmse:0.000441 test-rmse:0.512502 </span></span>
+<span><span class="co">## [34] train-rmse:0.000406 test-rmse:0.512478 </span></span>
+<span><span class="co">## [35] train-rmse:0.000374 test-rmse:0.512488 </span></span>
+<span><span class="co">## [36] train-rmse:0.000374 test-rmse:0.512490 </span></span>
+<span><span class="co">## [37] train-rmse:0.000374 test-rmse:0.512491 </span></span>
+<span><span class="co">## [38] train-rmse:0.000374 test-rmse:0.512492 </span></span>
+<span><span class="co">## [39] train-rmse:0.000374 test-rmse:0.512493 </span></span>
+<span><span class="co">## [40] train-rmse:0.000374 test-rmse:0.512493 </span></span>
+<span><span class="co">## [41] train-rmse:0.000374 test-rmse:0.512493 </span></span>
+<span><span class="co">## [42] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [43] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [44] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [45] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [46] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [47] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [48] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [49] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [50] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [51] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [52] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [53] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [54] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [55] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [56] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [57] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [58] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [59] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [60] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [61] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [62] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [63] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [64] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [65] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [66] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [67] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [68] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [69] train-rmse:0.000374 test-rmse:0.512494 </span></span>
+<span><span class="co">## [70] train-rmse:0.000374 test-rmse:0.512494</span></span></code></pre>
 <p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
 <p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-12-2.png" width="700"></p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
-<pre><code><span><span class="co">##    Feature  Gain Cover Frequency Importance</span></span>
-<span><span class="co">##     &lt;fctr&gt; &lt;num&gt; &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">## 1:  C02045     1     1         1          1</span></span></code></pre>
+<pre><code><span><span class="co">##     Feature        Gain      Cover  Frequency  Importance</span></span>
+<span><span class="co">##      &lt;fctr&gt;       &lt;num&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">##  1:  C00010 0.409537590 0.05868545 0.04347826 0.409537590</span></span>
+<span><span class="co">##  2:  C03793 0.217514348 0.05868545 0.04347826 0.217514348</span></span>
+<span><span class="co">##  3:  C00167 0.115622639 0.05868545 0.04347826 0.115622639</span></span>
+<span><span class="co">##  4:  C09642 0.093095188 0.15258216 0.21739130 0.093095188</span></span>
+<span><span class="co">##  5:  C05674 0.060828633 0.05868545 0.04347826 0.060828633</span></span>
+<span><span class="co">##  6:  C00122 0.032337968 0.05868545 0.04347826 0.032337968</span></span>
+<span><span class="co">##  7:  C00022 0.019764628 0.11737089 0.08695652 0.019764628</span></span>
+<span><span class="co">##  8:  C15025 0.016607794 0.03051643 0.04347826 0.016607794</span></span>
+<span><span class="co">##  9:  C00255 0.015274112 0.17605634 0.13043478 0.015274112</span></span>
+<span><span class="co">## 10:  C03264 0.012220371 0.09859155 0.13043478 0.012220371</span></span>
+<span><span class="co">## 11:  C05581 0.004831088 0.03286385 0.04347826 0.004831088</span></span>
+<span><span class="co">## 12:  C01250 0.002365641 0.09859155 0.13043478 0.002365641</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="lasso">
@@ -550,8 +561,13 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>, method <span class="op">=</span> <span class="st">"lasso"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result_ML_lasso</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   feature        s1</span></span>
-<span><span class="co">## 1  C02045 0.2038552</span></span></code></pre>
+<pre><code><span><span class="co">##      feature         s1</span></span>
+<span><span class="co">## 1 `C01879  ` -0.2834664</span></span>
+<span><span class="co">## 2     C00010 -0.1512106</span></span>
+<span><span class="co">## 3     C02291 -0.1897965</span></span>
+<span><span class="co">## 4     C02045  1.1011873</span></span>
+<span><span class="co">## 5     C00073 -0.3605763</span></span>
+<span><span class="co">## 6     C00065 -0.2661594</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="elastic-network">
@@ -561,12 +577,13 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_elastic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>, method <span class="op">=</span> <span class="st">"elastic"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result_ML_elastic</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   feature           s1</span></span>
-<span><span class="co">## 1  C00267  0.041587394</span></span>
-<span><span class="co">## 2  C02045  0.087706793</span></span>
-<span><span class="co">## 3  C00073 -0.029530640</span></span>
-<span><span class="co">## 4  C00022  0.003978061</span></span>
-<span><span class="co">## 5  C00255 -0.004900851</span></span></code></pre>
+<pre><code><span><span class="co">##     feature            s1</span></span>
+<span><span class="co">## 1    C03264 -2.070627e-02</span></span>
+<span><span class="co">## 2    C00408  4.918637e-02</span></span>
+<span><span class="co">## 3 `C06178 ` -1.275688e-02</span></span>
+<span><span class="co">## 4    C02630 -2.164844e-05</span></span>
+<span><span class="co">## 5    C05100  4.481425e-02</span></span>
+<span><span class="co">## 6    C00906  2.548339e-02</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -699,7 +716,7 @@ high</p>
 <span><span class="co">## [10] clusterProfiler_4.14.1 RColorBrewer_1.1-3     ggplot2_3.5.1         </span></span>
 <span><span class="co">## [13] stringr_1.5.1          knitr_1.49             tidyr_1.3.1           </span></span>
 <span><span class="co">## [16] survival_3.7-0         tibble_3.2.1           dplyr_1.1.4           </span></span>
-<span><span class="co">## [19] MNet_1.1.0            </span></span>
+<span><span class="co">## [19] MNet_1.2.0            </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] fs_1.6.5                    matrixStats_1.4.1          </span></span>
@@ -805,7 +822,7 @@ high</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Tuantuan Gui, Hai Fang.</p>
+  <p>Developed by Tuantuan Gui, Benben Miao, Hai Fang.</p>
 </div>
 
 <div class="pkgdown-footer-right">

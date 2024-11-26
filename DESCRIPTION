@@ -1,12 +1,13 @@
 Package: MNet
 Type: Package
 Title: MNet
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
        person("Tuantuan","Gui",email="guituantuan@sjtu.edu.cn",role=c("aut","cre")),
+       person("Benben","Miao",email="miaobenben@stu.xmu.edu.cn",role="aut"),
        person("Hai","Fang",email="fh12355@rjh.com.cn",role="aut"))
 Maintainer: Tuantuan Gui <guituant2009@163.com>
-Description: The package is designed to provide a collection of functionalities aiding in metabolome data interpretation together with clinical data and gene expression data. It not only supports the routine analyses and visualisations in terms of metabolomic datasets (including but not limited to: differential metabolites analyses/visualisations/feature selection), the differential abundance analyses which is designed to detect which pathways are differentially abundant between two conditions, but also is capable of carrying out integrated analysis of metabolic and clinical data (such as ggcor package), integrated analysis of metabolic and gene expression data (the metabolite and gene pathway analyses and the subnetwork analyses of metabolite-gene network analyses). Also supported is the time series analysis with the help of other packages (mFuzz package and supraHex package).
+Description: The package is designed for integrative analysis of metabolomic and transcriptomic data.
 URL: https://github.com/tuantuangui/MNet/
 License: GPL-2
 Encoding: UTF-8
@@ -61,18 +62,18 @@ VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 biocViews: Metabolomics
 Collate: 
-    'DAscore.R'
     'DM.R'
-    'ESEA.R'
     'ML_Boruta.R'
     'ML_RF.R'
     'ML_alpha.R'
     'ML_logistic.R'
     'ML_xgboost.R'
     'MetCox.R'
-    'PathwayAnalysis.R'
     'col.key.R'
     'colorpanel2.R'
+    'ePDAlyser.R'
+    'ePEAlyser.R'
+    'eSEAlyser.R'
     'keggid2pathway.R'
     'meta_impute.R'
     'mlimma.R'
@@ -92,7 +93,7 @@ Collate:
     'pZscore.R'
     'pathway2pathwayid.R'
     'pathwayinfo.R'
-    'pdnet.R'
+    'sNETlyser.R'
     'survCli.R'
     'survMet.R'
     'xDAGanno.r'

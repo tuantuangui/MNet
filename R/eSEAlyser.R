@@ -1,4 +1,4 @@
-#' @title The ESEA analysis
+#' @title The eSEAlyser
 #' @description the Extended-data Set Enrichment Analysis which includes gene and metabolite
 #'
 #' @param Ranks_all the Named vector of compound-level stats or gene-level stats. Names should be KEGG ID and (or) gene symbol.
@@ -7,16 +7,16 @@
 #' @param out The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"
 #' @param nPermSimple nPermSimple is the number of permutations used to estimate the significance of the enrichment score. The default value is 20000.
 #' 
-#' @return the ESEA result
+#' @return the eSEAlyser result
 #'
 #' @importFrom fgsea fgsea
 #' @export
 #'
 #' @examples
-#' result <- ESEA(sim.cpd.data, out="metabolite")
+#' result <- eSEAlyser(sim.cpd.data, out="metabolite")
 #' result
 #'
-ESEA <- function(Ranks_all,
+eSEAlyser <- function(Ranks_all,
                  minSize = 5,
                  nPermSimple = 20000,
                  gseaParam = 0.5,

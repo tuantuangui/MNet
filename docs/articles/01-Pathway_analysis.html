@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MNet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,8 +106,8 @@ pathologically altered in tumoral samples.</p>
 <p>Pathway enrichment analysis, includes gene pathway enrichment
 analysis only focusing on genes, metabolite pathway enrichment analysis
 only focusing on metabolites and extended pathway enrichment analysis
-focusing on both genes and metabolites, using function “PathwayAnalysis”
-in MNet.</p>
+focusing on both genes and metabolites, using function “ePEAlyser” in
+MNet.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## meta_dat is the metabolic data of the 31 samples</span></span>
 <span><span class="co">## gene_dat is the transcriptional data of the 31 samples</span></span>
@@ -143,7 +143,7 @@ in MNet.</p>
 <font size="4">Extended pathway enrichment analysis
 (ePEA)</font><a class="anchor" aria-label="anchor" href="#extended-pathway-enrichment-analysis-epea"></a>
 </h3>
-<p>Function ‘PathwayAnalysis’ with ‘Extended’ parameter, investigates
+<p>Function ‘ePEAlyser’ with ‘Extended’ parameter, investigates
 metabolic pathway dysregulation considering both metabolites and genes,
 which we refer to as ePEA.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -167,15 +167,15 @@ which we refer to as ePEA.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the increase pathway analysis of both genes and metabolites</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">all_dat1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## filter the decrease differential genes and metabolites</span></span>
 <span><span class="va">all_dat2</span> <span class="op">&lt;-</span> <span class="va">all_dat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">all_dat2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="co">## ePEAlyser performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">all_dat2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"Extended"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
@@ -192,7 +192,7 @@ which we refer to as ePEA.</p>
 <font size="4">Metabolite pathway enrichment analysis
 (mPEA)</font><a class="anchor" aria-label="anchor" href="#metabolite-pathway-enrichment-analysis-mpea"></a>
 </h3>
-<p>Function ‘PathwayAnalysis’ with ‘metabolite’ parameter, investigates
+<p>Function ‘ePEAlyser’ with ‘metabolite’ parameter, investigates
 metabolic pathway dysregulation considering only metabolites, which we
 refer to as mPEA.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -201,8 +201,8 @@ refer to as mPEA.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
+<span><span class="co">## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">diff_meta1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
 <span>                             <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## filter the decrease differential metabolites</span></span>
@@ -210,8 +210,8 @@ refer to as mPEA.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_meta2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
+<span><span class="co">## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">diff_meta2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"metabolite"</span>, p_cutoff <span class="op">=</span></span>
 <span>                             <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
@@ -228,25 +228,25 @@ refer to as mPEA.</p>
 <h3 id="gene-pathway-enrichment-analysis-gpea">
 <font size="4">Gene pathway enrichment analysis (gPEA)</font><a class="anchor" aria-label="anchor" href="#gene-pathway-enrichment-analysis-gpea"></a>
 </h3>
-<p>Function ‘PathwayAnalysis’ with ‘gene’ parameter, investigates
-metabolic pathway dysregulation considering only genes, which we refer
-to as gPEA.</p>
+<p>Function ‘ePEAlyser’ with ‘gene’ parameter, investigates metabolic
+pathway dysregulation considering only genes, which we refer to as
+gPEA.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the increase differential expression genes</span></span>
 <span><span class="va">diff_gene1</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&gt;</span> <span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
-<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="co">## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">diff_gene1</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## filter the decrease differential expression genes</span></span>
 <span><span class="va">diff_gene2</span> <span class="op">&lt;-</span> <span class="va">diff_gene</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">logFC</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.58</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## PathwayAnalysis performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PathwayAnalysis.html">PathwayAnalysis</a></span><span class="op">(</span><span class="va">diff_gene2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="co">## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePEAlyser.html">ePEAlyser</a></span><span class="op">(</span><span class="va">diff_gene2</span><span class="op">$</span><span class="va">name</span>, out <span class="op">=</span> <span class="st">"gene"</span>, p_cutoff <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">p_barplot</span>, <span class="va">result2</span><span class="op">$</span><span class="va">p_barplot</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
@@ -267,15 +267,15 @@ to as gPEA.</p>
 differential abundance analysis only focusing on genes, metabolite
 pathway differential abundance analysis only focusing on metabolites and
 extended pathway differential abundance analysis focusing on both genes
-and metabolites, using function “DAscore” in MNet.</p>
+and metabolites, using function “ePDAlyser” in MNet.</p>
 <div class="section level3">
 <h3 id="extended-pathway-differential-abundance-score-epda">
 <font size="4">Extended pathway differential abundance score
 (ePDA)</font><a class="anchor" aria-label="anchor" href="#extended-pathway-differential-abundance-score-epda"></a>
 </h3>
-<p>Function ‘DAscore’ with ‘Extended’ parameter, investigates metabolic
-pathway dysregulation considering both metabolites and genes, which we
-refer to as ePDA (extended pathway differential abundance).</p>
+<p>Function ‘ePDAlyser’ with ‘Extended’ parameter, investigates
+metabolic pathway dysregulation considering both metabolites and genes,
+which we refer to as ePDA (extended pathway differential abundance).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## filter the differential expression genes</span></span>
 <span></span>
@@ -297,7 +297,7 @@ refer to as ePDA (extended pathway differential abundance).</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the extended pathway differential abundance analysis</span></span>
-<span><span class="va">ExtendDAscore_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span></span>
+<span><span class="va">ExtendDAscore_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePDAlyser.html">ePDAlyser</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>, <span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,</span>
@@ -334,7 +334,7 @@ refer to as ePDA (extended pathway differential abundance).</p>
 <font size="4">Metabolite pathway differential abundance score
 (mPDA)</font><a class="anchor" aria-label="anchor" href="#metabolite-pathway-differential-abundance-score-mpda"></a>
 </h3>
-<p>Function ‘DAscore’ with ‘metabolite’ parameter, investigates
+<p>Function ‘ePDAlyser’ with ‘metabolite’ parameter, investigates
 metabolic pathway dysregulation considering only metabolites, which we
 refer to as mPDA (metabolite pathway differential abundance).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -349,7 +349,7 @@ refer to as mPDA (metabolite pathway differential abundance).</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the metabolite pathway differential abundance analysis</span></span>
-<span><span class="va">dascore_result_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span>,</span>
+<span><span class="va">dascore_result_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePDAlyser.html">ePDAlyser</a></span><span class="op">(</span><span class="va">diff_meta_increase</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               <span class="va">diff_meta_decrease</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               <span class="va">diff_meta</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               sort_plot <span class="op">=</span> <span class="st">"category"</span>,</span>
@@ -384,7 +384,7 @@ refer to as mPDA (metabolite pathway differential abundance).</p>
 <font size="4">Gene pathway differential abundance score
 (gPDA)</font><a class="anchor" aria-label="anchor" href="#gene-pathway-differential-abundance-score-gpda"></a>
 </h3>
-<p>Function ‘DAscore’ with ‘gene’ parameter, investigates metabolic
+<p>Function ‘ePDAlyser’ with ‘gene’ parameter, investigates metabolic
 pathway dysregulation considering only genes, which we refer to as gPDA
 (gene pathway differential abundance).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -399,7 +399,7 @@ pathway dysregulation considering only genes, which we refer to as gPDA
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adj.P.Val</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the gene pathway differential abundance analysis</span></span>
-<span><span class="va">dascore_result_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DAscore.html">DAscore</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>,</span>
+<span><span class="va">dascore_result_gene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ePDAlyser.html">ePDAlyser</a></span><span class="op">(</span><span class="va">diff_gene_increase</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               <span class="va">diff_gene_decrease</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               <span class="va">diff_gene</span><span class="op">$</span><span class="va">name</span>,</span>
 <span>                               sort_plot <span class="op">=</span> <span class="st">"category"</span>,</span>
@@ -437,7 +437,7 @@ pathway dysregulation considering only genes, which we refer to as gPDA
 <p>Pathway set enrichment analysis, includes gene set enrichment
 analysis only focusing on genes, metabolite set enrichment analysis only
 focusing on metabolites and extended pathway set enrichment analysis
-focusing on both genes and metabolites, using function “ESEA” in
+focusing on both genes and metabolites, using function “eSEAlyser” in
 MNet.</p>
 <div class="section level3">
 <h3 id="extended-pathway-set-enrichment-analysis-esea">
@@ -460,7 +460,7 @@ metabolites</p>
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">meta.data</span>, <span class="va">gene.data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## the Extended pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">dat</span>, out <span class="op">=</span> <span class="st">"Extended"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eSEAlyser.html">eSEAlyser</a></span><span class="op">(</span><span class="va">dat</span>, out <span class="op">=</span> <span class="st">"Extended"</span><span class="op">)</span></span></code></pre></div>
 <p>eSEA plot of all the pathway</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_filter</span> <span class="op">&lt;-</span> <span class="va">result</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -492,7 +492,7 @@ metabolites</p>
 metabolites</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## the metabolite pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">meta.data</span>, out <span class="op">=</span> <span class="st">"metabolite"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eSEAlyser.html">eSEAlyser</a></span><span class="op">(</span><span class="va">meta.data</span>, out <span class="op">=</span> <span class="st">"metabolite"</span><span class="op">)</span></span></code></pre></div>
 <p>mSEA plot of interested pathway which only includes metabolites</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## The plot of Butanoate metabolism contains metabolites</span></span>
@@ -507,7 +507,7 @@ metabolites</p>
 <p>Gene set enrichment analysis which only includes genes</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## the gene pathway set enrichment analysis</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ESEA.html">ESEA</a></span><span class="op">(</span><span class="va">gene.data</span>, out <span class="op">=</span> <span class="st">"gene"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eSEAlyser.html">eSEAlyser</a></span><span class="op">(</span><span class="va">gene.data</span>, out <span class="op">=</span> <span class="st">"gene"</span><span class="op">)</span></span></code></pre></div>
 <p>gSEA plot of interested pathway which includes genes</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## The plot of Butanoate metabolism contains genes</span></span>
@@ -523,7 +523,7 @@ metabolites</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Tuantuan Gui, Hai Fang.</p>
+  <p>Developed by Tuantuan Gui, Benben Miao, Hai Fang.</p>
 </div>
 
 <div class="pkgdown-footer-right">

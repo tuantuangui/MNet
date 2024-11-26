@@ -53,7 +53,7 @@ diff_gene1 <- diff_gene %>%
 # png("result_v0131/subnetwork_important.png",width = 8, height = 7, units = 'in', res = 200)
 
 ## identify the core metabolism-related subnetwork
-a <- pdnet(diff_meta, diff_gene, nsize = 100)
+a <- sNETlyser(diff_meta, diff_gene, nsize = 100)
 a
 # dev.off()
 
@@ -80,7 +80,7 @@ Input data requires the "name" column but excludes the "p_value" column.
 # png("result_v0131/subnetwork_interested.png",width = 8, height = 7, units = 'in', res = 200)
 
 ## get 500 differential expression gene
-a <- pdnet(diff_metabolite[, 8], diff_gene1[1:500, 8])
+a <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:500, 8])
 a
 # dev.off()
 # write.table(a,"result_v0131/subnetwork_interested_edge.txt",quote=F,row.names=F,sep="\t")

@@ -213,7 +213,7 @@ ui <- shinyUI(
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
-                            text = "| Subnetworklyser",
+                            text = "| sNETlyser",
                             tabName = "network_plot",
                             href = NULL,
                             newTab = TRUE,
@@ -589,21 +589,21 @@ ui <- shinyUI(
                             #     style = "border: none; border-radius: 10px;"
                             # )
                             tags$p("MNet", style = "font-size: 2.5rem; font-weight: bold; text-align: center;"),
-                            tags$p("MNet: an R package and website for integrative analysis of metabolomic and transcriptomic data.", 
+                            tags$p("MNet: an R package and website for integrative analysis of metabolomic and transcriptomic data", 
                                    style = "font-size: 1rem; font-weight: bold; text-align: center;"),
                             br(),
                             tags$p("Introduction", style = "font-size: 2rem; font-weight: bold;"),
                             tags$span("Based on the knowledgebase", style = "font-size: 1.2rem; text-align: justify;"),
                             tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
                             tags$span("and an ", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$a(href = "https://github.com/tuantuangui/MNet", "R package as the backend (https://github.com/tuantuangui/MNet)", 
+                            tags$a(href = "https://github.com/tuantuangui/MNet", "R package as the backend", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
                             tags$span("
                                    MNet offers one subnetwork analyser and three extended pathway analysers for user-input metabolomics 
                                    and transcriptomic data. The subnetwork analyser rely on our previously established network 
                                    algorithm dnet to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics 
                                    and transcriptomic data", style = "font-size: 1.2rem; text-align: justify;"),
-                            tags$span("Subnetworklyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
+                            tags$span("sNETlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
                             tags$span(", leveraging network information about either 
                                    functional interactions or pathway-derived interactions. The extended pathway analysers 
                                    extend pathway analysis algorithms, which contain extended Pathway Enrichment Analyser",
@@ -623,13 +623,13 @@ ui <- shinyUI(
                             br(),br(),
                             tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
-                                   "Functions (https://tuantuangui.github.io/MNet/reference/index.html)", 
+                                   "Functions", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
                             br(),br(),
                             fluidRow(
                                 column(
                                     width = 6,
-                                    tags$p("1. Subnetworklyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("1. sNETlyser", style = "font-size: 1.2rem; font-weight: bold;"),
                                     tags$p("Visualization of the identified optimal subnetwork that best explains the biological processes 
                                            comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red 
                                            and green indicating different expression levels.",
@@ -677,11 +677,11 @@ ui <- shinyUI(
                             tags$p("Documents", style = "font-size: 2rem; font-weight: bold;"),
                             tags$p("1. MNet Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
-                                   "MNet Server Manual (http://www.mnet4all.com/mnet_manual/)", 
+                                   "MNet Server Manual", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;"),
                             tags$p("2. MNet Package References", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/", 
-                                   "MNet Package References (https://tuantuangui.github.io/MNet/)", 
+                                   "MNet Package References", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: blue;")
                         )
                     ))
@@ -5534,7 +5534,7 @@ server <- shinyServer(function(session, input, output) {
                 names(diff_meta)[4] <- "p_value"
                 names(diff_gene)[4] <- "p_value"
                 
-                network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+                network_res <- sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
                 network_res
             })
         })
@@ -5580,7 +5580,7 @@ server <- shinyServer(function(session, input, output) {
         #     names(diff_meta)[4] <- "p_value"
         #     names(diff_gene)[4] <- "p_value"
         #     
-        #     network_res <- pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     network_res <- sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
         #     
         #     pdf(
         #         file = paste(temp_network, "/network_plot.pdf", sep = ""),
@@ -5588,7 +5588,7 @@ server <- shinyServer(function(session, input, output) {
         #         height = input$network_plot_height,
         #         onefile = FALSE
         #     )
-        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
         #     dev.off()
         #     
         #     CairoJPEG(
@@ -5599,7 +5599,7 @@ server <- shinyServer(function(session, input, output) {
         #         res = input$network_plot_dpi,
         #         quality = 100
         #     )
-        #     pdnet(diff_meta, diff_gene, nsize = input$network_nsize)
+        #     sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
         #     dev.off()
         #     
         #     write.table(
@@ -5791,7 +5791,7 @@ server <- shinyServer(function(session, input, output) {
                 # print(meta_data)
                 
                 updateProgressBar(session, id = "network_progress", value = 30)
-                network_step("Running mlimma and pdnet ...")
+                network_step("Running mlimma and sNETlyser ...")
                 
                 task2_run_analysis <- r_bg(function(meta_data, gene_data, group_data, network_nsize, network_plot_width, network_plot_height, network_plot_dpi, temp_network) {
                     library(ggplot2)
@@ -5805,7 +5805,7 @@ server <- shinyServer(function(session, input, output) {
                     names(diff_meta)[4] <- "p_value"
                     names(diff_gene)[4] <- "p_value"
                     
-                    network_res <- pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    network_res <- sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
                     
                     pdf(
                         file = paste(temp_network, "/network_plot.pdf", sep = ""),
@@ -5813,7 +5813,7 @@ server <- shinyServer(function(session, input, output) {
                         height = network_plot_height,
                         onefile = FALSE
                     )
-                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
                     dev.off()
                     
                     CairoJPEG(
@@ -5824,7 +5824,7 @@ server <- shinyServer(function(session, input, output) {
                         res = network_plot_dpi,
                         quality = 100
                     )
-                    pdnet(diff_meta, diff_gene, nsize = network_nsize)
+                    sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
                     dev.off()
                     
                     write.table(
@@ -6092,7 +6092,7 @@ server <- shinyServer(function(session, input, output) {
                 filter(adj.P.Val < input$diff_network_padj) %>%
                 filter(abs(logFC) > input$diff_network_logfc)
             
-            diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+            diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
             diff_network_res
         })
         
@@ -6166,7 +6166,7 @@ server <- shinyServer(function(session, input, output) {
                         filter(adj.P.Val < input$diff_network_padj) %>%
                         filter(abs(logFC) > input$diff_network_logfc)
                     
-                    diff_network_res <- pdnet(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+                    diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
                     diff_network_res
                 })
                 
@@ -6752,7 +6752,7 @@ server <- shinyServer(function(session, input, output) {
                 all_data_up <- all_data %>%
                     filter(logFC > input$epea_logfc) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_up <- PathwayAnalysis(
+                result_up <- ePEAlyser(
                     all_data_up$name,
                     out = "Extended",
                     p_cutoff = input$epea_p_cutoff
@@ -6761,7 +6761,7 @@ server <- shinyServer(function(session, input, output) {
                 all_data_down <- all_data %>%
                     filter(logFC < -(input$epea_padj)) %>%
                     filter(adj.P.Val < input$epea_padj)
-                result_down <- PathwayAnalysis(
+                result_down <- ePEAlyser(
                     all_data_down$name,
                     out = "Extended",
                     p_cutoff = input$epea_p_cutoff
@@ -6824,7 +6824,7 @@ server <- shinyServer(function(session, input, output) {
             all_data_up <- all_data %>%
                 filter(logFC > input$epea_logfc) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_up <- PathwayAnalysis(
+            result_up <- ePEAlyser(
                 all_data_up$name,
                 out = "Extended",
                 p_cutoff = input$epea_p_cutoff
@@ -6840,7 +6840,7 @@ server <- shinyServer(function(session, input, output) {
             all_data_down <- all_data %>%
                 filter(logFC < -(input$epea_padj)) %>%
                 filter(adj.P.Val < input$epea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 all_data_down$name,
                 out = "Extended",
                 p_cutoff = input$epea_p_cutoff
@@ -7079,14 +7079,14 @@ server <- shinyServer(function(session, input, output) {
             diff_meta_up <- diff_meta %>%
                 filter(logFC > input$mpea_logfc) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_up <- PathwayAnalysis(diff_meta_up$name,
+            result_up <- ePEAlyser(diff_meta_up$name,
                                          out = "metabolite",
                                          p_cutoff = input$mpea_p_cutoff)
             
             diff_meta_down <- diff_meta %>%
                 filter(logFC < -(input$mpea_padj)) %>%
                 filter(adj.P.Val < input$mpea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 diff_meta_down$name,
                 out = "metabolite",
                 p_cutoff = input$mpea_p_cutoff
@@ -7153,7 +7153,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_up <- diff_meta %>%
                         filter(logFC > input$mpea_logfc) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_up <- PathwayAnalysis(
+                    result_up <- ePEAlyser(
                         diff_meta_up$name,
                         out = "metabolite",
                         p_cutoff = input$mpea_p_cutoff
@@ -7162,7 +7162,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta_down <- diff_meta %>%
                         filter(logFC < -(input$mpea_padj)) %>%
                         filter(adj.P.Val < input$mpea_padj)
-                    result_down <- PathwayAnalysis(
+                    result_down <- ePEAlyser(
                         diff_meta_down$name,
                         out = "metabolite",
                         p_cutoff = input$mpea_p_cutoff
@@ -7299,14 +7299,14 @@ server <- shinyServer(function(session, input, output) {
             diff_gene_up <- diff_gene %>%
                 filter(logFC > input$gpea_logfc) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_up <- PathwayAnalysis(diff_gene_up$name,
+            result_up <- ePEAlyser(diff_gene_up$name,
                                          out = "gene",
                                          p_cutoff = input$gpea_p_cutoff)
             
             diff_gene_down <- diff_gene %>%
                 filter(logFC < -(input$gpea_padj)) %>%
                 filter(adj.P.Val < input$gpea_padj)
-            result_down <- PathwayAnalysis(
+            result_down <- ePEAlyser(
                 diff_gene_down$name,
                 out = "gene",
                 p_cutoff = input$gpea_p_cutoff
@@ -7372,7 +7372,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_gene_up <- diff_gene %>%
                         filter(logFC > input$gpea_logfc) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_up <- PathwayAnalysis(
+                    result_up <- ePEAlyser(
                         diff_gene_up$name,
                         out = "gene",
                         p_cutoff = input$gpea_p_cutoff
@@ -7381,7 +7381,7 @@ server <- shinyServer(function(session, input, output) {
                     diff_gene_down <- diff_gene %>%
                         filter(logFC < -(input$gpea_padj)) %>%
                         filter(adj.P.Val < input$gpea_padj)
-                    result_down <- PathwayAnalysis(
+                    result_down <- ePEAlyser(
                         diff_gene_down$name,
                         out = "gene",
                         p_cutoff = input$gpea_p_cutoff
@@ -7819,7 +7819,7 @@ server <- shinyServer(function(session, input, output) {
                     filter(logFC < -(input$epda_logfc)) %>%
                     filter(adj.P.Val < input$epda_padj)
                 
-                epda_res <- DAscore(
+                epda_res <- ePDAlyser(
                     c(
                         diff_gene_increase$name,
                         diff_meta_increase$name
@@ -7890,7 +7890,7 @@ server <- shinyServer(function(session, input, output) {
                 filter(logFC < -(input$epda_logfc)) %>%
                 filter(adj.P.Val < input$epda_padj)
             
-            epda_res <- DAscore(
+            epda_res <- ePDAlyser(
                 c(
                     diff_gene_increase$name,
                     diff_meta_increase$name
@@ -8317,7 +8317,7 @@ server <- shinyServer(function(session, input, output) {
             
             data <- c(meta.data, gene.data)
             
-            result <- ESEA(data, out = "Extended")
+            result <- eSEAlyser(data, out = "Extended")
 
             write.table(
                 result,

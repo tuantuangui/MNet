@@ -19,14 +19,14 @@
 #'
 #' @examples
 #' name <- c("C00022","C00024","C00031","B4GALT2","AGPAT3","FHIT")
-#' DAscore_result <- DAscore(c(name[1], name[4]),
+#' ePDAlyser_result <- ePDAlyser(c(name[1], name[4]),
 #'                           name[2], name, min_measured_num = 0,
 #'                           sort_plot = "category")
 #' 
-#' DAscore_result$result
-#' DAscore_result$p
+#' ePDAlyser_result$result
+#' ePDAlyser_result$p
 #'
-DAscore <- function(increase_members,
+ePDAlyser <- function(increase_members,
                     decrease_members,
                     all_members,
                     sort_plot = NA,

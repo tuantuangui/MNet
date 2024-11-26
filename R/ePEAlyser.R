@@ -15,18 +15,18 @@
 #'
 #' @examples
 #' name <- c("C15973","C16254","MDH1")
-#' result <- PathwayAnalysis(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
+#' result <- ePEAlyser(name,out="Extended",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
 #' result
 #' 
 #' name <- "C15973"
-#' result <- PathwayAnalysis(name,out="metabolite",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
+#' result <- ePEAlyser(name,out="metabolite",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
 #' result
 #' 
 #' name <- "MDH1"
-#' result <- PathwayAnalysis(name,out="gene",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
+#' result <- ePEAlyser(name,out="gene",p_cutoff=0.05,noverlap_cutoff=0,test="hypergeo")
 #' result
 #'
-PathwayAnalysis <- function(name,
+ePEAlyser <- function(name,
                             out = "Extended",
                             p_cutoff = 0.05,
                             noverlap_cutoff = 0,
