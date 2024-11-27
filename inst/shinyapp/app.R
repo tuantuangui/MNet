@@ -610,7 +610,7 @@ ui <- shinyUI(
                             br(),br(),
                             tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/MNet_Figure1.png",
                                      # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                     style = "width: 100%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
+                                     style = "width: 80%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
                             br(),br(),
                             tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
@@ -2774,7 +2774,7 @@ ui <- shinyUI(
                                                title = "Output: ePEA Plot",
                                                markdown(
                                                    "
-						                           Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+						                           Bar plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -2931,7 +2931,7 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   Bar plot and dot plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   Bar plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
@@ -3715,8 +3715,8 @@ ui <- shinyUI(
                                                    height = "auto"
                                                ),
                                                tags$p(
-                                                   tags$b("Figure 1."),
-                                                   "Extended pathway set enrichment analysis."
+                                                   tags$b("Figure 2."),
+                                                   "Extended interested pathway set enrichment analysis."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -3868,14 +3868,14 @@ ui <- shinyUI(
                                                )),
                                                markdown(
                                                    "
-                                                   Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
                                                    "
                                                ),
                                                hr(),
                                                imageOutput("esea_interested_plot", width = "100%", height = "auto"),
                                                tags$p(
-                                                   tags$b("Figure 1."),
-                                                   "Extended pathway set enrichment analysis."
+                                                   tags$b("Figure 2."),
+                                                   "Extended interested pathway set enrichment analysis."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -5257,7 +5257,7 @@ server <- shinyServer(function(session, input, output) {
         )
         
         output$network_demo_nodes_data <- renderDT({
-            nodes <- read.table(
+            nodes <- data.table::fread(
                 "www/demo/nodes.txt",
                 header = TRUE,
                 sep = "\t",
@@ -5265,7 +5265,13 @@ server <- shinyServer(function(session, input, output) {
             )
             
             datatable(
-                head(nodes, 30),
+                head(nodes %>%
+                       mutate(AveExpr=round(AveExpr,4)) %>%
+                       mutate(t=round(t,4)) %>%
+                       mutate(p_value=round(p_value,4)) %>%
+                       mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                       mutate(B = round(B,4)) %>%
+                       mutate(logP = round(logP,4)), 30),
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
@@ -5575,7 +5581,7 @@ server <- shinyServer(function(session, input, output) {
             output$network_user_nodes_data <- renderDT({
                 req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
                 
-                nodes <- read.table(
+                nodes <- data.table::fread(
                     paste(temp_network, "/node_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
@@ -5583,7 +5589,15 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(nodes, 30),
+                    #head(nodes  %>%
+                  nodes %>%
+                           mutate(AveExpr=round(AveExpr,4)) %>%
+                           mutate(t=round(t,4)) %>%
+                           mutate(p_value=round(p_value,4)) %>%
+                           mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                           mutate(B = round(B,4)) %>%
+                           mutate(logP = round(logP,4)),
+                  #30),
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
@@ -5613,7 +5627,8 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(edges, 30),
+                    #head(edges, 30),
+                    edges,
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
@@ -6831,7 +6846,8 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(epea_up, 30),
+                    epea_up,
+                    #head(epea_up, 30),
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
@@ -6861,7 +6877,8 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(epea_down, 30),
+                    #head(epea_down, 30),
+                    epea_down,
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
@@ -7524,7 +7541,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             datatable(
-                head(epda_result, 30),
+                head(epda_result %>% mutate(DA_score=round(DA_score,4)), 30),
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
@@ -7884,7 +7901,8 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(epda_result, 30),
+                    #head(epda_result %>% mutate(DA_score=round(DA_score,4)), 30),
+                    epda_result %>% mutate(DA_score=round(DA_score,4)),
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
@@ -8097,7 +8115,12 @@ server <- shinyServer(function(session, input, output) {
             )
             
             datatable(
-                head(esea_result, 30),
+                head(esea_result %>%
+                       mutate(pval=round(pval,4)) %>%
+                       mutate(padj=round(padj,4)) %>%
+                       mutate(log2err=round(log2err,4)) %>%
+                       mutate(ES=round(ES,4)) %>%
+                       mutate(NES=round(NES,4)), 30),
                 rownames = TRUE,
                 options = list(
                     pageLength = 10,
@@ -8333,7 +8356,14 @@ server <- shinyServer(function(session, input, output) {
                 )
                 
                 datatable(
-                    head(esea_result, 30),
+                    #head(esea_result %>%
+                    esea_result %>%
+                           mutate(pval=round(pval,4)) %>%
+                           mutate(padj=round(padj,4)) %>%
+                           mutate(log2err=round(log2err,4)) %>%
+                           mutate(ES=round(ES,4)) %>%
+                           mutate(NES=round(NES,4)),
+                          # mutate(NES=round(NES,4)), 30),
                     rownames = TRUE,
                     options = list(
                         pageLength = 10,
