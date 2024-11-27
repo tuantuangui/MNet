@@ -1725,7 +1725,7 @@ ui <- shinyUI(
                                                ),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes and metabolites, with red and green indicating the logFC of genes, while yellow and blue represent the logFC of metabolites, indicating varying levels."
                                                ),
                                                icon = shiny::icon("image")
                                            )
@@ -1878,7 +1878,7 @@ ui <- shinyUI(
                                                imageOutput("network_plot", width = "100%", height = "auto"),
                                                tags$p(
                                                    tags$b("Figure 1."),
-                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes, with red and green indicating different expression levels, while yellow and blue represent the logFC of metabolites, indicating varying levels."
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes and metabolites, with red and green indicating the logFC of genes, while yellow and blue represent the logFC of metabolites, indicating varying levels."
                                                ),
                                                icon = shiny::icon("image")
                                            )
