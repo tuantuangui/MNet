@@ -627,18 +627,18 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 400px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 ),
                                 column(
                                     width = 6,
                                     tags$p("2. ePEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
-                                    tags$p("The extended Pathway Enrichment Analyser. (A) Barplot of up-regulated metabolic pathways corresponding 
-                                           to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to 
+                                    tags$p("The extended Pathway Enrichment Analyser. (A) Barplot of cluster1 enriched metabolic pathways corresponding 
+                                           to metabolites and genes. (B) Barplot of cluster2 enriched metabolic pathways corresponding to 
                                            metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 390px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 400px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
@@ -649,18 +649,18 @@ ui <- shinyUI(
                                     tags$p("The extended Pathway Differential Abundance analyser. The ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
                                            are statistically significant differences between two groups.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePDA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 ),
                                 column(
                                     width = 6,
                                     tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
                                     tags$p("The extended pathway Set Enrichment Analyser, which aim to identify dysregulated metabolic pathways by considering both metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEAlyser.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-eSEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 430px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 550px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
