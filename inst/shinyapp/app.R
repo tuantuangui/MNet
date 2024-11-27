@@ -201,7 +201,7 @@ ui <- shinyUI(
                     #     )
                     # ),
                     bs4SidebarMenuItem(
-                        text = "1. Metabolic Subnetwork Analyser",
+                        text = "1. Subnetwork Analyser",
                         tabName = NULL,
                         # icon = icon("circle-nodes"),
                         # badgeLabel = "3",
@@ -239,7 +239,7 @@ ui <- shinyUI(
                     ),
                     br(),
                     bs4SidebarMenuItem(
-                        text = "2. Extended Pathway Analysers",
+                        text = "2. Pathway Analysers",
                         tabName = NULL,
                         # icon = icon("dna"),
                         # badgeLabel = "6",
@@ -608,7 +608,7 @@ ui <- shinyUI(
                             tags$span(") for user-input metabolomic and transcriptomic data.",style = "font-size: 1.2rem; text-align: justify;"),
                             
                             br(),br(),
-                            tags$img(src = "https://tuantuangui.github.io/MNet/articles/data/Figure1.jpg",
+                            tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/MNet_Figure1.png",
                                      # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
                                      style = "width: 100%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
                             br(),br(),
@@ -638,7 +638,7 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 390px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
@@ -660,18 +660,18 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEAlyser.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 360px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 430px; object-fit: cover; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
                             tags$p("Documents", style = "font-size: 2rem; font-weight: bold;"),
-                            tags$p("1. MNet Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$p("1. MNet Web Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
-                                   "MNet Server Manual", 
+                                   "MNet Web Server Manual", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
-                            tags$p("2. MNet Package References", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$p("2. MNet R Package References", style = "font-size: 1.5rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/", 
-                                   "MNet Package References", 
+                                   "MNet R Package References", 
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;")
                         )
                     ))
