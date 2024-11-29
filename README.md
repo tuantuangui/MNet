@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-**MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data**
+**MNet: a metabolic network-centered tool for interpreting metabolomic and transcriptomic data**
 
 - **Knowledgebase - dbMNet:** <font color="CadetBlue">**dbKEGG**</font> for extended pathway analysis and <font color="CadetBlue">**dbNet**</font> for metabolism-related subnetwork analysis  
 
