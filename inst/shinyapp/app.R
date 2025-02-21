@@ -519,7 +519,7 @@ ui <- shinyUI(
             )),
             #=== 1.5 bs4DashPage -> bs4DashBody -> bs4TabItems
             bs4TabItems(
-                #=== 1.5.0 bs4TabItem home
+                #=== bs4TabItem home
                 {
                     bs4TabItem(tabName = "home", fluidRow(
                         bs4Card(
@@ -639,7 +639,7 @@ ui <- shinyUI(
                         )
                     ))
                 },
-                #=== 1.5.1 bs4TabItem database
+                #=== bs4TabItem database
                 {
                     bs4TabItem(tabName = "database", fluidRow(
                         bs4Card(
@@ -801,7 +801,7 @@ ui <- shinyUI(
                         )
                     ))
                 },
-                #=== 1.5.2 bs4TabItem network_plot
+                #=== bs4TabItem network_plot
                 {
                     bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1299,7 +1299,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.3 bs4TabItem diff_network
+                #=== bs4TabItem diff_network
                 {
                     bs4TabItem(tabName = "diff_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1597,7 +1597,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.4 bs4TabItem corr_network
+                #=== bs4TabItem corr_network
                 {
                     bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1830,7 +1830,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.5 bs4TabItem epea_plot
+                #=== bs4TabItem epea_plot
                 {
                     bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2362,7 +2362,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.6 bs4TabItem epda_plot
+                #=== bs4TabItem epda_plot
                 {
                     bs4TabItem(tabName = "epda_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2822,7 +2822,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.7 bs4TabItem esea_plot
+                #=== bs4TabItem esea_plot
                 {
                     bs4TabItem(tabName = "esea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3301,7 +3301,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.8 bs4TabItem mpea_plot
+                #=== bs4TabItem mpea_plot
                 {
                     bs4TabItem(tabName = "mpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3563,7 +3563,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.9 bs4TabItem gpea_plot
+                #=== bs4TabItem gpea_plot
                 {
                     bs4TabItem(tabName = "gpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3825,7 +3825,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.10 bs4TabItem name2refmet
+                #=== bs4TabItem name2refmet
                 {
                     bs4TabItem(tabName = "name2refmet", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -4033,7 +4033,7 @@ ui <- shinyUI(
                                    )
                                ))
                 },
-                #=== 1.5.10 bs4TabItem name2refmet
+                #=== bs4TabItem name2keggid
                 {
                     bs4TabItem(tabName = "name2keggid", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -4231,6 +4231,214 @@ ui <- shinyUI(
                                                hr(),
                                                DTOutput(
                                                    "name2keggid_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem name2pathway
+                {
+                    bs4TabItem(tabName = "name2pathway", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "name2pathway_user_name_data_input",
+                                           label = "Name Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Name Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "name2pathway_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2pathway_demo_name_data_download",
+                                                       label = "Name Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_demo_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2pathway_demo_pathway_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway formats.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_demo_pathway_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_user_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2pathway_user_result_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_user_result_data",
                                                    width = "100%",
                                                    height = "auto",
                                                    fill = TRUE
@@ -8375,6 +8583,179 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_name2keggid, "/name2keggid_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # name2pathway
+    {
+        temp_name2pathway <- file.path(session_temp_dir, "name2pathway")
+        if (!dir.exists(temp_name2pathway)) {
+            dir.create(temp_name2pathway, recursive = TRUE, mode = "1777")
+        }
+        
+        output$name2pathway_demo_name_data <- renderDT({
+            name_data <- read.table(
+                "www/demo/name.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                name_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$name2pathway_demo_name_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2pathway_demo_name_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/name.txt", to = file)
+            }
+        )
+        
+        output$name2pathway_demo_pathway_data <- renderDT({
+            pathway_data <- read.table(
+                "www/demo/name2pathway.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                pathway_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$name2pathway_demo_pathway_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2pathway_demo_pathway_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/name2pathway.txt", to = file)
+            }
+        )
+        
+        output$name2pathway_user_name_data <- renderDT({
+            req(input$name2pathway_user_name_data_input)
+            name_data <- read.table(
+                input$name2pathway_user_name_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                name_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$name2pathway_user_name_data_input)
+        }, 
+        {
+            name_data <- read_safely(
+                input$name2pathway_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_name_data <- nrow(name_data) >= 1
+            
+            if (!check_name_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$name2pathway_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Name2Pathway starting ...", detail = "Name2Pathway starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Name2Pathway reading datasets ...", detail = "Name2Pathway reading datasets ...")
+            
+            name_data <- read_safely(
+                input$name2pathway_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Name2Pathway analyzing ...", detail = "Name2Pathway analyzing ...")
+            
+            name_data <- as.vector(name_data[, 1])
+            results <- name2pathway(name_data)
+            result <- results$name2pathway
+            
+            write.table(
+                result,
+                paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Name2Pathway task complete ...", detail = "Name2Pathway task complete ...")
+            
+            output$name2pathway_user_result_data <- renderDT({
+                req(file.exists(paste(temp_name2pathway, "/name2pathway_result.txt", sep = "")))
+                
+                name2pathway_result <- read.table(
+                    paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    name2pathway_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$name2pathway_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2pathway_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""), to = file)
             }
         )
     }

@@ -1,0 +1,3 @@
+Name	KEGG_id	Pathway	Pathway_category	Pathway_id
+2-Hydroxybutyric acid	C05984	Propanoate metabolism	Carbohydrate metabolism	hsa00640
+3-Hydroxybutyric acid	C01089	Butanoate metabolism	Carbohydrate metabolism	hsa00650
