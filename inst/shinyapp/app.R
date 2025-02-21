@@ -4448,6 +4448,214 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem keggid2pathway
+                {
+                    bs4TabItem(tabName = "keggid2pathway", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "keggid2pathway_user_keggid_data_input",
+                                           label = "KEGGID Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "KEGGID Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "keggid2pathway_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: KEGGID Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: KEGGID Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "keggid2pathway_demo_keggid_data_download",
+                                                       label = "KEGGID Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **KEGGID Data** (required, in .txt format): KEGGID in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_demo_keggid_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "keggid2pathway_demo_pathway_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway formats.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_demo_pathway_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: KEGGID Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: KEGGID Data",
+                                               markdown(
+                                                   "
+						                           **KEGGID Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_user_keggid_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "keggid2pathway_user_result_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -8756,6 +8964,178 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # keggid2pathway
+    {
+        temp_keggid2pathway <- file.path(session_temp_dir, "keggid2pathway")
+        if (!dir.exists(temp_keggid2pathway)) {
+            dir.create(temp_keggid2pathway, recursive = TRUE, mode = "1777")
+        }
+        
+        output$keggid2pathway_demo_keggid_data <- renderDT({
+            keggid_data <- read.table(
+                "www/demo/keggid.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                keggid_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$keggid2pathway_demo_keggid_data_download <- downloadHandler(
+            filename = function() {
+                paste("keggid2pathway_demo_keggid_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/keggid.txt", to = file)
+            }
+        )
+        
+        output$keggid2pathway_demo_pathway_data <- renderDT({
+            pathway_data <- read.table(
+                "www/demo/keggid2pathway.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                pathway_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$keggid2pathway_demo_pathway_data_download <- downloadHandler(
+            filename = function() {
+                paste("keggid2pathway_demo_pathway_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/keggid2pathway.txt", to = file)
+            }
+        )
+        
+        output$keggid2pathway_user_keggid_data <- renderDT({
+            req(input$keggid2pathway_user_keggid_data_input)
+            keggid_data <- read.table(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                keggid_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$keggid2pathway_user_keggid_data_input)
+        }, 
+        {
+            keggid_data <- read_safely(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_keggid_data <- nrow(keggid_data) >= 1
+            
+            if (!check_keggid_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**KEGGID Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$keggid2pathway_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "KEGGID2Pathway starting ...", detail = "KEGGID2Pathway starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "KEGGID2Pathway reading datasets ...", detail = "KEGGID2Pathway reading datasets ...")
+            
+            keggid_data <- read_safely(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "KEGGID2Pathway analyzing ...", detail = "KEGGID2Pathway analyzing ...")
+            
+            keggid_data <- as.vector(keggid_data[, 1])
+            result <- keggid2pathway(keggid_data)
+            
+            write.table(
+                result,
+                paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "KEGGID2Pathway task complete ...", detail = "KEGGID2Pathway task complete ...")
+            
+            output$keggid2pathway_user_result_data <- renderDT({
+                req(file.exists(paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = "")))
+                
+                keggid2pathway_result <- read.table(
+                    paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    keggid2pathway_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$keggid2pathway_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("keggid2pathway_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""), to = file)
             }
         )
     }

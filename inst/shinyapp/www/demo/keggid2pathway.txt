@@ -1,0 +1,34 @@
+ENTRY	NAME	PATHWAY	pathway_type	V2
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Glycolysis / Gluconeogenesis	Carbohydrate metabolism	hsa00010
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Citrate cycle (TCA cycle)	Carbohydrate metabolism	hsa00020
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Pentose phosphate pathway	Carbohydrate metabolism	hsa00030
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Pentose and glucuronate interconversions	Carbohydrate metabolism	hsa00040
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Ascorbate and aldarate metabolism	Carbohydrate metabolism	hsa00053
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Pyruvate metabolism	Carbohydrate metabolism	hsa00620
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Glyoxylate and dicarboxylate metabolism	Carbohydrate metabolism	hsa00630
+C05984	2-Hydroxybutanoic acid;///2-Hydroxybutyrate;///2-Hydroxybutyric acid	Propanoate metabolism	Carbohydrate metabolism	hsa00640
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Butanoate metabolism	Carbohydrate metabolism	hsa00650
+C00004	NADH;///DPNH;///Reduced nicotinamide adenine dinucleotide	Oxidative phosphorylation	Energy metabolism	hsa00190
+C00008	ADP;///Adenosine 5'-diphosphate	Oxidative phosphorylation	Energy metabolism	hsa00190
+C00008	ADP;///Adenosine 5'-diphosphate	Purine metabolism	Nucleotide metabolism	hsa00230
+C00242	Guanine;///2-Amino-6-hydroxypurine	Purine metabolism	Nucleotide metabolism	hsa00230
+C00106	Uracil	Pyrimidine metabolism	Nucleotide metabolism	hsa00240
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Alanine, aspartate and glutamate metabolism	Amino acid metabolism	hsa00250
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Glycine, serine and threonine metabolism	Amino acid metabolism	hsa00260
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Cysteine and methionine metabolism	Amino acid metabolism	hsa00270
+C00073	L-Methionine;///Methionine;///L-2-Amino-4methylthiobutyric acid	Cysteine and methionine metabolism	Amino acid metabolism	hsa00270
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Valine, leucine and isoleucine biosynthesis	Amino acid metabolism	hsa00290
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Arginine and proline metabolism	Amino acid metabolism	hsa00330
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Tyrosine metabolism	Amino acid metabolism	hsa00350
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Phenylalanine metabolism	Amino acid metabolism	hsa00360
+C00106	Uracil	beta-Alanine metabolism	Metabolism of other amino acids	hsa00410
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Taurine and hypotaurine metabolism	Metabolism of other amino acids	hsa00430
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Phosphonate and phosphinate metabolism	Metabolism of other amino acids	hsa00440
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	D-Amino acid metabolism	Metabolism of other amino acids	hsa00470
+C00073	L-Methionine;///Methionine;///L-2-Amino-4methylthiobutyric acid	D-Amino acid metabolism	Metabolism of other amino acids	hsa00470
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Thiamine metabolism	Metabolism of cofactors and vitamins	hsa00730
+C00016	FAD;///Flavin adenine dinucleotide	Riboflavin metabolism	Metabolism of cofactors and vitamins	hsa00740
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Nicotinate and nicotinamide metabolism	Metabolism of cofactors and vitamins	hsa00760
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Pantothenate and CoA biosynthesis	Metabolism of cofactors and vitamins	hsa00770
+C00106	Uracil	Pantothenate and CoA biosynthesis	Metabolism of cofactors and vitamins	hsa00770
+C00022	Pyruvate;///Pyruvic acid;///2-Oxopropanoate;///2-Oxopropanoic acid;///Pyroracemic acid	Terpenoid backbone biosynthesis	Metabolism of terpenoids and polyketides	hsa00900
