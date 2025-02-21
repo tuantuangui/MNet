@@ -8,6 +8,16 @@ pre {
   box-shadow: 0px 0px 5px #aaaaaa;
 }
 
+/* 初始时让有子菜单的菜单项默认添加展开类名 */
+.sidebar-menu li.has-treeview {
+    /* 默认添加展开类名，让子菜单显示 */
+    /* 这里不直接用 display 控制，而是利用原有的展开逻辑 */
+    transition: all 0.3s;
+}
+.sidebar-menu li.has-treeview.menu-open ul.treeview-menu {
+    display: block;
+}
+
 a {
   color: #008888;
   font-weight: bold;

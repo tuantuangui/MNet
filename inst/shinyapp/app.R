@@ -163,43 +163,6 @@ ui <- shinyUI(
                         condition = NULL
                     ),
                     br(),
-                    # bs4SidebarMenuItem(
-                    #     text = "1. Metabolite Analysis",
-                    #     tabName = NULL,
-                    #     icon = icon("atom"),
-                    #     # badgeLabel = "6",
-                    #     # badgeColor = "warning",
-                    #     href = NULL,
-                    #     newTab = TRUE,
-                    #     selected = NULL,
-                    #     expandedName = "samples_statistics",
-                    #     startExpanded = TRUE,
-                    #     condition = NULL,
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| Metabolite PCA",
-                    #         tabName = "pca_plot",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     ),
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| Metabolite Volcano",
-                    #         tabName = "volcano_plot",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     ),
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| Metabolite Heatmap",
-                    #         tabName = "heatmap_plot",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     )
-                    # ),
                     bs4SidebarMenuItem(
                         text = "1. Subnetwork Analyser",
                         tabName = NULL,
@@ -209,7 +172,7 @@ ui <- shinyUI(
                         href = NULL,
                         newTab = TRUE,
                         selected = NULL,
-                        expandedName = "traits_analysis",
+                        expandedName = "",
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
@@ -220,22 +183,6 @@ ui <- shinyUI(
                             icon = icon("r-project"),
                             selected = NULL
                         )
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| DiffExp Network",
-                        #     tabName = "diff_network",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # ),
-                        # bs4SidebarMenuSubItem(
-                        #     text = "| Correlate Network",
-                        #     tabName = "corr_network",
-                        #     href = NULL,
-                        #     newTab = TRUE,
-                        #     icon = icon("r-project"),
-                        #     selected = NULL
-                        # )
                     ),
                     br(),
                     bs4SidebarMenuItem(
@@ -247,7 +194,7 @@ ui <- shinyUI(
                         href = NULL,
                         newTab = TRUE,
                         selected = NULL,
-                        expandedName = "defferential_expression",
+                        expandedName = "",
                         startExpanded = TRUE,
                         condition = NULL,
                         bs4SidebarMenuSubItem(
@@ -330,191 +277,199 @@ ui <- shinyUI(
                         #     icon = icon("r-project"),
                         #     selected = NULL
                         # )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "3. Name Transform",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2Refmet",
+                            tabName = "name2refmet",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2KEGGID",
+                            tabName = "name2keggid",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2Pathway",
+                            tabName = "name2pathway",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| KEGGID2Pathway",
+                            tabName = "keggid2pathway",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| PathwayInfo",
+                            tabName = "pathwayinfo",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Pathway2Pathwayid",
+                            tabName = "pathway2pathwayid",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "4. Group-wise Analysis",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Differential Metabolite",
+                            tabName = "diff_metabolite",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "5. Machine Learning",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Boruta",
+                            tabName = "boruta",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Random Forest",
+                            tabName = "random_forest",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2Pathway",
+                            tabName = "name2pathway",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| XGBoost",
+                            tabName = "xgboost",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| LASSO",
+                            tabName = "lasso",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Elastic Network",
+                            tabName = "elastic_network",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "6. Clinical Analysis",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Time Series",
+                            tabName = "time_series",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Survival Analysis",
+                            tabName = "survival_analysis",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Survival Plot",
+                            tabName = "survival_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Cox Analysis",
+                            tabName = "cox_analysis",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
                     )
-                    # bs4SidebarMenuItem(
-                    #     text = "4. Clinical Analysis",
-                    #     tabName = NULL,
-                    #     icon = icon("stethoscope"),
-                    #     # badgeLabel = "6",
-                    #     # badgeColor = "warning",
-                    #     href = NULL,
-                    #     newTab = TRUE,
-                    #     selected = NULL,
-                    #     expandedName = "anvanced_analysis",
-                    #     startExpanded = TRUE,
-                    #     condition = NULL,
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| Gene Rank Plot",
-                    #         tabName = "gene_rank_plot",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     )
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Gene Cluster Trend",
-                    #     #     tabName = "gene_cluster_trend",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Trend Plot",
-                    #     #     tabName = "trend_plot",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Network Plot",
-                    #     #     tabName = "network_plot",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Heatmap Cluster",
-                    #     #     tabName = "heatmap_cluster",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # )
-                    # ),
-                    # bs4SidebarMenuItem(
-                    #     text = "5. Feature Selection",
-                    #     tabName = NULL,
-                    #     icon = icon("square-root-variable"),
-                    #     # badgeLabel = "6",
-                    #     # badgeColor = "warning",
-                    #     href = NULL,
-                    #     newTab = TRUE,
-                    #     selected = NULL,
-                    #     expandedName = "go_and_kegg",
-                    #     startExpanded = TRUE,
-                    #     condition = NULL,
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| GO Enrich",
-                    #         tabName = "go_enrich",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     )
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| GO Enrich Stat",
-                    #     #     tabName = "go_enrich_stat",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| GO Enrich Bar",
-                    #     #     tabName = "go_enrich_bar",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| GO Enrich Dot",
-                    #     #     tabName = "go_enrich_dot",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| GO Enrich Net",
-                    #     #     tabName = "go_enrich_net",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| KEGG Enrich",
-                    #     #     tabName = "kegg_enrich",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| KEGG Enrich Bar",
-                    #     #     tabName = "kegg_enrich_bar",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| KEGG Enrich Dot",
-                    #     #     tabName = "kegg_enrich_dot",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| KEGG Enrich Net",
-                    #     #     tabName = "kegg_enrich_net",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # )
-                    # ),
-                    # bs4SidebarMenuItem(
-                    #     text = "6. Metabolite Conversion",
-                    #     tabName = NULL,
-                    #     icon = icon("repeat"),
-                    #     # badgeLabel = "6",
-                    #     # badgeColor = "warning",
-                    #     href = NULL,
-                    #     newTab = TRUE,
-                    #     selected = NULL,
-                    #     expandedName = "tables_operations",
-                    #     startExpanded = TRUE,
-                    #     condition = NULL,
-                    #     bs4SidebarMenuSubItem(
-                    #         text = "| Table Split",
-                    #         tabName = "table_split",
-                    #         href = NULL,
-                    #         newTab = TRUE,
-                    #         icon = icon("r-project"),
-                    #         selected = NULL
-                    #     )
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Table Merge",
-                    #     #     tabName = "table_merge",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Table Filter",
-                    #     #     tabName = "table_filter",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # ),
-                    #     # bs4SidebarMenuSubItem(
-                    #     #     text = "| Table Cross",
-                    #     #     tabName = "table_cross",
-                    #     #     href = NULL,
-                    #     #     newTab = TRUE,
-                    #     #     icon = icon("r-project"),
-                    #     #     selected = NULL
-                    #     # )
-                    # )
-                    
                 ),
                 hr()
             )
@@ -551,12 +506,20 @@ ui <- shinyUI(
         },
         #=== 1.5 bs4DashBody
         body = bs4DashBody(
+            tags$head(
+                tags$script(HTML('
+                $(document).ready(function() {
+                    $(".sidebar-menu li.has-treeview").addClass("menu-open");
+                });
+            '))
+            ),
             includeCSS("www/styles.css"),
             tags$head(tags$link(
                 rel = "icon", type = "image/png", href = "favicon.png"
             )),
-            #=== 1.5.1 bs4DashPage -> bs4DashBody -> bs4TabItems
-            bs4TabItems(#=== 1.5.1.1 bs4DashPage home
+            #=== 1.5 bs4DashPage -> bs4DashBody -> bs4TabItems
+            bs4TabItems(
+                #=== 1.5.0 bs4TabItem home
                 {
                     bs4TabItem(tabName = "home", fluidRow(
                         bs4Card(
@@ -627,7 +590,7 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 400px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 ),
                                 column(
                                     width = 6,
@@ -638,7 +601,7 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 400px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
@@ -660,7 +623,7 @@ ui <- shinyUI(
                                            style = "font-size: 1rem; text-align: justify;"),
                                     tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-eSEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                             style = "width: 100%; height: 550px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                             style = "width: 100%; height: 520px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
                             ),
                             br(),br(),
@@ -675,720 +638,170 @@ ui <- shinyUI(
                                    style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;")
                         )
                     ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.1 bs4TabItem database
                 {
-                    bs4TabItem(tabName = "pca_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Setting",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("gear"),
-                                       boxToolSize = "lg",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       fileInput(
-                                           inputId = "pca_meta_data_input",
-                                           label = "Metabolite Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Metabolite Data (.txt format)"
-                                       ),
-                                       fileInput(
-                                           inputId = "pca_group_data_input",
-                                           label = "Group Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Group Data (.txt format)"
-                                       ),
-                                       hr(),
-                                       selectInput(
-                                           inputId = "pca_plot_format",
-                                           label = "Figure Format",
-                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                           selected = "pdf",
-                                           multiple = FALSE,
-                                           width = NULL
-                                       ),
-                                       sliderInput(
-                                           inputId = "pca_plot_width",
-                                           label = "Figure Width (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 10.00,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "pca_plot_height",
-                                           label = "Figure Height (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 6.18,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "pca_plot_dpi",
-                                           label = "Figure DPI",
-                                           min = 68,
-                                           max = 1000,
-                                           value = 300,
-                                           step = 1,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "pca_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "lg",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           class = "no-header",
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               DTOutput(
-                                                   "pca_meta_data",
-                                                   width = "100%",
-                                                   height = "auto",
-                                                   fill = TRUE
-                                               )
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               textOutput("pca_group_data")
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               plotOutput("pca_plot", width = "100%", height = "640px")
-                                           )
-                                       ),
-                                   )
-                               ))
-                }, #=== 1.5.1.2 bs4TabItem
-                {
-                    bs4TabItem(tabName = "volcano_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Setting",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("gear"),
-                                       boxToolSize = "lg",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       fileInput(
-                                           inputId = "volcano_meta_data_input",
-                                           label = "Metabolite Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Metabolite Data (.txt format)"
-                                       ),
-                                       fileInput(
-                                           inputId = "volcano_group_data_input",
-                                           label = "Group Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Group Data (.txt format)"
-                                       ),
-                                       hr(),
-                                       selectInput(
-                                           inputId = "volcano_diff_method",
-                                           label = "Diff Methods",
-                                           choices = c("LIMMA" = "LIMMA", "OPLS-DA" = "OPLS-DA"),
-                                           selected = "OPLS-DA",
-                                           multiple = FALSE,
-                                           width = NULL
-                                       ),
-                                       sliderInput(
-                                           inputId = "volcano_fold_change",
-                                           label = "Fold Change",
-                                           min = 0.00,
-                                           max = 100.00,
-                                           value = 1.50,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       hr(),
-                                       selectInput(
-                                           inputId = "volcano_plot_format",
-                                           label = "Figure Format",
-                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                           selected = "pdf",
-                                           multiple = FALSE,
-                                           width = NULL
-                                       ),
-                                       sliderInput(
-                                           inputId = "volcano_plot_width",
-                                           label = "Figure Width (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 10.00,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "volcano_plot_height",
-                                           label = "Figure Height (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 6.18,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "volcano_plot_dpi",
-                                           label = "Figure DPI",
-                                           min = 68,
-                                           max = 1000,
-                                           value = 300,
-                                           step = 1,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "volcano_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "lg",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           class = "no-header",
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               DTOutput(
-                                                   "volcano_meta_data",
-                                                   width = "100%",
-                                                   height = "auto",
-                                                   fill = TRUE
-                                               )
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               textOutput("volcano_group_data")
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               plotOutput("volcano_plot", width = "100%", height = "640px")
-                                           )
-                                       ),
-                                   )
-                               ))
-                }, #=== 1.5.1.2 bs4TabItem
-                {
-                    bs4TabItem(tabName = "heatmap_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
-                               fluidRow(
-                                   bs4Card(
-                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                       id = NULL,
-                                       title = "| Setting",
-                                       footer = NULL,
-                                       width = 3,
-                                       height = NULL,
-                                       status = "white",
-                                       elevation = 0,
-                                       solidHeader = FALSE,
-                                       headerBorder = TRUE,
-                                       gradient = FALSE,
-                                       collapsible = FALSE,
-                                       collapsed = FALSE,
-                                       closable = FALSE,
-                                       maximizable = TRUE,
-                                       icon = icon("gear"),
-                                       boxToolSize = "lg",
-                                       label = NULL,
-                                       dropdownMenu = NULL,
-                                       sidebar = NULL,
-                                       fileInput(
-                                           inputId = "heatmap_meta_data_input",
-                                           label = "Metabolite Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Metabolite Data (.txt format)"
-                                       ),
-                                       fileInput(
-                                           inputId = "heatmap_group_data_input",
-                                           label = "Group Data",
-                                           multiple = FALSE,
-                                           accept = NULL,
-                                           width = NULL,
-                                           buttonLabel = "Browse",
-                                           placeholder = "Group Data (.txt format)"
-                                       ),
-                                       hr(),
-                                       selectInput(
-                                           inputId = "heatmap_diff_method",
-                                           label = "Diff Methods",
-                                           choices = c("LIMMA" = "LIMMA", "OPLS-DA" = "OPLS-DA"),
-                                           selected = "OPLS-DA",
-                                           multiple = FALSE,
-                                           width = NULL
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_fold_change",
-                                           label = "Fold Change",
-                                           min = 0.00,
-                                           max = 100.00,
-                                           value = 1.50,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_padj_wilcox",
-                                           label = "Padj Wilcox",
-                                           min = 0.00,
-                                           max = 1.00,
-                                           value = 0.05,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_VIP",
-                                           label = "OPLS-DA VIP",
-                                           min = 0.00,
-                                           max = 1.00,
-                                           value = 0.80,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       hr(),
-                                       selectInput(
-                                           inputId = "heatmap_plot_format",
-                                           label = "Figure Format",
-                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
-                                           selected = "pdf",
-                                           multiple = FALSE,
-                                           width = NULL
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_plot_width",
-                                           label = "Figure Width (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 10.00,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_plot_height",
-                                           label = "Figure Height (inch)",
-                                           min = 0.00,
-                                           max = 30.00,
-                                           value = 6.18,
-                                           step = 0.01,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       sliderInput(
-                                           inputId = "heatmap_plot_dpi",
-                                           label = "Figure DPI",
-                                           min = 68,
-                                           max = 1000,
-                                           value = 300,
-                                           step = 1,
-                                           round = TRUE,
-                                           ticks = TRUE,
-                                           animate = TRUE,
-                                           width = NULL,
-                                           pre = NULL,
-                                           post = NULL,
-                                           timeFormat = FALSE,
-                                           timezone = NULL,
-                                           dragRange = TRUE
-                                       ),
-                                       downloadButton(
-                                           outputId = "heatmap_plot_download",
-                                           label = "Figure Download",
-                                           class = NULL,
-                                           icon = icon("circle-down"),
-                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                       )
-                                   ),
-                                   column(
-                                       width = 9,
-                                       bs4Card(
-                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
-                                           inputId = NULL,
-                                           title = span("| Data && Figure Preview", ),
-                                           footer = NULL,
-                                           width = 12,
-                                           height = NULL,
-                                           status = "white",
-                                           elevation = 1,
-                                           solidHeader = FALSE,
-                                           headerBorder = TRUE,
-                                           gradient = FALSE,
-                                           collapsible = FALSE,
-                                           collapsed = FALSE,
-                                           closable = FALSE,
-                                           maximizable = TRUE,
-                                           icon = icon("compass-drafting"),
-                                           boxToolSize = "lg",
-                                           label = NULL,
-                                           dropdownMenu = NULL,
-                                           sidebar = NULL,
-                                           class = "no-header",
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               DTOutput(
-                                                   "heatmap_meta_data",
-                                                   width = "100%",
-                                                   height = "auto",
-                                                   fill = TRUE
-                                               )
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               textOutput("heatmap_group_data")
-                                           ),
-                                           bs4Card(
-                                               inputId = NULL,
-                                               title = "| Data Table",
-                                               footer = NULL,
-                                               width = 12,
-                                               height = NULL,
-                                               status = "white",
-                                               elevation = 1,
-                                               solidHeader = FALSE,
-                                               headerBorder = TRUE,
-                                               gradient = FALSE,
-                                               collapsible = TRUE,
-                                               collapsed = FALSE,
-                                               closable = FALSE,
-                                               maximizable = TRUE,
-                                               icon = icon("table-list"),
-                                               boxToolSize = "lg",
-                                               label = NULL,
-                                               dropdownMenu = NULL,
-                                               sidebar = NULL,
-                                               plotOutput("heatmap_plot", width = "100%", height = "640px")
-                                           )
-                                       ),
-                                   )
-                               ))
-                }, #=== 1.5.1.2 bs4TabItem
+                    bs4TabItem(tabName = "database", fluidRow(
+                        bs4Card(
+                            # 1
+                            style = "padding: 10px 10%;",
+                            inputId = NULL,
+                            title = tags$b("Knowledgebase Update and Download"),
+                            footer = NULL,
+                            width = 12,
+                            height = NULL,
+                            status = "white",
+                            elevation = 1,
+                            solidHeader = FALSE,
+                            headerBorder = FALSE,
+                            gradient = FALSE,
+                            collapsible = FALSE,
+                            collapsed = FALSE,
+                            closable = FALSE,
+                            maximizable = FALSE,
+                            icon = icon("passport"),
+                            boxToolSize = "lg",
+                            label = NULL,
+                            dropdownMenu = NULL,
+                            sidebar = NULL,
+                            markdown("## **1. Knowledgebase Introduction:**"), br(), 
+                            markdown(
+                                "
+                               	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
+                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases,
+                                **dbNet** and **dbKEGG**.
+
+                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
+                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
+
+                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
+                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
+
+                                These pairs involve **3,964 genes**, and **11,932 metabolites**.
+
+                                The source code for compiling the knowledgebase dbMNet is available here:
+
+                                [**_https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet_**](https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet)
+
+                                <hr />
+
+                                ## **2. Knowledgebase dbMNet V202411 can be downloaded here.**
+
+                                <br />
+                                "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202411",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
+                                "
+            				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
+            
+            				     <br />
+            				     "
+                            ),
+                            DTOutput(
+                                "db_kegg",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            br(),
+                            markdown(
+                                "
+                                #### **2.2 dbNet, designed for metabolism-related subnetwork analysis.**
+
+                                <br />
+                                "
+                            ),
+                            DTOutput(
+                                "db_net",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            hr(),
+                            markdown(
+                                "
+                				## **3. Knowledgebase History**
+                
+                				<br />
+                
+                				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
+                
+                				<br />
+                				"
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202404",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
+                                "
+                                <hr />
+
+                                #### **3.2 Knowledgebase dbMNet V202212 can be downloaded here.**
+
+                                <br />
+                               "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202212",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr()
+                        )
+                    ))
+                },
+                #=== 1.5.2 bs4TabItem network_plot
                 {
                     bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -1885,7 +1298,8 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.3 bs4TabItem diff_network
                 {
                     bs4TabItem(tabName = "diff_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2182,7 +1596,8 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.4 bs4TabItem corr_network
                 {
                     bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2414,7 +1829,8 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.5 bs4TabItem epea_plot
                 {
                     bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -2945,7 +2361,8 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.6 bs4TabItem epda_plot
                 {
                     bs4TabItem(tabName = "epda_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3404,7 +2821,8 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.7 bs4TabItem esea_plot
                 {
                     bs4TabItem(tabName = "esea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -3882,7 +3300,8 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.8 bs4TabItem mpea_plot
                 {
                     bs4TabItem(tabName = "mpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -4143,7 +3562,8 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                }, #=== 1.5.1.2 bs4TabItem
+                },
+                #=== 1.5.9 bs4TabItem gpea_plot
                 {
                     bs4TabItem(tabName = "gpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
                                fluidRow(
@@ -4404,167 +3824,206 @@ ui <- shinyUI(
                                        ),
                                    )
                                ))
-                }, {
-                    bs4TabItem(tabName = "database", fluidRow(
-                        bs4Card(
-                            # 1
-                            style = "padding: 10px 10%;",
-                            inputId = NULL,
-                            title = tags$b("Knowledgebase Update and Download"),
-                            footer = NULL,
-                            width = 12,
-                            height = NULL,
-                            status = "white",
-                            elevation = 1,
-                            solidHeader = FALSE,
-                            headerBorder = FALSE,
-                            gradient = FALSE,
-                            collapsible = FALSE,
-                            collapsed = FALSE,
-                            closable = FALSE,
-                            maximizable = FALSE,
-                            icon = icon("passport"),
-                            boxToolSize = "lg",
-                            label = NULL,
-                            dropdownMenu = NULL,
-                            sidebar = NULL,
-                            markdown("## **1. Knowledgebase Introduction:**"), br(), 
-                            markdown(
-                                "
-                               	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
-                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases,
-                                **dbNet** and **dbKEGG**.
-
-                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
-                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
-
-                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
-                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
-
-                                These pairs involve **3,964 genes**, and **11,932 metabolites**.
-
-                                The source code for compiling the knowledgebase dbMNet is available here:
-
-                                [**_https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet_**](https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet)
-
-                                <hr />
-
-                                ## **2. Knowledgebase dbMNet V202411 can be downloaded here.**
-
-                                <br />
-                                "
-                            ),
-                            fluidRow(
-                                column(
-                                    width = 9,
-                                    tags$a(
-                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip",
-                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip"
-                                    )
-                                ),
-                                column(
-                                    width = 3,
-                                    downloadButton(
-                                        outputId = "download_db202411",
-                                        label = "Download",
-                                        class = NULL,
-                                        icon = icon("circle-down"),
-                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                    )
-                                )
-                            ),
-                            hr(),
-                            markdown(
-                                "
-            				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
-            
-            				     <br />
-            				     "
-                            ),
-                            DTOutput(
-                                "db_kegg",
-                                width = "100%",
-                                height = "auto",
-                                fill = TRUE
-                            ),
-                            br(),
-                            markdown(
-                                "
-                                #### **2.2 dbNet, designed for metabolism-related subnetwork analysis.**
-
-                                <br />
-                                "
-                            ),
-                            DTOutput(
-                                "db_net",
-                                width = "100%",
-                                height = "auto",
-                                fill = TRUE
-                            ),
-                            hr(),
-                            markdown(
-                                "
-                				## **3. Knowledgebase History**
-                
-                				<br />
-                
-                				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
-                
-                				<br />
-                				"
-                            ),
-                            fluidRow(
-                                column(
-                                    width = 9,
-                                    tags$a(
-                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip",
-                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip"
-                                    )
-                                ),
-                                column(
-                                    width = 3,
-                                    downloadButton(
-                                        outputId = "download_db202404",
-                                        label = "Download",
-                                        class = NULL,
-                                        icon = icon("circle-down"),
-                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                    )
-                                )
-                            ),
-                            hr(),
-                            markdown(
-                                "
-                                <hr />
-
-                                #### **3.2 Knowledgebase dbMNet V202212 can be downloaded here.**
-
-                                <br />
-                               "
-                            ),
-                            fluidRow(
-                                column(
-                                    width = 9,
-                                    tags$a(
-                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip",
-                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip"
-                                    )
-                                ),
-                                column(
-                                    width = 3,
-                                    downloadButton(
-                                        outputId = "download_db202212",
-                                        label = "Download",
-                                        class = NULL,
-                                        icon = icon("circle-down"),
-                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
-                                    )
-                                )
-                            ),
-                            hr()
-                        )
-                    ))
-                })
+                },
+                #=== 1.5.10 bs4TabItem name2refmet
+                {
+                    bs4TabItem(tabName = "name2refmet", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "name2refmet_user_name_data_input",
+                                           label = "Name Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Name Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "name2refmet_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2refmet_demo_name_data_download",
+                                                       label = "Name Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_demo_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Refmet Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2refmet_demo_refmet_data_download",
+                                                       label = "Refmet Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Refmet Data** (required, in .txt format): Metabolites Refmet formats.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_demo_refmet_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_user_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Refmet Data",
+                                               markdown(
+                                                   "
+						                           **Refmet Data** (required, in .txt format): Metabolites Refmet format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                }
+            )
         )
     )
 )
@@ -4573,6 +4032,8 @@ server <- shinyServer(function(session, input, output) {
     session_temp_dir <- tempfile("session_temp_")
     dir.create(session_temp_dir, recursive = TRUE, mode = "1777")
     
+    #=== user stat
+    {
     observe({
         # user_ip <- session$clientData$url_hostname
         # user_ip <- session$request$REMOTE_ADDR
@@ -4588,7 +4049,6 @@ server <- shinyServer(function(session, input, output) {
             stringsAsFactors = FALSE
         )
         
-        # 追加记录到 TXT 文件
         write.table(
             log_data,
             log_file,
@@ -4599,25 +4059,19 @@ server <- shinyServer(function(session, input, output) {
         )
     })
     
-    # 从日志文件中读取并统计数据
     get_stats <- reactive({
         req(file.exists(log_file))
         log_data <- read.table(log_file, header = TRUE, sep = "\t")
         
-        # 转换访问时间为 POSIXct 格式
         log_data$VisitTime <- as.POSIXct(log_data$VisitTime)
         
-        # 计算总访问量
         total_visits <- nrow(log_data)
         
-        # 统计唯一用户数量
         unique_users <- n_distinct(log_data$IP)
         
-        # 统计最近24小时的访问量
         last_24h <- Sys.time() - 24 * 60 * 60
         recent_visits <- log_data %>% filter(VisitTime >= last_24h) %>% nrow()
         
-        # 返回统计数据
         list(
             total_visits = total_visits,
             unique_users = unique_users,
@@ -4625,7 +4079,6 @@ server <- shinyServer(function(session, input, output) {
         )
     })
     
-    # 自动更新访问统计数据
     output$stats <- renderPrint({
         stats <- get_stats()
         cat("Total Visits:", stats$total_visits, "\n")
@@ -4633,7 +4086,6 @@ server <- shinyServer(function(session, input, output) {
         cat("Recent 24h:", stats$recent_visits)
     })
     
-    # 显示最近的访问记录
     output$log_table <- renderTable({
         req(file.exists(log_file))
         log_data <- read.table(log_file, header = TRUE, sep = "\t")
@@ -4641,6 +4093,7 @@ server <- shinyServer(function(session, input, output) {
         log_data <- log_data %>% arrange(desc(VisitTime)) %>% head(10)  # 显示最近10条记录
         log_data
     })
+    }
     
     # home_markdown
     output$home_markdown <- renderUI({
@@ -4648,150 +4101,85 @@ server <- shinyServer(function(session, input, output) {
         htmltools::tags$div(style = "padding: 1% 10%", HTML(file_content))
     })
     
-    # pca_plot
+    # database
     {
-        output$pca_meta_data <- renderDT({
-            if (is.null(input$pca_meta_data_input)) {
-                data("meta_dat")
-                meta_data <- meta_dat
-            } else{
-                meta_data <- read.table(
-                    input$pca_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
+        output$db_kegg <- renderDT({
+            db_kegg <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbKEGG.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(db_kegg, 30),
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(db_kegg),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
                 )
-            }
-            return(meta_data)
-        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+                
+            )
+        }, server = TRUE)
         
-        output$pca_group_data <- renderText({
-            if (is.null(input$pca_group_data_input)) {
-                data("group")
-                group_data <- group
-            } else{
-                group_data <- read.table(
-                    input$pca_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
+        output$db_net <- renderDT({
+            db_net <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbNet2.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(db_net, 30),
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(db_net),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
                 )
-                group_data <- as.character(group_data[, 1])
-            }
-            return(group_data)
-        })
+            )
+        }, server = TRUE)
         
-        output$pca_plot <- renderPlot({
-            progress <- Progress$new(session, min = 1, max = 100)
-            on.exit(progress$close())
-            progress$set(value = 0)
-            progress$set(message = "Starting program ...", detail = "Starting program ...")
-            
-            progress$set(value = 10)
-            progress$set(message = "Reading data ...", detail = "Reading data ...")
-            
-            if (is.null(input$pca_meta_data_input)) {
-                data("meta_dat")
-                meta_data <- meta_dat
-            } else{
-                meta_data <- read.table(
-                    input$pca_meta_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    row.names = 1,
-                    stringsAsFactors = F
-                )
-            }
-            
-            if (is.null(input$pca_group_data_input)) {
-                data("group")
-                group_data <- group
-            } else{
-                group_data <- read.table(
-                    input$pca_group_data_input$datapath,
-                    header = T,
-                    sep = "\t",
-                    stringsAsFactors = F
-                )
-                group_data <- as.character(group_data[, 1])
-            }
-            
-            progress$set(value = 100)
-            progress$set(message = "PCA analysis ...", detail = "PCA analysis ...")
-            
-            pca_plot <- pPCA(meta_data, group_data)
-            pca_plot$p3
-        })
-        
-        output$pca_plot_download <- downloadHandler(
+        output$download_db202411 <- downloadHandler(
             filename = function() {
-                paste("PCAPlot", input$pca_plot_format, sep = ".")
+                "dbMNet-V202411.zip"
             },
             content = function(file) {
-                plot <- reactive({
-                    progress <- Progress$new(session, min = 1, max = 100)
-                    on.exit(progress$close())
-                    progress$set(value = 0)
-                    progress$set(message = "Starting program ...", detail = "Starting program ...")
-                    
-                    progress$set(value = 10)
-                    progress$set(message = "Reading data ...", detail = "Reading data ...")
-                    
-                    if (is.null(input$pca_meta_data_input)) {
-                        data("meta_dat")
-                        meta_data <- meta_dat
-                    } else{
-                        meta_data <- read.table(
-                            input$pca_meta_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            row.names = 1,
-                            stringsAsFactors = F
-                        )
-                    }
-                    
-                    if (is.null(input$pca_group_data_input)) {
-                        data("group")
-                        group_data <- group
-                    } else{
-                        group_data <- read.table(
-                            input$pca_group_data_input$datapath,
-                            header = T,
-                            sep = "\t",
-                            stringsAsFactors = F
-                        )
-                        group_data <- as.character(group_data[, 1])
-                    }
-                    
-                    progress$set(value = 100)
-                    progress$set(message = "PCA analysis ...", detail = "PCA analysis ...")
-                    
-                    pca_plot <- pPCA(meta_data, group_data)
-                    pca_plot$p3
-                })
-                
-                if (input$pca_plot_format == "pdf") {
-                    pdf(
-                        file = file,
-                        width = input$pca_plot_width,
-                        height = input$pca_plot_height,
-                        onefile = FALSE
-                    )
-                    print(plot())
-                    dev.off()
-                } else if (input$pca_plot_format == "jpeg") {
-                    jpeg(
-                        filename = file,
-                        width = input$pca_plot_width,
-                        height = input$pca_plot_height,
-                        units = "in",
-                        res = input$pca_plot_dpi,
-                        quality = 100
-                    )
-                    print(plot())
-                    dev.off()
-                }
+                file.copy(from = "www/dbMNet/dbMNet-V202411.zip", to = file)
+            }
+        )
+        
+        output$download_db202404 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202404.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202404.zip", to = file)
+            }
+        )
+        
+        output$download_db202212 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202212.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202212.zip", to = file)
             }
         )
     }
@@ -8429,96 +7817,174 @@ server <- shinyServer(function(session, input, output) {
         )
     }
     
-    # observeEvent(input$open_window, {
-    #     session$sendCustomMessage(
-    #         "openNewWindow",
-    #         list(
-    #             width = 1000,
-    #             height = 800,
-    #             url = "http://www.mnet4all.com/mnet_manual/"
-    #         )
-    #     )
-    # })
-    
-    # database
+    # name2refmet
     {
-        output$db_kegg <- renderDT({
-            db_kegg <- read.table(
-                "www/dbMNet/dbMNet-V202411/dbKEGG.txt",
+        temp_name2refmet <- file.path(session_temp_dir, "name2refmet")
+        if (!dir.exists(temp_name2refmet)) {
+            dir.create(temp_name2refmet, recursive = TRUE, mode = "1777")
+        }
+        
+        output$name2refmet_demo_name_data <- renderDT({
+            name_data <- read.table(
+                "www/demo/name.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(name_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$name2refmet_demo_name_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2refmet_demo_name_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/name.txt", to = file)
+            }
+        )
+        
+        output$name2refmet_demo_refmet_data <- renderDT({
+            refmet_data <- read.table(
+                "www/demo/name2refmet.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                refmet_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$name2refmet_demo_refmet_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2refmet_demo_refmet_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/name2refmet.txt", to = file)
+            }
+        )
+        
+        output$name2refmet_user_name_data <- renderDT({
+            req(input$name2refmet_user_name_data_input)
+            name_data <- read.table(
+                input$name2refmet_user_name_data_input$datapath,
                 header = T,
                 sep = "\t",
                 stringsAsFactors = F
             )
             
             datatable(
-                head(db_kegg, 30),
+                name_data,
+                rownames = TRUE,
                 options = list(
                     pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(db_kegg),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$name2refmet_user_name_data_input)
+        }, 
+        {
+            name_data <- read_safely(
+                input$name2refmet_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+
+            check_name_data <- nrow(name_data) >= 1
+            
+            if (!check_name_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$name2refmet_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Name2Refmet starting ...", detail = "Name2Refmet starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Name2Refmet reading datasets ...", detail = "Name2Refmet reading datasets ...")
+            
+            name_data <- read_safely(
+                input$name2refmet_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Name2Refmet analyzing ...", detail = "Name2Refmet analyzing ...")
+            
+            name_data <- as.vector(name_data[, 1])
+            result <- name2refmet(name_data)
+            
+            write.table(
+                result,
+                paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+
+            progress$set(value = 100)
+            progress$set(message = "Name2Refmet task complete ...", detail = "Name2Refmet task complete ...")
+            
+            output$name2refmet_user_result_data <- renderDT({
+                req(file.exists(paste(temp_name2refmet, "/name2refmet_result.txt", sep = "")))
+                
+                name2refmet_result <- read.table(
+                    paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
                 )
                 
-            )
-        }, server = TRUE)
-        
-        output$db_net <- renderDT({
-            db_net <- read.table(
-                "www/dbMNet/dbMNet-V202411/dbNet2.txt",
-                header = T,
-                sep = "\t",
-                stringsAsFactors = F
-            )
-            
-            datatable(
-                head(db_net, 30),
-                options = list(
-                    pageLength = 10,
-                    scrollX = TRUE,
-                    columnDefs = list(list(
-                        targets = 1:ncol(db_net),
-                        render = JS(
-                            "function(data, type, row, meta) {",
-                            "  if (data === null || data === '') return 'NA';",
-                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
-                            "}"
-                        )
-                    ))
+                datatable(
+                    name2refmet_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
                 )
-            )
-        }, server = TRUE)
+            }, server = TRUE)
+        })
         
-        output$download_db202411 <- downloadHandler(
+        output$name2refmet_user_result_data_download <- downloadHandler(
             filename = function() {
-                "dbMNet-V202411.zip"
+                paste("name2refmet_user_result_data", ".txt", sep = "")
             },
             content = function(file) {
-                file.copy(from = "www/dbMNet/dbMNet-V202411.zip", to = file)
-            }
-        )
-        
-        output$download_db202404 <- downloadHandler(
-            filename = function() {
-                "dbMNet-V202404.zip"
-            },
-            content = function(file) {
-                file.copy(from = "www/dbMNet/dbMNet-V202404.zip", to = file)
-            }
-        )
-        
-        output$download_db202212 <- downloadHandler(
-            filename = function() {
-                "dbMNet-V202212.zip"
-            },
-            content = function(file) {
-                file.copy(from = "www/dbMNet/dbMNet-V202212.zip", to = file)
+                file.copy(from = paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""), to = file)
             }
         )
     }
@@ -8536,4 +8002,3 @@ server <- shinyServer(function(session, input, output) {
 
 # runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
 shinyApp(ui = ui, server = server)
-

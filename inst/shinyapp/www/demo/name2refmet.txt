@@ -1,0 +1,30 @@
+Input_name	Refmet_name	Formula	Super_class	Main_class	Sub_class
+2-Hydroxybutyric acid	2-Hydroxybutyric acid	C4H8O3	Fatty Acyls	Fatty acids	Hydroxy FA
+1-Methyladenosine	1-Methyladenosine	C11H15N5O4	Nucleic acids	Purines	Purine ribonucleosides
+2-Aminooctanoic acid	2-Aminocaprylic acid	C8H17NO2	Fatty Acyls	Fatty acids	Amino FA
+3-Hydroxybutyric acid	3-Hydroxybutyric acid	C4H8O3	Fatty Acyls	Fatty acids	Hydroxy FA
+2-Hydroxyvaleric acid	2-Hydroxyvaleric acid	C5H10O3	Fatty Acyls	Fatty acids	Hydroxy FA
+3-Hydroxyvaleric acid	3-Hydroxyvaleric acid	C5H10O3	Fatty Acyls	Fatty acids	Hydroxy FA
+2-Hydroxyhexanoic acid	2-Hydroxyhexanoic acid	C6H12O3	Fatty Acyls	Fatty acids	Hydroxy FA
+3-Hydroxyhexanoic acid	3-Hydroxycaproic acid	C6H12O3	Fatty Acyls	Fatty acids	Hydroxy FA
+4-Hydroxyhexanoic acid	4-Hydroxyhexanoic acid	-	-	-	-
+2-Hydroxyheptanoic acid	2-Hydroxy enanthoic acid	C7H14O3	Fatty Acyls	Fatty acids	Hydroxy FA
+3-Hydroxyheptanoic acid	3-Hydroxyheptanoic acid	-	-	-	-
+4-Hydroxyheptanoic acid	4-Hydroxyenanthoic acid	C7H14O3	Fatty Acyls	Fatty acids	Hydroxy FA
+5-Hydroxyheptanoic acid	5-Hydroxyheptanoic acid	-	-	-	-
+2-Hydroxyoctanoic acid	2-Hydroxyoctanoic acid	C8H16O3	Fatty Acyls	Fatty acids	Hydroxy FA
+3-Hydroxyoctanoic acid	3-Hydroxyoctanoic acid	C8H16O3	Fatty Acyls	Fatty acids	Hydroxy FA
+4-Hydroxyoctanoic acid	4-Hydroxyoctanoic acid	-	-	-	-
+5-Hydroxyoctanoic acid	5-Hydroxyoctanoic acid	-	-	-	-
+6-Hydroxyoctanoic acid	6-Hydroxyoctanoic acid	-	-	-	-
+2-Hydroxynonanoic acid	2-Hydroxynonanoic acid	-	-	-	-
+3-Hydroxynonanoic acid	3-Hydroxynonanoic acid	-	-	-	-
+4-Hydroxynonanoic acid	4-Hydroxypelargonic acid	C9H18O3	Fatty Acyls	Fatty acids	Hydroxy FA
+5-Hydroxynonanoic acid	5-Hydroxynonanoic acid	-	-	-	-
+6-Hydroxynonanoic acid	6-Hydroxynonanoic acid	-	-	-	-
+7-Hydroxynonanoic acid	7-Hydroxynonanoic acid	-	-	-	-
+2-Hydroxydecanoic acid	2-Hydroxycapric acid	C10H20O3	Fatty Acyls	Fatty acids	Hydroxy FA
+3-Hydroxydecanoic acid	3-Hydroxydecanoic acid	C10H20O3	Fatty Acyls	Fatty acids	Hydroxy FA
+4-Hydroxydecanoic acid	4-Hydroxycapric acid	C10H20O3	Fatty Acyls	Fatty acids	Hydroxy FA
+5-Hydroxydecanoic acid	5-Hydroxycapric acid	C10H20O3	Fatty Acyls	Fatty acids	Hydroxy FA
+6-Hydroxydecanoic acid	6-Hydroxydecanoic acid	-	-	-	-
