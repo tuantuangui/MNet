@@ -1,0 +1,30 @@
+Name	KEGG_id
+2-Hydroxybutyric acid	C05984
+1-Methyladenosine	C02494
+3-Hydroxybutyric acid	C01089
+3-Hydroxyoctanoic acid	C20793
+2-Aminooctanoic acid	NA
+2-Hydroxyvaleric acid	NA
+3-Hydroxyvaleric acid	NA
+2-Hydroxyhexanoic acid	NA
+3-Hydroxyhexanoic acid	NA
+4-Hydroxyhexanoic acid	NA
+2-Hydroxyheptanoic acid	NA
+3-Hydroxyheptanoic acid	NA
+4-Hydroxyheptanoic acid	NA
+5-Hydroxyheptanoic acid	NA
+2-Hydroxyoctanoic acid	NA
+4-Hydroxyoctanoic acid	NA
+5-Hydroxyoctanoic acid	NA
+6-Hydroxyoctanoic acid	NA
+2-Hydroxynonanoic acid	NA
+3-Hydroxynonanoic acid	NA
+4-Hydroxynonanoic acid	NA
+5-Hydroxynonanoic acid	NA
+6-Hydroxynonanoic acid	NA
+7-Hydroxynonanoic acid	NA
+2-Hydroxydecanoic acid	NA
+3-Hydroxydecanoic acid	NA
+4-Hydroxydecanoic acid	NA
+5-Hydroxydecanoic acid	NA
+6-Hydroxydecanoic acid	NA
