@@ -1,0 +1,10 @@
+PATHWAY	pathwayid
+Glycolysis / Gluconeogenesis	hsa00010
+Glyoxylate and dicarboxylate metabolism	hsa00630
+Sulfur metabolism	hsa00920
+Steroid biosynthesis	hsa00100
+Pyrimidine metabolism	hsa00240
+Cysteine and methionine metabolism	hsa00270
+Phosphonate and phosphinate metabolism	hsa00440
+D-Amino acid metabolism	hsa00470
+Caffeine metabolism	hsa00232

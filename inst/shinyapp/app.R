@@ -4886,6 +4886,214 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem pathway2pathwayid
+                {
+                    bs4TabItem(tabName = "pathway2pathwayid", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "pathway2pathwayid_user_pathway_data_input",
+                                           label = "Pathway Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Pathway Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "pathway2pathwayid_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Pathway Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathway2pathwayid_demo_pathway_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): pathway names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathway2pathwayid_demo_pathway_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway ID Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathway2pathwayid_demo_pathwayid_data_download",
+                                                       label = "Pathway ID Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway ID Data** (required, in .txt format): pathway ID formats.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathway2pathwayid_demo_pathwayid_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Pathway Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Pathway Data",
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): pathway names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathway2pathwayid_user_pathway_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway ID Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathway2pathwayid_user_result_data_download",
+                                                       label = "Pathway ID Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway ID Data** (required, in .txt format): pathway ID format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathway2pathwayid_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -9526,6 +9734,178 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # pathway2pathwayid
+    {
+        temp_pathway2pathwayid <- file.path(session_temp_dir, "pathway2pathwayid")
+        if (!dir.exists(temp_pathway2pathwayid)) {
+            dir.create(temp_pathway2pathwayid, recursive = TRUE, mode = "1777")
+        }
+        
+        output$pathway2pathwayid_demo_pathway_data <- renderDT({
+            pathway_data <- read.table(
+                "www/demo/pathway.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                pathway_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$pathway2pathwayid_demo_pathway_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathway2pathwayid_demo_pathway_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/pathway.txt", to = file)
+            }
+        )
+        
+        output$pathway2pathwayid_demo_pathwayid_data <- renderDT({
+            pathwayid_data <- read.table(
+                "www/demo/pathwayid.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                pathwayid_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$pathway2pathwayid_demo_pathwayid_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathway2pathwayid_demo_pathwayid_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/pathwayid.txt", to = file)
+            }
+        )
+        
+        output$pathway2pathwayid_user_pathway_data <- renderDT({
+            req(input$pathway2pathwayid_user_pathway_data_input)
+            pathway_data <- read.table(
+                input$pathway2pathwayid_user_pathway_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                pathway_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$pathway2pathwayid_user_pathway_data_input)
+        }, 
+        {
+            pathway_data <- read_safely(
+                input$pathway2pathwayid_user_pathway_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_pathway_data <- nrow(pathway_data) >= 1
+            
+            if (!check_pathway_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Pathway Data** should have some pathway names.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$pathway2pathwayid_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Pathway2PathwayID starting ...", detail = "Pathway2PathwayID starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Pathway2PathwayID reading datasets ...", detail = "Pathway2PathwayID reading datasets ...")
+            
+            pathway_data <- read_safely(
+                input$pathway2pathwayid_user_pathway_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Pathway2PathwayID analyzing ...", detail = "Pathway2PathwayID analyzing ...")
+            
+            pathway_data <- as.vector(pathway_data[, 1])
+            result <- pathway2pathwayid(pathway_data)
+            
+            write.table(
+                result,
+                paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Pathway2PathwayID task complete ...", detail = "Pathway2PathwayID task complete ...")
+            
+            output$pathway2pathwayid_user_result_data <- renderDT({
+                req(file.exists(paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = "")))
+                
+                pathway2pathwayid_result <- read.table(
+                    paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathway2pathwayid_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$pathway2pathwayid_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathway2pathwayid_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""), to = file)
             }
         )
     }
