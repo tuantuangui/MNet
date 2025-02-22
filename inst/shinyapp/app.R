@@ -4656,6 +4656,236 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem pathwayinfo
+                {
+                    bs4TabItem(tabName = "pathwayinfo", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA INPUT:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       # fileInput(
+                                       #     inputId = "pathwayinfo_user_keggid_data_input",
+                                       #     label = "KEGGID Data",
+                                       #     multiple = FALSE,
+                                       #     accept = NULL,
+                                       #     width = NULL,
+                                       #     buttonLabel = "Browse",
+                                       #     placeholder = "KEGGID Data (.txt format)"
+                                       # ),
+                                       textAreaInput(
+                                           inputId = "pathwayinfo_user_pathway_data_input",
+                                           label = "Pathway ID or Name",
+                                           value = "",
+                                           width = NULL,
+                                           height = NULL,
+                                           cols = NULL,
+                                           rows = 5,
+                                           placeholder = "Glyoxylate and dicarboxylate metabolism",
+                                           resize = NULL
+                                       ),
+                                       br(),
+                                       actionButton(
+                                           inputId = "pathwayinfo_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Output: Gene Info Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Gene Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_demo_geneinfo_data_download",
+                                                       label = "Gene Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Info Data** (required, in .txt format): gene information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_demo_geneinfo_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Compound Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_demo_compinfo_data_download",
+                                                       label = "Compound Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Compound Info Data** (required, in .txt format): compound information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_demo_compinfo_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Output: Gene Info Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Gene Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_user_result_gene_data_download",
+                                                       label = "Gene Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Info Data** (required, in .txt format): gene information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_user_result_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Compound Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_user_result_comp_data_download",
+                                                       label = "Compound Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Compound Info Data** (required, in .txt format): compound information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_user_result_comp_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -9136,6 +9366,166 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # pathwayinfo
+    {
+        temp_pathwayinfo <- file.path(session_temp_dir, "pathwayinfo")
+        if (!dir.exists(temp_pathwayinfo)) {
+            dir.create(temp_pathwayinfo, recursive = TRUE, mode = "1777")
+        }
+        
+        output$pathwayinfo_demo_geneinfo_data <- renderDT({
+            geneinfo_data <- read.table(
+                "www/demo/gene_info.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                geneinfo_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$pathwayinfo_demo_geneinfo_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_demo_geneinfo_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_info.txt", to = file)
+            }
+        )
+        
+        output$pathwayinfo_demo_compinfo_data <- renderDT({
+            comp_data <- read.table(
+                "www/demo/compound_info.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                comp_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$pathwayinfo_demo_compinfo_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_demo_compinfo_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/compound_info.txt", to = file)
+            }
+        )
+        
+        observeEvent(input$pathwayinfo_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "PathwayInfo starting ...", detail = "PathwayInfo starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "PathwayInfo reading datasets ...", detail = "PathwayInfo reading datasets ...")
+            
+            progress$set(value = 50)
+            progress$set(message = "PathwayInfo analyzing ...", detail = "PathwayInfo analyzing ...")
+            
+            pathway <- input$pathwayinfo_user_pathway_data_input
+            
+            result <- pathwayinfo(pathway)
+            result_gene <- result$gene_info
+            result_comp <- result$compound_info
+            
+            write.table(
+                result_gene,
+                paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            write.table(
+                result_comp,
+                paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "PathwayInfo task complete ...", detail = "PathwayInfo task complete ...")
+            
+            output$pathwayinfo_user_result_gene_data <- renderDT({
+                req(file.exists(paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = "")))
+                
+                pathwayinfo_result_gene <- read.table(
+                    paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathwayinfo_result_gene,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$pathwayinfo_user_result_comp_data <- renderDT({
+                req(file.exists(paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = "")))
+                
+                pathwayinfo_result_comp <- read.table(
+                    paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathwayinfo_result_comp,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$pathwayinfo_user_result_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_user_result_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$pathwayinfo_user_result_comp_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_user_result_comp_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""), to = file)
             }
         )
     }
