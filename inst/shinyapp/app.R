@@ -355,7 +355,7 @@ ui <- shinyUI(
                         condition = NULL,
                         bs4SidebarMenuSubItem(
                             text = "| Differential Metabolite",
-                            tabName = "diff_metabolite",
+                            tabName = "diff_meta",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -5090,6 +5090,360 @@ ui <- shinyUI(
                                                    fill = TRUE
                                                ),
                                                icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem diff_meta
+                {
+                    bs4TabItem(tabName = "diff_meta", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "diff_meta_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "diff_meta_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "diff_meta_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "diff_meta_user_diff_method",
+                                           label = "Diff Method",
+                                           choices = c("MLIMMA" = "MLIMMA",
+                                                       "OPLS-DA" = "OPLS-DA"
+                                                       ),
+                                           selected = "OPLS-DA",
+                                           multiple = F,
+                                           width = NULL
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "diff_meta_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "diff_meta_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Diff Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_result_data_download",
+                                                       label = "Diff Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Diff Results**: Result of differential metabolites analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Volcano Plot",
+                                               markdown(
+                                                   "
+						                           Result of volcano analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Differential metabolites and volcano plot."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "diff_meta_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Diff Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_user_result_data_download",
+                                                       label = "Diff Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Diff Results**: Result of differential metabolites analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Volcano Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_volcano_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of volcano analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("diff_meta_volcano_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Differential metabolites and volcano plot."
+                                               ),
+                                               icon = shiny::icon("image")
                                            )
                                        )
                                    )
@@ -9906,6 +10260,290 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # diff_meta
+    {
+        temp_diff_meta <- file.path(session_temp_dir, "diff_meta")
+        if (!dir.exists(temp_diff_meta)) {
+            dir.create(temp_diff_meta, recursive = TRUE, mode = "1777")
+        }
+        
+        output$diff_meta_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$diff_meta_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$diff_meta_user_meta_data_input,
+                input$diff_meta_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$diff_meta_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$diff_meta_demo_result_data <- renderDT({
+            diff_meta_result <- read.table(
+                "www/demo/diff_meta.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                diff_meta_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/diff_meta.txt", to = file)
+            }
+        )
+        
+        output$diff_meta_user_meta_data <- renderDT({
+            req(input$diff_meta_user_meta_data_input)
+            meta_data <- read.table(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_user_group_data <- renderDT({
+            req(input$diff_meta_user_group_data_input)
+            group_data <- read.table(
+                input$diff_meta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$diff_meta_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Differential analysis starting ...", detail = "Differential analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Differential analysis reading datasets ...", detail = "Differential analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$diff_meta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "Differential analyzing ...", detail = "Differential analyzing ...")
+            
+            if (input$diff_meta_user_diff_method == "MLIMMA") {
+                diff_result <- mlimma(meta_data, group_data)
+            } else if (input$diff_meta_user_diff_method == "OPLS-DA") {
+                diff_result <- DM(2 ** meta_data, group_data)
+            }
+            
+            write.table(
+                diff_result,
+                paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 80)
+            progress$set(message = "Differential analysis visualizing ...", detail = "Differential analysis visualizing ...")
+            
+            volcano_plot <- function(){
+                pVolcano(diff_result, foldchange_threshold = 1.5)
+            }
+            
+            pdf(
+                file = paste(temp_diff_meta, "/diff_meta_volcano_plot.pdf", sep = ""),
+                width = input$diff_meta_plot_width,
+                height = input$diff_meta_plot_height,
+                onefile = FALSE
+            )
+            print(volcano_plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_diff_meta, "/diff_meta_volcano_plot.jpeg", sep = ""),
+                width = input$diff_meta_plot_width,
+                height = input$diff_meta_plot_height,
+                units = "in",
+                res = input$diff_meta_plot_dpi,
+                quality = 100
+            )
+            print(volcano_plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "Differential analysis task complete ...", detail = "Differential analysis task complete ...")
+            
+            output$diff_meta_user_result_data <- renderDT({
+                req(file.exists(paste(temp_diff_meta, "/diff_meta_result.txt", sep = "")))
+                
+                diff_meta_result <- read.table(
+                    paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    diff_meta_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+            
+            output$diff_meta_volcano_plot <- renderImage({
+                list(
+                    src = paste0(temp_diff_meta, "/diff_meta_volcano_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$diff_meta_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$diff_meta_volcano_plot_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_volcano_plot", input$diff_meta_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_diff_meta, "/diff_meta_volcano_plot.", input$diff_meta_plot_format, sep = ""), to = file)
             }
         )
     }
