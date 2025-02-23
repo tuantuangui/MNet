@@ -400,16 +400,8 @@ ui <- shinyUI(
                             selected = NULL
                         ),
                         bs4SidebarMenuSubItem(
-                            text = "| LASSO",
+                            text = "| LASSO & Elastic",
                             tabName = "lasso",
-                            href = NULL,
-                            newTab = TRUE,
-                            icon = icon("r-project"),
-                            selected = NULL
-                        ),
-                        bs4SidebarMenuSubItem(
-                            text = "| Elastic Network",
-                            tabName = "elastic_network",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -6134,6 +6126,260 @@ ui <- shinyUI(
                                                    "),
                                                hr(),
                                                DTOutput("xgboost_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem lasso
+                {
+                    bs4TabItem(tabName = "lasso", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "lasso_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "lasso_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "lasso_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "lasso_user_method",
+                                           label = "Alpha Method",
+                                           choices = c("lasso" = "lasso",
+                                                       "elastic" = "elastic"
+                                           ),
+                                           selected = "lasso",
+                                           multiple = F,
+                                           width = NULL
+                                       ),
+                                       textInput(
+                                           inputId = "lasso_user_seed",
+                                           label = "Seeds",
+                                           value = "0",
+                                           width = NULL,
+                                           placeholder = "Please set seed number"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "lasso_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Alpha Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_result_data_download",
+                                                       label = "Alpha Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Alpha Results**: result of lasso or elastic analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "lasso_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Alpha Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_user_result_data_download",
+                                                       label = "Alpha Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Alpha Results**: result of lasso or elastic analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_user_result_data"),
                                                icon = shiny::icon("table-list")
                                            )
                                        )
@@ -11955,6 +12201,246 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_xgboost, "/xgboost_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # lasso
+    {
+        temp_lasso <- file.path(session_temp_dir, "lasso")
+        if (!dir.exists(temp_lasso)) {
+            dir.create(temp_lasso, recursive = TRUE, mode = "1777")
+        }
+        
+        output$lasso_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$lasso_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$lasso_user_meta_data_input,
+                input$lasso_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$lasso_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$lasso_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$lasso_demo_result_data <- renderDT({
+            lasso_result <- read.table(
+                "www/demo/lasso.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                lasso_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/lasso.txt", to = file)
+            }
+        )
+        
+        output$lasso_user_meta_data <- renderDT({
+            req(input$lasso_user_meta_data_input)
+            meta_data <- read.table(
+                input$lasso_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_user_group_data <- renderDT({
+            req(input$lasso_user_group_data_input)
+            group_data <- read.table(
+                input$lasso_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$lasso_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "LASSO starting ...", detail = "LASSO starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "LASSO analysis reading datasets ...", detail = "LASSO analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$lasso_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$lasso_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "LASSO analyzing ...", detail = "LASSO analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            set.seed(as.numeric(input$lasso_user_seed))
+            result <- ML_alpha(meta_data1, method = input$lasso_user_method)
+            
+            write.table(
+                result,
+                paste(temp_lasso, "/lasso_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "LASSO task complete ...", detail = "LASSO task complete ...")
+            
+            output$lasso_user_result_data <- renderDT({
+                req(file.exists(paste(temp_lasso, "/lasso_result.txt", sep = "")))
+                
+                lasso_result <- read.table(
+                    paste(temp_lasso, "/lasso_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    lasso_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$lasso_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_lasso, "/lasso_result.txt", sep = ""), to = file)
             }
         )
     }
