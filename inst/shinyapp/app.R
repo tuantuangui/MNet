@@ -5906,6 +5906,239 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem xgboost
+                {
+                    bs4TabItem(tabName = "xgboost", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "xgboost_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "xgboost_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "xgboost_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "xgboost_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: XGBoost Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_result_data_download",
+                                                       label = "XGBoost Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **XGBoost Results**: result of xgboost analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "xgboost_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: XGBoost Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_user_result_data_download",
+                                                       label = "XGBoost Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **XGBoost Results**: result of xgboost analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -11481,6 +11714,247 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_forest, "/forest_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # xgboost
+    {
+        temp_xgboost <- file.path(session_temp_dir, "xgboost")
+        if (!dir.exists(temp_xgboost)) {
+            dir.create(temp_xgboost, recursive = TRUE, mode = "1777")
+        }
+        
+        output$xgboost_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$xgboost_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$xgboost_user_meta_data_input,
+                input$xgboost_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$xgboost_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$xgboost_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$xgboost_demo_result_data <- renderDT({
+            xgboost_result <- read.table(
+                "www/demo/xgboost.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                xgboost_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/xgboost.txt", to = file)
+            }
+        )
+        
+        output$xgboost_user_meta_data <- renderDT({
+            req(input$xgboost_user_meta_data_input)
+            meta_data <- read.table(
+                input$xgboost_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_user_group_data <- renderDT({
+            req(input$xgboost_user_group_data_input)
+            group_data <- read.table(
+                input$xgboost_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$xgboost_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "XGBoost starting ...", detail = "XGBoost starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "XGBoost analysis reading datasets ...", detail = "XGBoost analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$xgboost_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$xgboost_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "XGBoost analyzing ...", detail = "XGBoost analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            set.seed(2)
+            results <- ML_xgboost(meta_data1)
+            result <- results$feature_result
+            
+            write.table(
+                result,
+                paste(temp_xgboost, "/xgboost_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "XGBoost task complete ...", detail = "XGBoost task complete ...")
+            
+            output$xgboost_user_result_data <- renderDT({
+                req(file.exists(paste(temp_xgboost, "/xgboost_result.txt", sep = "")))
+                
+                xgboost_result <- read.table(
+                    paste(temp_xgboost, "/xgboost_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    xgboost_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$xgboost_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_xgboost, "/xgboost_result.txt", sep = ""), to = file)
             }
         )
     }
