@@ -6916,6 +6916,278 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem survival_plot
+                {
+                    bs4TabItem(tabName = "survival_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "survival_plot_user_clinical_data_input",
+                                           label = "Clinical Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Clinical Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "survival_plot_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "survival_plot_user_meta",
+                                           label = "Metabolite",
+                                           value = "C03819",
+                                           width = NULL,
+                                           placeholder = "Metabolite"
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "survival_plot_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "PNG" = "png"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_plot_demo_clinical_data_download",
+                                                       label = "Survival Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_plot_demo_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               markdown(
+                                                   "
+						                           Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_plot_user_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_plot_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("survival_plot_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -13254,6 +13526,134 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_survival_analysis, "/survival_analysis_plot.", input$survival_analysis_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # survival_plot
+    {
+        temp_survival_plot <- file.path(session_temp_dir, "survival_plot")
+        if (!dir.exists(temp_survival_plot)) {
+            dir.create(temp_survival_plot, recursive = TRUE, mode = "1777")
+        }
+        
+        output$survival_plot_demo_clinical_data <- renderDT({
+            clinical_data <- dat_surv
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$survival_plot_demo_clinical_data_download <- downloadHandler(
+            filename = function() {
+                paste("survival_plot_demo_clinical_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/dat_surv.txt", to = file)
+            }
+        )
+        
+        output$survival_plot_user_clinical_data <- renderDT({
+            req(input$survival_plot_user_clinical_data_input)
+            clinical_data <- read.table(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$survival_plot_user_clinical_data_input)
+        }, {
+            clinical_data <- read_safely(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_clinical_data <- nrow(clinical_data) >= 1
+            
+            if (!check_clinical_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Clinical Data** should have some rows and cols.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$survival_plot_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Survival analysis starting ...", detail = "Survival analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Survival analysis reading datasets ...", detail = "Survival analysis reading datasets ...")
+            
+            clinical_data <- read.table(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "Survival analysis visualizing ...", detail = "Survival analysis visualizing ...")
+            
+            metabolites <- input$survival_plot_user_meta
+            survMet(clinical_data,
+                    metabolites,
+                    cluster_method = "mean",
+                    out_dir = temp_survival_plot)
+            
+            file.rename(from = paste0(temp_survival_plot, "/", metabolites, ".survival.png"), 
+                        to = paste0(temp_survival_plot, "/", "survival.png"))
+            
+            file.rename(from = paste0(temp_survival_plot, "/", metabolites, ".survival.pdf"), 
+                        to = paste0(temp_survival_plot, "/", "survival.pdf"))
+            
+            progress$set(value = 100)
+            progress$set(message = "Survival analysis task complete ...", detail = "Survival analysis task complete ...")
+            
+            output$survival_plot_plot <- renderImage({
+                list(
+                    src = paste0(temp_survival_plot, "/", "survival.png"),
+                    contentType = "image/png",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$survival_plot_plot_download <- downloadHandler(
+            filename = function() {
+                paste("survival_plot", input$survival_plot_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_survival_plot, "/", "survival.",input$survival_plot_plot_format, sep = ""), to = file)
             }
         )
     }
