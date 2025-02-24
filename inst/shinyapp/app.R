@@ -448,7 +448,7 @@ ui <- shinyUI(
                         ),
                         bs4SidebarMenuSubItem(
                             text = "| Cox Analysis",
-                            tabName = "cox_analysis",
+                            tabName = "metcox",
                             href = NULL,
                             newTab = TRUE,
                             icon = icon("r-project"),
@@ -7188,6 +7188,214 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem metcox
+                {
+                    bs4TabItem(tabName = "metcox", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "metcox_user_surv_data_input",
+                                           label = "Survival Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Survival Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "metcox_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_demo_surv_data_download",
+                                                       label = "Survival Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): survival data.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_demo_surv_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Cox Result",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_demo_cox_data_download",
+                                                       label = "Cox Result",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Cox Result** (required, in .txt format): cox analysis result.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_demo_cox_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): survival data.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_user_surv_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Cox Result",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_user_result_data_download",
+                                                       label = "Cox Result",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Cox Result** (required, in .txt format): cox analysis result.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -13654,6 +13862,172 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_survival_plot, "/", "survival.",input$survival_plot_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # metcox
+    {
+        temp_metcox <- file.path(session_temp_dir, "metcox")
+        if (!dir.exists(temp_metcox)) {
+            dir.create(temp_metcox, recursive = TRUE, mode = "1777")
+        }
+        
+        output$metcox_demo_surv_data <- renderDT({
+            surv_data <- dat_surv
+            
+            datatable(
+                surv_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$metcox_demo_surv_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_demo_surv_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/dat_surv.txt", to = file)
+            }
+        )
+        
+        output$metcox_demo_cox_data <- renderDT({
+            cox_data <- read.table(
+                "www/demo/metcox.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                cox_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$metcox_demo_cox_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_demo_cox_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/metcox.txt", to = file)
+            }
+        )
+        
+        output$metcox_user_surv_data <- renderDT({
+            req(input$metcox_user_surv_data_input)
+            surv_data <- read.table(
+                input$metcox_user_surv_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                surv_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$metcox_user_surv_data_input)
+        }, 
+        {
+            surv_data <- read_safely(
+                input$metcox_user_surv_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_surv_data <- nrow(surv_data) >= 1
+            
+            if (!check_surv_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$metcox_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Cox analysis starting ...", detail = "Cox analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Cox analysis reading datasets ...", detail = "Cox analysis reading datasets ...")
+            
+            surv_data <- read_safely(
+                input$metcox_user_surv_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Cox analysis analyzing ...", detail = "Cox analysis analyzing ...")
+            
+            result <- MetCox(surv_data)
+            
+            write.table(
+                result,
+                paste(temp_metcox, "/metcox_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Cox analysis task complete ...", detail = "Cox analysis task complete ...")
+            
+            output$metcox_user_result_data <- renderDT({
+                req(file.exists(paste(temp_metcox, "/metcox_result.txt", sep = "")))
+                
+                metcox_result <- read.table(
+                    paste(temp_metcox, "/metcox_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    metcox_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$metcox_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_metcox, "/metcox_result.txt", sep = ""), to = file)
             }
         )
     }
