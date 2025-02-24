@@ -6385,6 +6385,271 @@ ui <- shinyUI(
                                        )
                                    )
                                ))
+                },
+                #=== bs4TabItem time_series
+                {
+                    bs4TabItem(tabName = "time_series", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "time_series_user_clinical_data_input",
+                                           label = "Clinical Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Clinical Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "time_series_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "time_series_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Clinical Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Clinical Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "time_series_demo_clinical_data_download",
+                                                       label = "Clinical Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Clinical Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "time_series_demo_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Time Series Plot",
+                                               markdown(
+                                                   "
+						                           Result of time series analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Time series of clinical."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Clinical Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Clinical Data",
+                                               markdown(
+                                                   "
+						                           **Clinical Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "time_series_user_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Time Series Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "time_series_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of time series analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("time_series_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Time series of clinical."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
                 }
             )
         )
@@ -12441,6 +12706,147 @@ server <- shinyServer(function(session, input, output) {
             },
             content = function(file) {
                 file.copy(from = paste(temp_lasso, "/lasso_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # time_series
+    {
+        temp_time_series <- file.path(session_temp_dir, "time_series")
+        if (!dir.exists(temp_time_series)) {
+            dir.create(temp_time_series, recursive = TRUE, mode = "1777")
+        }
+        
+        output$time_series_demo_clinical_data <- renderDT({
+            data("clinical_index")
+            clinical_data <- clinical_index
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$time_series_demo_clinical_data_download <- downloadHandler(
+            filename = function() {
+                paste("time_series_demo_clinical_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/clinical_index.txt", to = file)
+            }
+        )
+        
+        output$time_series_user_clinical_data <- renderDT({
+            req(input$time_series_user_clinical_data_input)
+            clinical_data <- read.table(
+                input$time_series_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$time_series_user_clinical_data_input)
+        }, {
+            clinical_data <- read_safely(
+                input$time_series_user_clinical_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_clinical_data <- nrow(clinical_data) >= 1
+            
+            if (!check_clinical_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Clinical Data** should have some rows and cols.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$time_series_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Time Series starting ...", detail = "Time Series starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Time Series reading datasets ...", detail = "Time Series reading datasets ...")
+            
+            clinical_data <- read.table(
+                input$time_series_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "Time Series visualizing ...", detail = "Time Series visualizing ...")
+            
+            plot <- function() {
+                pCliTS(clinical_index, clinical_index[[3]])
+            }
+            
+            pdf(
+                file = paste(temp_time_series, "/time_series_plot.pdf", sep = ""),
+                width = input$time_series_plot_width,
+                height = input$time_series_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_time_series, "/time_series_plot.jpeg", sep = ""),
+                width = input$time_series_plot_width,
+                height = input$time_series_plot_height,
+                units = "in",
+                res = input$time_series_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "Time Series task complete ...", detail = "Time Series task complete ...")
+            
+            output$time_series_plot <- renderImage({
+                list(
+                    src = paste0(temp_time_series, "/time_series_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$time_series_plot_download <- downloadHandler(
+            filename = function() {
+                paste("time_series_plot", input$time_series_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_time_series, "/time_series_plot.", input$time_series_plot_format, sep = ""), to = file)
             }
         )
     }
