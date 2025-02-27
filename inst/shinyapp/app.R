@@ -973,7 +973,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -981,7 +981,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -994,7 +994,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1021,7 +1021,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1048,7 +1048,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1068,7 +1068,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Nodes Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1088,7 +1088,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Edges Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1108,7 +1108,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Subnetwork Plot",
                                                markdown(
                                                    "
@@ -1128,12 +1128,12 @@ ui <- shinyUI(
                                                icon = shiny::icon("image")
                                            )
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "|",
                                            #     icon = NULL
                                            # ),
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "Manual",
                                            #     tags$iframe(
                                            #         src = "http://www.mnet4all.com/mnet_manual/",
@@ -1150,7 +1150,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -1171,7 +1171,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -1188,7 +1188,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
@@ -1205,7 +1205,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -1215,7 +1215,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Nodes Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1235,7 +1235,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Edges Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -1255,7 +1255,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Subnetwork Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2036,7 +2036,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -2044,7 +2044,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -2057,7 +2057,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2084,7 +2084,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2111,7 +2111,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2131,7 +2131,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Up ePEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2151,7 +2151,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Down ePEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2171,7 +2171,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePEA Plot",
                                                markdown(
                                                    "
@@ -2191,12 +2191,12 @@ ui <- shinyUI(
                                                icon = shiny::icon("image")
                                            )
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "|",
                                            #     icon = NULL
                                            # ),
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "Manual",
                                            #     tags$iframe(
                                            #         src = "http://www.mnet4all.com/mnet_manual/",
@@ -2213,7 +2213,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -2234,7 +2234,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -2251,7 +2251,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
@@ -2268,7 +2268,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -2278,7 +2278,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Up ePEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2298,7 +2298,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Down ePEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2318,7 +2318,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePEA Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2536,7 +2536,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -2544,7 +2544,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -2557,7 +2557,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2584,7 +2584,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2611,7 +2611,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2631,7 +2631,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2651,7 +2651,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Plot",
                                                markdown(
                                                    "
@@ -2671,12 +2671,12 @@ ui <- shinyUI(
                                                icon = shiny::icon("image")
                                            )
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "|",
                                            #     icon = NULL
                                            # ),
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "Manual",
                                            #     tags$iframe(
                                            #         src = "http://www.mnet4all.com/mnet_manual/",
@@ -2693,7 +2693,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -2714,7 +2714,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -2731,7 +2731,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
@@ -2748,7 +2748,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -2758,7 +2758,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2778,7 +2778,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: ePDA Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -2969,7 +2969,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -2977,7 +2977,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -2990,7 +2990,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3017,7 +3017,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3044,7 +3044,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3064,7 +3064,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: eSEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3084,7 +3084,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                             style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                              title = "Output: eSEA Plot",
                                              markdown(
                                                "
@@ -3104,7 +3104,7 @@ ui <- shinyUI(
                                              icon = shiny::icon("image")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Interested Plot",
                                                markdown(
                                                    "
@@ -3124,12 +3124,12 @@ ui <- shinyUI(
                                                icon = shiny::icon("image")
                                            )
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "|",
                                            #     icon = NULL
                                            # ),
                                            # tabPanel(
-                                           #     style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                            #     title = "Manual",
                                            #     tags$iframe(
                                            #         src = "http://www.mnet4all.com/mnet_manual/",
@@ -3146,7 +3146,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -3167,7 +3167,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -3184,7 +3184,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Gene Data",
                                                markdown(
                                                    "
@@ -3201,7 +3201,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -3211,7 +3211,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: eSEA Terms",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3231,7 +3231,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                             style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                              title = "Output: eSEA Plot",
                                              fluidRow(column(width = 9), column(
                                                width = 3,
@@ -3257,7 +3257,7 @@ ui <- shinyUI(
                                              icon = shiny::icon("image")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Interested Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3869,7 +3869,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -3877,7 +3877,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -3890,7 +3890,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3917,7 +3917,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Refmet Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -3950,7 +3950,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -3971,7 +3971,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                markdown(
                                                    "
@@ -3988,7 +3988,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Refmet Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4077,7 +4077,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4085,7 +4085,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -4098,7 +4098,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4125,7 +4125,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: KEGGID Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4158,7 +4158,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4179,7 +4179,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                markdown(
                                                    "
@@ -4196,7 +4196,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: KEGGID Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4285,7 +4285,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4293,7 +4293,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -4306,7 +4306,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4333,7 +4333,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4366,7 +4366,7 @@ ui <- shinyUI(
                                            selected = "Input: Name Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4387,7 +4387,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Name Data",
                                                markdown(
                                                    "
@@ -4404,7 +4404,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4493,7 +4493,7 @@ ui <- shinyUI(
                                            selected = "Input: KEGGID Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4501,7 +4501,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -4514,7 +4514,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: KEGGID Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4541,7 +4541,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4574,7 +4574,7 @@ ui <- shinyUI(
                                            selected = "Input: KEGGID Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4595,7 +4595,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: KEGGID Data",
                                                markdown(
                                                    "
@@ -4612,7 +4612,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4713,7 +4713,7 @@ ui <- shinyUI(
                                            selected = "Output: Gene Info Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4721,7 +4721,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -4734,7 +4734,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Gene Info Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4761,7 +4761,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Compound Info Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4794,7 +4794,7 @@ ui <- shinyUI(
                                            selected = "Output: Gene Info Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4815,7 +4815,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Gene Info Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4842,7 +4842,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Compound Info Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4931,7 +4931,7 @@ ui <- shinyUI(
                                            selected = "Input: Pathway Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -4939,7 +4939,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -4952,7 +4952,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Pathway Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -4979,7 +4979,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway ID Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5012,7 +5012,7 @@ ui <- shinyUI(
                                            selected = "Input: Pathway Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5033,7 +5033,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Pathway Data",
                                                markdown(
                                                    "
@@ -5050,7 +5050,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Pathway ID Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5223,7 +5223,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5231,7 +5231,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -5244,7 +5244,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5271,7 +5271,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5291,7 +5291,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Diff Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5311,7 +5311,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Volcano Plot",
                                                markdown(
                                                    "
@@ -5337,7 +5337,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5358,7 +5358,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -5375,7 +5375,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -5385,7 +5385,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Diff Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5405,7 +5405,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Volcano Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5502,7 +5502,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5510,7 +5510,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -5523,7 +5523,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5550,7 +5550,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5570,7 +5570,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Boruta Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5596,7 +5596,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5617,7 +5617,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -5634,7 +5634,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -5644,7 +5644,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Boruta Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5735,7 +5735,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5743,7 +5743,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -5756,7 +5756,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5783,7 +5783,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5803,7 +5803,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Forest Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5829,7 +5829,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5850,7 +5850,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -5867,7 +5867,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -5877,7 +5877,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Forest Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -5968,7 +5968,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -5976,7 +5976,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -5989,7 +5989,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6016,7 +6016,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6036,7 +6036,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: XGBoost Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6062,7 +6062,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6083,7 +6083,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -6100,7 +6100,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -6110,7 +6110,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: XGBoost Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6222,7 +6222,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6230,7 +6230,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -6243,7 +6243,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6270,7 +6270,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6290,7 +6290,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Alpha Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6316,7 +6316,7 @@ ui <- shinyUI(
                                            selected = "Input: Metabolite Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6337,7 +6337,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Metabolite Data",
                                                markdown(
                                                    "
@@ -6354,7 +6354,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Group Data",
                                                markdown("
 						                            **Group Data**: Sample's group information.
@@ -6364,7 +6364,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Alpha Results",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6511,7 +6511,7 @@ ui <- shinyUI(
                                            selected = "Input: Clinical Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6519,7 +6519,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -6532,7 +6532,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Clinical Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6559,7 +6559,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Time Series Plot",
                                                markdown(
                                                    "
@@ -6585,7 +6585,7 @@ ui <- shinyUI(
                                            selected = "Input: Clinical Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6606,7 +6606,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Clinical Data",
                                                markdown(
                                                    "
@@ -6623,7 +6623,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Time Series Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6776,7 +6776,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6784,7 +6784,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -6797,7 +6797,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6824,7 +6824,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Survival Plot",
                                                markdown(
                                                    "
@@ -6850,7 +6850,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -6871,7 +6871,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                markdown(
                                                    "
@@ -6888,7 +6888,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Survival Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -6978,6 +6978,17 @@ ui <- shinyUI(
                                            width = NULL,
                                            placeholder = "Metabolite"
                                        ),
+                                       selectInput(
+                                           inputId = "survival_plot_user_method",
+                                           label = "Method",
+                                           choices = c(
+                                               "mean" = "mean",
+                                               "median" = "median"
+                                           ),
+                                           selected = "mean",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
                                        tags$b("3. FIGURE CANVAS:"),
                                        hr(),
                                        selectInput(
@@ -7048,7 +7059,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -7056,7 +7067,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -7069,7 +7080,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -7096,7 +7107,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Survival Plot",
                                                markdown(
                                                    "
@@ -7122,7 +7133,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -7143,7 +7154,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                markdown(
                                                    "
@@ -7160,7 +7171,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Survival Plot",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -7248,7 +7259,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("Demo", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -7256,7 +7267,7 @@ ui <- shinyUI(
                                            solidHeader = FALSE,
                                            background = NULL,
                                            collapsible = TRUE,
-                                           collapsed = FALSE,
+                                           collapsed = TRUE,
                                            closable = FALSE,
                                            maximizable = FALSE,
                                            icon = NULL,
@@ -7269,7 +7280,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -7296,7 +7307,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Cox Result",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -7329,7 +7340,7 @@ ui <- shinyUI(
                                            selected = "Input: Survival Data",
                                            title = tags$b("User", style = "color: #aaaaaa;"),
                                            width = 12,
-                                           height = 400,
+                                           height = 800,
                                            side = "right",
                                            type = "tabs",
                                            footer = NULL,
@@ -7350,7 +7361,7 @@ ui <- shinyUI(
                                            sidebar = NULL,
                                            .list = NULL,
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Input: Survival Data",
                                                markdown(
                                                    "
@@ -7367,7 +7378,7 @@ ui <- shinyUI(
                                                icon = shiny::icon("table-list")
                                            ),
                                            tabPanel(
-                                               style = "height: 350px; overflow-y: auto; overflow-x: hidden",
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
                                                title = "Output: Cox Result",
                                                fluidRow(column(width = 9), column(
                                                    width = 3,
@@ -12420,6 +12431,7 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 80)
             progress$set(message = "Differential analysis visualizing ...", detail = "Differential analysis visualizing ...")
             
+            if (input$diff_meta_user_diff_method == "OPLS-DA") {
             volcano_plot <- function(){
                 pVolcano(diff_result, foldchange_threshold = 1.5)
             }
@@ -12443,6 +12455,7 @@ server <- shinyServer(function(session, input, output) {
             )
             print(volcano_plot())
             dev.off()
+            } else {}
             
             progress$set(value = 100)
             progress$set(message = "Differential analysis task complete ...", detail = "Differential analysis task complete ...")
@@ -12467,6 +12480,7 @@ server <- shinyServer(function(session, input, output) {
                 )
             }, server = TRUE)
             
+            if (input$diff_meta_user_diff_method == "OPLS-DA") {
             output$diff_meta_volcano_plot <- renderImage({
                 list(
                     src = paste0(temp_diff_meta, "/diff_meta_volcano_plot.jpeg"),
@@ -12475,6 +12489,9 @@ server <- shinyServer(function(session, input, output) {
                     height = "auto"
                 )
             }, deleteFile = FALSE)
+            } else {
+                output$diff_meta_volcano_plot <- NULL
+            }
         })
         
         output$diff_meta_user_result_data_download <- downloadHandler(
@@ -13834,7 +13851,7 @@ server <- shinyServer(function(session, input, output) {
             metabolites <- input$survival_plot_user_meta
             survMet(clinical_data,
                     metabolites,
-                    cluster_method = "mean",
+                    cluster_method = input$survival_plot_user_method,
                     out_dir = temp_survival_plot)
             
             file.rename(from = paste0(temp_survival_plot, "/", metabolites, ".survival.png"), 
