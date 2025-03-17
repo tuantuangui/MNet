@@ -59,7 +59,7 @@ name2refmet <- function(metabolites_name) {
       url <- paste(
         "https://www.metabolomicsworkbench.org/rest/refmet/match/",
         name,
-        "/name/txt",
+        "/name/json",
         sep = ""
       )
       

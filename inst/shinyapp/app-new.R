@@ -1,0 +1,13157 @@
+# -> Author:
+# Author: benben-miao
+# Email: benben.miao@outlook.com
+# Github: https://github.com/benben-miao
+# Date: 2024-10-21
+# <- Author
+
+options = list(warn = -1)
+options(shiny.maxRequestSize = 100 * 1024 ^ 2)
+
+library(shiny)
+library(bs4Dash)
+library(DT)
+library(shinyWidgets)
+library(colourpicker)
+library(ggsci)
+library(ggplot2)
+library(survival)
+library(MNet)
+library(dplyr)
+library(markdown)
+library(Cairo)
+library(callr)
+library(shinyjs)
+
+# library(promises)
+# library(future)
+
+# plan(multisession)
+# future({})
+
+log_file <- "user_access_log.txt"
+
+if (!file.exists(log_file)) {
+    write.table(
+        data.frame(IP = character(), VisitTime = character()),
+        log_file,
+        sep = "\t",
+        row.names = FALSE,
+        col.names = TRUE
+    )
+}
+
+ui <- shinyUI(
+    #=== 1.bs4DashPage
+    bs4DashPage(
+        title = "MNet",
+        skin = NULL,
+        freshTheme = NULL,
+        preloader = NULL,
+        options = NULL,
+        fullscreen = TRUE,
+        help = TRUE,
+        dark = FALSE,
+        scrollToTop = TRUE,
+        #=== 1.1 bs4DashNavbar
+        {
+            header = bs4DashNavbar(
+                brand = span(
+                    "| MNet for integrative analysis of metabolomic and transcriptomic data",
+                    style = "margin-left: 10px;
+                              color: #555555;
+                              font-weight: bolder;
+                              text-shadow: 3px 3px 10px #888888;"
+                ),
+                titleWidth = NULL,
+                disable = FALSE,
+                .list = NULL,
+                # rightUi = bs4DropdownMenu(
+                #     type = c("notifications"),
+                #     badgeStatus = "primary",
+                #     icon = icon("bell"),
+                #     headerText = "Version Update:",
+                #     href = "https://tuantuangui.github.io/MNet/index.html"
+                # ),
+                skin = "light",
+                status = "white",
+                border = TRUE,
+                compact = FALSE,
+                sidebarIcon = shiny::icon("bars"),
+                fixed = FALSE
+            )
+        },
+        #=== 1.2 bs4DashSidebar
+        {
+            sidebar = bs4DashSidebar(
+                useShinyjs(),
+                disable = FALSE,
+                width = NULL,
+                skin = "dark",
+                status = "gray-dark",
+                elevation = 3,
+                collapsed = FALSE,
+                minified = TRUE,
+                expandOnHover = TRUE,
+                fixed = TRUE,
+                id = NULL,
+                customArea = NULL,
+                #=== 1.2.1.1 bs4SidebarUserPanel
+                bs4SidebarUserPanel(name = strong("MNet"), image = "https://tuantuangui.github.io/MNet/logo.png"),
+                #=== 1.2.1.2 bs4SidebarHeader
+                # bs4SidebarHeader(title = strong("Function【4】")),
+                # tags$div(verbatimTextOutput("stats")),
+                actionButton(
+                    inputId = "open_window",
+                    label = "Manual",
+                    icon = shiny::icon("book-open"),
+                    width = "100%",
+                    status = "warning",
+                    gradient = FALSE,
+                    outline = FALSE,
+                    size = NULL,
+                    flat = FALSE,
+                    style = "margin: 0px;"
+                ),
+                hr(),
+                # tags$script(
+                #     '
+                #         Shiny.addCustomMessageHandler("openNewWindow", function(params) {
+                #             var newWindow = window.open(params.url, "_blank", "width=" + params.width + ",height=" + params.height);
+                #         });
+                #     '
+                # ),
+                tags$script(
+                    "
+                    document.getElementById('open_window').addEventListener('click', function() {
+                        window.open('http://www.mnet4all.com/mnet_manual/', '_blank', 'width=1000,height=800');
+                    });
+                    "
+                ),
+                #=== 1.2.1 bs4SidebarMenu
+                bs4SidebarMenu(
+                    id = "sidebar_menu",
+                    .list = NULL,
+                    flat = FALSE,
+                    compact = FALSE,
+                    childIndent = FALSE,
+                    legacy = FALSE,
+                    #=== 1.2.1.3 bs4SidebarMenuItem
+                    bs4SidebarMenuItem(
+                        text = "Home",
+                        tabName = "home",
+                        icon = icon("house"),
+                        badgeLabel = "Intro",
+                        badgeColor = "danger",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = NULL,
+                        startExpanded = FALSE,
+                        condition = NULL
+                    ),
+                    bs4SidebarMenuItem(
+                        text = "Knowledgebase",
+                        tabName = "database",
+                        icon = icon("database"),
+                        badgeLabel = NULL,
+                        badgeColor = "danger",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = NULL,
+                        startExpanded = FALSE,
+                        condition = NULL
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "1. Subnetwork Analyser",
+                        tabName = NULL,
+                        # icon = icon("circle-nodes"),
+                        # badgeLabel = "3",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Subnetwork",
+                            tabName = "network_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "2. Pathway Analysers",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| ePEAlyser",
+                            tabName = "epea_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| ePDAlyser",
+                            tabName = "epda_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| eSEAlyser",
+                            tabName = "esea_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| mPEA Pathway",
+                        #     tabName = "mpea_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| gPEA Pathway",
+                        #     tabName = "gpea_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Volcano Plot",
+                        #     tabName = "volcano_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| MA Plot",
+                        #     tabName = "ma_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Heatmap Group",
+                        #     tabName = "heatmap_group",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Circos Heatmap",
+                        #     tabName = "circos_heatmap",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # ),
+                        # bs4SidebarMenuSubItem(
+                        #     text = "| Chord Plot",
+                        #     tabName = "chord_plot",
+                        #     href = NULL,
+                        #     newTab = TRUE,
+                        #     icon = icon("r-project"),
+                        #     selected = NULL
+                        # )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "3. Name Transform",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2Refmet",
+                            tabName = "name2refmet",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2KEGGID",
+                            tabName = "name2keggid",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Name2Pathway",
+                            tabName = "name2pathway",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| KEGGID2Pathway",
+                            tabName = "keggid2pathway",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| PathwayInfo",
+                            tabName = "pathwayinfo",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Pathway2Pathwayid",
+                            tabName = "pathway2pathwayid",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "4. Group-wise Analysis",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Differential Metabolite",
+                            tabName = "diff_meta",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "5. Machine Learning",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Boruta",
+                            tabName = "boruta",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Random Forest",
+                            tabName = "forest",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| XGBoost",
+                            tabName = "xgboost",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| LASSO & Elastic",
+                            tabName = "lasso",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    ),
+                    br(),
+                    bs4SidebarMenuItem(
+                        text = "6. Clinical Analysis",
+                        tabName = NULL,
+                        # icon = icon("dna"),
+                        # badgeLabel = "6",
+                        # badgeColor = "warning",
+                        href = NULL,
+                        newTab = TRUE,
+                        selected = NULL,
+                        expandedName = "",
+                        startExpanded = TRUE,
+                        condition = NULL,
+                        bs4SidebarMenuSubItem(
+                            text = "| Time Series",
+                            tabName = "time_series",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Survival Analysis",
+                            tabName = "survival_analysis",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Survival Plot",
+                            tabName = "survival_plot",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        ),
+                        bs4SidebarMenuSubItem(
+                            text = "| Cox Analysis",
+                            tabName = "metcox",
+                            href = NULL,
+                            newTab = TRUE,
+                            icon = icon("r-project"),
+                            selected = NULL
+                        )
+                    )
+                ),
+                hr()
+            )
+        },
+        #=== 1.3 bs4DashControlbar
+        {
+            controlbar = bs4DashControlbar(
+                style = "padding: 10px;",
+                id = NULL,
+                disable = FALSE,
+                width = 300,
+                collapsed = FALSE,
+                overlay = TRUE,
+                skin = "light",
+                pinned = FALSE,
+                
+                skinSelector()
+                # sliderInput(
+                #     inputId = "obs",
+                #     label = "Number of observations:",
+                #     min = 0,
+                #     max = 1000,
+                #     value = 500
+                # )
+            )
+        },
+        #=== 1.4 bs4DashFooter
+        {
+            # footer = bs4DashFooter(
+            #     left = verbatimTextOutput("stats"),
+            #     right = NULL,
+            #     fixed = TRUE
+            # )
+        },
+        #=== 1.5 bs4DashBody
+        body = bs4DashBody(
+            tags$head(
+                tags$script(HTML('
+                $(document).ready(function() {
+                    $(".sidebar-menu li.has-treeview").addClass("menu-open");
+                });
+            '))
+            ),
+            includeCSS("www/styles.css"),
+            tags$head(tags$link(
+                rel = "icon", type = "image/png", href = "favicon.png"
+            )),
+            #=== 1.5 bs4DashPage -> bs4DashBody -> bs4TabItems
+            bs4TabItems(
+                #=== bs4TabItem home
+                {
+                    bs4TabItem(tabName = "home", fluidRow(
+                        bs4Card(
+                            # 1
+                            style = "padding: 10px 10%;",
+                            inputId = NULL,
+                            title = tags$b("MNet Documents"),
+                            footer = NULL,
+                            width = 12,
+                            height = NULL,
+                            status = "white",
+                            elevation = 1,
+                            solidHeader = FALSE,
+                            headerBorder = FALSE,
+                            gradient = FALSE,
+                            collapsible = FALSE,
+                            collapsed = FALSE,
+                            closable = FALSE,
+                            maximizable = FALSE,
+                            icon = icon("passport"),
+                            boxToolSize = "lg",
+                            label = NULL,
+                            dropdownMenu = NULL,
+                            sidebar = NULL,
+                            # htmlOutput("home_markdown")
+                            # tags$iframe(
+                            #     src = "https://tuantuangui.github.io/MNet/index.html",
+                            #     width = "100%",
+                            #     height = "840px",
+                            #     style = "border: none; border-radius: 10px;"
+                            # )
+                            tags$p("MNet", style = "font-size: 2.5rem; font-weight: bold; text-align: center;"),
+                            tags$p("MNet: a metabolic network-centered tool for interpreting metabolomic and transcriptomic data", 
+                                   style = "font-size: 1rem; font-weight: bold; text-align: center;"),
+                            br(),
+                            tags$p("Introduction", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$span("MNet features a built-in knowledgebase, ", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("dbMNet", style = "font-size: 1.2rem; text-align: justify; font-weight: bold; color: darkblue;"),
+                            tags$span("which is manually curated and provides information on metabolomics, including almost all currently
+                                      available human metabolic interactions (gene-metabolite and metabolite-metabolite). Grounded in this
+                                      knowledgebase, MNet offers one subnetwork analyser (", style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("sNETlyser", style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(") and three extended pathway analysers (",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePEAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(",",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("ePDAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(", and ",style = "font-size: 1.2rem; text-align: justify;"),
+                            tags$span("eSEAlyser",style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$span(") for user-input metabolomic and transcriptomic data.",style = "font-size: 1.2rem; text-align: justify;"),
+                            
+                            br(),br(),
+                            tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/MNet_Figure1.png",
+                                     # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                     style = "width: 80%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
+                            br(),br(),
+                            tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
+                                   "Backend Functions", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("1. sNETlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("The subnetwork analyser extends the dnet subnetwork algorithm 
+                                           to identify metabolite-gene and metabolite-metabolite subnetwork from metabolomics
+                                           and transcriptomic data, capitalising our curated dbMNet metabolic network information.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("2. ePEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("The extended Pathway Enrichment Analyser. (A) Barplot of cluster1 enriched metabolic pathways corresponding 
+                                           to metabolites and genes. (B) Barplot of cluster2 enriched metabolic pathways corresponding to 
+                                           metabolites and genes.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePEA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            fluidRow(
+                                column(
+                                    width = 6,
+                                    tags$p("3. ePDAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("The extended Pathway Differential Abundance analyser. The ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
+                                           are statistically significant differences between two groups.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePDA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                ),
+                                column(
+                                    width = 6,
+                                    tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
+                                    tags$p("The extended pathway Set Enrichment Analyser, which aim to identify dysregulated metabolic pathways by considering both metabolites and genes.",
+                                           style = "font-size: 1rem; text-align: justify;"),
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-eSEA.png",
+                                             # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
+                                             style = "width: 100%; height: 520px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
+                                )
+                            ),
+                            br(),br(),
+                            tags$p("Documents", style = "font-size: 2rem; font-weight: bold;"),
+                            tags$p("1. MNet Web Server Manual", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "http://www.mnet4all.com/mnet_manual/", 
+                                   "MNet Web Server Manual", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;"),
+                            tags$p("2. MNet R Package References", style = "font-size: 1.5rem; font-weight: bold;"),
+                            tags$a(href = "https://tuantuangui.github.io/MNet/", 
+                                   "MNet R Package References", 
+                                   style = "font-size: 1.2rem; text-align: justify; font-style: italic; font-weight: bold; color: darkblue;")
+                        )
+                    ))
+                },
+                #=== bs4TabItem database
+                {
+                    bs4TabItem(tabName = "database", fluidRow(
+                        bs4Card(
+                            # 1
+                            style = "padding: 10px 10%;",
+                            inputId = NULL,
+                            title = tags$b("Knowledgebase Update and Download"),
+                            footer = NULL,
+                            width = 12,
+                            height = NULL,
+                            status = "white",
+                            elevation = 1,
+                            solidHeader = FALSE,
+                            headerBorder = FALSE,
+                            gradient = FALSE,
+                            collapsible = FALSE,
+                            collapsed = FALSE,
+                            closable = FALSE,
+                            maximizable = FALSE,
+                            icon = icon("passport"),
+                            boxToolSize = "lg",
+                            label = NULL,
+                            dropdownMenu = NULL,
+                            sidebar = NULL,
+                            markdown("## **1. Knowledgebase Introduction:**"), br(), 
+                            markdown(
+                                "
+                               	The knowledgebase **dbMNet** is a freely available knowledgebase that attempts to consolidate information
+                                on all known genes and metabolites into a single resource. The knowledgebase includes two knowledgebases,
+                                **dbNet** and **dbKEGG**.
+
+                                Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
+                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
+
+                                Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
+                                BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
+
+                                These pairs involve **3,964 genes**, and **11,932 metabolites**.
+
+                                The source code for compiling the knowledgebase dbMNet is available here:
+
+                                [**_https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet_**](https://tuantuangui.github.io/MNet_manual/web-server-manual.html#construction-of-knowledgebase-dbmnet)
+
+                                <hr />
+
+                                ## **2. Knowledgebase dbMNet V202411 can be downloaded here.**
+
+                                <br />
+                                "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202411",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
+                                "
+            				     #### **2.1 dbKEGG, designed for extended pathway analysis.**
+            
+            				     <br />
+            				     "
+                            ),
+                            DTOutput(
+                                "db_kegg",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            br(),
+                            markdown(
+                                "
+                                #### **2.2 dbNet, designed for metabolism-related subnetwork analysis.**
+
+                                <br />
+                                "
+                            ),
+                            DTOutput(
+                                "db_net",
+                                width = "100%",
+                                height = "auto",
+                                fill = TRUE
+                            ),
+                            hr(),
+                            markdown(
+                                "
+                				## **3. Knowledgebase History**
+                
+                				<br />
+                
+                				#### **3.1 Knowledgebase dbMNet V202404 can be downloaded here.**
+                
+                				<br />
+                				"
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202404.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202404",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr(),
+                            markdown(
+                                "
+                                <hr />
+
+                                #### **3.2 Knowledgebase dbMNet V202212 can be downloaded here.**
+
+                                <br />
+                               "
+                            ),
+                            fluidRow(
+                                column(
+                                    width = 9,
+                                    tags$a(
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202212.zip"
+                                    )
+                                ),
+                                column(
+                                    width = 3,
+                                    downloadButton(
+                                        outputId = "download_db202212",
+                                        label = "Download",
+                                        class = NULL,
+                                        icon = icon("circle-down"),
+                                        style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                    )
+                                )
+                            ),
+                            hr()
+                        )
+                    ))
+                },
+                #=== bs4TabItem network_plot
+                {
+                    bs4TabItem(tabName = "network_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "network_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "network_user_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "network_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       
+                                       # h3("访问统计"),
+                                       # verbatimTextOutput("stats"),
+                                       # h3("最近的访问记录"),
+                                       # tableOutput("log_table"),
+                                       
+                                       # actionButton(
+                                       #     inputId = "network_demo",
+                                       #     label = "Demo",
+                                       #     icon = shiny::icon("person-running"),
+                                       #     width = "100%",
+                                       #     status = "info",
+                                       #     gradient = FALSE,
+                                       #     outline = FALSE,
+                                       #     size = NULL,
+                                       #     flat = FALSE
+                                       # ),
+                                       # br(),
+                                       # br(),
+                                       actionButton(
+                                           inputId = "network_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       # shinyWidgets::progressBar(
+                                       #     id = "network_progress",
+                                       #     value = 0,
+                                       #     total = 100,
+                                       #     title = "Progress",
+                                       #     display_pct = TRUE
+                                       # ),
+                                       # verbatimTextOutput("network_step"),
+                                       # br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "network_nsize",
+                                           label = "Nodes Num",
+                                           min = 1,
+                                           max = 1000,
+                                           value = 100,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "network_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "network_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_demo_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Nodes Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_nodes_data_download",
+                                                       label = "Nodes Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Nodes Data**: Nodes of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_demo_nodes_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Edges Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_demo_edges_data_download",
+                                                       label = "Edges Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Edges Data**: Edges of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_demo_edges_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Subnetwork Plot",
+                                               markdown(
+                                                   "
+						                           A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/subnetwork.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes and metabolites, with red and green indicating the logFC of genes, while yellow and blue represent the logFC of metabolites, indicating varying levels."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "network_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Nodes Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_user_nodes_data_download",
+                                                       label = "Nodes Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Nodes Data**: Nodes of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_user_nodes_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Edges Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_user_edges_data_download",
+                                                       label = "Edges Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Edges Data**: Edges of subnetworks.
+                                                   "),
+                                               hr(),
+                                               DTOutput("network_user_edges_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Subnetwork Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "network_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   A core metabolite-gene subnetwork can be downloaded as a PDF or JPEG file with specified width, height, and dpi setting.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("network_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Visualization of the identified optimal subnetwork that best explains the biological processes comparing two groups. The colors represent the logFC (logarithm of fold change) of genes and metabolites, with red and green indicating the logFC of genes, while yellow and blue represent the logFC of metabolites, indicating varying levels."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem diff_network
+                {
+                    bs4TabItem(tabName = "diff_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "diff_network_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "diff_network_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "diff_network_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "diff_network_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_network_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 100.00,
+                                           value = 1.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_network_gene_num",
+                                           label = "Gene Number",
+                                           min = 0,
+                                           max = 1000,
+                                           value = 500,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "diff_network_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_network_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_network_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_network_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "diff_network_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "white",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "lg",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "diff_network_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "diff_network_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("diff_network_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("diff_network_plot", width = "100%", height = "640px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== bs4TabItem corr_network
+                {
+                    bs4TabItem(tabName = "corr_network", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "corr_network_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "corr_network_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "corr_network_threshold",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.95,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "corr_network_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "corr_network_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "corr_network_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "white",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "lg",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "corr_network_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "corr_network_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("corr_network_plot", width = "100%", height = "640px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== bs4TabItem epea_plot
+                {
+                    bs4TabItem(tabName = "epea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "epea_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epea_user_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epea_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       # actionButton(
+                                       #     inputId = "epea_demo",
+                                       #     label = "Demo",
+                                       #     icon = shiny::icon("person-running"),
+                                       #     width = "100%",
+                                       #     status = "info",
+                                       #     gradient = FALSE,
+                                       #     outline = FALSE,
+                                       #     size = NULL,
+                                       #     flat = FALSE
+                                       # ),
+                                       # br(),
+                                       # br(),
+                                       actionButton(
+                                           inputId = "epea_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "epea_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_p_cutoff",
+                                           label = "Pathway Pcutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "epea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 12.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       # tags$script(
+                                       #     '
+                                       #          $(document).ready(function() {
+                                       #              $("#myTabCard").addClass("collapsed");
+                                       #              $(".tab-pane").click(function() {
+                                       #                  var tabCard = $(this).closest(".card");
+                                       #                  if (tabCard.hasClass("collapsed")) {
+                                       #                      tabCard.removeClass("collapsed");
+                                       #                  } else {
+                                       #                      tabCard.addClass("collapsed");
+                                       #                  }
+                                       #              });
+                                       #          });
+                                       #      '
+                                       # ),
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "myTabCard",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_demo_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Up ePEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_up_data_download",
+                                                       label = "Up ePEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Up ePEA Terms**: Up-regulated pathways.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_demo_up_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Down ePEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_demo_down_data_download",
+                                                       label = "Down ePEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Down ePEA Terms**: Down-regulated pathways.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_demo_down_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Plot",
+                                               markdown(
+                                                   "
+						                           Bar plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes. "
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epea_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Up ePEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_user_up_data_download",
+                                                       label = "Up ePEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Up ePEA Terms**: Up-regulated pathways.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_user_up_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Down ePEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_user_down_data_download",
+                                                       label = "Down ePEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Down ePEA Terms**: Down-regulated pathways.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epea_user_down_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePEA Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epea_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Bar plot illustrating enriched pathways are available, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("epea_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Extended pathway enrichment analysis. (A) Barplot of up-regulated metabolic pathways corresponding to metabolites and genes. (B) Barplot of down-regulated metabolic pathways corresponding to metabolites and genes."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem epda_plot
+                {
+                    bs4TabItem(tabName = "epda_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "epda_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epda_user_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "epda_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       # actionButton(
+                                       #     inputId = "epda_demo",
+                                       #     label = "Demo",
+                                       #     icon = shiny::icon("person-running"),
+                                       #     width = "100%",
+                                       #     status = "info",
+                                       #     gradient = FALSE,
+                                       #     outline = FALSE,
+                                       #     size = NULL,
+                                       #     flat = FALSE
+                                       # ),
+                                       # br(),
+                                       # br(),
+                                       actionButton(
+                                           inputId = "epda_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "epda_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "epda_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 12.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "epda_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_demo_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePDA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_demo_result_data_download",
+                                                       label = "ePDA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **ePDA Terms**: Result of ePDA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePDA Plot",
+                                               markdown(
+                                                   "
+						                           A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two groups."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "epda_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePDA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_user_result_data_download",
+                                                       label = "ePDA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **ePDA Terms**: Result of ePDA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("epda_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: ePDA Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "epda_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   A DAscore plot captures the tendency for a pathway, and can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("epda_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that are statistically significant differences between two groups."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem esea_plot
+                {
+                    bs4TabItem(tabName = "esea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "esea_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "esea_user_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "esea_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       # actionButton(
+                                       #     inputId = "esea_demo",
+                                       #     label = "Demo",
+                                       #     icon = shiny::icon("person-running"),
+                                       #     width = "100%",
+                                       #     status = "info",
+                                       #     gradient = FALSE,
+                                       #     outline = FALSE,
+                                       #     size = NULL,
+                                       #     flat = FALSE
+                                       # ),
+                                       # br(),
+                                       # br(),
+                                       actionButton(
+                                           inputId = "esea_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "esea_pathway",
+                                           label = "Pathway Name",
+                                           value = "Oxidative phosphorylation",
+                                           placeholder = "Pathway Name",
+                                           width = NULL
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "esea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "esea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_gene_data_download",
+                                                       label = "Gene Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_demo_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: eSEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_demo_result_data_download",
+                                                       label = "eSEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **eSEA Terms**: Result of eSEA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                             title = "Output: eSEA Plot",
+                                             markdown(
+                                               "
+						                           Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                             ),
+                                             hr(),
+                                             tags$img(
+                                               src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                               width = "100%",
+                                               height = "auto"
+                                             ),
+                                             tags$p(
+                                               tags$b("Figure 1."),
+                                               "Extended pathway set enrichment analysis."
+                                             ),
+                                             icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Interested Plot",
+                                               markdown(
+                                                   "
+						                           Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-2.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 2."),
+                                                   "Extended interested pathway set enrichment analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "|",
+                                           #     icon = NULL
+                                           # ),
+                                           # tabPanel(
+                                           #     style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                           #     title = "Manual",
+                                           #     tags$iframe(
+                                           #         src = "http://www.mnet4all.com/mnet_manual/",
+                                           #         width = "100%",
+                                           #         height = "720",
+                                           #         frameborder = 0
+                                           #     ),
+                                           #     icon = shiny::icon("book-open")
+                                           # )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Gene Data",
+                                               markdown(
+                                                   "
+						                           **Gene Data** (required, in .txt format): an interactive table for user input, with rows corresponding to gene symble and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "esea_user_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: eSEA Terms",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_user_result_data_download",
+                                                       label = "eSEA Terms",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **eSEA Terms**: Result of eSEA analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("esea_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                             style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                             title = "Output: eSEA Plot",
+                                             fluidRow(column(width = 9), column(
+                                               width = 3,
+                                               downloadButton(
+                                                 outputId = "esea_plot_download",
+                                                 label = "Figure Download",
+                                                 class = NULL,
+                                                 icon = icon("circle-down"),
+                                                 style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                               )
+                                             )),
+                                             markdown(
+                                               "
+                                                   Result of pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                             ),
+                                             hr(),
+                                             imageOutput("esea_plot", width = "100%", height = "auto"),
+                                             tags$p(
+                                               tags$b("Figure 1."),
+                                               "Extended pathway set enrichment analysis."
+                                             ),
+                                             icon = shiny::icon("image")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Interested Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "esea_interested_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of interested pathway set enrichment analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("esea_interested_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 2."),
+                                                   "Extended interested pathway set enrichment analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem mpea_plot
+                {
+                    bs4TabItem(tabName = "mpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "mpea_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "mpea_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "mpea_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "mpea_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "mpea_p_cutoff",
+                                           label = "Pathway Pcutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "mpea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "mpea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "mpea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "mpea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "mpea_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "white",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "lg",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "mpea_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("mpea_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("mpea_plot", width = "100%", height = "1000px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== bs4TabItem gpea_plot
+                {
+                    bs4TabItem(tabName = "gpea_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = TRUE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       fileInput(
+                                           inputId = "gpea_gene_data_input",
+                                           label = "Gene Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Gene Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "gpea_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       hr(),
+                                       sliderInput(
+                                           inputId = "gpea_logfc",
+                                           label = "Log(FoldChange)",
+                                           min = 0.00,
+                                           max = 10.00,
+                                           value = 0.58,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "gpea_padj",
+                                           label = "Padjust Cutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "gpea_p_cutoff",
+                                           label = "Pathway Pcutoff",
+                                           min = 0.00,
+                                           max = 1.00,
+                                           value = 0.05,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "gpea_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "gpea_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 6.18,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "gpea_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "gpea_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       downloadButton(
+                                           outputId = "gpea_plot_download",
+                                           label = "Figure Download",
+                                           class = NULL,
+                                           icon = icon("circle-down"),
+                                           style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4Card(
+                                           style = "height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                           inputId = NULL,
+                                           title = span("| Data && Figure Preview", ),
+                                           footer = NULL,
+                                           width = 12,
+                                           height = NULL,
+                                           status = "white",
+                                           elevation = 1,
+                                           solidHeader = FALSE,
+                                           headerBorder = TRUE,
+                                           gradient = FALSE,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = TRUE,
+                                           icon = icon("compass-drafting"),
+                                           boxToolSize = "lg",
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           class = "no-header",
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               DTOutput(
+                                                   "gpea_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               )
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               textOutput("gpea_group_data")
+                                           ),
+                                           bs4Card(
+                                               inputId = NULL,
+                                               title = "| Data Table",
+                                               footer = NULL,
+                                               width = 12,
+                                               height = NULL,
+                                               status = "white",
+                                               elevation = 1,
+                                               solidHeader = FALSE,
+                                               headerBorder = TRUE,
+                                               gradient = FALSE,
+                                               collapsible = TRUE,
+                                               collapsed = FALSE,
+                                               closable = FALSE,
+                                               maximizable = TRUE,
+                                               icon = icon("table-list"),
+                                               boxToolSize = "lg",
+                                               label = NULL,
+                                               dropdownMenu = NULL,
+                                               sidebar = NULL,
+                                               plotOutput("gpea_plot", width = "100%", height = "1000px")
+                                           )
+                                       ),
+                                   )
+                               ))
+                },
+                #=== bs4TabItem name2refmet
+                {
+                    bs4TabItem(tabName = "name2refmet", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       # fileInput(
+                                       #     inputId = "name2refmet_user_name_data_input",
+                                       #     label = "Name Data",
+                                       #     multiple = FALSE,
+                                       #     accept = NULL,
+                                       #     width = NULL,
+                                       #     buttonLabel = "Browse",
+                                       #     placeholder = "Name Data (.txt format)"
+                                       # ),
+                                       textAreaInput(
+                                         inputId = "name2refmet_user_name_data_input",
+                                         label = "Compound name",
+                                         value = "",
+                                         width = NULL,
+                                         height = NULL,
+                                         cols = NULL,
+                                         rows = 5,
+                                         placeholder = "2-Hydroxybutyric acid",
+                                         resize = NULL
+                                       ),
+                                       br(),
+                                       actionButton(
+                                           inputId = "name2refmet_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_user_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Refmet Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2refmet_user_result_data_download",
+                                                       label = "Refmet Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Refmet Data** (required, in .txt format): Metabolites Refmet format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2refmet_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem name2keggid
+                {
+                    bs4TabItem(tabName = "name2keggid", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "name2keggid_user_name_data_input",
+                                           label = "Name Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Name Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "name2keggid_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2keggid_user_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: KEGGID Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2keggid_user_result_data_download",
+                                                       label = "KEGGID Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **KEGGID Data** (required, in .txt format): Metabolites KEGG format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2keggid_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem name2pathway
+                {
+                    bs4TabItem(tabName = "name2pathway", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "name2pathway_user_name_data_input",
+                                           label = "Name Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Name Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "name2pathway_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Name Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Name Data",
+                                               markdown(
+                                                   "
+						                           **Name Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_user_name_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "name2pathway_user_result_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "name2pathway_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem keggid2pathway
+                {
+                    bs4TabItem(tabName = "keggid2pathway", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "keggid2pathway_user_keggid_data_input",
+                                           label = "KEGGID Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "KEGGID Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "keggid2pathway_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: KEGGID Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: KEGGID Data",
+                                               markdown(
+                                                   "
+						                           **KEGGID Data** (required, in .txt format): Metabolites names in rows.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_user_keggid_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "keggid2pathway_user_result_data_download",
+                                                       label = "Pathway Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway Data** (required, in .txt format): Metabolites Pathway format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "keggid2pathway_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem pathwayinfo
+                {
+                    bs4TabItem(tabName = "pathwayinfo", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA INPUT:"),
+                                       br(),
+                                       br(),
+                                       tags$p("The pathway name or the pathway hsa ID"),
+                                       hr(),
+                                       # fileInput(
+                                       #     inputId = "pathwayinfo_user_keggid_data_input",
+                                       #     label = "KEGGID Data",
+                                       #     multiple = FALSE,
+                                       #     accept = NULL,
+                                       #     width = NULL,
+                                       #     buttonLabel = "Browse",
+                                       #     placeholder = "KEGGID Data (.txt format)"
+                                       # ),
+                                       textAreaInput(
+                                           inputId = "pathwayinfo_user_pathway_data_input",
+                                           label = "Pathway ID or Name",
+                                           value = "",
+                                           width = NULL,
+                                           height = NULL,
+                                           cols = NULL,
+                                           rows = 5,
+                                           placeholder = "Glyoxylate and dicarboxylate metabolism",
+                                           resize = NULL
+                                       ),
+                                       br(),
+                                       actionButton(
+                                           inputId = "pathwayinfo_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Output: Gene Info Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Gene Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_user_result_gene_data_download",
+                                                       label = "Gene Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Gene Info Data** (required, in .txt format): gene information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_user_result_gene_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Compound Info Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathwayinfo_user_result_comp_data_download",
+                                                       label = "Compound Info Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Compound Info Data** (required, in .txt format): compound information table.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathwayinfo_user_result_comp_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem pathway2pathwayid
+                {
+                    bs4TabItem(tabName = "pathway2pathwayid", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       # fileInput(
+                                       #     inputId = "pathway2pathwayid_user_pathway_data_input",
+                                       #     label = "Pathway Data",
+                                       #     multiple = FALSE,
+                                       #     accept = NULL,
+                                       #     width = NULL,
+                                       #     buttonLabel = "Browse",
+                                       #     placeholder = "Pathway Data (.txt format)"
+                                       # ),
+                                       textAreaInput(
+                                         inputId = "pathway2pathwayid_user_pathway_data_input",
+                                         label = "Pathway Data",
+                                         value = "",
+                                         width = NULL,
+                                         height = NULL,
+                                         cols = NULL,
+                                         rows = 5,
+                                         placeholder = "Glycolysis / Gluconeogenesis",
+                                         resize = NULL
+                                       ),
+                                       br(),
+                                       actionButton(
+                                           inputId = "pathway2pathwayid_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Pathway Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Pathway ID Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "pathway2pathwayid_user_result_data_download",
+                                                       label = "Pathway ID Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Pathway ID Data** (required, in .txt format): pathway ID format.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "pathway2pathwayid_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem diff_meta
+                {
+                    bs4TabItem(tabName = "diff_meta", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "diff_meta_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "diff_meta_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "diff_meta_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "diff_meta_user_diff_method",
+                                           label = "Diff Method",
+                                           choices = c("MLIMMA" = "MLIMMA",
+                                                       "OPLS-DA" = "OPLS-DA"
+                                                       ),
+                                           selected = "OPLS-DA",
+                                           multiple = F,
+                                           width = NULL
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "diff_meta_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "diff_meta_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "diff_meta_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Diff Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_demo_result_data_download",
+                                                       label = "Diff Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Diff Results**: Result of differential metabolites analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Volcano Plot",
+                                               markdown(
+                                                   "
+						                           Result of volcano analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Differential metabolites and volcano plot."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "diff_meta_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Diff Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_user_result_data_download",
+                                                       label = "Diff Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Diff Results**: Result of differential metabolites analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("diff_meta_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Volcano Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "diff_meta_volcano_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of volcano analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("diff_meta_volcano_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Differential metabolites and volcano plot."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem boruta
+                {
+                    bs4TabItem(tabName = "boruta", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "boruta_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "boruta_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "boruta_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "boruta_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "boruta_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "boruta_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("boruta_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Boruta Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "boruta_demo_result_data_download",
+                                                       label = "Boruta Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Boruta Results**: result of boruta analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("boruta_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "boruta_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("boruta_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Boruta Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "boruta_user_result_data_download",
+                                                       label = "Boruta Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Boruta Results**: result of boruta analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("boruta_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem forest
+                {
+                    bs4TabItem(tabName = "forest", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "forest_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "forest_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "forest_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "forest_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "forest_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "forest_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("forest_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Forest Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "forest_demo_result_data_download",
+                                                       label = "Forest Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Forest Results**: result of forest analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("forest_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "forest_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("forest_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Forest Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "forest_user_result_data_download",
+                                                       label = "Forest Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Forest Results**: result of forest analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("forest_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem xgboost
+                {
+                    bs4TabItem(tabName = "xgboost", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "xgboost_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "xgboost_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "xgboost_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "xgboost_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: XGBoost Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_demo_result_data_download",
+                                                       label = "XGBoost Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **XGBoost Results**: result of xgboost analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "xgboost_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: XGBoost Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "xgboost_user_result_data_download",
+                                                       label = "XGBoost Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **XGBoost Results**: result of xgboost analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("xgboost_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem lasso
+                {
+                    bs4TabItem(tabName = "lasso", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "lasso_user_meta_data_input",
+                                           label = "Metabolite Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Metabolite Data (.txt format)"
+                                       ),
+                                       fileInput(
+                                           inputId = "lasso_user_group_data_input",
+                                           label = "Group Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Group Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "lasso_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "lasso_user_method",
+                                           label = "Alpha Method",
+                                           choices = c("lasso" = "lasso",
+                                                       "elastic" = "elastic"
+                                           ),
+                                           selected = "lasso",
+                                           multiple = F,
+                                           width = NULL
+                                       ),
+                                       textInput(
+                                           inputId = "lasso_user_seed",
+                                           label = "Seeds",
+                                           value = "0",
+                                           width = NULL,
+                                           placeholder = "Please set seed number"
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_meta_data_download",
+                                                       label = "Metabolite Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "lasso_demo_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_group_data_download",
+                                                       label = "Group Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_demo_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Alpha Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_demo_result_data_download",
+                                                       label = "Alpha Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Alpha Results**: result of lasso or elastic analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_demo_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Metabolite Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Metabolite Data",
+                                               markdown(
+                                                   "
+						                           **Metabolite Data** (required, in .txt format): An interactive table for user input, with rows corresponding to metabolites' KEGG IDs and columns corresponding to samples.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "lasso_user_meta_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Group Data",
+                                               markdown("
+						                            **Group Data**: Sample's group information.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_user_group_data"),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Alpha Results",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "lasso_user_result_data_download",
+                                                       label = "Alpha Results",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown("
+						                            **Alpha Results**: result of lasso or elastic analysis.
+                                                   "),
+                                               hr(),
+                                               DTOutput("lasso_user_result_data"),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem time_series
+                {
+                    bs4TabItem(tabName = "time_series", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "time_series_user_clinical_data_input",
+                                           label = "Clinical Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Clinical Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "time_series_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "time_series_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "time_series_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Clinical Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Clinical Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "time_series_demo_clinical_data_download",
+                                                       label = "Clinical Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Clinical Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "time_series_demo_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Time Series Plot",
+                                               markdown(
+                                                   "
+						                           Result of time series analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Time series of clinical."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Clinical Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Clinical Data",
+                                               markdown(
+                                                   "
+						                           **Clinical Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "time_series_user_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Time Series Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "time_series_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of time series analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("time_series_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Time series of clinical."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem survival_analysis
+                {
+                    bs4TabItem(tabName = "survival_analysis", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "survival_analysis_user_clinical_data_input",
+                                           label = "Clinical Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Clinical Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "survival_analysis_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "survival_analysis_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "JPEG" = "jpeg"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_analysis_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_analysis_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_analysis_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_analysis_demo_clinical_data_download",
+                                                       label = "Survival Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_analysis_demo_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               markdown(
+                                                   "
+						                           Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_analysis_user_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_analysis_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("survival_analysis_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem survival_plot
+                {
+                    bs4TabItem(tabName = "survival_plot", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "survival_plot_user_clinical_data_input",
+                                           label = "Clinical Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Clinical Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "survival_plot_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       ),
+                                       br(),
+                                       br(),
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "survival_plot_user_meta",
+                                           label = "Metabolite",
+                                           value = "C03819",
+                                           width = NULL,
+                                           placeholder = "Metabolite"
+                                       ),
+                                       selectInput(
+                                           inputId = "survival_plot_user_method",
+                                           label = "Method",
+                                           choices = c(
+                                               "mean" = "mean",
+                                               "median" = "median"
+                                           ),
+                                           selected = "mean",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       tags$b("3. FIGURE CANVAS:"),
+                                       hr(),
+                                       selectInput(
+                                           inputId = "survival_plot_plot_format",
+                                           label = "Figure Format",
+                                           choices = c("PDF" = "pdf", "PNG" = "png"),
+                                           selected = "pdf",
+                                           multiple = FALSE,
+                                           width = NULL
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_width",
+                                           label = "Figure Width (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 10.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_height",
+                                           label = "Figure Height (inch)",
+                                           min = 0.00,
+                                           max = 30.00,
+                                           value = 8.00,
+                                           step = 0.01,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       ),
+                                       sliderInput(
+                                           inputId = "survival_plot_plot_dpi",
+                                           label = "Figure DPI",
+                                           min = 68,
+                                           max = 1000,
+                                           value = 300,
+                                           step = 1,
+                                           round = TRUE,
+                                           ticks = TRUE,
+                                           animate = TRUE,
+                                           width = NULL,
+                                           pre = NULL,
+                                           post = NULL,
+                                           timeFormat = FALSE,
+                                           timezone = NULL,
+                                           dragRange = TRUE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_plot_demo_clinical_data_download",
+                                                       label = "Survival Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_plot_demo_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               markdown(
+                                                   "
+						                           Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               tags$img(
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   width = "100%",
+                                                   height = "auto"
+                                               ),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): column contains the time, group, clinical index(such as ALT), low and high.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "survival_plot_user_clinical_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Survival Plot",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "survival_plot_plot_download",
+                                                       label = "Figure Download",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+                                                   Result of survival analysis can be downloaded as a PDF or JPEG file with specified width, height, and dpi settings.
+                                                   "
+                                               ),
+                                               hr(),
+                                               imageOutput("survival_plot_plot", width = "100%", height = "auto"),
+                                               tags$p(
+                                                   tags$b("Figure 1."),
+                                                   "Survival analysis."
+                                               ),
+                                               icon = shiny::icon("image")
+                                           )
+                                       )
+                                   )
+                               ))
+                },
+                #=== bs4TabItem metcox
+                {
+                    bs4TabItem(tabName = "metcox", #=== bs4DashPage -> bs4DashBody -> bs4TabItems -> bs4TabItem -> fluidRow
+                               fluidRow(
+                                   bs4Card(
+                                       style = "padding: 10%; height: 850px; overflow-y: scroll; overflow-x: hidden",
+                                       id = NULL,
+                                       title = "| Setting",
+                                       footer = NULL,
+                                       width = 3,
+                                       height = NULL,
+                                       status = "white",
+                                       elevation = 0,
+                                       solidHeader = FALSE,
+                                       headerBorder = TRUE,
+                                       gradient = FALSE,
+                                       collapsible = FALSE,
+                                       collapsed = FALSE,
+                                       closable = FALSE,
+                                       maximizable = FALSE,
+                                       icon = icon("gear"),
+                                       boxToolSize = "lg",
+                                       label = NULL,
+                                       dropdownMenu = NULL,
+                                       sidebar = NULL,
+                                       tags$b("1. DATA UPLOAD:"),
+                                       br(),
+                                       br(),
+                                       tags$p("An example can be found in Demo, and click on ➕ to open it."),
+                                       hr(),
+                                       fileInput(
+                                           inputId = "metcox_user_surv_data_input",
+                                           label = "Survival Data",
+                                           multiple = FALSE,
+                                           accept = NULL,
+                                           width = NULL,
+                                           buttonLabel = "Browse",
+                                           placeholder = "Survival Data (.txt format)"
+                                       ),
+                                       actionButton(
+                                           inputId = "metcox_submit",
+                                           label = "Submit",
+                                           icon = shiny::icon("person-running"),
+                                           width = "100%",
+                                           status = "success",
+                                           gradient = FALSE,
+                                           outline = FALSE,
+                                           size = NULL,
+                                           flat = FALSE
+                                       )
+                                   ),
+                                   column(
+                                       width = 9,
+                                       bs4TabCard(
+                                           # ribbon(text = "Demo", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("Demo", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "warning",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = TRUE,
+                                           collapsed = TRUE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 3,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_demo_surv_data_download",
+                                                       label = "Survival Data",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): survival data.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_demo_surv_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Cox Result",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_demo_cox_data_download",
+                                                       label = "Cox Result",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Cox Result** (required, in .txt format): cox analysis result.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_demo_cox_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       ),
+                                       bs4TabCard(
+                                           # ribbon(text = "User", color = "danger"),
+                                           id = "examples_tabbox",
+                                           selected = "Input: Survival Data",
+                                           title = tags$b("User", style = "color: #aaaaaa;"),
+                                           width = 12,
+                                           height = 800,
+                                           side = "right",
+                                           type = "tabs",
+                                           footer = NULL,
+                                           status = "danger",
+                                           solidHeader = FALSE,
+                                           background = NULL,
+                                           collapsible = FALSE,
+                                           collapsed = FALSE,
+                                           closable = FALSE,
+                                           maximizable = FALSE,
+                                           icon = NULL,
+                                           gradient = FALSE,
+                                           boxToolSize = "lg",
+                                           elevation = 0,
+                                           headerBorder = TRUE,
+                                           label = NULL,
+                                           dropdownMenu = NULL,
+                                           sidebar = NULL,
+                                           .list = NULL,
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Input: Survival Data",
+                                               markdown(
+                                                   "
+						                           **Survival Data** (required, in .txt format): survival data.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_user_surv_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           ),
+                                           tabPanel(
+                                               style = "height: 750px; overflow-y: auto; overflow-x: hidden",
+                                               title = "Output: Cox Result",
+                                               fluidRow(column(width = 9), column(
+                                                   width = 3,
+                                                   downloadButton(
+                                                       outputId = "metcox_user_result_data_download",
+                                                       label = "Cox Result",
+                                                       class = NULL,
+                                                       icon = icon("circle-down"),
+                                                       style = "width: 100%; background-color: #008888; color: #ffffff; border-radius: 50px;"
+                                                   )
+                                               )),
+                                               markdown(
+                                                   "
+						                           **Cox Result** (required, in .txt format): cox analysis result.
+                                                   "
+                                               ),
+                                               hr(),
+                                               DTOutput(
+                                                   "metcox_user_result_data",
+                                                   width = "100%",
+                                                   height = "auto",
+                                                   fill = TRUE
+                                               ),
+                                               icon = shiny::icon("table-list")
+                                           )
+                                       )
+                                   )
+                               ))
+                }
+            )
+        )
+    )
+)
+
+server <- shinyServer(function(session, input, output) {
+    session_temp_dir <- tempfile("session_temp_")
+    dir.create(session_temp_dir, recursive = TRUE, mode = "1777")
+    
+    #=== user stat
+    {
+    observe({
+        # user_ip <- session$clientData$url_hostname
+        # user_ip <- session$request$REMOTE_ADDR
+        user_ip <- session$request$HTTP_X_FORWARDED_FOR
+        if (is.null(user_ip) || user_ip == "") {
+            user_ip <- session$request$REMOTE_ADDR
+        }
+        visit_time <- Sys.time()
+        
+        log_data <- data.frame(
+            IP = user_ip,
+            VisitTime = as.character(visit_time),
+            stringsAsFactors = FALSE
+        )
+        
+        write.table(
+            log_data,
+            log_file,
+            append = TRUE,
+            sep = "\t",
+            row.names = FALSE,
+            col.names = !file.exists(log_file)
+        )
+    })
+    
+    get_stats <- reactive({
+        req(file.exists(log_file))
+        log_data <- read.table(log_file, header = TRUE, sep = "\t")
+        
+        log_data$VisitTime <- as.POSIXct(log_data$VisitTime)
+        
+        total_visits <- nrow(log_data)
+        
+        unique_users <- n_distinct(log_data$IP)
+        
+        last_24h <- Sys.time() - 24 * 60 * 60
+        recent_visits <- log_data %>% filter(VisitTime >= last_24h) %>% nrow()
+        
+        list(
+            total_visits = total_visits,
+            unique_users = unique_users,
+            recent_visits = recent_visits
+        )
+    })
+    
+    output$stats <- renderPrint({
+        stats <- get_stats()
+        cat("Total Visits:", stats$total_visits, "\n")
+        # cat("Unique Visits:", stats$unique_users, "\n")
+        cat("Recent 24h:", stats$recent_visits)
+    })
+    
+    output$log_table <- renderTable({
+        req(file.exists(log_file))
+        log_data <- read.table(log_file, header = TRUE, sep = "\t")
+        log_data$VisitTime <- as.POSIXct(log_data$VisitTime)
+        log_data <- log_data %>% arrange(desc(VisitTime)) %>% head(10)  # 显示最近10条记录
+        log_data
+    })
+    }
+    
+    # home_markdown
+    output$home_markdown <- renderUI({
+        file_content <- markdown::renderMarkdown(file = "./README.md")
+        htmltools::tags$div(style = "padding: 1% 10%", HTML(file_content))
+    })
+    
+    # database
+    {
+        output$db_kegg <- renderDT({
+            db_kegg <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbKEGG.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(db_kegg, 30),
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(db_kegg),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$db_net <- renderDT({
+            db_net <- read.table(
+                "www/dbMNet/dbMNet-V202411/dbNet2.txt",
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(db_net, 30),
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(db_net),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+            )
+        }, server = TRUE)
+        
+        output$download_db202411 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202411.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202411.zip", to = file)
+            }
+        )
+        
+        output$download_db202404 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202404.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202404.zip", to = file)
+            }
+        )
+        
+        output$download_db202212 <- downloadHandler(
+            filename = function() {
+                "dbMNet-V202212.zip"
+            },
+            content = function(file) {
+                file.copy(from = "www/dbMNet/dbMNet-V202212.zip", to = file)
+            }
+        )
+    }
+    
+    # volcano_plot
+    {
+        output$volcano_meta_data <- renderDT({
+            if (is.null(input$volcano_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$volcano_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$volcano_group_data <- renderText({
+            if (is.null(input$volcano_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$volcano_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$volcano_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$volcano_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$volcano_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$volcano_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$volcano_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+            
+            if (input$volcano_diff_method == "LIMMA") {
+                diff_res <- mlimma(meta_data, group_data)
+            } else if (input$volcano_diff_method == "OPLS-DA") {
+                diff_res <- DM(2 ** meta_data, group_data)
+            }
+            
+            p_volcano <- pVolcano(diff_res,
+                                  foldchange_threshold = input$volcano_fold_change)
+            p_volcano
+        })
+        
+        output$volcano_plot_download <- downloadHandler(
+            filename = function() {
+                paste("VolcanoPlot", input$volcano_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$volcano_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$volcano_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$volcano_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$volcano_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Volcano analysis ...", detail = "Volcano analysis ...")
+                    
+                    if (input$volcano_diff_method == "LIMMA") {
+                        diff_res <- mlimma(meta_data, group_data)
+                    } else if (input$volcano_diff_method == "OPLS-DA") {
+                        diff_res <- DM(2 ** meta_data, group_data)
+                    }
+                    
+                    p_volcano <- pVolcano(diff_res,
+                                          foldchange_threshold = input$volcano_fold_change)
+                    p_volcano
+                })
+                
+                if (input$volcano_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$volcano_plot_width,
+                        height = input$volcano_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$volcano_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$volcano_plot_width,
+                        height = input$volcano_plot_height,
+                        units = "in",
+                        res = input$volcano_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # heatmap_plot
+    {
+        output$heatmap_meta_data <- renderDT({
+            if (is.null(input$heatmap_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$heatmap_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            return(meta_data)
+        }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+        
+        output$heatmap_group_data <- renderText({
+            if (is.null(input$heatmap_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$heatmap_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$heatmap_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$heatmap_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$heatmap_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$heatmap_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$heatmap_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Heatmap visualizatioin ...", detail = "Heatmap visualizatioin ...")
+            
+            if (input$heatmap_diff_method == "LIMMA") {
+                diff_res <- mlimma(meta_data, group_data)
+            } else if (input$heatmap_diff_method == "OPLS-DA") {
+                diff_res <- DM(2 ** meta_data, group_data)
+            }
+            
+            diff_res_filter <- diff_res %>%
+                filter(
+                    Fold_change > input$heatmap_fold_change |
+                        Fold_change < 1 / input$heatmap_fold_change
+                ) %>%
+                filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                filter(VIP > input$heatmap_VIP)
+            
+            meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
+            p_heatmap <- pHeatmap(
+                meta_data_diff,
+                group_data,
+                fontsize_row = 5,
+                fontsize_col = 4,
+                clustering_method = "ward.D",
+                clustering_distance_cols = "correlation"
+            )
+            p_heatmap
+        })
+        
+        output$heatmap_plot_download <- downloadHandler(
+            filename = function() {
+                paste("HeatmapPlot", input$heatmap_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$heatmap_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$heatmap_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$heatmap_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$heatmap_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Heatmap visualizatioin ...", detail = "Heatmap visualizatioin ...")
+                    
+                    if (input$heatmap_diff_method == "LIMMA") {
+                        diff_res <- mlimma(meta_data, group_data)
+                    } else if (input$heatmap_diff_method == "OPLS-DA") {
+                        diff_res <- DM(2 ** meta_data, group_data)
+                    }
+                    
+                    diff_res_filter <- diff_res %>%
+                        filter(
+                            Fold_change > input$heatmap_fold_change |
+                                Fold_change < 1 / input$heatmap_fold_change
+                        ) %>%
+                        filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                        filter(VIP > input$heatmap_VIP)
+                    
+                    meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
+                    p_heatmap <- pHeatmap(
+                        meta_data_diff,
+                        group_data,
+                        fontsize_row = 5,
+                        fontsize_col = 4,
+                        clustering_method = "ward.D",
+                        clustering_distance_cols = "correlation"
+                    )
+                    p_heatmap
+                })
+                
+                if (input$heatmap_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$heatmap_plot_width,
+                        height = input$heatmap_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$heatmap_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$heatmap_plot_width,
+                        height = input$heatmap_plot_height,
+                        units = "in",
+                        res = input$heatmap_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # network_plot
+    {
+        temp_network <- file.path(session_temp_dir, "network")
+        if (!dir.exists(temp_network)) {
+            dir.create(temp_network, recursive = TRUE, mode = "1777")
+        }
+        
+        output$network_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$network_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
+            }
+        )
+        
+        output$network_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        output$network_demo_nodes_data <- renderDT({
+            nodes <- data.table::fread(
+                "www/demo/nodes.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(nodes %>%
+                       mutate(AveExpr=round(AveExpr,4)) %>%
+                       mutate(t=round(t,4)) %>%
+                       mutate(p_value=round(p_value,4)) %>%
+                       mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                       mutate(B = round(B,4)) %>%
+                       mutate(logP = round(logP,4)), 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(nodes),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_demo_nodes_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_nodes_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/nodes.txt", to = file)
+            }
+        )
+        
+        output$network_demo_edges_data <- renderDT({
+            edges <- read.table(
+                "www/demo/edges.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(edges, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(edges),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_demo_edges_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_demo_edges_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/edges.txt", to = file)
+            }
+        )
+        
+        output$network_user_meta_data <- renderDT({
+            req(input$network_user_meta_data_input)
+            meta_data <- read.table(
+                input$network_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_user_gene_data <- renderDT({
+            req(input$network_user_gene_data_input)
+            gene_data <- read.table(
+                input$network_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$network_user_group_data <- renderDT({
+            req(input$network_user_group_data_input)
+            group_data <- read.table(
+                input$network_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        read_safely <- function(filepath, ...) {
+            tryCatch(
+                read.table(filepath, ...),
+                error = function(e) NULL
+            )
+        }
+        
+        observeEvent({
+            req(input$network_user_meta_data_input, 
+                input$network_user_gene_data_input, 
+                input$network_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$network_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$network_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$network_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2. The column count in **Metabolite Data** and **Gene Data** should match the row count in **Group Data**.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$network_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "sNETlyser starting ...", detail = "sNETlyser starting ...")
+
+            progress$set(value = 10)
+            progress$set(message = "sNETlyser reading datasets ...", detail = "sNETlyser reading datasets ...")
+
+            meta_data <- read.table(
+                input$network_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+
+            gene_data <- read.table(
+                input$network_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+
+            group_data <- read.table(
+                input$network_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+
+            progress$set(value = 50)
+            progress$set(message = "sNETlyser running mlimma and dnet analysis ...", detail = "sNETlyser running mlimma and dnet analysis ...")
+
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+
+            names(diff_meta)[4] <- "p_value"
+            names(diff_gene)[4] <- "p_value"
+
+            network_res <- sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
+            
+            progress$set(value = 80)
+            progress$set(message = "sNETlyser visualizing ...", detail = "sNETlyser visualizing ...")
+            
+            pdf(
+                file = paste(temp_network, "/network_plot.pdf", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                onefile = FALSE
+            )
+            sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+
+            CairoJPEG(
+                filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                width = input$network_plot_width,
+                height = input$network_plot_height,
+                units = "in",
+                res = input$network_plot_dpi,
+                quality = 100
+            )
+            sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
+            dev.off()
+
+            write.table(
+                network_res$node_result,
+                file = paste(temp_network, "/node_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+
+            write.table(
+                network_res$edge_result,
+                file = paste(temp_network, "/edge_result.txt", sep = ""),
+                quote = F,
+                sep = "\t",
+                na = "NA",
+                row.names = F
+            )
+
+            progress$set(value = 100)
+            progress$set(message = "sNETlyser task complete ...", detail = "sNETlyser task complete ...")
+            
+            output$network_plot <- renderImage({
+                list(
+                    src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            
+            output$network_user_nodes_data <- renderDT({
+                req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
+                
+                nodes <- data.table::fread(
+                    paste(temp_network, "/node_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    #head(nodes  %>%
+                  nodes %>%
+                           mutate(AveExpr=round(AveExpr,4)) %>%
+                           mutate(t=round(t,4)) %>%
+                           mutate(p_value=round(p_value,4)) %>%
+                           mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                           mutate(B = round(B,4)) %>%
+                           mutate(logP = round(logP,4)),
+                  #30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(nodes),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$network_user_edges_data <- renderDT({
+                req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+                
+                edges <- read.table(
+                    paste(temp_network, "/edge_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    #head(edges, 30),
+                    edges,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(edges),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+
+        output$network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("NetworkPlot", input$network_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
+            }
+        )
+
+        output$network_user_nodes_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_nodes_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
+            }
+        )
+
+        output$network_user_edges_data_download <- downloadHandler(
+            filename = function() {
+                paste("network_user_edges_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        # observeEvent(input$network_submit, {
+        #     
+        #     network_step <- reactiveVal("Click Submit to start ...")
+        #     
+        #     updateProgressBar(session, id = "network_progress", value = 0)
+        #     network_step("Start reading data ...")
+        #     
+        #     meta_file <- input$network_user_meta_data_input$datapath
+        #     gene_file <- input$network_user_gene_data_input$datapath
+        #     group_file <- input$network_user_group_data_input$datapath
+        #     
+        #     network_nsize <- input$network_nsize
+        #     network_plot_width <- input$network_plot_width
+        #     network_plot_height <- input$network_plot_height
+        #     network_plot_dpi <- input$network_plot_dpi
+        #     
+        #     task1_read_data <- r_bg(function(meta_file, gene_file, group_file) {
+        #         meta_data <- read.table(
+        #             meta_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             row.names = 1,
+        #             stringsAsFactors = FALSE
+        #         )
+        #         
+        #         gene_data <- read.table(
+        #             gene_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        #         
+        #         group_data <- read.table(
+        #             group_file,
+        #             header = TRUE,
+        #             sep = "\t",
+        #             stringsAsFactors = FALSE
+        #         )
+        #         group_data <- as.character(group_data[, 1])
+        # 
+        #         return(list(
+        #             meta_data = meta_data,
+        #             gene_data = gene_data,
+        #             group_data = group_data
+        #         ))
+        #         
+        #         cat(meta_data)
+        #     }, supervise = TRUE, args = list(meta_file = meta_file,
+        #                                      gene_file = gene_file,
+        #                                      group_file = group_file))
+        #     
+        #     observeEvent(task1_read_data$wait(), {
+        #         meta_data <- task1_read_data$get_result()$meta_data
+        #         gene_data <- task1_read_data$get_result()$gene_data
+        #         group_data <- task1_read_data$get_result()$group_data
+        #         
+        #         # print(meta_data)
+        #         
+        #         updateProgressBar(session, id = "network_progress", value = 30)
+        #         network_step("Running mlimma and sNETlyser ...")
+        #         
+        #         task2_run_analysis <- r_bg(function(meta_data, gene_data, group_data, network_nsize, network_plot_width, network_plot_height, network_plot_dpi, temp_network) {
+        #             library(ggplot2)
+        #             library(MNet)
+        #             library(dplyr)
+        #             library(Cairo)
+        #             
+        #             diff_meta <- mlimma(meta_data, group_data)
+        #             diff_gene <- mlimma(gene_data, group_data)
+        #             
+        #             names(diff_meta)[4] <- "p_value"
+        #             names(diff_gene)[4] <- "p_value"
+        #             
+        #             network_res <- sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             
+        #             pdf(
+        #                 file = paste(temp_network, "/network_plot.pdf", sep = ""),
+        #                 width = network_plot_width,
+        #                 height = network_plot_height,
+        #                 onefile = FALSE
+        #             )
+        #             sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             dev.off()
+        #             
+        #             CairoJPEG(
+        #                 filename = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #                 width = network_plot_width,
+        #                 height = network_plot_height,
+        #                 units = "in",
+        #                 res = network_plot_dpi,
+        #                 quality = 100
+        #             )
+        #             sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
+        #             dev.off()
+        #             
+        #             write.table(
+        #                 network_res$node_result,
+        #                 file = paste(temp_network, "/node_result.txt", sep = ""),
+        #                 quote = FALSE,
+        #                 sep = "\t",
+        #                 na = "NA",
+        #                 row.names = FALSE
+        #             )
+        #             
+        #             write.table(
+        #                 network_res$edge_result,
+        #                 file = paste(temp_network, "/edge_result.txt", sep = ""),
+        #                 quote = FALSE,
+        #                 sep = "\t",
+        #                 na = "NA",
+        #                 row.names = FALSE
+        #             )
+        #             
+        #             return(list(
+        #                 diff_meta = diff_meta
+        #             ))
+        #         }, supervise = TRUE, 
+        #         args = list(meta_data = meta_data,
+        #                     gene_data = gene_data,
+        #                     group_data = group_data,
+        #                     network_nsize = network_nsize,
+        #                     network_plot_width = network_plot_width,
+        #                     network_plot_height = network_plot_height,
+        #                     network_plot_dpi = network_plot_dpi,
+        #                     temp_network = temp_network))
+        #         
+        #         observeEvent(task2_run_analysis$wait(), {
+        #             # print(task2_run_analysis$get_result()$diff_meta)
+        #             
+        #             updateProgressBar(session, id = "network_progress", value = 100)
+        #             network_step("Analysis complete ...")
+        #             
+        #             output$network_plot <- renderImage({
+        #                 list(
+        #                     src = paste(temp_network, "/network_plot.jpeg", sep = ""),
+        #                     contentType = "image/jpeg",
+        #                     width = "100%",
+        #                     height = "auto"
+        #                 )
+        #             }, deleteFile = FALSE)
+        #             
+        #             output$network_user_nodes_data <- renderDT({
+        #                 req(file.exists(paste(temp_network, "/node_result.txt", sep = "")))
+        #                 
+        #                 nodes <- read.table(
+        #                     paste(temp_network, "/node_result.txt", sep = ""),
+        #                     header = TRUE,
+        #                     sep = "\t",
+        #                     stringsAsFactors = FALSE
+        #                 )
+        #                 
+        #                 datatable(
+        #                     head(nodes, 30),
+        #                     rownames = TRUE,
+        #                     options = list(
+        #                         pageLength = 10,
+        #                         scrollX = TRUE
+        #                     )
+        #                 )
+        #             }, server = TRUE)
+        # 
+        #             output$network_user_edges_data <- renderDT({
+        #                 req(file.exists(paste(temp_network, "/edge_result.txt", sep = "")))
+        #                 
+        #                 edges <- read.table(
+        #                     paste(temp_network, "/edge_result.txt", sep = ""),
+        #                     header = TRUE,
+        #                     sep = "\t",
+        #                     stringsAsFactors = FALSE
+        #                 )
+        #                 
+        #                 datatable(
+        #                     head(edges, 30),
+        #                     rownames = TRUE,
+        #                     options = list(
+        #                         pageLength = 10,
+        #                         scrollX = TRUE
+        #                     )
+        #                 )
+        #             }, server = TRUE)
+        #         })
+        #     })
+        # })
+        # 
+        # output$network_plot_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("NetworkPlot", input$network_plot_format, sep = ".")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/network_plot.", input$network_plot_format, sep = ""), to = file)
+        #     }
+        # )
+        # 
+        # output$network_user_nodes_data_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("network_user_nodes_data", ".txt", sep = "")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/node_result.txt", sep = ""), to = file)
+        #     }
+        # )
+        # 
+        # output$network_user_edges_data_download <- downloadHandler(
+        #     filename = function() {
+        #         paste("network_user_edges_data", ".txt", sep = "")
+        #     },
+        #     content = function(file) {
+        #         file.copy(from = paste(temp_network, "/edge_result.txt", sep = ""), to = file)
+        #     }
+        # )
+    }
+    
+    # diff_network
+    {
+        output$diff_network_meta_data <- renderDT({
+            if (is.null(input$diff_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$diff_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$diff_network_gene_data <- renderDT({
+            if (is.null(input$diff_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$diff_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$diff_network_group_data <- renderText({
+            if (is.null(input$diff_network_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$diff_network_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$diff_network_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$diff_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$diff_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$diff_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$diff_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$diff_network_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$diff_network_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Metabolism related subnetwork ...", detail = "Metabolism related subnetwork ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            names(diff_meta)[4] <- "p_value"
+            names(diff_gene)[4] <- "p_value"
+            
+            diff_metabolite <- diff_meta %>%
+                filter(adj.P.Val < input$diff_network_padj) %>%
+                filter(abs(logFC) > input$diff_network_logfc)
+            diff_gene1 <- diff_gene %>%
+                filter(adj.P.Val < input$diff_network_padj) %>%
+                filter(abs(logFC) > input$diff_network_logfc)
+            
+            diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+            diff_network_res
+        })
+        
+        output$diff_network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("DiffNetwork",
+                      input$diff_network_plot_format,
+                      sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$diff_network_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$diff_network_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$diff_network_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$diff_network_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$diff_network_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$diff_network_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Metabolism related subnetwork ...", detail = "Metabolism related subnetwork ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    names(diff_meta)[4] <- "p_value"
+                    names(diff_gene)[4] <- "p_value"
+                    
+                    diff_metabolite <- diff_meta %>%
+                        filter(adj.P.Val < input$diff_network_padj) %>%
+                        filter(abs(logFC) > input$diff_network_logfc)
+                    diff_gene1 <- diff_gene %>%
+                        filter(adj.P.Val < input$diff_network_padj) %>%
+                        filter(abs(logFC) > input$diff_network_logfc)
+                    
+                    diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+                    diff_network_res
+                })
+                
+                if (input$diff_network_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$diff_network_plot_width,
+                        height = input$diff_network_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$diff_network_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$diff_network_plot_width,
+                        height = input$diff_network_plot_height,
+                        units = "in",
+                        res = input$diff_network_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # corr_network
+    {
+        output$corr_network_meta_data <- renderDT({
+            if (is.null(input$corr_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$corr_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$corr_network_gene_data <- renderDT({
+            if (is.null(input$corr_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$corr_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$corr_network_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$corr_network_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$corr_network_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$corr_network_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$corr_network_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "Correlation Network analysis ...", detail = "Correlation Network analysis ...")
+            
+            corr_network_res <- pNetCor(meta_data,
+                                        gene_data,
+                                        cor_threshold = input$corr_network_threshold)
+            corr_network_res
+        })
+        
+        output$corr_network_plot_download <- downloadHandler(
+            filename = function() {
+                paste("corr_networkPlot",
+                      input$corr_network_plot_format,
+                      sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$corr_network_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$corr_network_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$corr_network_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$corr_network_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "Correlation Network analysis ...", detail = "Correlation Network analysis ...")
+                    
+                    corr_network_res <- pNetCor(meta_data,
+                                                gene_data,
+                                                cor_threshold = input$corr_network_threshold)
+                    corr_network_res
+                })
+                
+                if (input$corr_network_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$corr_network_plot_width,
+                        height = input$corr_network_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$corr_network_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$corr_network_plot_width,
+                        height = input$corr_network_plot_height,
+                        units = "in",
+                        res = input$corr_network_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # ePEA
+    {
+        temp_epea <- file.path(session_temp_dir, "epea")
+        if (!dir.exists(temp_epea)) {
+            dir.create(temp_epea, recursive = TRUE, mode = "1777")
+        }
+        
+        output$epea_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$epea_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
+            }
+        )
+        
+        output$epea_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$epea_user_meta_data_input, 
+                input$epea_user_gene_data_input, 
+                input$epea_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$epea_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$epea_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$epea_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.The column count in **Metabolite Data** and **Gene Data** should match the row count in **Group Data**.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$epea_demo_up_data <- renderDT({
+            epea_up <- data.table::fread(
+                "www/demo/epea_up.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(epea_up, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epea_up),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_demo_up_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_up_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/epea_up.txt", to = file)
+            }
+        )
+        
+        output$epea_demo_down_data <- renderDT({
+            epea_down <- data.table::fread(
+                "www/demo/epea_down.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(epea_down, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epea_down),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_demo_down_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_demo_down_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/epea_down.txt", to = file)
+            }
+        )
+        
+        output$epea_user_meta_data <- renderDT({
+            req(input$epea_user_meta_data_input)
+            meta_data <- read.table(
+                input$epea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_user_gene_data <- renderDT({
+            req(input$epea_user_gene_data_input)
+            gene_data <- read.table(
+                input$epea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epea_user_group_data <- renderDT({
+            req(input$epea_user_group_data_input)
+            group_data <- read.table(
+                input$epea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$epea_demo, {
+            output$epea_user_meta_data <- renderDT({
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                return(head(meta_data, 30))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_user_gene_data <- renderDT({
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                return(head(gene_data, 30))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_user_group_data <- renderDT({
+                data("group")
+                group_data <- as.data.frame(group)
+                
+                return(head(group_data, 30))
+            }, options = list(pageLength = 10, scrollX = TRUE), server = TRUE)
+            
+            output$epea_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                data("group")
+                group_data <- group
+                
+                progress$set(value = 100)
+                progress$set(message = "ePEA Pathway ...", detail = "ePEA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                all_data <- rbind(diff_gene, diff_meta)
+                
+                all_data_up <- all_data %>%
+                    filter(logFC > input$epea_logfc) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_up <- ePEAlyser(
+                    all_data_up$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                all_data_down <- all_data %>%
+                    filter(logFC < -(input$epea_padj)) %>%
+                    filter(adj.P.Val < input$epea_padj)
+                result_down <- ePEAlyser(
+                    all_data_down$name,
+                    out = "Extended",
+                    p_cutoff = input$epea_p_cutoff
+                )
+                
+                plot <- cowplot::plot_grid(
+                    plotlist = list(
+                        result_up$p_barplot,
+                        result_up$gp,
+                        result_down$p_barplot,
+                        result_down$gp
+                    ),
+                    labels = "AUTO",
+                    ncol = 1
+                )
+                plot
+            })
+        })
+        
+        observeEvent(input$epea_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "ePEAlyser starting ...", detail = "ePEAlyser starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "ePEAlyser reading datasets ...", detail = "ePEAlyser reading datasets ...")
+            
+            meta_data <- read.table(
+                input$epea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$epea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$epea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "ePEAlyser analyzing ...", detail = "ePEAlyser analyzing ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            all_data <- rbind(diff_gene, diff_meta)
+            
+            all_data_up <- all_data %>%
+                filter(logFC > input$epea_logfc) %>%
+                filter(adj.P.Val < input$epea_padj)
+            result_up <- ePEAlyser(
+                all_data_up$name,
+                out = "Extended",
+                p_cutoff = input$epea_p_cutoff
+            )
+            write.table(
+                as.data.frame(result_up$output),
+                file = paste(temp_epea, "/epea_up.txt", sep = ""),
+                sep = "\t",
+                quote = FALSE,
+                row.names = FALSE
+            )
+            
+            all_data_down <- all_data %>%
+                filter(logFC < -(input$epea_padj)) %>%
+                filter(adj.P.Val < input$epea_padj)
+            result_down <- ePEAlyser(
+                all_data_down$name,
+                out = "Extended",
+                p_cutoff = input$epea_p_cutoff
+            )
+            write.table(
+                as.data.frame(result_down$output),
+                file = paste(temp_epea, "/epea_down.txt", sep = ""),
+                sep = "\t",
+                quote = FALSE,
+                row.names = FALSE
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "ePEAlyser visualizing ...", detail = "ePEAlyser visualizing ...")
+            
+            plot <- function() {
+                cowplot::plot_grid(
+                    plotlist = list(
+                        result_up$p_barplot,
+                        # result_up$gp,
+                        result_down$p_barplot
+                        # result_down$gp
+                    ),
+                    labels = "AUTO",
+                    ncol = 1
+                )
+            }
+            
+            pdf(
+                file = paste(temp_epea, "/epea_plot.pdf", sep = ""),
+                width = input$epea_plot_width,
+                height = input$epea_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_epea, "/epea_plot.jpeg", sep = ""),
+                width = input$epea_plot_width,
+                height = input$epea_plot_height,
+                units = "in",
+                res = input$epea_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "ePEAlyser task complete ...", detail = "ePEAlyser task complete ...")
+            
+            output$epea_user_up_data <- renderDT({
+                req(file.exists(paste(temp_epea, "/epea_up.txt", sep = "")))
+                
+                epea_up <- data.table::fread(
+                    paste(temp_epea, "/epea_up.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    epea_up,
+                    #head(epea_up, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epea_up),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epea_user_down_data <- renderDT({
+                req(file.exists(paste(temp_epea, "/epea_down.txt", sep = "")))
+                
+                epea_down <- data.table::fread(
+                    paste(temp_epea, "/epea_down.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    #head(epea_down, 30),
+                    epea_down,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epea_down),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epea_plot <- renderImage({
+                list(
+                    src = paste(temp_epea, "/epea_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$epea_user_up_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_up_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_up.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$epea_user_down_data_download <- downloadHandler(
+            filename = function() {
+                paste("epea_user_down_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_down.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$epea_plot_download <- downloadHandler(
+            filename = function() {
+                paste("ePEAPlot", input$epea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epea, "/epea_plot.", input$epea_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # mPEA
+    {
+        output$mpea_meta_data <- renderDT({
+            if (is.null(input$mpea_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$mpea_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$mpea_group_data <- renderText({
+            if (is.null(input$mpea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$mpea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$mpea_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$mpea_meta_data_input)) {
+                data("meta_dat")
+                meta_data <- meta_dat
+            } else{
+                meta_data <- read.table(
+                    input$mpea_meta_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    row.names = 1,
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$mpea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$mpea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "mPEA Pathway ...", detail = "mPEA Pathway ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            
+            diff_meta_up <- diff_meta %>%
+                filter(logFC > input$mpea_logfc) %>%
+                filter(adj.P.Val < input$mpea_padj)
+            result_up <- ePEAlyser(diff_meta_up$name,
+                                         out = "metabolite",
+                                         p_cutoff = input$mpea_p_cutoff)
+            
+            diff_meta_down <- diff_meta %>%
+                filter(logFC < -(input$mpea_padj)) %>%
+                filter(adj.P.Val < input$mpea_padj)
+            result_down <- ePEAlyser(
+                diff_meta_down$name,
+                out = "metabolite",
+                p_cutoff = input$mpea_p_cutoff
+            )
+            
+            plot <- cowplot::plot_grid(
+                plotlist = list(
+                    result_up$p_barplot,
+                    result_up$gp,
+                    result_down$p_barplot,
+                    result_down$gp
+                ),
+                ncol = 1,
+                align = "v"
+            )
+            plot
+        })
+        
+        output$mpea_plot_download <- downloadHandler(
+            filename = function() {
+                paste("mPEA", input$mpea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$mpea_meta_data_input)) {
+                        data("meta_dat")
+                        meta_data <- meta_dat
+                    } else{
+                        meta_data <- read.table(
+                            input$mpea_meta_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            row.names = 1,
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$mpea_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$mpea_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "mPEA Pathway ...", detail = "mPEA Pathway ...")
+                    
+                    diff_meta <- mlimma(meta_data, group_data)
+                    
+                    diff_meta_up <- diff_meta %>%
+                        filter(logFC > input$mpea_logfc) %>%
+                        filter(adj.P.Val < input$mpea_padj)
+                    result_up <- ePEAlyser(
+                        diff_meta_up$name,
+                        out = "metabolite",
+                        p_cutoff = input$mpea_p_cutoff
+                    )
+                    
+                    diff_meta_down <- diff_meta %>%
+                        filter(logFC < -(input$mpea_padj)) %>%
+                        filter(adj.P.Val < input$mpea_padj)
+                    result_down <- ePEAlyser(
+                        diff_meta_down$name,
+                        out = "metabolite",
+                        p_cutoff = input$mpea_p_cutoff
+                    )
+                    
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
+                    )
+                    plot
+                })
+                
+                if (input$mpea_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$mpea_plot_width,
+                        height = input$mpea_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$mpea_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$mpea_plot_width,
+                        height = input$mpea_plot_height,
+                        units = "in",
+                        res = input$mpea_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # gPEA
+    {
+        output$gpea_gene_data <- renderDT({
+            if (is.null(input$gpea_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$gpea_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$gpea_group_data <- renderText({
+            if (is.null(input$gpea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$gpea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            return(group_data)
+        })
+        
+        output$gpea_plot <- renderPlot({
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Starting program ...", detail = "Starting program ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Reading data ...", detail = "Reading data ...")
+            
+            if (is.null(input$gpea_gene_data_input)) {
+                data("gene_dat")
+                gene_data <- gene_dat
+            } else{
+                gene_data <- read.table(
+                    input$gpea_gene_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+            }
+            
+            if (is.null(input$gpea_group_data_input)) {
+                data("group")
+                group_data <- group
+            } else{
+                group_data <- read.table(
+                    input$gpea_group_data_input$datapath,
+                    header = T,
+                    sep = "\t",
+                    stringsAsFactors = F
+                )
+                group_data <- as.character(group_data[, 1])
+            }
+            
+            progress$set(value = 100)
+            progress$set(message = "gPEA Pathway ...", detail = "gPEA Pathway ...")
+            
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            diff_gene_up <- diff_gene %>%
+                filter(logFC > input$gpea_logfc) %>%
+                filter(adj.P.Val < input$gpea_padj)
+            result_up <- ePEAlyser(diff_gene_up$name,
+                                         out = "gene",
+                                         p_cutoff = input$gpea_p_cutoff)
+            
+            diff_gene_down <- diff_gene %>%
+                filter(logFC < -(input$gpea_padj)) %>%
+                filter(adj.P.Val < input$gpea_padj)
+            result_down <- ePEAlyser(
+                diff_gene_down$name,
+                out = "gene",
+                p_cutoff = input$gpea_p_cutoff
+            )
+            
+            plot <- cowplot::plot_grid(
+                plotlist = list(
+                    result_up$p_barplot,
+                    result_up$gp,
+                    result_down$p_barplot,
+                    result_down$gp
+                ),
+                ncol = 1,
+                align = "v"
+            )
+            plot
+        })
+        
+        output$gpea_plot_download <- downloadHandler(
+            filename = function() {
+                paste("gPEA", input$gpea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                plot <- reactive({
+                    progress <- Progress$new(session, min = 1, max = 100)
+                    on.exit(progress$close())
+                    progress$set(value = 0)
+                    progress$set(message = "Starting program ...", detail = "Starting program ...")
+                    
+                    progress$set(value = 10)
+                    progress$set(message = "Reading data ...", detail = "Reading data ...")
+                    
+                    if (is.null(input$gpea_gene_data_input)) {
+                        data("gene_dat")
+                        gene_data <- gene_dat
+                    } else{
+                        gene_data <- read.table(
+                            input$gpea_gene_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                    }
+                    
+                    if (is.null(input$gpea_group_data_input)) {
+                        data("group")
+                        group_data <- group
+                    } else{
+                        group_data <- read.table(
+                            input$gpea_group_data_input$datapath,
+                            header = T,
+                            sep = "\t",
+                            stringsAsFactors = F
+                        )
+                        group_data <- as.character(group_data[, 1])
+                    }
+                    
+                    progress$set(value = 100)
+                    progress$set(message = "gPEA Pathway ...", detail = "gPEA Pathway ...")
+                    
+                    diff_gene <- mlimma(gene_data, group_data)
+                    
+                    diff_gene_up <- diff_gene %>%
+                        filter(logFC > input$gpea_logfc) %>%
+                        filter(adj.P.Val < input$gpea_padj)
+                    result_up <- ePEAlyser(
+                        diff_gene_up$name,
+                        out = "gene",
+                        p_cutoff = input$gpea_p_cutoff
+                    )
+                    
+                    diff_gene_down <- diff_gene %>%
+                        filter(logFC < -(input$gpea_padj)) %>%
+                        filter(adj.P.Val < input$gpea_padj)
+                    result_down <- ePEAlyser(
+                        diff_gene_down$name,
+                        out = "gene",
+                        p_cutoff = input$gpea_p_cutoff
+                    )
+                    
+                    plot <- cowplot::plot_grid(
+                        plotlist = list(
+                            result_up$p_barplot,
+                            result_up$gp,
+                            result_down$p_barplot,
+                            result_down$gp
+                        ),
+                        ncol = 1,
+                        align = "v"
+                    )
+                    plot
+                })
+                
+                if (input$gpea_plot_format == "pdf") {
+                    pdf(
+                        file = file,
+                        width = input$gpea_plot_width,
+                        height = input$gpea_plot_height,
+                        onefile = FALSE
+                    )
+                    print(plot())
+                    dev.off()
+                } else if (input$gpea_plot_format == "jpeg") {
+                    jpeg(
+                        filename = file,
+                        width = input$gpea_plot_width,
+                        height = input$gpea_plot_height,
+                        units = "in",
+                        res = input$gpea_plot_dpi,
+                        quality = 100
+                    )
+                    print(plot())
+                    dev.off()
+                }
+            }
+        )
+    }
+    
+    # ePDA
+    {
+        temp_epda <- file.path(session_temp_dir, "epda")
+        if (!dir.exists(temp_epda)) {
+            dir.create(temp_epda, recursive = TRUE, mode = "1777")
+        }
+        
+        output$epda_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$epda_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
+            }
+        )
+        
+        output$epda_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$epda_user_meta_data_input, 
+                input$epda_user_gene_data_input, 
+                input$epda_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$epda_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$epda_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$epda_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.The column count in **Metabolite Data** and **Gene Data** should match the row count in **Group Data**.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$epda_demo_result_data <- renderDT({
+            epda_result <- read.table(
+                "www/demo/epda_result.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(epda_result %>% mutate(DA_score=round(DA_score,4)), 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(epda_result),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/epda_result.txt", to = file)
+            }
+        )
+        
+        output$epda_user_meta_data <- renderDT({
+            req(input$epda_user_meta_data_input)
+            meta_data <- read.table(
+                input$epda_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_user_gene_data <- renderDT({
+            req(input$epda_user_gene_data_input)
+            gene_data <- read.table(
+                input$epda_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$epda_user_group_data <- renderDT({
+            req(input$epda_user_group_data_input)
+            group_data <- read.table(
+                input$epda_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$epda_demo, {
+            output$epda_user_meta_data <- renderDT({
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                datatable(
+                    head(meta_data, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE,
+                        columnDefs = list(list(
+                            targets = 1:ncol(meta_data),
+                            render = JS(
+                                "function(data, type, row, meta) {",
+                                "  if (data === null || data === '') return 'NA';",
+                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                                "}"
+                            )
+                        ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epda_user_gene_data <- renderDT({
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                datatable(
+                    head(gene_data, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE,
+                        columnDefs = list(list(
+                            targets = 1:ncol(gene_data),
+                            render = JS(
+                                "function(data, type, row, meta) {",
+                                "  if (data === null || data === '') return 'NA';",
+                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                                "}"
+                            )
+                        ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epda_user_group_data <- renderDT({
+                data("group")
+                group_data <- as.data.frame(group)
+                
+                datatable(
+                    head(group_data, 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE,
+                        columnDefs = list(list(
+                            targets = 1:ncol(group_data),
+                            render = JS(
+                                "function(data, type, row, meta) {",
+                                "  if (data === null || data === '') return 'NA';",
+                                "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                                "}"
+                            )
+                        ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epda_plot <- renderPlot({
+                progress <- Progress$new(session, min = 1, max = 100)
+                on.exit(progress$close())
+                progress$set(value = 0)
+                progress$set(message = "Starting program ...", detail = "Starting program ...")
+                
+                progress$set(value = 10)
+                progress$set(message = "Reading data ...", detail = "Reading data ...")
+                
+                data("meta_dat")
+                meta_data <- meta_dat
+                
+                data("gene_dat")
+                gene_data <- gene_dat
+                
+                data("group")
+                group_data <- group
+                
+                progress$set(value = 100)
+                progress$set(message = "ePDA Pathway ...", detail = "ePDA Pathway ...")
+                
+                diff_meta <- mlimma(meta_data, group_data)
+                diff_gene <- mlimma(gene_data, group_data)
+                
+                diff_gene_increase <-  diff_gene %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                diff_gene_decrease <- diff_gene %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_increase <- diff_meta %>%
+                    filter(logFC > input$epda_logfc) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                diff_meta_decrease <- diff_meta %>%
+                    filter(logFC < -(input$epda_logfc)) %>%
+                    filter(adj.P.Val < input$epda_padj)
+                
+                epda_res <- ePDAlyser(
+                    c(
+                        diff_gene_increase$name,
+                        diff_meta_increase$name
+                    ),
+                    c(
+                        diff_gene_decrease$name,
+                        diff_meta_decrease$name
+                    ),
+                    c(diff_gene$name, diff_meta$name),
+                    sort_plot = "category",
+                    min_measured_num = 20,
+                    out = "Extended"
+                )
+                epda_res
+            })
+        })
+        
+        observeEvent(input$epda_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "ePDAlyser starting ...", detail = "ePDAlyser starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "ePDAlyser reading datasets ...", detail = "ePDAlyser reading datasets ...")
+            
+            meta_data <- read.table(
+                input$epda_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$epda_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$epda_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "ePDAlyser analyzing ...", detail = "ePDAlyser analyzing ...")
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            diff_gene_increase <-  diff_gene %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            diff_gene_decrease <- diff_gene %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_increase <- diff_meta %>%
+                filter(logFC > input$epda_logfc) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            diff_meta_decrease <- diff_meta %>%
+                filter(logFC < -(input$epda_logfc)) %>%
+                filter(adj.P.Val < input$epda_padj)
+            
+            epda_res <- ePDAlyser(
+                c(
+                    diff_gene_increase$name,
+                    diff_meta_increase$name
+                ),
+                c(
+                    diff_gene_decrease$name,
+                    diff_meta_decrease$name
+                ),
+                c(diff_gene$name, diff_meta$name),
+                sort_plot = "category",
+                min_measured_num = 20,
+                out = "Extended"
+            )
+            
+            write.table(
+                as.data.frame(epda_res$result),
+                file = paste(temp_epda, "/epda_result.txt", sep = ""),
+                sep = "\t",
+                quote = FALSE,
+                row.names = FALSE
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "ePDAlyser visualizing ...", detail = "ePDAlyser visualizing ...")
+            
+            pdf(
+                file = paste(temp_epda, "/epda_plot.pdf", sep = ""),
+                width = input$epda_plot_width,
+                height = input$epda_plot_height,
+                onefile = FALSE
+            )
+            print(epda_res$p)
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_epda, "/epda_plot.jpeg", sep = ""),
+                width = input$epda_plot_width,
+                height = input$epda_plot_height,
+                units = "in",
+                res = input$epda_plot_dpi,
+                quality = 100
+            )
+            print(epda_res$p)
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "ePDAlyser task complete ...", detail = "ePDAlyser task complete ...")
+            
+            output$epda_user_result_data <- renderDT({
+                req(file.exists(paste(temp_epda, "/epda_result.txt", sep = "")))
+                
+                epda_result <- read.table(
+                    paste(temp_epda, "/epda_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    #head(epda_result %>% mutate(DA_score=round(DA_score,4)), 30),
+                    epda_result %>% mutate(DA_score=round(DA_score,4)),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(epda_result),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$epda_plot <- renderImage({
+                list(
+                    src = paste(temp_epda, "/epda_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$epda_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("epda_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epda, "/epda_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$epda_plot_download <- downloadHandler(
+            filename = function() {
+                paste("ePDAPlot", input$epda_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_epda, "/epda_plot.", input$epda_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # eSEA
+    {
+        temp_esea <- file.path(session_temp_dir, "esea")
+        if (!dir.exists(temp_esea)) {
+            dir.create(temp_esea, recursive = TRUE, mode = "1777")
+        }
+        
+        output$esea_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$esea_demo_gene_data <- renderDT({
+            data("gene_dat")
+            gene_data <- gene_dat
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_demo_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/gene_dat.txt", to = file)
+            }
+        )
+        
+        output$esea_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$esea_user_meta_data_input, 
+                input$esea_user_gene_data_input, 
+                input$esea_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$esea_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            gene_data <- read_safely(
+                input$esea_user_gene_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$esea_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            meta_gene_match <- identical(colnames(meta_data), colnames(gene_data))
+            group_gene_match <- nrow(group_data) == ncol(gene_data)
+            group_one_column <- ncol(group_data) == 1
+            
+            if (!meta_gene_match || !group_gene_match || !group_one_column) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data** and **Gene Data** should have the same columns.
+                        
+                        2.The column count in **Metabolite Data** and **Gene Data** should match the row count in **Group Data**.
+                        
+                        3.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$esea_demo_result_data <- renderDT({
+            esea_result <- read.table(
+                "www/demo/esea_result.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                head(esea_result %>%
+                       mutate(pval=round(pval,4)) %>%
+                       mutate(padj=round(padj,4)) %>%
+                       mutate(log2err=round(log2err,4)) %>%
+                       mutate(ES=round(ES,4)) %>%
+                       mutate(NES=round(NES,4)), 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                    # columnDefs = list(list(
+                    #     targets = 1:ncol(esea_result),
+                    #     render = JS(
+                    #         "function(data, type, row, meta) {",
+                    #         "  if (data === null || data === '') return 'NA';",
+                    #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                    #         "}"
+                    #     )
+                    # ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/esea_result.txt", to = file)
+            }
+        )
+        
+        output$esea_user_meta_data <- renderDT({
+            req(input$esea_user_meta_data_input)
+            meta_data <- read.table(
+                input$esea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(meta_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(meta_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_user_gene_data <- renderDT({
+            req(input$esea_user_gene_data_input)
+            gene_data <- read.table(
+                input$esea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(gene_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(gene_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        output$esea_user_group_data <- renderDT({
+            req(input$esea_user_group_data_input)
+            group_data <- read.table(
+                input$esea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                head(group_data, 30),
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE,
+                    columnDefs = list(list(
+                        targets = 1:ncol(group_data),
+                        render = JS(
+                            "function(data, type, row, meta) {",
+                            "  if (data === null || data === '') return 'NA';",
+                            "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                            "}"
+                        )
+                    ))
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$esea_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "eSEAlyser starting ...", detail = "eSEAlyser starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "eSEAlyser reading datasets ...", detail = "eSEAlyser reading datasets ...")
+            
+            meta_data <- read.table(
+                input$esea_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            gene_data <- read.table(
+                input$esea_user_gene_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$esea_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            diff_meta <- mlimma(meta_data, group_data)
+            diff_gene <- mlimma(gene_data, group_data)
+            
+            meta.data <- diff_meta$logFC
+            names(meta.data) <- diff_meta$name
+            
+            gene.data <- diff_gene$logFC
+            names(gene.data) <- diff_gene$name
+            
+            data <- c(meta.data, gene.data)
+            
+            result <- eSEAlyser(data, out = "Extended")
+
+            write.table(
+                result,
+                paste(temp_esea, "/esea_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "eSEAlyser analyzing ...", detail = "eSEAlyser analyzing ...")
+            
+            result_filter <- result %>%
+              dplyr::filter(pval < 0.1) %>%
+              arrange(NES) %>%
+              mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 80)
+            progress$set(message = "eSEAlyser visualizing ...", detail = "eSEAlyser visualizing ...")
+            
+            p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
+              geom_bar(stat="identity")+
+              scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
+              theme_bw()+
+              labs(x=NULL)+
+              coord_flip()
+            
+            ggsave(paste0(temp_esea, "/esea_plot.pdf"),p,
+                   width = input$esea_plot_width,
+                   height = input$esea_plot_height)
+            ggsave(paste0(temp_esea, "/esea_plot.jpeg"),
+                   p,
+                   width = input$esea_plot_width,
+                   height = input$esea_plot_height,
+                   units = "in",
+                   dpi = input$esea_plot_dpi)
+            
+            plot <- function(){
+                pESEA(input$esea_pathway, data, out = "Extended")
+            }
+            
+            pdf(
+                file = paste(temp_esea, "/esea_interested_plot.pdf", sep = ""),
+                width = input$esea_plot_width,
+                height = input$esea_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                width = input$esea_plot_width,
+                height = input$esea_plot_height,
+                units = "in",
+                res = input$esea_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "eSEAlyser task complete ...", detail = "eSEAlyser task complete ...")
+            
+            output$esea_user_result_data <- renderDT({
+                req(file.exists(paste(temp_esea, "/esea_result.txt", sep = "")))
+                
+                esea_result <- read.table(
+                    paste(temp_esea, "/esea_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    #head(esea_result %>%
+                    esea_result %>%
+                           mutate(pval=round(pval,4)) %>%
+                           mutate(padj=round(padj,4)) %>%
+                           mutate(log2err=round(log2err,4)) %>%
+                           mutate(ES=round(ES,4)) %>%
+                           mutate(NES=round(NES,4)),
+                          # mutate(NES=round(NES,4)), 30),
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                        # columnDefs = list(list(
+                        #     targets = 1:ncol(esea_result),
+                        #     render = JS(
+                        #         "function(data, type, row, meta) {",
+                        #         "  if (data === null || data === '') return 'NA';",
+                        #         "  return isNaN(parseFloat(data)) ? data : parseFloat(data).toFixed(4);",
+                        #         "}"
+                        #     )
+                        # ))
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$esea_plot <- renderImage({
+                list(
+                    src = paste0(temp_esea, "/esea_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            
+            output$esea_interested_plot <- renderImage({
+                list(
+                    src = paste(temp_esea, "/esea_interested_plot.jpeg", sep = ""),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$esea_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("esea_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_esea, "/esea_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$esea_plot_download <- downloadHandler(
+          filename = function() {
+            paste("eSEAPlot", input$esea_plot_format, sep = ".")
+          },
+          content = function(file) {
+            file.copy(from = paste(temp_esea, "/esea_plot.", input$esea_plot_format, sep = ""), to = file)
+          }
+        )
+        
+        output$esea_interested_plot_download <- downloadHandler(
+            filename = function() {
+                paste("eSEAPlot_interested", input$esea_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_esea, "/esea_interested_plot.", input$esea_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # name2refmet
+    {
+        temp_name2refmet <- file.path(session_temp_dir, "name2refmet")
+        if (!dir.exists(temp_name2refmet)) {
+            dir.create(temp_name2refmet, recursive = TRUE, mode = "1777")
+        }
+        
+        observeEvent(input$name2refmet_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Name2Refmet starting ...", detail = "Name2Refmet starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Name2Refmet reading datasets ...", detail = "Name2Refmet reading datasets ...")
+            
+            progress$set(value = 50)
+            progress$set(message = "Name2Refmet analyzing ...", detail = "Name2Refmet analyzing ...")
+            
+            name_data <- input$name2refmet_user_name_data_input
+            
+            result <- name2refmet(name_data)
+            
+            write.table(
+                result,
+                paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+
+            progress$set(value = 100)
+            progress$set(message = "Name2Refmet task complete ...", detail = "Name2Refmet task complete ...")
+            
+            output$name2refmet_user_result_data <- renderDT({
+                req(file.exists(paste(temp_name2refmet, "/name2refmet_result.txt", sep = "")))
+                
+                name2refmet_result <- read.table(
+                    paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    name2refmet_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$name2refmet_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2refmet_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_name2refmet, "/name2refmet_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # name2keggid
+    {
+        temp_name2keggid <- file.path(session_temp_dir, "name2keggid")
+        if (!dir.exists(temp_name2keggid)) {
+            dir.create(temp_name2keggid, recursive = TRUE, mode = "1777")
+        }
+        
+        output$name2keggid_user_name_data <- renderDT({
+            req(input$name2keggid_user_name_data_input)
+            name_data <- read.table(
+                input$name2keggid_user_name_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                name_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$name2keggid_user_name_data_input)
+        }, 
+        {
+            name_data <- read_safely(
+                input$name2keggid_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_name_data <- nrow(name_data) >= 1
+            
+            if (!check_name_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$name2keggid_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Name2KEGGID starting ...", detail = "Name2KEGGID starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Name2KEGGID reading datasets ...", detail = "Name2KEGGID reading datasets ...")
+            
+            name_data <- read_safely(
+                input$name2keggid_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Name2KEGGID analyzing ...", detail = "Name2KEGGID analyzing ...")
+            
+            name_data <- as.vector(name_data[, 1])
+            result <- name2keggid(name_data)
+            
+            write.table(
+                result,
+                paste(temp_name2keggid, "/name2keggid_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Name2KEGGID task complete ...", detail = "Name2KEGGID task complete ...")
+            
+            output$name2keggid_user_result_data <- renderDT({
+                req(file.exists(paste(temp_name2keggid, "/name2keggid_result.txt", sep = "")))
+                
+                name2keggid_result <- read.table(
+                    paste(temp_name2keggid, "/name2keggid_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    name2keggid_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$name2keggid_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2keggid_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_name2keggid, "/name2keggid_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # name2pathway
+    {
+        temp_name2pathway <- file.path(session_temp_dir, "name2pathway")
+        if (!dir.exists(temp_name2pathway)) {
+            dir.create(temp_name2pathway, recursive = TRUE, mode = "1777")
+        }
+        
+        output$name2pathway_user_name_data <- renderDT({
+            req(input$name2pathway_user_name_data_input)
+            name_data <- read.table(
+                input$name2pathway_user_name_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                name_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$name2pathway_user_name_data_input)
+        }, 
+        {
+            name_data <- read_safely(
+                input$name2pathway_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_name_data <- nrow(name_data) >= 1
+            
+            if (!check_name_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$name2pathway_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Name2Pathway starting ...", detail = "Name2Pathway starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Name2Pathway reading datasets ...", detail = "Name2Pathway reading datasets ...")
+            
+            name_data <- read_safely(
+                input$name2pathway_user_name_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Name2Pathway analyzing ...", detail = "Name2Pathway analyzing ...")
+            
+            name_data <- as.vector(name_data[, 1])
+            results <- name2pathway(name_data)
+            result <- results$name2pathway
+            
+            write.table(
+                result,
+                paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Name2Pathway task complete ...", detail = "Name2Pathway task complete ...")
+            
+            output$name2pathway_user_result_data <- renderDT({
+                req(file.exists(paste(temp_name2pathway, "/name2pathway_result.txt", sep = "")))
+                
+                name2pathway_result <- read.table(
+                    paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    name2pathway_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$name2pathway_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("name2pathway_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_name2pathway, "/name2pathway_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # keggid2pathway
+    {
+        temp_keggid2pathway <- file.path(session_temp_dir, "keggid2pathway")
+        if (!dir.exists(temp_keggid2pathway)) {
+            dir.create(temp_keggid2pathway, recursive = TRUE, mode = "1777")
+        }
+        
+        output$keggid2pathway_user_keggid_data <- renderDT({
+            req(input$keggid2pathway_user_keggid_data_input)
+            keggid_data <- read.table(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                keggid_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$keggid2pathway_user_keggid_data_input)
+        }, 
+        {
+            keggid_data <- read_safely(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_keggid_data <- nrow(keggid_data) >= 1
+            
+            if (!check_keggid_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**KEGGID Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$keggid2pathway_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "KEGGID2Pathway starting ...", detail = "KEGGID2Pathway starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "KEGGID2Pathway reading datasets ...", detail = "KEGGID2Pathway reading datasets ...")
+            
+            keggid_data <- read_safely(
+                input$keggid2pathway_user_keggid_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "KEGGID2Pathway analyzing ...", detail = "KEGGID2Pathway analyzing ...")
+            
+            keggid_data <- as.vector(keggid_data[, 1])
+            result <- keggid2pathway(keggid_data)
+            
+            write.table(
+                result,
+                paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "KEGGID2Pathway task complete ...", detail = "KEGGID2Pathway task complete ...")
+            
+            output$keggid2pathway_user_result_data <- renderDT({
+                req(file.exists(paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = "")))
+                
+                keggid2pathway_result <- read.table(
+                    paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    keggid2pathway_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$keggid2pathway_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("keggid2pathway_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_keggid2pathway, "/keggid2pathway_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # pathwayinfo
+    {
+        temp_pathwayinfo <- file.path(session_temp_dir, "pathwayinfo")
+        if (!dir.exists(temp_pathwayinfo)) { 
+          dir.create(temp_pathwayinfo, recursive = TRUE, mode = "1777")
+        }
+      
+        observeEvent(input$pathwayinfo_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "PathwayInfo starting ...", detail = "PathwayInfo starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "PathwayInfo reading datasets ...", detail = "PathwayInfo reading datasets ...")
+            
+            progress$set(value = 50)
+            progress$set(message = "PathwayInfo analyzing ...", detail = "PathwayInfo analyzing ...")
+            
+            pathway <- strsplit(input$pathwayinfo_user_pathway_data_input,"\n")[[1]]
+            
+            result <- pathwayinfo(pathway)
+            result_gene <- result$gene_info
+            result_comp <- result$compound_info
+            
+            write.table(
+                result_gene,
+                paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            write.table(
+                result_comp,
+                paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "PathwayInfo task complete ...", detail = "PathwayInfo task complete ...")
+            
+            output$pathwayinfo_user_result_gene_data <- renderDT({
+                req(file.exists(paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = "")))
+                
+                pathwayinfo_result_gene <- read.table(
+                    paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathwayinfo_result_gene,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+            
+            output$pathwayinfo_user_result_comp_data <- renderDT({
+                req(file.exists(paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = "")))
+                
+                pathwayinfo_result_comp <- read.table(
+                    paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathwayinfo_result_comp,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$pathwayinfo_user_result_gene_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_user_result_gene_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathwayinfo, "/pathwayinfo_result_gene.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$pathwayinfo_user_result_comp_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathwayinfo_user_result_comp_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathwayinfo, "/pathwayinfo_result_comp.txt", sep = ""), to = file)
+            }
+        )
+    }
+
+    # pathway2pathwayid
+    {
+        temp_pathway2pathwayid <- file.path(session_temp_dir, "pathway2pathwayid")
+        if (!dir.exists(temp_pathway2pathwayid)) {
+            dir.create(temp_pathway2pathwayid, recursive = TRUE, mode = "1777")
+        }
+        
+        observeEvent(input$pathway2pathwayid_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Pathway2PathwayID starting ...", detail = "Pathway2PathwayID starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Pathway2PathwayID reading datasets ...", detail = "Pathway2PathwayID reading datasets ...")
+            
+            progress$set(value = 50)
+            progress$set(message = "Pathway2PathwayID analyzing ...", detail = "Pathway2PathwayID analyzing ...")
+            
+            pathway_data <- strsplit(input$pathway2pathwayid_user_pathway_data_input,"\n")[[1]]
+            
+            result <- pathway2pathwayid(pathway_data)
+            
+            write.table(
+                result,
+                paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Pathway2PathwayID task complete ...", detail = "Pathway2PathwayID task complete ...")
+            
+            output$pathway2pathwayid_user_result_data <- renderDT({
+                req(file.exists(paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = "")))
+                
+                pathway2pathwayid_result <- read.table(
+                    paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    pathway2pathwayid_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$pathway2pathwayid_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("pathway2pathwayid_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_pathway2pathwayid, "/pathway2pathwayid_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # diff_meta
+    {
+        temp_diff_meta <- file.path(session_temp_dir, "diff_meta")
+        if (!dir.exists(temp_diff_meta)) {
+            dir.create(temp_diff_meta, recursive = TRUE, mode = "1777")
+        }
+        
+        output$diff_meta_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$diff_meta_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$diff_meta_user_meta_data_input,
+                input$diff_meta_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$diff_meta_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$diff_meta_demo_result_data <- renderDT({
+            diff_meta_result <- read.table(
+                "www/demo/diff_meta.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                diff_meta_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/diff_meta.txt", to = file)
+            }
+        )
+        
+        output$diff_meta_user_meta_data <- renderDT({
+            req(input$diff_meta_user_meta_data_input)
+            meta_data <- read.table(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$diff_meta_user_group_data <- renderDT({
+            req(input$diff_meta_user_group_data_input)
+            group_data <- read.table(
+                input$diff_meta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$diff_meta_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Differential analysis starting ...", detail = "Differential analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Differential analysis reading datasets ...", detail = "Differential analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$diff_meta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$diff_meta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group_data <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "Differential analyzing ...", detail = "Differential analyzing ...")
+            
+            if (input$diff_meta_user_diff_method == "MLIMMA") {
+                diff_result <- mlimma(meta_data, group_data)
+            } else if (input$diff_meta_user_diff_method == "OPLS-DA") {
+                diff_result <- DM(2 ** meta_data, group_data)
+            }
+            
+            write.table(
+                diff_result,
+                paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 80)
+            progress$set(message = "Differential analysis visualizing ...", detail = "Differential analysis visualizing ...")
+            
+            if (input$diff_meta_user_diff_method == "OPLS-DA") {
+            volcano_plot <- function(){
+                pVolcano(diff_result, foldchange_threshold = 1.5)
+            }
+            
+            pdf(
+                file = paste(temp_diff_meta, "/diff_meta_volcano_plot.pdf", sep = ""),
+                width = input$diff_meta_plot_width,
+                height = input$diff_meta_plot_height,
+                onefile = FALSE
+            )
+            print(volcano_plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_diff_meta, "/diff_meta_volcano_plot.jpeg", sep = ""),
+                width = input$diff_meta_plot_width,
+                height = input$diff_meta_plot_height,
+                units = "in",
+                res = input$diff_meta_plot_dpi,
+                quality = 100
+            )
+            print(volcano_plot())
+            dev.off()
+            } else {}
+            
+            progress$set(value = 100)
+            progress$set(message = "Differential analysis task complete ...", detail = "Differential analysis task complete ...")
+            
+            output$diff_meta_user_result_data <- renderDT({
+                req(file.exists(paste(temp_diff_meta, "/diff_meta_result.txt", sep = "")))
+                
+                diff_meta_result <- read.table(
+                    paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    diff_meta_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+            
+            if (input$diff_meta_user_diff_method == "OPLS-DA") {
+            output$diff_meta_volcano_plot <- renderImage({
+                list(
+                    src = paste0(temp_diff_meta, "/diff_meta_volcano_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+            } else {
+                output$diff_meta_volcano_plot <- NULL
+            }
+        })
+        
+        output$diff_meta_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""), to = file)
+            }
+        )
+        
+        output$diff_meta_volcano_plot_download <- downloadHandler(
+            filename = function() {
+                paste("diff_meta_volcano_plot", input$diff_meta_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_diff_meta, "/diff_meta_volcano_plot.", input$diff_meta_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # boruta
+    {
+        temp_boruta <- file.path(session_temp_dir, "boruta")
+        if (!dir.exists(temp_boruta)) {
+            dir.create(temp_boruta, recursive = TRUE, mode = "1777")
+        }
+        
+        output$boruta_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$boruta_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("boruta_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$boruta_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$boruta_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("boruta_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$boruta_user_meta_data_input,
+                input$boruta_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$boruta_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$boruta_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$boruta_demo_result_data <- renderDT({
+            boruta_result <- read.table(
+                "www/demo/boruta.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                boruta_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$boruta_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("boruta_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/boruta.txt", to = file)
+            }
+        )
+        
+        output$boruta_user_meta_data <- renderDT({
+            req(input$boruta_user_meta_data_input)
+            meta_data <- read.table(
+                input$boruta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$boruta_user_group_data <- renderDT({
+            req(input$boruta_user_group_data_input)
+            group_data <- read.table(
+                input$boruta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$boruta_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Boruta starting ...", detail = "Boruta starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Boruta analysis reading datasets ...", detail = "Boruta analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$boruta_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$boruta_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "Boruta analyzing ...", detail = "Boruta analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            result <- ML_Boruta(meta_data1)
+            
+            write.table(
+                result,
+                paste(temp_boruta, "/boruta_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "Boruta task complete ...", detail = "Boruta task complete ...")
+            
+            output$boruta_user_result_data <- renderDT({
+                req(file.exists(paste(temp_boruta, "/boruta_result.txt", sep = "")))
+                
+                boruta_result <- read.table(
+                    paste(temp_boruta, "/boruta_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    boruta_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$boruta_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("boruta_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_boruta, "/boruta_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # forest
+    {
+        temp_forest <- file.path(session_temp_dir, "forest")
+        if (!dir.exists(temp_forest)) {
+            dir.create(temp_forest, recursive = TRUE, mode = "1777")
+        }
+        
+        output$forest_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$forest_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("forest_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$forest_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$forest_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("forest_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$forest_user_meta_data_input,
+                input$forest_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$forest_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$forest_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$forest_demo_result_data <- renderDT({
+            forest_result <- read.table(
+                "www/demo/forest.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                forest_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$forest_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("forest_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/forest.txt", to = file)
+            }
+        )
+        
+        output$forest_user_meta_data <- renderDT({
+            req(input$forest_user_meta_data_input)
+            meta_data <- read.table(
+                input$forest_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$forest_user_group_data <- renderDT({
+            req(input$forest_user_group_data_input)
+            group_data <- read.table(
+                input$forest_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$forest_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Forest starting ...", detail = "Forest starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Forest analysis reading datasets ...", detail = "Forest analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$forest_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$forest_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "Forest analyzing ...", detail = "Forest analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            results <- ML_RF(meta_data1)
+            result <- results$feature_result
+            
+            write.table(
+                result,
+                paste(temp_forest, "/forest_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "Forest task complete ...", detail = "Forest task complete ...")
+            
+            output$forest_user_result_data <- renderDT({
+                req(file.exists(paste(temp_forest, "/forest_result.txt", sep = "")))
+                
+                forest_result <- read.table(
+                    paste(temp_forest, "/forest_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    forest_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$forest_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("forest_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_forest, "/forest_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # xgboost
+    {
+        temp_xgboost <- file.path(session_temp_dir, "xgboost")
+        if (!dir.exists(temp_xgboost)) {
+            dir.create(temp_xgboost, recursive = TRUE, mode = "1777")
+        }
+        
+        output$xgboost_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$xgboost_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$xgboost_user_meta_data_input,
+                input$xgboost_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$xgboost_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$xgboost_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$xgboost_demo_result_data <- renderDT({
+            xgboost_result <- read.table(
+                "www/demo/xgboost.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                xgboost_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/xgboost.txt", to = file)
+            }
+        )
+        
+        output$xgboost_user_meta_data <- renderDT({
+            req(input$xgboost_user_meta_data_input)
+            meta_data <- read.table(
+                input$xgboost_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$xgboost_user_group_data <- renderDT({
+            req(input$xgboost_user_group_data_input)
+            group_data <- read.table(
+                input$xgboost_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$xgboost_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "XGBoost starting ...", detail = "XGBoost starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "XGBoost analysis reading datasets ...", detail = "XGBoost analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$xgboost_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$xgboost_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "XGBoost analyzing ...", detail = "XGBoost analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            set.seed(2)
+            results <- ML_xgboost(meta_data1)
+            result <- results$feature_result
+            
+            write.table(
+                result,
+                paste(temp_xgboost, "/xgboost_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "XGBoost task complete ...", detail = "XGBoost task complete ...")
+            
+            output$xgboost_user_result_data <- renderDT({
+                req(file.exists(paste(temp_xgboost, "/xgboost_result.txt", sep = "")))
+                
+                xgboost_result <- read.table(
+                    paste(temp_xgboost, "/xgboost_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    xgboost_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$xgboost_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("xgboost_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_xgboost, "/xgboost_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # lasso
+    {
+        temp_lasso <- file.path(session_temp_dir, "lasso")
+        if (!dir.exists(temp_lasso)) {
+            dir.create(temp_lasso, recursive = TRUE, mode = "1777")
+        }
+        
+        output$lasso_demo_meta_data <- renderDT({
+            data("meta_dat")
+            meta_data <- meta_dat
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_meta_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_meta_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/meta_dat.txt", to = file)
+            }
+        )
+        
+        output$lasso_demo_group_data <- renderDT({
+            data("group")
+            group_data <- as.data.frame(group)
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_group_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_group_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/groups.txt", to = file)
+            }
+        )
+        
+        observeEvent({
+            req(input$lasso_user_meta_data_input,
+                input$lasso_user_group_data_input)
+        }, {
+            meta_data <- read_safely(
+                input$lasso_user_meta_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = FALSE
+            )
+            
+            group_data <- read_safely(
+                input$lasso_user_group_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_meta_data <- nrow(meta_data) >= 1
+            check_group_data <- nrow(group_data) >= 1
+            
+            if (!check_meta_data || !check_group_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Metabolite Data**: should have some compounds.
+                        
+                        2.**Group Data** should have only one column.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        output$lasso_demo_result_data <- renderDT({
+            lasso_result <- read.table(
+                "www/demo/lasso.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                lasso_result,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_demo_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_demo_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/lasso.txt", to = file)
+            }
+        )
+        
+        output$lasso_user_meta_data <- renderDT({
+            req(input$lasso_user_meta_data_input)
+            meta_data <- read.table(
+                input$lasso_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                meta_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$lasso_user_group_data <- renderDT({
+            req(input$lasso_user_group_data_input)
+            group_data <- read.table(
+                input$lasso_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                group_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+                
+            )
+        }, server = TRUE)
+        
+        observeEvent(input$lasso_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "LASSO starting ...", detail = "LASSO starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "LASSO analysis reading datasets ...", detail = "LASSO analysis reading datasets ...")
+            
+            meta_data <- read.table(
+                input$lasso_user_meta_data_input$datapath,
+                header = T,
+                sep = "\t",
+                row.names = 1,
+                stringsAsFactors = F
+            )
+            
+            group_data <- read.table(
+                input$lasso_user_group_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            group <- as.character(group_data[, 1])
+            
+            progress$set(value = 50)
+            progress$set(message = "LASSO analyzing ...", detail = "LASSO analyzing ...")
+            
+            meta_data1 <- t(meta_data) %>%
+                as.data.frame() %>%
+                mutate(group = group)
+            
+            set.seed(as.numeric(input$lasso_user_seed))
+            result <- ML_alpha(meta_data1, method = input$lasso_user_method)
+            
+            write.table(
+                result,
+                paste(temp_lasso, "/lasso_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            # result_filter <- result %>%
+            #     dplyr::filter(pval < 0.1) %>%
+            #     arrange(NES) %>%
+            #     mutate(pathway=factor(pathway,levels=pathway))
+            
+            progress$set(value = 100)
+            progress$set(message = "LASSO task complete ...", detail = "LASSO task complete ...")
+            
+            output$lasso_user_result_data <- renderDT({
+                req(file.exists(paste(temp_lasso, "/lasso_result.txt", sep = "")))
+                
+                lasso_result <- read.table(
+                    paste(temp_lasso, "/lasso_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    lasso_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                )
+            }, server = TRUE)
+        })
+        
+        output$lasso_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("lasso_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_lasso, "/lasso_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    # time_series
+    {
+        temp_time_series <- file.path(session_temp_dir, "time_series")
+        if (!dir.exists(temp_time_series)) {
+            dir.create(temp_time_series, recursive = TRUE, mode = "1777")
+        }
+        
+        output$time_series_demo_clinical_data <- renderDT({
+            data("clinical_index")
+            clinical_data <- clinical_index
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$time_series_demo_clinical_data_download <- downloadHandler(
+            filename = function() {
+                paste("time_series_demo_clinical_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/clinical_index.txt", to = file)
+            }
+        )
+        
+        output$time_series_user_clinical_data <- renderDT({
+            req(input$time_series_user_clinical_data_input)
+            clinical_data <- read.table(
+                input$time_series_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$time_series_user_clinical_data_input)
+        }, {
+            clinical_data <- read_safely(
+                input$time_series_user_clinical_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_clinical_data <- nrow(clinical_data) >= 1
+            
+            if (!check_clinical_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Clinical Data** should have some rows and cols.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$time_series_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Time Series starting ...", detail = "Time Series starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Time Series reading datasets ...", detail = "Time Series reading datasets ...")
+            
+            clinical_data <- read.table(
+                input$time_series_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "Time Series visualizing ...", detail = "Time Series visualizing ...")
+            
+            plot <- function() {
+                pCliTS(clinical_index, clinical_index[[3]])
+            }
+            
+            pdf(
+                file = paste(temp_time_series, "/time_series_plot.pdf", sep = ""),
+                width = input$time_series_plot_width,
+                height = input$time_series_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_time_series, "/time_series_plot.jpeg", sep = ""),
+                width = input$time_series_plot_width,
+                height = input$time_series_plot_height,
+                units = "in",
+                res = input$time_series_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "Time Series task complete ...", detail = "Time Series task complete ...")
+            
+            output$time_series_plot <- renderImage({
+                list(
+                    src = paste0(temp_time_series, "/time_series_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$time_series_plot_download <- downloadHandler(
+            filename = function() {
+                paste("time_series_plot", input$time_series_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_time_series, "/time_series_plot.", input$time_series_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # survival_analysis
+    {
+        temp_survival_analysis <- file.path(session_temp_dir, "survival_analysis")
+        if (!dir.exists(temp_survival_analysis)) {
+            dir.create(temp_survival_analysis, recursive = TRUE, mode = "1777")
+        }
+        
+        output$survival_analysis_demo_clinical_data <- renderDT({
+            names(aml)[3] = "group"
+            clinical_data <- aml
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$survival_analysis_demo_clinical_data_download <- downloadHandler(
+            filename = function() {
+                paste("survival_analysis_demo_clinical_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/aml.txt", to = file)
+            }
+        )
+        
+        output$survival_analysis_user_clinical_data <- renderDT({
+            req(input$survival_analysis_user_clinical_data_input)
+            clinical_data <- read.table(
+                input$survival_analysis_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$survival_analysis_user_clinical_data_input)
+        }, {
+            clinical_data <- read_safely(
+                input$survival_analysis_user_clinical_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_clinical_data <- nrow(clinical_data) >= 1
+            
+            if (!check_clinical_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Clinical Data** should have some rows and cols.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$survival_analysis_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Survival analysis starting ...", detail = "Survival analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Survival analysis reading datasets ...", detail = "Survival analysis reading datasets ...")
+            
+            clinical_data <- read.table(
+                input$survival_analysis_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "Survival analysis visualizing ...", detail = "Survival analysis visualizing ...")
+            
+            plot <- function() {
+                survCli(clinical_data)
+            }
+            
+            pdf(
+                file = paste(temp_survival_analysis, "/survival_analysis_plot.pdf", sep = ""),
+                width = input$survival_analysis_plot_width,
+                height = input$survival_analysis_plot_height,
+                onefile = FALSE
+            )
+            print(plot())
+            dev.off()
+            
+            CairoJPEG(
+                filename = paste(temp_survival_analysis, "/survival_analysis_plot.jpeg", sep = ""),
+                width = input$survival_analysis_plot_width,
+                height = input$survival_analysis_plot_height,
+                units = "in",
+                res = input$survival_analysis_plot_dpi,
+                quality = 100
+            )
+            print(plot())
+            dev.off()
+            
+            progress$set(value = 100)
+            progress$set(message = "Survival analysis task complete ...", detail = "Survival analysis task complete ...")
+            
+            output$survival_analysis_plot <- renderImage({
+                list(
+                    src = paste0(temp_survival_analysis, "/survival_analysis_plot.jpeg"),
+                    contentType = "image/jpeg",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$survival_analysis_plot_download <- downloadHandler(
+            filename = function() {
+                paste("survival_analysis_plot", input$survival_analysis_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_survival_analysis, "/survival_analysis_plot.", input$survival_analysis_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # survival_plot
+    {
+        temp_survival_plot <- file.path(session_temp_dir, "survival_plot")
+        if (!dir.exists(temp_survival_plot)) {
+            dir.create(temp_survival_plot, recursive = TRUE, mode = "1777")
+        }
+        
+        output$survival_plot_demo_clinical_data <- renderDT({
+            clinical_data <- dat_surv
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$survival_plot_demo_clinical_data_download <- downloadHandler(
+            filename = function() {
+                paste("survival_plot_demo_clinical_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/dat_surv.txt", to = file)
+            }
+        )
+        
+        output$survival_plot_user_clinical_data <- renderDT({
+            req(input$survival_plot_user_clinical_data_input)
+            clinical_data <- read.table(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                clinical_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$survival_plot_user_clinical_data_input)
+        }, {
+            clinical_data <- read_safely(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_clinical_data <- nrow(clinical_data) >= 1
+            
+            if (!check_clinical_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Clinical Data** should have some rows and cols.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$survival_plot_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Survival analysis starting ...", detail = "Survival analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Survival analysis reading datasets ...", detail = "Survival analysis reading datasets ...")
+            
+            clinical_data <- read.table(
+                input$survival_plot_user_clinical_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            progress$set(value = 80)
+            progress$set(message = "Survival analysis visualizing ...", detail = "Survival analysis visualizing ...")
+            
+            metabolites <- input$survival_plot_user_meta
+            survMet(clinical_data,
+                    metabolites,
+                    cluster_method = input$survival_plot_user_method,
+                    out_dir = temp_survival_plot)
+            
+            file.rename(from = paste0(temp_survival_plot, "/", metabolites, ".survival.png"), 
+                        to = paste0(temp_survival_plot, "/", "survival.png"))
+            
+            file.rename(from = paste0(temp_survival_plot, "/", metabolites, ".survival.pdf"), 
+                        to = paste0(temp_survival_plot, "/", "survival.pdf"))
+            
+            progress$set(value = 100)
+            progress$set(message = "Survival analysis task complete ...", detail = "Survival analysis task complete ...")
+            
+            output$survival_plot_plot <- renderImage({
+                list(
+                    src = paste0(temp_survival_plot, "/", "survival.png"),
+                    contentType = "image/png",
+                    width = "100%",
+                    height = "auto"
+                )
+            }, deleteFile = FALSE)
+        })
+        
+        output$survival_plot_plot_download <- downloadHandler(
+            filename = function() {
+                paste("survival_plot", input$survival_plot_plot_format, sep = ".")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_survival_plot, "/", "survival.",input$survival_plot_plot_format, sep = ""), to = file)
+            }
+        )
+    }
+    
+    # metcox
+    {
+        temp_metcox <- file.path(session_temp_dir, "metcox")
+        if (!dir.exists(temp_metcox)) {
+            dir.create(temp_metcox, recursive = TRUE, mode = "1777")
+        }
+        
+        output$metcox_demo_surv_data <- renderDT({
+            surv_data <- dat_surv
+            
+            datatable(
+                surv_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$metcox_demo_surv_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_demo_surv_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/dat_surv.txt", to = file)
+            }
+        )
+        
+        output$metcox_demo_cox_data <- renderDT({
+            cox_data <- read.table(
+                "www/demo/metcox.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            datatable(
+                cox_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        output$metcox_demo_cox_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_demo_cox_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = "www/demo/metcox.txt", to = file)
+            }
+        )
+        
+        output$metcox_user_surv_data <- renderDT({
+            req(input$metcox_user_surv_data_input)
+            surv_data <- read.table(
+                input$metcox_user_surv_data_input$datapath,
+                header = T,
+                sep = "\t",
+                stringsAsFactors = F
+            )
+            
+            datatable(
+                surv_data,
+                rownames = TRUE,
+                options = list(
+                    pageLength = 10,
+                    scrollX = TRUE
+                )
+            )
+        }, server = TRUE)
+        
+        observeEvent({
+            req(input$metcox_user_surv_data_input)
+        }, 
+        {
+            surv_data <- read_safely(
+                input$metcox_user_surv_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            check_surv_data <- nrow(surv_data) >= 1
+            
+            if (!check_surv_data) {
+                showModal(modalDialog(
+                    title = "Input Data Error",
+                    "Please ensure the following data format:",
+                    markdown(
+                        "
+                        1.**Name Data** should have some componds name.
+                        "
+                    ),
+                    easyClose = TRUE
+                ))
+            }
+        })
+        
+        observeEvent(input$metcox_submit, {
+            progress <- Progress$new(session, min = 1, max = 100)
+            on.exit(progress$close())
+            progress$set(value = 0)
+            progress$set(message = "Cox analysis starting ...", detail = "Cox analysis starting ...")
+            
+            progress$set(value = 10)
+            progress$set(message = "Cox analysis reading datasets ...", detail = "Cox analysis reading datasets ...")
+            
+            surv_data <- read_safely(
+                input$metcox_user_surv_data_input$datapath,
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
+            
+            progress$set(value = 50)
+            progress$set(message = "Cox analysis analyzing ...", detail = "Cox analysis analyzing ...")
+            
+            result <- MetCox(surv_data)
+            
+            write.table(
+                result,
+                paste(temp_metcox, "/metcox_result.txt", sep = ""),
+                sep = "\t",
+                quote = F,
+                row.names = F
+            )
+            
+            progress$set(value = 100)
+            progress$set(message = "Cox analysis task complete ...", detail = "Cox analysis task complete ...")
+            
+            output$metcox_user_result_data <- renderDT({
+                req(file.exists(paste(temp_metcox, "/metcox_result.txt", sep = "")))
+                
+                metcox_result <- read.table(
+                    paste(temp_metcox, "/metcox_result.txt", sep = ""),
+                    header = TRUE,
+                    sep = "\t",
+                    stringsAsFactors = FALSE
+                )
+                
+                datatable(
+                    metcox_result,
+                    rownames = TRUE,
+                    options = list(
+                        pageLength = 10,
+                        scrollX = TRUE
+                    )
+                    
+                )
+            }, server = TRUE)
+        })
+        
+        output$metcox_user_result_data_download <- downloadHandler(
+            filename = function() {
+                paste("metcox_user_result_data", ".txt", sep = "")
+            },
+            content = function(file) {
+                file.copy(from = paste(temp_metcox, "/metcox_result.txt", sep = ""), to = file)
+            }
+        )
+    }
+    
+    session$onSessionEnded(function() {
+        if (dir.exists(session_temp_dir)) {
+            tryCatch({
+                unlink(session_temp_dir, recursive = TRUE)
+            }, error = function(e) {
+                cat(e$message)
+            })
+        }
+    })
+})
+
+# runApp(list(ui = ui, server = server), host = "0.0.0.0", port = 3838)
+shinyApp(ui = ui, server = server)
