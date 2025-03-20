@@ -4809,7 +4809,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/4.diff_meta_volcano_plot.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -6057,7 +6057,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/6.1.time_series_plot.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -6322,7 +6322,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
+                                                   src = "http://www.mnet4all.com/mnet_manual/figure/6.2.survival_analysis_plot.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
