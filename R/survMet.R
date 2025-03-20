@@ -59,7 +59,7 @@ survMet <- function(dat,
     )
     print(p1)
     grDevices::dev.off()
-    grDevices::png(paste0(out_dir, "/", metabolite, ".survival.png"))
+    Cairo::CairoPNG(paste0(out_dir, "/", metabolite, ".survival.png"))
     print(p1)
     grDevices::dev.off()
     

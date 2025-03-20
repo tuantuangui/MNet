@@ -53,7 +53,8 @@ Imports:
     bs4Dash,
     DT,
     colourpicker,
-    shinyWidgets
+    shinyWidgets,
+    Cairo
 Suggests: 
     knitr,
     rmarkdown,
