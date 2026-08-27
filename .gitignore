@@ -3,3 +3,13 @@
 .RData
 .Ruserdata
 docs
+
+# Package build artifacts
+*.tar.gz
+*.Rcheck
+
+# macOS
+.DS_Store
+
+# Shiny runtime access log
+inst/shinyapp/user_access_log.txt

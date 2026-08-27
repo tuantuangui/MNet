@@ -1,0 +1,31 @@
+# Git / VCS
+.git
+.gitignore
+
+# R / RStudio
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj.user
+
+# Documentation site (pkgdown output)
+docs
+pkgdown
+_pkgdown.yml
+
+# Package build / check artifacts
+*.tar.gz
+..Rcheck
+*.Rcheck
+
+# Vignettes (not needed for the Shiny deployment)
+vignettes
+
+# Runtime logs
+*.log
+recording.log
+inst/shinyapp/user_access_log.txt
+
+# OS / editor
+.DS_Store

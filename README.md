@@ -64,7 +64,45 @@ Check the package 'MNet' successfully installed
 library(help=MNet)
 ```
 
-### 2.3 Usage
+### 2.3 Docker Deployment
+
+MNet can be run in a Docker container without manually installing R and its dependencies.
+
+**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) (or Docker Desktop).
+
+#### Option 1: Pull the pre-built image from Docker Hub
+
+**[GitHub: https://github.com/tuantuangui/MNet](https://github.com/tuantuangui/MNet)**
+
+```bash
+docker pull hiomics/mnet:latest
+docker run -d --name mnet-shiny -p 3838:3838 hiomics/mnet:latest
+```
+
+#### Option 2: Build the image locally
+
+```bash
+docker build -t mnet:latest .
+docker run -d --name mnet-shiny -p 3838:3838 mnet:latest
+```
+
+Or start with Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+Then open http://localhost:3838/ in your browser.
+
+Useful commands:
+
+```bash
+docker logs -f mnet-shiny   # view logs
+docker stop mnet-shiny      # stop the app
+docker compose down         # stop and remove (compose)
+```
+
+### 2.4 Usage
 
 - Extended pathway analysis can be found [here](https://tuantuangui.github.io/MNet/articles/01-Pathway_analysis.html)
 
