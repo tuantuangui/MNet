@@ -72,7 +72,7 @@ MNet can be run in a Docker container without manually installing R and its depe
 
 #### Option 1: Pull the pre-built image from Docker Hub
 
-**[GitHub: https://github.com/tuantuangui/MNet](https://github.com/tuantuangui/MNet)**
+**[Docker Hub: https://hub.docker.com/r/hiomics/mnet](https://hub.docker.com/r/hiomics/mnet)**
 
 ```bash
 docker pull hiomics/mnet:latest
