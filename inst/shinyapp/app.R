@@ -556,7 +556,7 @@ ui <- shinyUI(
                             tags$span(") for user-input metabolomic and transcriptomic data.",style = "font-size: 1.2rem; text-align: justify;"),
                             
                             br(),br(),
-                            tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/MNet_Figure1.png",
+                            tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/overview.png",
                                      # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
                                      style = "width: 80%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
                             br(),br(),
@@ -584,7 +584,7 @@ ui <- shinyUI(
                                            to metabolites and genes. (B) Barplot of cluster2 enriched metabolic pathways corresponding to 
                                            metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePEA.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePEA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
                                              style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
@@ -597,7 +597,7 @@ ui <- shinyUI(
                                     tags$p("The extended Pathway Differential Abundance analyser. The ePDA score captures the tendency for a pathway to exhibit increased or decreased levels of genes and metabolites that 
                                            are statistically significant differences between two groups.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-ePDA.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.ePDA.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
                                              style = "width: 100%; height: 500px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 ),
@@ -606,7 +606,7 @@ ui <- shinyUI(
                                     tags$p("4. eSEAlyser", style = "font-size: 1.2rem; font-weight: bold;"),
                                     tags$p("The extended pathway Set Enrichment Analyser, which aim to identify dysregulated metabolic pathways by considering both metabolites and genes.",
                                            style = "font-size: 1rem; text-align: justify;"),
-                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/new-eSEA.png",
+                                    tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/2.eSEA-1.png",
                                              # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
                                              style = "width: 100%; height: 520px; object-position: top; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;")
                                 )
@@ -657,7 +657,7 @@ ui <- shinyUI(
                                 **dbNet** and **dbKEGG**.
 
                                 Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
-                                encompasses **1,692 genes** and **3,097 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
+                                encompasses **1,724 genes** and **3,217 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
 
                                 Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
                                 BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
