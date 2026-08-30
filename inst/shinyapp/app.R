@@ -558,7 +558,7 @@ ui <- shinyUI(
                             br(),br(),
                             tags$img(src = "http://www.mnet4all.com/mnet_manual/figure/overview.png",
                                      # "http://www.mnet4all.com/MNet/image/Figure1.jpg",
-                                     style = "width: 80%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
+                                     style = "width: 100%; padding: 10px; border-radius: 10px; box-shadow: 0px 0px 10px #cdcdcd;"),
                             br(),br(),
                             tags$p("Functions", style = "font-size: 2rem; font-weight: bold;"),
                             tags$a(href = "https://tuantuangui.github.io/MNet/reference/index.html", 
