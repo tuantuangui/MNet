@@ -1,4 +1,4 @@
-pandoc: '3.2'
+pandoc: 3.6.3
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
@@ -6,4 +6,4 @@ articles:
   02-Subnetwork_analysis: 02-Subnetwork_analysis.html
   03-Routine_analysis: 03-Routine_analysis.html
   MNet: MNet.html
-last_built: 2024-11-26T03:23Z
+last_built: 2026-08-31T07:13Z

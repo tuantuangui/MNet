@@ -70,7 +70,7 @@
 <div class="section level2">
 <h2 id="id_1-overview">1. Overview<a class="anchor" aria-label="anchor" href="#id_1-overview"></a>
 </h2>
-<p><strong>MNet: an R package and Shiny app for integrative analysis of metabolomic and transcriptomic data</strong></p>
+<p><strong>MNet: a metabolic network-centered tool for interpreting metabolomic and transcriptomic data</strong></p>
 <ul>
 <li><p><strong>Knowledgebase - dbMNet:</strong> <font color="CadetBlue"><strong>dbKEGG</strong></font> for extended pathway analysis and <font color="CadetBlue"><strong>dbNet</strong></font> for metabolism-related subnetwork analysis</p></li>
 <li><p><strong>Algorithm for extended pathway analysis:</strong> Extended pathway enrichment analysis (<font color="CadetBlue"><strong>ePEA</strong></font>), extended pathway differential abundance analysis (<font color="CadetBlue"><strong>ePDA</strong></font>), and extended pathway set enrichment analysis (<font color="CadetBlue"><strong>eSEA</strong></font>) to identify dysregulated metabolic pathways via considering both metabolites and genes</p></li>
@@ -124,7 +124,33 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span>help<span class="op">=</span><span class="va">MNet</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_23-usage">2.3 Usage<a class="anchor" aria-label="anchor" href="#id_23-usage"></a>
+<h3 id="id_23-docker-deployment">2.3 Docker Deployment<a class="anchor" aria-label="anchor" href="#id_23-docker-deployment"></a>
+</h3>
+<p>MNet can be run in a Docker container without manually installing R and its dependencies.</p>
+<p><strong>Prerequisites:</strong> <a href="https://docs.docker.com/get-docker/" class="external-link">Docker</a> (or Docker Desktop).</p>
+<div class="section level4">
+<h4 id="option-1-pull-the-pre-built-image-from-docker-hub">Option 1: Pull the pre-built image from Docker Hub<a class="anchor" aria-label="anchor" href="#option-1-pull-the-pre-built-image-from-docker-hub"></a>
+</h4>
+<p><strong><a href="https://hub.docker.com/r/hiomics/mnet" class="external-link">Docker Hub: https://hub.docker.com/r/hiomics/mnet</a></strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">docker</span> pull hiomics/mnet:latest</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> mnet-shiny <span class="at">-p</span> 3838:3838 hiomics/mnet:latest</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="option-2-build-the-image-locally">Option 2: Build the image locally<a class="anchor" aria-label="anchor" href="#option-2-build-the-image-locally"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> mnet:latest .</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> mnet-shiny <span class="at">-p</span> 3838:3838 mnet:latest</span></code></pre></div>
+<p>Or start with Docker Compose:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
+<p>Then open <a href="http://localhost:3838/" class="external-link uri">http://localhost:3838/</a> in your browser.</p>
+<p>Useful commands:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">docker</span> logs <span class="at">-f</span> mnet-shiny   <span class="co"># view logs</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">docker</span> stop mnet-shiny      <span class="co"># stop the app</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="ex">docker</span> compose down         <span class="co"># stop and remove (compose)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="id_24-usage">2.4 Usage<a class="anchor" aria-label="anchor" href="#id_24-usage"></a>
 </h3>
 <ul>
 <li><p>Extended pathway analysis can be found <a href="https://tuantuangui.github.io/MNet/articles/01-Pathway_analysis.html" class="external-link">here</a></p></li>
@@ -144,7 +170,7 @@
 <li>Can not install dependent packages dnet<br>
 If the ERROR is “Error: Failed to install ‘dnet’ from GitHub: Could not resolve host: api.github.com”, please try it again.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"hfang-bristol/dnet"</span>, dependencies<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

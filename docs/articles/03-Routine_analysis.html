@@ -177,7 +177,7 @@ networking</strong></font></p>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 16</span></span></span>
 <span><span class="co">##   name       nAnno nOverlap    fc zscore pvalue  adjp    or   CIl   CIu distance</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> Propanoat…    40        1  76.1   8.66      0     0   <span style="color: #BB0000;">Inf</span>  1.93   <span style="color: #BB0000;">Inf</span> 1       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Propanoat…    42        1  76.6   8.69      0     0   <span style="color: #BB0000;">Inf</span>  1.94   <span style="color: #BB0000;">Inf</span> 1       </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 5 more variables: namespace &lt;chr&gt;, members_Overlap &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   members_Anno &lt;chr&gt;, members_Overlap_name &lt;chr&gt;, members_Anno_name &lt;chr&gt;</span></span></span>
 <span><span class="co">## </span></span>
@@ -215,7 +215,7 @@ networking</strong></font></p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 16</span></span></span>
 <span><span class="co">##   name       nAnno nOverlap    fc zscore pvalue  adjp    or   CIl   CIu distance</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> Propanoat…    40        1  76.1   8.66      0     0   <span style="color: #BB0000;">Inf</span>  1.93   <span style="color: #BB0000;">Inf</span> 1       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Propanoat…    42        1  76.6   8.69      0     0   <span style="color: #BB0000;">Inf</span>  1.94   <span style="color: #BB0000;">Inf</span> 1       </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 5 more variables: namespace &lt;chr&gt;, members_Overlap &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   members_Anno &lt;chr&gt;, members_Overlap_name &lt;chr&gt;, members_Anno_name &lt;chr&gt;</span></span></span></code></pre>
 </div>
@@ -248,8 +248,8 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">gene_info</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   type  name kegg_pathwayid                        kegg_pathwayname</span></span>
-<span><span class="co">## 1 gene ACSS1       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
-<span><span class="co">## 2 gene ACSS2       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
+<span><span class="co">## 1 gene HOGA1       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
+<span><span class="co">## 2 gene AFMID       hsa00630 Glyoxylate and dicarboxylate metabolism</span></span>
 <span><span class="co">##             kegg_category</span></span>
 <span><span class="co">## 1 Carbohydrate metabolism</span></span>
 <span><span class="co">## 2 Carbohydrate metabolism</span></span></code></pre>
@@ -440,20 +440,20 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_RF</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 122 × 6</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 119 × 6</span></span></span>
 <span><span class="co">##    normal tumor MeanDecreaseAccuracy MeanDecreaseGini names   raw    </span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   4.23  4.04                 4.64            0.548 C00025  C00025 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>   4.34  4.22                 4.55            0.561 C02045  C02045 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>   4.38  3.67                 4.43            0.527 C05938. C05938 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>   3.58  3.79                 4.08            0.470 C02985  C02985 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>   4.22  3.35                 4.02            0.517 C00022  C00022 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>   3.41  3.77                 3.97            0.458 C05674  C05674 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>   3.55  3.89                 3.91            0.452 C00073  C00073 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   3.90  2.62                 3.79            0.415 C02630  C02630 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   3.70  3.26                 3.75            0.368 C03413  C03413 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>   3.45  3.40                 3.70            0.390 C02291  C02291 </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 112 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   4.98  4.74                 5.29            0.702 C00073  C00073 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>   4.82  4.46                 4.95            0.725 C02045  C02045 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>   4.41  4.69                 4.84            0.645 C05938. C05938 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>   4.45  4.44                 4.75            0.613 C02291  C02291 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>   3.90  4.03                 4.54            0.454 C03413  C03413 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>   4.02  3.34                 4.33            0.545 C00365  C00365 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>   3.98  3.52                 4.19            0.454 C00022  C00022 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   4.05  3.50                 3.92            0.540 C05674  C05674 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   3.58  3.36                 3.83            0.332 C00242  C00242 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>   3.60  3.54                 3.76            0.369 C00267  C00267 </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 109 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="xgboost">
@@ -462,76 +462,76 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <p>Using machine learning ” XGBoost” for feature selection</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_xgboost.html">ML_xgboost</a></span><span class="op">(</span><span class="va">meta_dat1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1]  train-rmse:0.364289 test-rmse:0.549992 </span></span>
-<span><span class="co">## [2]  train-rmse:0.265516 test-rmse:0.535074 </span></span>
-<span><span class="co">## [3]  train-rmse:0.193648 test-rmse:0.536247 </span></span>
-<span><span class="co">## [4]  train-rmse:0.141421 test-rmse:0.518435 </span></span>
-<span><span class="co">## [5]  train-rmse:0.103574 test-rmse:0.539353 </span></span>
-<span><span class="co">## [6]  train-rmse:0.076240 test-rmse:0.517378 </span></span>
-<span><span class="co">## [7]  train-rmse:0.056624 test-rmse:0.509748 </span></span>
-<span><span class="co">## [8]  train-rmse:0.042572 test-rmse:0.506916 </span></span>
-<span><span class="co">## [9]  train-rmse:0.032249 test-rmse:0.499201 </span></span>
-<span><span class="co">## [10] train-rmse:0.024705 test-rmse:0.498236 </span></span>
-<span><span class="co">## [11] train-rmse:0.019147 test-rmse:0.500697 </span></span>
-<span><span class="co">## [12] train-rmse:0.014733 test-rmse:0.502704 </span></span>
-<span><span class="co">## [13] train-rmse:0.011439 test-rmse:0.504271 </span></span>
-<span><span class="co">## [14] train-rmse:0.009015 test-rmse:0.505542 </span></span>
-<span><span class="co">## [15] train-rmse:0.007161 test-rmse:0.506894 </span></span>
-<span><span class="co">## [16] train-rmse:0.005807 test-rmse:0.507730 </span></span>
-<span><span class="co">## [17] train-rmse:0.004745 test-rmse:0.508582 </span></span>
-<span><span class="co">## [18] train-rmse:0.003928 test-rmse:0.509305 </span></span>
-<span><span class="co">## [19] train-rmse:0.003291 test-rmse:0.510078 </span></span>
-<span><span class="co">## [20] train-rmse:0.002775 test-rmse:0.510652 </span></span>
-<span><span class="co">## [21] train-rmse:0.002346 test-rmse:0.510730 </span></span>
-<span><span class="co">## [22] train-rmse:0.002007 test-rmse:0.510676 </span></span>
-<span><span class="co">## [23] train-rmse:0.001711 test-rmse:0.511044 </span></span>
-<span><span class="co">## [24] train-rmse:0.001457 test-rmse:0.511389 </span></span>
-<span><span class="co">## [25] train-rmse:0.001240 test-rmse:0.511672 </span></span>
-<span><span class="co">## [26] train-rmse:0.001068 test-rmse:0.511877 </span></span>
-<span><span class="co">## [27] train-rmse:0.000922 test-rmse:0.512052 </span></span>
-<span><span class="co">## [28] train-rmse:0.000799 test-rmse:0.512173 </span></span>
-<span><span class="co">## [29] train-rmse:0.000688 test-rmse:0.512132 </span></span>
-<span><span class="co">## [30] train-rmse:0.000592 test-rmse:0.512268 </span></span>
-<span><span class="co">## [31] train-rmse:0.000530 test-rmse:0.512363 </span></span>
-<span><span class="co">## [32] train-rmse:0.000481 test-rmse:0.512445 </span></span>
-<span><span class="co">## [33] train-rmse:0.000441 test-rmse:0.512502 </span></span>
-<span><span class="co">## [34] train-rmse:0.000406 test-rmse:0.512478 </span></span>
-<span><span class="co">## [35] train-rmse:0.000374 test-rmse:0.512488 </span></span>
-<span><span class="co">## [36] train-rmse:0.000374 test-rmse:0.512490 </span></span>
-<span><span class="co">## [37] train-rmse:0.000374 test-rmse:0.512491 </span></span>
-<span><span class="co">## [38] train-rmse:0.000374 test-rmse:0.512492 </span></span>
-<span><span class="co">## [39] train-rmse:0.000374 test-rmse:0.512493 </span></span>
-<span><span class="co">## [40] train-rmse:0.000374 test-rmse:0.512493 </span></span>
-<span><span class="co">## [41] train-rmse:0.000374 test-rmse:0.512493 </span></span>
-<span><span class="co">## [42] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [43] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [44] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [45] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [46] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [47] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [48] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [49] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [50] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [51] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [52] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [53] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [54] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [55] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [56] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [57] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [58] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [59] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [60] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [61] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [62] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [63] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [64] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [65] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [66] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [67] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [68] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [69] train-rmse:0.000374 test-rmse:0.512494 </span></span>
-<span><span class="co">## [70] train-rmse:0.000374 test-rmse:0.512494</span></span></code></pre>
+<pre><code><span><span class="co">## [1]  train-rmse:0.364289 test-rmse:0.472248 </span></span>
+<span><span class="co">## [2]  train-rmse:0.265516 test-rmse:0.429406 </span></span>
+<span><span class="co">## [3]  train-rmse:0.193648 test-rmse:0.410893 </span></span>
+<span><span class="co">## [4]  train-rmse:0.141388 test-rmse:0.413385 </span></span>
+<span><span class="co">## [5]  train-rmse:0.103498 test-rmse:0.413192 </span></span>
+<span><span class="co">## [6]  train-rmse:0.076135 test-rmse:0.393103 </span></span>
+<span><span class="co">## [7]  train-rmse:0.056497 test-rmse:0.394706 </span></span>
+<span><span class="co">## [8]  train-rmse:0.042323 test-rmse:0.397109 </span></span>
+<span><span class="co">## [9]  train-rmse:0.031939 test-rmse:0.401043 </span></span>
+<span><span class="co">## [10] train-rmse:0.024251 test-rmse:0.397340 </span></span>
+<span><span class="co">## [11] train-rmse:0.018686 test-rmse:0.399668 </span></span>
+<span><span class="co">## [12] train-rmse:0.014473 test-rmse:0.401372 </span></span>
+<span><span class="co">## [13] train-rmse:0.011318 test-rmse:0.402748 </span></span>
+<span><span class="co">## [14] train-rmse:0.008898 test-rmse:0.404315 </span></span>
+<span><span class="co">## [15] train-rmse:0.007107 test-rmse:0.405550 </span></span>
+<span><span class="co">## [16] train-rmse:0.005741 test-rmse:0.406239 </span></span>
+<span><span class="co">## [17] train-rmse:0.004693 test-rmse:0.406766 </span></span>
+<span><span class="co">## [18] train-rmse:0.003864 test-rmse:0.407297 </span></span>
+<span><span class="co">## [19] train-rmse:0.003204 test-rmse:0.407712 </span></span>
+<span><span class="co">## [20] train-rmse:0.002669 test-rmse:0.408034 </span></span>
+<span><span class="co">## [21] train-rmse:0.002233 test-rmse:0.408283 </span></span>
+<span><span class="co">## [22] train-rmse:0.001895 test-rmse:0.408476 </span></span>
+<span><span class="co">## [23] train-rmse:0.001593 test-rmse:0.408622 </span></span>
+<span><span class="co">## [24] train-rmse:0.001345 test-rmse:0.408739 </span></span>
+<span><span class="co">## [25] train-rmse:0.001144 test-rmse:0.408767 </span></span>
+<span><span class="co">## [26] train-rmse:0.000986 test-rmse:0.408763 </span></span>
+<span><span class="co">## [27] train-rmse:0.000852 test-rmse:0.408799 </span></span>
+<span><span class="co">## [28] train-rmse:0.000737 test-rmse:0.408795 </span></span>
+<span><span class="co">## [29] train-rmse:0.000656 test-rmse:0.408799 </span></span>
+<span><span class="co">## [30] train-rmse:0.000591 test-rmse:0.408801 </span></span>
+<span><span class="co">## [31] train-rmse:0.000540 test-rmse:0.408806 </span></span>
+<span><span class="co">## [32] train-rmse:0.000467 test-rmse:0.408816 </span></span>
+<span><span class="co">## [33] train-rmse:0.000429 test-rmse:0.408818 </span></span>
+<span><span class="co">## [34] train-rmse:0.000400 test-rmse:0.408809 </span></span>
+<span><span class="co">## [35] train-rmse:0.000399 test-rmse:0.408804 </span></span>
+<span><span class="co">## [36] train-rmse:0.000399 test-rmse:0.408801 </span></span>
+<span><span class="co">## [37] train-rmse:0.000399 test-rmse:0.408798 </span></span>
+<span><span class="co">## [38] train-rmse:0.000399 test-rmse:0.408797 </span></span>
+<span><span class="co">## [39] train-rmse:0.000399 test-rmse:0.408796 </span></span>
+<span><span class="co">## [40] train-rmse:0.000398 test-rmse:0.408795 </span></span>
+<span><span class="co">## [41] train-rmse:0.000398 test-rmse:0.408794 </span></span>
+<span><span class="co">## [42] train-rmse:0.000398 test-rmse:0.408794 </span></span>
+<span><span class="co">## [43] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [44] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [45] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [46] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [47] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [48] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [49] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [50] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [51] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [52] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [53] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [54] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [55] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [56] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [57] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [58] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [59] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [60] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [61] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [62] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [63] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [64] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [65] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [66] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [67] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [68] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [69] train-rmse:0.000398 test-rmse:0.408793 </span></span>
+<span><span class="co">## [70] train-rmse:0.000398 test-rmse:0.408793</span></span></code></pre>
 <p><img src="03-Routine_analysis_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
@@ -540,18 +540,16 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <code class="sourceCode R"><span><span class="va">result_ML_xgboost</span><span class="op">$</span><span class="va">feature_result</span></span></code></pre></div>
 <pre><code><span><span class="co">##     Feature        Gain      Cover  Frequency  Importance</span></span>
 <span><span class="co">##      &lt;fctr&gt;       &lt;num&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">##  1:  C00010 0.409537590 0.05868545 0.04347826 0.409537590</span></span>
-<span><span class="co">##  2:  C03793 0.217514348 0.05868545 0.04347826 0.217514348</span></span>
-<span><span class="co">##  3:  C00167 0.115622639 0.05868545 0.04347826 0.115622639</span></span>
-<span><span class="co">##  4:  C09642 0.093095188 0.15258216 0.21739130 0.093095188</span></span>
-<span><span class="co">##  5:  C05674 0.060828633 0.05868545 0.04347826 0.060828633</span></span>
-<span><span class="co">##  6:  C00122 0.032337968 0.05868545 0.04347826 0.032337968</span></span>
-<span><span class="co">##  7:  C00022 0.019764628 0.11737089 0.08695652 0.019764628</span></span>
-<span><span class="co">##  8:  C15025 0.016607794 0.03051643 0.04347826 0.016607794</span></span>
-<span><span class="co">##  9:  C00255 0.015274112 0.17605634 0.13043478 0.015274112</span></span>
-<span><span class="co">## 10:  C03264 0.012220371 0.09859155 0.13043478 0.012220371</span></span>
-<span><span class="co">## 11:  C05581 0.004831088 0.03286385 0.04347826 0.004831088</span></span>
-<span><span class="co">## 12:  C01250 0.002365641 0.09859155 0.13043478 0.002365641</span></span></code></pre>
+<span><span class="co">##  1:  C02630 0.418245537 0.10869565 0.08333333 0.418245537</span></span>
+<span><span class="co">##  2:  C05378 0.222139328 0.10869565 0.08333333 0.222139328</span></span>
+<span><span class="co">##  3:  C00365 0.118081109 0.10869565 0.08333333 0.118081109</span></span>
+<span><span class="co">##  4:  C00153 0.062837738 0.10869565 0.08333333 0.062837738</span></span>
+<span><span class="co">##  5:  C15025 0.062351511 0.05652174 0.08333333 0.062351511</span></span>
+<span><span class="co">##  6:  C00408 0.049560801 0.11304348 0.16666667 0.049560801</span></span>
+<span><span class="co">##  7: C05938  0.032905764 0.10869565 0.08333333 0.032905764</span></span>
+<span><span class="co">##  8:  C02045 0.017491197 0.10869565 0.08333333 0.017491197</span></span>
+<span><span class="co">##  9:  C05581 0.008762626 0.05652174 0.08333333 0.008762626</span></span>
+<span><span class="co">## 10:  C03264 0.007624389 0.12173913 0.16666667 0.007624389</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="lasso">
@@ -561,13 +559,11 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>, method <span class="op">=</span> <span class="st">"lasso"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result_ML_lasso</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      feature         s1</span></span>
-<span><span class="co">## 1 `C01879  ` -0.2834664</span></span>
-<span><span class="co">## 2     C00010 -0.1512106</span></span>
-<span><span class="co">## 3     C02291 -0.1897965</span></span>
-<span><span class="co">## 4     C02045  1.1011873</span></span>
-<span><span class="co">## 5     C00073 -0.3605763</span></span>
-<span><span class="co">## 6     C00065 -0.2661594</span></span></code></pre>
+<pre><code><span><span class="co">##   feature           s1</span></span>
+<span><span class="co">## 1  C02045  0.382767479</span></span>
+<span><span class="co">## 2  C00073 -0.035166629</span></span>
+<span><span class="co">## 3  C00022  0.091768275</span></span>
+<span><span class="co">## 4  C00255 -0.002267242</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="elastic-network">
@@ -577,13 +573,13 @@ pathway</font><a class="anchor" aria-label="anchor" href="#metabolite-kegg-id-tr
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_ML_elastic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ML_alpha.html">ML_alpha</a></span><span class="op">(</span><span class="va">meta_dat1</span>, method <span class="op">=</span> <span class="st">"elastic"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result_ML_elastic</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##     feature            s1</span></span>
-<span><span class="co">## 1    C03264 -2.070627e-02</span></span>
-<span><span class="co">## 2    C00408  4.918637e-02</span></span>
-<span><span class="co">## 3 `C06178 ` -1.275688e-02</span></span>
-<span><span class="co">## 4    C02630 -2.164844e-05</span></span>
-<span><span class="co">## 5    C05100  4.481425e-02</span></span>
-<span><span class="co">## 6    C00906  2.548339e-02</span></span></code></pre>
+<pre><code><span><span class="co">##      feature          s1</span></span>
+<span><span class="co">## 1 `C01879  ` -0.21481371</span></span>
+<span><span class="co">## 2     C00267  0.19533009</span></span>
+<span><span class="co">## 3     C00010 -0.09682168</span></span>
+<span><span class="co">## 4     C00519 -0.04822683</span></span>
+<span><span class="co">## 5     C02291 -0.17148409</span></span>
+<span><span class="co">## 6     C02045  0.76645813</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -691,7 +687,7 @@ high</p>
 </h2>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.4.2 (2024-10-31)</span></span>
+<pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">## Platform: x86_64-apple-darwin20</span></span>
 <span><span class="co">## Running under: macOS Ventura 13.7.1</span></span>
 <span><span class="co">## </span></span>
@@ -713,16 +709,16 @@ high</p>
 <span><span class="co">##  [1] caret_6.0-94           lattice_0.22-6         pathview_1.46.0       </span></span>
 <span><span class="co">##  [4] org.Hs.eg.db_3.20.0    AnnotationDbi_1.68.0   IRanges_2.40.0        </span></span>
 <span><span class="co">##  [7] S4Vectors_0.44.0       Biobase_2.66.0         BiocGenerics_0.52.0   </span></span>
-<span><span class="co">## [10] clusterProfiler_4.14.1 RColorBrewer_1.1-3     ggplot2_3.5.1         </span></span>
+<span><span class="co">## [10] clusterProfiler_4.14.1 RColorBrewer_1.1-3     ggplot2_4.0.1         </span></span>
 <span><span class="co">## [13] stringr_1.5.1          knitr_1.49             tidyr_1.3.1           </span></span>
-<span><span class="co">## [16] survival_3.7-0         tibble_3.2.1           dplyr_1.1.4           </span></span>
+<span><span class="co">## [16] survival_3.6-4         tibble_3.2.1           dplyr_1.1.4           </span></span>
 <span><span class="co">## [19] MNet_1.2.0            </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] fs_1.6.5                    matrixStats_1.4.1          </span></span>
 <span><span class="co">##   [3] bitops_1.0-9                enrichplot_1.26.2          </span></span>
 <span><span class="co">##   [5] lubridate_1.9.3             httr_1.4.7                 </span></span>
-<span><span class="co">##   [7] Rgraphviz_2.50.0            tools_4.4.2                </span></span>
+<span><span class="co">##   [7] Rgraphviz_2.50.0            tools_4.4.1                </span></span>
 <span><span class="co">##   [9] backports_1.5.0             utf8_1.2.4                 </span></span>
 <span><span class="co">##  [11] R6_2.5.1                    mgcv_1.9-1                 </span></span>
 <span><span class="co">##  [13] lazyeval_0.2.2              withr_3.0.2                </span></span>
@@ -730,82 +726,82 @@ high</p>
 <span><span class="co">##  [17] textshaping_0.4.0           labeling_0.4.3             </span></span>
 <span><span class="co">##  [19] sass_0.4.9                  KEGGgraph_1.66.0           </span></span>
 <span><span class="co">##  [21] filesstrings_3.4.0          survMisc_0.5.6             </span></span>
-<span><span class="co">##  [23] readr_2.1.5                 randomForest_4.7-1.2       </span></span>
-<span><span class="co">##  [25] proxy_0.4-27                pkgdown_2.1.1              </span></span>
-<span><span class="co">##  [27] yulab.utils_0.1.8           systemfonts_1.1.0          </span></span>
-<span><span class="co">##  [29] gson_0.1.0                  foreign_0.8-87             </span></span>
-<span><span class="co">##  [31] DOSE_4.0.0                  R.utils_2.12.3             </span></span>
-<span><span class="co">##  [33] DMwR2_0.0.2                 parallelly_1.39.0          </span></span>
-<span><span class="co">##  [35] limma_3.62.1                strex_2.0.1                </span></span>
-<span><span class="co">##  [37] TTR_0.24.4                  rstudioapi_0.17.1          </span></span>
-<span><span class="co">##  [39] RSQLite_2.3.7               shape_1.4.6.1              </span></span>
-<span><span class="co">##  [41] gridGraphics_0.5-1          generics_0.1.3             </span></span>
-<span><span class="co">##  [43] car_3.1-3                   GO.db_3.20.0               </span></span>
-<span><span class="co">##  [45] Matrix_1.7-1                qqman_0.1.9                </span></span>
-<span><span class="co">##  [47] fansi_1.0.6                 abind_1.4-8                </span></span>
-<span><span class="co">##  [49] R.methodsS3_1.8.2           lifecycle_1.0.4            </span></span>
-<span><span class="co">##  [51] yaml_2.3.10                 carData_3.0-5              </span></span>
-<span><span class="co">##  [53] SummarizedExperiment_1.36.0 qvalue_2.38.0              </span></span>
-<span><span class="co">##  [55] recipes_1.1.0               SparseArray_1.6.0          </span></span>
-<span><span class="co">##  [57] grid_4.4.2                  blob_1.2.4                 </span></span>
-<span><span class="co">##  [59] promises_1.3.0              crayon_1.5.3               </span></span>
-<span><span class="co">##  [61] ggtangle_0.0.4              MultiDataSet_1.34.0        </span></span>
-<span><span class="co">##  [63] cowplot_1.1.3               KEGGREST_1.46.0            </span></span>
-<span><span class="co">##  [65] pillar_1.9.0                fgsea_1.32.0               </span></span>
-<span><span class="co">##  [67] GenomicRanges_1.58.0        xgboost_1.7.8.1            </span></span>
-<span><span class="co">##  [69] future.apply_1.11.3         codetools_0.2-20           </span></span>
-<span><span class="co">##  [71] fastmatch_1.1-4             glue_1.8.0                 </span></span>
-<span><span class="co">##  [73] ggfun_0.1.7                 data.table_1.16.2          </span></span>
-<span><span class="co">##  [75] MultiAssayExperiment_1.32.0 treeio_1.30.0              </span></span>
-<span><span class="co">##  [77] vctrs_0.6.5                 png_0.1-8                  </span></span>
-<span><span class="co">##  [79] gtable_0.3.6                cachem_1.1.0               </span></span>
-<span><span class="co">##  [81] dnet_1.1.7                  gower_1.0.1                </span></span>
-<span><span class="co">##  [83] xfun_0.49                   S4Arrays_1.6.0             </span></span>
-<span><span class="co">##  [85] mime_0.12                   prodlim_2024.06.25         </span></span>
-<span><span class="co">##  [87] timeDate_4041.110           pheatmap_1.0.12            </span></span>
-<span><span class="co">##  [89] iterators_1.0.14            KMsurv_0.1-5               </span></span>
-<span><span class="co">##  [91] hardhat_1.4.0               lava_1.8.0                 </span></span>
-<span><span class="co">##  [93] statmod_1.5.0               ipred_0.9-15               </span></span>
-<span><span class="co">##  [95] nlme_3.1-166                ggtree_3.14.0              </span></span>
-<span><span class="co">##  [97] xts_0.14.1                  bit64_4.5.2                </span></span>
-<span><span class="co">##  [99] GenomeInfoDb_1.42.0         bslib_0.8.0                </span></span>
-<span><span class="co">## [101] rpart_4.1.23                colorspace_2.1-1           </span></span>
-<span><span class="co">## [103] DBI_1.2.3                   Hmisc_5.2-0                </span></span>
-<span><span class="co">## [105] nnet_7.3-19                 tidyselect_1.2.1           </span></span>
-<span><span class="co">## [107] bit_4.5.0                   compiler_4.4.2             </span></span>
-<span><span class="co">## [109] curl_6.0.0                  glmnet_4.1-8               </span></span>
-<span><span class="co">## [111] graph_1.84.0                htmlTable_2.4.3            </span></span>
-<span><span class="co">## [113] desc_1.4.3                  DelayedArray_0.32.0        </span></span>
-<span><span class="co">## [115] checkmate_2.3.2             scales_1.3.0               </span></span>
-<span><span class="co">## [117] hexbin_1.28.4               supraHex_1.43.0            </span></span>
-<span><span class="co">## [119] digest_0.6.37               rmarkdown_2.29             </span></span>
-<span><span class="co">## [121] XVector_0.46.0              htmltools_0.5.8.1          </span></span>
-<span><span class="co">## [123] pkgconfig_2.0.3             base64enc_0.1-3            </span></span>
-<span><span class="co">## [125] MatrixGenerics_1.18.0       fastmap_1.2.0              </span></span>
-<span><span class="co">## [127] rlang_1.1.4                 htmlwidgets_1.6.4          </span></span>
-<span><span class="co">## [129] UCSC.utils_1.2.0            quantmod_0.4.26            </span></span>
-<span><span class="co">## [131] shiny_1.9.1                 farver_2.1.2               </span></span>
-<span><span class="co">## [133] jquerylib_0.1.4             zoo_1.8-12                 </span></span>
-<span><span class="co">## [135] jsonlite_1.8.9              BiocParallel_1.40.0        </span></span>
-<span><span class="co">## [137] GOSemSim_2.32.0             ropls_1.38.0               </span></span>
-<span><span class="co">## [139] ModelMetrics_1.2.2.2        R.oo_1.27.0                </span></span>
-<span><span class="co">## [141] RCurl_1.98-1.16             magrittr_2.0.3             </span></span>
-<span><span class="co">## [143] ggplotify_0.1.2             Formula_1.2-5              </span></span>
-<span><span class="co">## [145] GenomeInfoDbData_1.2.13     patchwork_1.3.0            </span></span>
-<span><span class="co">## [147] munsell_0.5.1               Rcpp_1.0.13-1              </span></span>
+<span><span class="co">##  [23] S7_0.2.0                    readr_2.1.5                </span></span>
+<span><span class="co">##  [25] randomForest_4.7-1.2        proxy_0.4-27               </span></span>
+<span><span class="co">##  [27] pkgdown_2.1.1               yulab.utils_0.1.8          </span></span>
+<span><span class="co">##  [29] systemfonts_1.1.0           gson_0.1.0                 </span></span>
+<span><span class="co">##  [31] foreign_0.8-86              DOSE_4.0.0                 </span></span>
+<span><span class="co">##  [33] R.utils_2.12.3              DMwR2_0.0.2                </span></span>
+<span><span class="co">##  [35] parallelly_1.39.0           limma_3.62.1               </span></span>
+<span><span class="co">##  [37] strex_2.0.1                 TTR_0.24.4                 </span></span>
+<span><span class="co">##  [39] rstudioapi_0.17.1           RSQLite_2.3.7              </span></span>
+<span><span class="co">##  [41] shape_1.4.6.1               gridGraphics_0.5-1         </span></span>
+<span><span class="co">##  [43] generics_0.1.3              car_3.1-3                  </span></span>
+<span><span class="co">##  [45] GO.db_3.20.0                Matrix_1.7-0               </span></span>
+<span><span class="co">##  [47] qqman_0.1.9                 fansi_1.0.6                </span></span>
+<span><span class="co">##  [49] abind_1.4-8                 R.methodsS3_1.8.2          </span></span>
+<span><span class="co">##  [51] lifecycle_1.0.4             yaml_2.3.10                </span></span>
+<span><span class="co">##  [53] carData_3.0-5               SummarizedExperiment_1.36.0</span></span>
+<span><span class="co">##  [55] qvalue_2.38.0               recipes_1.1.0              </span></span>
+<span><span class="co">##  [57] SparseArray_1.6.0           grid_4.4.1                 </span></span>
+<span><span class="co">##  [59] blob_1.2.4                  promises_1.3.0             </span></span>
+<span><span class="co">##  [61] crayon_1.5.3                ggtangle_0.0.4             </span></span>
+<span><span class="co">##  [63] MultiDataSet_1.34.0         cowplot_1.1.3              </span></span>
+<span><span class="co">##  [65] KEGGREST_1.46.0             pillar_1.9.0               </span></span>
+<span><span class="co">##  [67] fgsea_1.32.0                GenomicRanges_1.58.0       </span></span>
+<span><span class="co">##  [69] xgboost_1.7.8.1             future.apply_1.11.3        </span></span>
+<span><span class="co">##  [71] codetools_0.2-20            fastmatch_1.1-4            </span></span>
+<span><span class="co">##  [73] glue_1.8.0                  ggfun_0.1.7                </span></span>
+<span><span class="co">##  [75] data.table_1.16.2           MultiAssayExperiment_1.32.0</span></span>
+<span><span class="co">##  [77] treeio_1.30.0               vctrs_0.6.5                </span></span>
+<span><span class="co">##  [79] png_0.1-8                   gtable_0.3.6               </span></span>
+<span><span class="co">##  [81] cachem_1.1.0                dnet_1.1.7                 </span></span>
+<span><span class="co">##  [83] gower_1.0.1                 xfun_0.49                  </span></span>
+<span><span class="co">##  [85] S4Arrays_1.6.0              mime_0.12                  </span></span>
+<span><span class="co">##  [87] prodlim_2025.04.28          timeDate_4041.110          </span></span>
+<span><span class="co">##  [89] pheatmap_1.0.12             iterators_1.0.14           </span></span>
+<span><span class="co">##  [91] KMsurv_0.1-5                hardhat_1.4.0              </span></span>
+<span><span class="co">##  [93] lava_1.8.0                  statmod_1.5.0              </span></span>
+<span><span class="co">##  [95] ipred_0.9-15                nlme_3.1-164               </span></span>
+<span><span class="co">##  [97] ggtree_3.14.0               xts_0.14.1                 </span></span>
+<span><span class="co">##  [99] bit64_4.5.2                 GenomeInfoDb_1.42.0        </span></span>
+<span><span class="co">## [101] bslib_0.8.0                 rpart_4.1.23               </span></span>
+<span><span class="co">## [103] colorspace_2.1-1            DBI_1.2.3                  </span></span>
+<span><span class="co">## [105] Hmisc_5.2-3                 nnet_7.3-19                </span></span>
+<span><span class="co">## [107] tidyselect_1.2.1            bit_4.5.0                  </span></span>
+<span><span class="co">## [109] compiler_4.4.1              curl_6.0.0                 </span></span>
+<span><span class="co">## [111] glmnet_4.1-8                graph_1.84.0               </span></span>
+<span><span class="co">## [113] htmlTable_2.4.3             desc_1.4.3                 </span></span>
+<span><span class="co">## [115] DelayedArray_0.32.0         checkmate_2.3.2            </span></span>
+<span><span class="co">## [117] scales_1.4.0                hexbin_1.28.4              </span></span>
+<span><span class="co">## [119] supraHex_1.43.0             digest_0.6.37              </span></span>
+<span><span class="co">## [121] rmarkdown_2.29              XVector_0.46.0             </span></span>
+<span><span class="co">## [123] htmltools_0.5.8.1           pkgconfig_2.0.3            </span></span>
+<span><span class="co">## [125] base64enc_0.1-3             MatrixGenerics_1.18.0      </span></span>
+<span><span class="co">## [127] fastmap_1.2.0               rlang_1.1.6                </span></span>
+<span><span class="co">## [129] htmlwidgets_1.6.4           UCSC.utils_1.2.0           </span></span>
+<span><span class="co">## [131] quantmod_0.4.26             shiny_1.9.1                </span></span>
+<span><span class="co">## [133] farver_2.1.2                jquerylib_0.1.4            </span></span>
+<span><span class="co">## [135] zoo_1.8-12                  jsonlite_1.8.9             </span></span>
+<span><span class="co">## [137] BiocParallel_1.40.0         R.oo_1.27.0                </span></span>
+<span><span class="co">## [139] GOSemSim_2.32.0             ropls_1.38.0               </span></span>
+<span><span class="co">## [141] ModelMetrics_1.2.2.2        RCurl_1.98-1.16            </span></span>
+<span><span class="co">## [143] magrittr_2.0.4              ggplotify_0.1.2            </span></span>
+<span><span class="co">## [145] Formula_1.2-5               GenomeInfoDbData_1.2.13    </span></span>
+<span><span class="co">## [147] patchwork_1.3.2             Rcpp_1.0.13-1              </span></span>
 <span><span class="co">## [149] ape_5.8                     stringi_1.8.4              </span></span>
 <span><span class="co">## [151] pROC_1.18.5                 zlibbioc_1.52.0            </span></span>
-<span><span class="co">## [153] MASS_7.3-61                 plyr_1.8.9                 </span></span>
-<span><span class="co">## [155] ggrepel_0.9.6               parallel_4.4.2             </span></span>
+<span><span class="co">## [153] MASS_7.3-60.2               plyr_1.8.9                 </span></span>
+<span><span class="co">## [155] ggrepel_0.9.6               parallel_4.4.1             </span></span>
 <span><span class="co">## [157] listenv_0.9.1               survminer_0.5.0            </span></span>
-<span><span class="co">## [159] Biostrings_2.74.0           splines_4.4.2              </span></span>
+<span><span class="co">## [159] Biostrings_2.74.0           splines_4.4.1              </span></span>
 <span><span class="co">## [161] hms_1.1.3                   Boruta_8.0.0               </span></span>
 <span><span class="co">## [163] ranger_0.17.0               igraph_2.1.1               </span></span>
 <span><span class="co">## [165] ggpubr_0.6.0                ggsignif_0.6.4             </span></span>
 <span><span class="co">## [167] reshape2_1.4.4              XML_3.99-0.17              </span></span>
 <span><span class="co">## [169] evaluate_1.0.1              calibrate_1.7.7            </span></span>
 <span><span class="co">## [171] tzdb_0.4.0                  foreach_1.5.2              </span></span>
-<span><span class="co">## [173] httpuv_1.6.15               purrr_1.0.2                </span></span>
+<span><span class="co">## [173] httpuv_1.6.15               purrr_1.2.0                </span></span>
 <span><span class="co">## [175] future_1.34.0               km.ci_0.5-6                </span></span>
 <span><span class="co">## [177] broom_1.0.7                 xtable_1.8-4               </span></span>
 <span><span class="co">## [179] e1071_1.7-16                tidytree_0.4.6             </span></span>
