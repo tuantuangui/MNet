@@ -657,7 +657,7 @@ ui <- shinyUI(
                                 **dbNet** and **dbKEGG**.
 
                                 Knowledgebase dbKEGG, designed for extended pathway analysis sourced from KEGG database,
-                                encompasses **1,724 genes** and **3,217 metabolites** distributed across **84 metabolic pathways** and **11 metabolic categories**.
+                                encompasses **1,724 genes** and **3,217 metabolites** distributed across **86 metabolic pathways** and **11 metabolic categories**.
 
                                 Knowledgebase dbNet, designed for metabolism-related subnetwork analysis sourced from KEGG,
                                 BiGG, Reactome, SMPDB and WikiPathways, encompasses a total of **54,593 metabolite-gene pairs** and **51,719 metabolite-metabolite pairs** were documented.
@@ -670,7 +670,7 @@ ui <- shinyUI(
 
                                 <hr />
 
-                                ## **2. Knowledgebase dbMNet V202411 can be downloaded here.**
+                                ## **2. Knowledgebase dbMNet V202608 can be downloaded here.**
 
                                 <br />
                                 "
@@ -679,8 +679,8 @@ ui <- shinyUI(
                                 column(
                                     width = 9,
                                     tags$a(
-                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip",
-                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202411.zip"
+                                        href = "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202608.zip",
+                                        "http://www.mnet4all.com/MNet/dbMNet/dbMNet-V202608.zip"
                                     )
                                 ),
                                 column(
