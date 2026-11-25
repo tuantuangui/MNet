@@ -4,6 +4,12 @@ FROM rocker/r2u:24.04
 
 LABEL maintainer="Tuantuan Gui <guituant2009@163.com>"
 LABEL description="MNet Shiny app"
+LABEL org.opencontainers.image.title="MNet"
+LABEL org.opencontainers.image.description="MNet Shiny app for integrative metabolomic and transcriptomic analysis"
+LABEL org.opencontainers.image.source="https://github.com/tuantuangui/MNet"
+
+# The base image and package installation are architecture-aware. Use Buildx
+# with linux/amd64 and linux/arm64 to publish a multi-platform image manifest.
 
 # Install CRAN and Bioconductor dependencies as binary packages via r2u.
 # This covers DESCRIPTION Imports plus the extra packages loaded in app.R.
@@ -14,6 +20,7 @@ RUN apt-get update -qq \
         r-cran-survival \
         r-cran-igraph \
         r-cran-caret \
+        r-cran-glmnet \
         r-cran-xgboost \
         r-cran-magrittr \
         r-cran-rcolorbrewer \

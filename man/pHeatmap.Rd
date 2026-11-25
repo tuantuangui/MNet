@@ -45,10 +45,10 @@ if (FALSE) {
 diff_result <- DM(2**meta_dat,group)
 # filter the differential metabolites by default fold change >1.5 or < 1/1.5 ,fdr < 0.05 and VIP>1
 diff_result_filter <- diff_result \%>\%
-  dplyr::filter(fold_change >1.3 | fold_change < 1/1.3) \%>\%
-  dplyr::filter(fdr_wilcox<0.1) \%>\%
-  dplyr::filter(vip>0.8)
-meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$name,]
+  dplyr::filter(Fold_change >1.3 | Fold_change < 1/1.3) \%>\%
+  dplyr::filter(`p-adjust_wilcox`<0.1) \%>\%
+  dplyr::filter(VIP>0.8)
+meta_dat_diff <- meta_dat[rownames(meta_dat) \%in\% diff_result_filter$Name,]
 
 p_heatmap <- pHeatmap(meta_dat_diff,
   group,

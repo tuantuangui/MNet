@@ -21,6 +21,24 @@ eSEAlyser <- function(Ranks_all,
                  nPermSimple = 20000,
                  gseaParam = 0.5,
                  out = "Extended") {
+  out <- match.arg(out, c("Extended", "gene", "metabolite"))
+  if (!is.numeric(Ranks_all) || is.null(names(Ranks_all)) || !length(Ranks_all) ||
+      anyNA(Ranks_all) || any(!is.finite(Ranks_all)) || anyNA(names(Ranks_all)) ||
+      any(!nzchar(names(Ranks_all))) || anyDuplicated(names(Ranks_all))) {
+    stop("`Ranks_all` must be a finite numeric vector with unique, non-empty names.", call. = FALSE)
+  }
+  if (length(minSize) != 1L || !is.numeric(minSize) || is.na(minSize) ||
+      !is.finite(minSize) || minSize < 1) {
+    stop("`minSize` must be a positive finite number.", call. = FALSE)
+  }
+  if (length(nPermSimple) != 1L || !is.numeric(nPermSimple) || is.na(nPermSimple) ||
+      !is.finite(nPermSimple) || nPermSimple < 1) {
+    stop("`nPermSimple` must be a positive finite number.", call. = FALSE)
+  }
+  if (length(gseaParam) != 1L || !is.numeric(gseaParam) || is.na(gseaParam) ||
+      !is.finite(gseaParam) || gseaParam < 0) {
+    stop("`gseaParam` must be a non-negative finite number.", call. = FALSE)
+  }
   utils::data("Pathways_all")
   utils::data("Pathways_gene")
   utils::data("Pathways_metabolite")
@@ -53,5 +71,7 @@ eSEAlyser <- function(Ranks_all,
     )
   }
   fgseaRes_all$leadingEdge <- sapply(fgseaRes_all$leadingEdge, function(x) paste(x, collapse = ", "))
+  names(fgseaRes_all)[names(fgseaRes_all) == "pval"] <- "p-value"
+  names(fgseaRes_all)[names(fgseaRes_all) == "padj"] <- "p-adjust"
   return(fgseaRes_all)
 }

@@ -4,19 +4,19 @@
 \alias{ML_logistic}
 \title{Feature selection using logistic regression}
 \usage{
-ML_logistic(object, out_dir = "logistic/", seed = NULL, auc_cutoff = 0.8)
+ML_logistic(object, out_dir = "logistic/", seed = 123, auc_cutoff = 0.8)
 }
 \arguments{
-\item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
+\item{object}{A dataframe with numeric predictors and a two-class \code{group} column}
 
-\item{out_dir}{the out directory}
+\item{out_dir}{Directory where ROC plots and the AUC table are saved}
 
-\item{seed}{the seed}
+\item{seed}{Random seed for the stratified train/A data frame containing each predictor's test-set AUC split}
 
-\item{auc_cutoff}{the cut off of auc that be filtered}
+\item{auc_cutoff}{Minimum A data frame containing each predictor's test-set AUC-set AUC for saving an individual ROC plot}
 }
 \value{
-test
+A data frame containing each predictor's test-set AUC
 }
 \description{
 Feature selection using logistic regression

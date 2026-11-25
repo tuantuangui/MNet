@@ -24,7 +24,7 @@ eSEAlyser(
 \item{out}{The pathway type for gene or metabolite,or extended pathway included genes and metabolites,default is "Extended",alternative is "metabolite" and "gene"}
 }
 \value{
-the eSEAlyser result
+The eSEAlyser result with nominal p-values in \code{p-value} and adjusted p-values in \code{p-adjust} columns.
 }
 \description{
 the Extended-data Set Enrichment Analysis which includes gene and metabolite

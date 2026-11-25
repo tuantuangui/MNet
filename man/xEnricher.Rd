@@ -70,8 +70,8 @@ an object of class "eTerm", a list with following components:
  \item{\code{overlap}: a list of overlapped snp/gene sets, each storing snps/genes overlapped between a snp/gene set and the given input data (i.e. the snps/genes of interest). Always, gene sets are identified by "id"}
  \item{\code{fc}: a vector containing fold changes}
  \item{\code{zscore}: a vector containing z-scores}
- \item{\code{pvalue}: a vector containing p-values}
- \item{\code{adjp}: a vector containing adjusted p-values. It is the p value but after being adjusted for multiple comparisons}
+ \item{\code{pvalue}: the internal eTerm slot for nominal p-values; \code{xEnrichViewer()} returns this column as \code{p-value}}
+ \item{\code{adjp}: the internal eTerm slot for adjusted p-values; \code{xEnrichViewer()} returns this column as \code{p-adjust}}
  \item{\code{or}: a vector containing odds ratio}
  \item{\code{CIl}: a vector containing lower bound confidence interval for the odds ratio}
  \item{\code{CIu}: a vector containing upper bound confidence interval for the odds ratio}
@@ -117,7 +117,7 @@ eTerm <- xEnricher(data=data, annotation=anno, background=background, g=g, path.
 xEnrichViewer(eTerm)
 
 # 1f') save enrichment results to the file called 'EF_enrichments.txt'
-res <- xEnrichViewer(eTerm, top_num=length(eTerm$adjp), sortBy="adjp", details=TRUE)
+res <- xEnrichViewer(eTerm, top_num=length(eTerm$adjp), sortBy="p-adjust", details=TRUE)
 output <- data.frame(term=rownames(res), res)
 utils::write.table(output, file="EF_enrichments.txt", sep="\t", row.names=FALSE)
 

@@ -15,25 +15,25 @@
 #' @examples
 #' library(dplyr)
 #' 
-#' names(diff_meta)[4]  <- "p_value"
 #' diff_metabolite <- diff_meta %>%
-#'   dplyr::filter(adj.P.Val < 0.01) %>%
+#'   dplyr::filter(`p-adjust` < 0.01) %>%
 #'   dplyr::filter(abs(logFC) > 1)
 #'   
-#' names(diff_gene)[4] <- "p_value"
 #' diff_gene1 <- diff_gene %>%
-#'   dplyr::filter(adj.P.Val < 0.01) %>%
+#'   dplyr::filter(`p-adjust` < 0.01) %>%
 #'   dplyr::filter(abs(logFC) > 1)
 #'   
 #' res <- sNETlyser(diff_meta, diff_gene, nsize = 100)
 #' res
 #' 
-#' res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:500, 8])
+#' res <- sNETlyser(diff_metabolite, diff_gene1, nsize = 500)
 #' res
 #'
 
 sNETlyser <- function(diff_metabolite, diff_gene, nsize = 10) {
   keggId <- gene <- logFC <- type <- cor_result <- NULL
+  diff_metabolite <- .mnet_standardize_p_columns(diff_metabolite)
+  diff_gene <- .mnet_standardize_p_columns(diff_gene)
   gene_metabolite_1 <- gene_metabolite %>%
     as.data.frame() %>%
     unique()
@@ -55,7 +55,7 @@ sNETlyser <- function(diff_metabolite, diff_gene, nsize = 10) {
   
   diff_info <- rbind(diff_metabolite, diff_gene)
   
-  if ("p_value" %in% names(diff_info)) {
+  if ("p-value" %in% names(diff_info)) {
     nodes <- name_all %>%
       dplyr::select(name, type)
     
@@ -65,7 +65,7 @@ sNETlyser <- function(diff_metabolite, diff_gene, nsize = 10) {
                                              vertices = nodes,
                                              directed = F)
     
-    p <- diff_info %>% dplyr::pull(.data$p_value)
+    p <- diff_info %>% dplyr::pull(.data[["p-value"]])
     names(p) <- diff_info %>% dplyr::pull(name)
     
     g <- dnet::dNetPipeline(network, pval = p, nsize = nsize)

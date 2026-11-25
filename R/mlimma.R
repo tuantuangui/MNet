@@ -3,7 +3,7 @@
 #' @param object object A dataframe-like data object containing raw metabolite intensity values, with rows corresponding to metabolites, and the columns corresponding to the samples
 #' @param group the data's group
 #'
-#' @return A dataframe is same with limma's result
+#' @return A dataframe with limma's statistics; p-value columns are named `p-value` and `p-adjust`
 #' 
 #' @importFrom stats model.matrix
 #' @importFrom stringr str_replace_all fixed
@@ -16,9 +16,21 @@
 #' result
 #'
 mlimma <- function(object, group) {
+  object <- as.matrix(object)
+  if (!is.numeric(object) || nrow(object) < 1L || ncol(object) < 2L ||
+      is.null(colnames(object)) || anyDuplicated(colnames(object))) {
+    stop("`object` must be a numeric matrix with named sample columns.", call. = FALSE)
+  }
+  if (length(group) != ncol(object) || anyNA(group)) {
+    stop("`group` must contain one non-missing label for each sample column.", call. = FALSE)
+  }
+  group <- tolower(as.character(group))
+  if (!setequal(unique(group), c("normal", "tumor"))) {
+    stop("`group` must contain exactly the labels 'normal' and 'tumor'.", call. = FALSE)
+  }
   meta.data <- data.frame(Sample = colnames(object))
   meta.data$patient <- meta.data$Sample
-  meta.data$Type <- group
+  meta.data$Type <- factor(group, levels = c("normal", "tumor"))
   
   ############### Limma fpkm : coding genes
   pdata.gene <- meta.data
@@ -35,8 +47,10 @@ mlimma <- function(object, group) {
                                   coef = 1,
                                   adjust.method = 'fdr',
                                   number = Inf)
-  deg <- deg_sig_list[which(!is.na(deg_sig_list$adj.P.Val)), ]
-  deg$logP <- -log10(deg$adj.P.Val)
+  names(deg_sig_list)[names(deg_sig_list) == "P.Value"] <- "p-value"
+  names(deg_sig_list)[names(deg_sig_list) == "adj.P.Val"] <- "p-adjust"
+  deg <- deg_sig_list[!is.na(deg_sig_list[["p-adjust"]]), , drop = FALSE]
+  deg$logP <- -log10(deg[["p-adjust"]])
   
   deg$name <- rownames(deg)
   return(tibble::as_tibble(deg))

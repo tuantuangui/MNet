@@ -134,7 +134,7 @@ pESEA <- function(pathway_name,
     rel_heights = c(1, 0.2, 0.5),
     scale = 1,
     align = "v",
-    labels = paste0(pathway_name, " pval=", pval, ";NES=", nes),
+    labels = paste0(pathway_name, " p-value=", pval, "; NES=", nes),
     label_size = 8
   )
   return(p1)

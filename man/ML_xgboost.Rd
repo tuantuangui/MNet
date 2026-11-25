@@ -4,10 +4,12 @@
 \alias{ML_xgboost}
 \title{Feature selection using XGBoost}
 \usage{
-ML_xgboost(object)
+ML_xgboost(object, seed = 123)
 }
 \arguments{
 \item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
+
+\item{seed}{Random seed for reproducible data partitioning and model fitting}
 }
 \value{
 test

@@ -26,7 +26,8 @@
 #'
 ML_RF <- function(object,
                   ylim_min = 0,
-                  seed = NULL) {
+                  seed = 123) {
+  object <- .mnet_prepare_ml_data(object)
   group <- MeanDecreaseAccuracy <- test_set <- AUC <- type <- NULL
   set.seed(seed)
   

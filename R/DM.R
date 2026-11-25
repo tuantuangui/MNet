@@ -1,9 +1,9 @@
-#' @title Fold change, p value and vip of the data
+#' @title Fold change, p-value and VIP of the data
 #'
 #' @param mydata the rows are metabolites, and the columns are the samples
 #' @param group the group information of the sample
 #'
-#' @return a data frame of the result contains fold change,p value and vip
+#' @return A data frame containing fold change, `p-value_t`, `p-adjust_t`, `p-value_wilcox`, `p-adjust_wilcox`, and VIP.
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter left_join select rename
@@ -75,7 +75,7 @@ DM <- function(mydata, group) {
   vip_result$name <- rownames(vip_result)
   
   
-  Name <- Fold_change <- PValue_t <- Padj_t <- PValue_wilcox <- Padj_wilcox <- VIP <- NULL
+  Name <- Fold_change <- VIP <- NULL
   
   result <- fold_change_result %>%
     dplyr::left_join(p_value_result, by = "name") %>%
@@ -89,10 +89,10 @@ DM <- function(mydata, group) {
                   .data$vip) %>%
     dplyr::rename("Name" = "name") %>%
     dplyr::rename("Fold_change" = "fold_change") %>%
-    dplyr::rename("PValue_t" = "t_value") %>%
-    dplyr::rename("Padj_t" = "fdr_t") %>%
-    dplyr::rename("PValue_wilcox" = "wilcox_value") %>%
-    dplyr::rename("Padj_wilcox" = "fdr_wilcox") %>%
+    dplyr::rename(`p-value_t` = "t_value") %>%
+    dplyr::rename(`p-adjust_t` = "fdr_t") %>%
+    dplyr::rename(`p-value_wilcox` = "wilcox_value") %>%
+    dplyr::rename(`p-adjust_wilcox` = "fdr_wilcox") %>%
     dplyr::rename("VIP" = "vip") %>%
     tibble::as_tibble()
   

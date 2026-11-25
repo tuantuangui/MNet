@@ -1,6 +1,7 @@
 #' @title Feature selection using XGBoost
 #'
 #' @param object A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples
+#' @param seed Random seed for reproducible data partitioning and model fitting
 #'
 #' @return test
 #' 
@@ -23,8 +24,10 @@
 #' result_ML_xgboost$p
 #' result_ML_xgboost$feature_result
 #'
-ML_xgboost <- function(object) {
+ML_xgboost <- function(object, seed = 123) {
+  object <- .mnet_prepare_ml_data(object)
   test_rmse <- iter <- Feature <- Importance <- NULL
+  set.seed(seed)
   parts = caret::createDataPartition(object$group, p = .8, list = F)
   train = object[parts, ]
   test = object[-parts, ]
@@ -40,11 +43,8 @@ ML_xgboost <- function(object) {
     )) %>%
     as.matrix()
   
-  train_y = train[, which(names(object) == "group")]
-  
-  train_y[which(train_y == unique(object$group)[1])] <- 0
-  train_y[which(train_y == unique(object$group)[2])] <- 1
-  train_y <- as.numeric(train_y)
+  group_levels <- unique(object$group)
+  train_y <- as.numeric(train$group == group_levels[2])
   
   #define predictor and response variables in testing set
   #  test_x = as.data.frame(lapply(test[, -which(colnames(object)=="group")],as.numeric)) %>%
@@ -58,40 +58,44 @@ ML_xgboost <- function(object) {
     )) %>%
     as.matrix()
   
-  test_y = test[, which(names(object) == "group")]
-  test_y[which(test_y == unique(object$group)[1])] <- 0
-  test_y[which(test_y == unique(object$group)[2])] <- 1
-  test_y <- as.numeric(test_y)
+  test_y <- as.numeric(test$group == group_levels[2])
   
   #define final training and testing sets
   xgb_train = xgboost::xgb.DMatrix(data = train_x, label = train_y)
   xgb_test = xgboost::xgb.DMatrix(data = test_x, label = test_y)
   
   #define watchlist
-  watchlist = list(train = xgb_train, test = xgb_test)
-  
-  #fit XGBoost model and display training and testing data at each round
+  evals = list(train = xgb_train, test = xgb_test)
+
+  # Fit XGBoost reproducibly and keep the validation error for model selection.
   model = xgboost::xgb.train(
+    params = list(max_depth = 3, objective = "reg:squarederror",
+                  eval_metric = "rmse", seed = seed, nthread = 1),
     data = xgb_train,
-    max.depth = 3,
-    watchlist = watchlist,
-    nrounds = 70
+    evals = evals,
+    nrounds = 70,
+    verbose = 0,
+    callbacks = list(xgboost::xgb.cb.evaluation.log())
   )
   
-  nrounds <- model$evaluation_log %>%
-    dplyr::arrange(test_rmse) %>%
-    utils::head(n = 1) %>%
-    dplyr::pull(iter)
+  evaluation_log <- attr(model, "evaluation_log")
+  if (is.null(evaluation_log) || !"test_rmse" %in% names(evaluation_log)) {
+    stop("XGBoost did not return validation RMSE values.")
+  }
+  nrounds <- evaluation_log$iter[which.min(evaluation_log$test_rmse)]
   
-  xgboost_model = xgboost::xgboost(
+  xgboost_model = xgboost::xgb.train(
+    params = list(max_depth = 3, objective = "reg:squarederror",
+                  seed = seed, nthread = 1),
     data = xgb_train,
-    max.depth = 3,
     nrounds = nrounds,
     verbose = 0
   )
   
-  importance_matrix = xgboost::xgb.importance(colnames(xgb_train), model = xgboost_model)
-  importance_matrix = xgboost::xgb.plot.importance(importance_matrix)
+  importance_matrix <- xgboost::xgb.importance(
+    feature_names = colnames(train_x),
+    model = xgboost_model
+  )
   
   importance_matrix$Feature <- factor(importance_matrix$Feature,
                                       levels = rev(importance_matrix$Feature))

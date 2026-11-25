@@ -23,6 +23,26 @@ library(Cairo)
 library(callr)
 library(shinyjs)
 
+utils::data("Pathways_all", package = "MNet")
+
+.mnet_parse_seed <- function(value, default) {
+    if (is.null(value) || length(value) != 1L || is.na(value)) {
+        return(NA_integer_)
+    }
+    value <- trimws(as.character(value))
+    if (!nzchar(value)) {
+        return(as.integer(default))
+    }
+    if (!grepl("^[0-9]+$", value)) {
+        return(NA_integer_)
+    }
+    seed <- suppressWarnings(as.numeric(value))
+    if (!is.finite(seed) || seed > .Machine$integer.max) {
+        return(NA_integer_)
+    }
+    as.integer(seed)
+}
+
 # library(promises)
 # library(future)
 
@@ -1339,7 +1359,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "diff_network_padj",
-                                           label = "Padjust Cutoff",
+                                           label = "Cutoff p-adjust",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -1356,7 +1376,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "diff_network_logfc",
-                                           label = "Log(FoldChange)",
+                                           label = "log2(Fold Change)",
                                            min = 0.00,
                                            max = 100.00,
                                            value = 1.00,
@@ -1628,7 +1648,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "corr_network_threshold",
-                                           label = "Padjust Cutoff",
+                                           label = "Correlation cutoff",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.95,
@@ -1902,7 +1922,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "epea_logfc",
-                                           label = "Log(FoldChange)",
+                                           label = "log2(Fold Change)",
                                            min = 0.00,
                                            max = 10.00,
                                            value = 0.58,
@@ -1919,7 +1939,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "epea_padj",
-                                           label = "Padjust Cutoff",
+                                           label = "Cutoff p-adjust",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -1936,7 +1956,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "epea_p_cutoff",
-                                           label = "Pathway Pcutoff",
+                                           label = "Pathway p-value",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -2434,7 +2454,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "epda_logfc",
-                                           label = "Log(FoldChange)",
+                                           label = "log2(Fold Change)",
                                            min = 0.00,
                                            max = 10.00,
                                            value = 0.58,
@@ -2451,7 +2471,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "epda_padj",
-                                           label = "Padjust Cutoff",
+                                           label = "Cutoff p-adjust",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -2892,12 +2912,14 @@ ui <- shinyUI(
                                        br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
                                        hr(),
-                                       textInput(
+                                       selectizeInput(
                                            inputId = "esea_pathway",
                                            label = "Pathway Name",
-                                           value = "Oxidative phosphorylation",
-                                           placeholder = "Pathway Name",
-                                           width = NULL
+                                           choices = c("Select a pathway" = "", names(Pathways_all)),
+                                           selected = "Oxidative phosphorylation",
+                                           options = list(placeholder = "Select a pathway", create = FALSE),
+                                           width = NULL,
+                                           multiple = FALSE
                                        ),
                                        tags$b("3. FIGURE CANVAS:"),
                                        hr(),
@@ -3332,7 +3354,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "mpea_logfc",
-                                           label = "Log(FoldChange)",
+                                           label = "log2(Fold Change)",
                                            min = 0.00,
                                            max = 10.00,
                                            value = 0.58,
@@ -3349,7 +3371,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "mpea_padj",
-                                           label = "Padjust Cutoff",
+                                           label = "Cutoff p-adjust",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -3366,7 +3388,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "mpea_p_cutoff",
-                                           label = "Pathway Pcutoff",
+                                           label = "Pathway p-value",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -3594,7 +3616,7 @@ ui <- shinyUI(
                                        hr(),
                                        sliderInput(
                                            inputId = "gpea_logfc",
-                                           label = "Log(FoldChange)",
+                                           label = "log2(Fold Change)",
                                            min = 0.00,
                                            max = 10.00,
                                            value = 0.58,
@@ -3611,7 +3633,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "gpea_padj",
-                                           label = "Padjust Cutoff",
+                                           label = "Cutoff p-adjust",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -3628,7 +3650,7 @@ ui <- shinyUI(
                                        ),
                                        sliderInput(
                                            inputId = "gpea_p_cutoff",
-                                           label = "Pathway Pcutoff",
+                                           label = "Pathway p-value",
                                            min = 0.00,
                                            max = 1.00,
                                            value = 0.05,
@@ -4971,16 +4993,28 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Group Data (.txt format)"
                                        ),
-                                       actionButton(
-                                           inputId = "boruta_submit",
-                                           label = "Submit",
-                                           icon = shiny::icon("person-running"),
-                                           width = "100%",
-                                           status = "success",
-                                           gradient = FALSE,
-                                           outline = FALSE,
-                                           size = NULL,
-                                           flat = FALSE
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "boruta_user_seed",
+                                           label = "Seed",
+                                           value = "",
+                                           width = NULL,
+                                           placeholder = "Default: 2"
+                                       ),
+                                       tags$div(
+                                           style = "margin-top: 16px;",
+                                           actionButton(
+                                               inputId = "boruta_submit",
+                                               label = "Submit",
+                                               icon = shiny::icon("person-running"),
+                                               width = "100%",
+                                               status = "success",
+                                               gradient = FALSE,
+                                               outline = FALSE,
+                                               size = NULL,
+                                               flat = FALSE
+                                           )
                                        )
                                    ),
                                    column(
@@ -5204,16 +5238,28 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Group Data (.txt format)"
                                        ),
-                                       actionButton(
-                                           inputId = "forest_submit",
-                                           label = "Submit",
-                                           icon = shiny::icon("person-running"),
-                                           width = "100%",
-                                           status = "success",
-                                           gradient = FALSE,
-                                           outline = FALSE,
-                                           size = NULL,
-                                           flat = FALSE
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "forest_user_seed",
+                                           label = "Seed",
+                                           value = "",
+                                           width = NULL,
+                                           placeholder = "Default: 2"
+                                       ),
+                                       tags$div(
+                                           style = "margin-top: 16px;",
+                                           actionButton(
+                                               inputId = "forest_submit",
+                                               label = "Submit",
+                                               icon = shiny::icon("person-running"),
+                                               width = "100%",
+                                               status = "success",
+                                               gradient = FALSE,
+                                               outline = FALSE,
+                                               size = NULL,
+                                               flat = FALSE
+                                           )
                                        )
                                    ),
                                    column(
@@ -5437,16 +5483,28 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Group Data (.txt format)"
                                        ),
-                                       actionButton(
-                                           inputId = "xgboost_submit",
-                                           label = "Submit",
-                                           icon = shiny::icon("person-running"),
-                                           width = "100%",
-                                           status = "success",
-                                           gradient = FALSE,
-                                           outline = FALSE,
-                                           size = NULL,
-                                           flat = FALSE
+                                       tags$b("2. ANALYSIS PARAMETERS:"),
+                                       hr(),
+                                       textInput(
+                                           inputId = "xgboost_user_seed",
+                                           label = "Seed",
+                                           value = "",
+                                           width = NULL,
+                                           placeholder = "Default: 2"
+                                       ),
+                                       tags$div(
+                                           style = "margin-top: 16px;",
+                                           actionButton(
+                                               inputId = "xgboost_submit",
+                                               label = "Submit",
+                                               icon = shiny::icon("person-running"),
+                                               width = "100%",
+                                               status = "success",
+                                               gradient = FALSE,
+                                               outline = FALSE,
+                                               size = NULL,
+                                               flat = FALSE
+                                           )
                                        )
                                    ),
                                    column(
@@ -5670,17 +5728,6 @@ ui <- shinyUI(
                                            buttonLabel = "Browse",
                                            placeholder = "Group Data (.txt format)"
                                        ),
-                                       actionButton(
-                                           inputId = "lasso_submit",
-                                           label = "Submit",
-                                           icon = shiny::icon("person-running"),
-                                           width = "100%",
-                                           status = "success",
-                                           gradient = FALSE,
-                                           outline = FALSE,
-                                           size = NULL,
-                                           flat = FALSE
-                                       ),
                                        br(),
                                        br(),
                                        tags$b("2. ANALYSIS PARAMETERS:"),
@@ -5697,10 +5744,24 @@ ui <- shinyUI(
                                        ),
                                        textInput(
                                            inputId = "lasso_user_seed",
-                                           label = "Seeds",
-                                           value = "0",
+                                           label = "Seed",
+                                           value = "",
                                            width = NULL,
-                                           placeholder = "Please set seed number"
+                                           placeholder = "Default: 0"
+                                       ),
+                                       tags$div(
+                                           style = "margin-top: 16px;",
+                                           actionButton(
+                                               inputId = "lasso_submit",
+                                               label = "Submit",
+                                               icon = shiny::icon("person-running"),
+                                               width = "100%",
+                                               status = "success",
+                                               gradient = FALSE,
+                                               outline = FALSE,
+                                               size = NULL,
+                                               flat = FALSE
+                                           )
                                        )
                                    ),
                                    column(
@@ -6057,7 +6118,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/6.1.time_series_plot.png",
+                                                   src = "image/demo_time_series.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -6322,7 +6383,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/6.2.survival_analysis_plot.png",
+                                                   src = "image/demo_survival_analysis.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -6605,7 +6666,7 @@ ui <- shinyUI(
                                                ),
                                                hr(),
                                                tags$img(
-                                                   src = "http://www.mnet4all.com/mnet_manual/figure/6.3.survival_plot.png",
+                                                   src = "image/demo_survival_plot.png",
                                                    width = "100%",
                                                    height = "auto"
                                                ),
@@ -7303,7 +7364,7 @@ server <- shinyServer(function(session, input, output) {
                     Fold_change > input$heatmap_fold_change |
                         Fold_change < 1 / input$heatmap_fold_change
                 ) %>%
-                filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                filter(`p-adjust_wilcox` < input$heatmap_padj_wilcox) %>%
                 filter(VIP > input$heatmap_VIP)
             
             meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
@@ -7372,7 +7433,7 @@ server <- shinyServer(function(session, input, output) {
                             Fold_change > input$heatmap_fold_change |
                                 Fold_change < 1 / input$heatmap_fold_change
                         ) %>%
-                        filter(Padj_wilcox < input$heatmap_padj_wilcox) %>%
+                        filter(`p-adjust_wilcox` < input$heatmap_padj_wilcox) %>%
                         filter(VIP > input$heatmap_VIP)
                     
                     meta_data_diff <- meta_data[rownames(meta_data) %in% diff_res_filter$Name, ]
@@ -7530,8 +7591,8 @@ server <- shinyServer(function(session, input, output) {
                 head(nodes %>%
                        mutate(AveExpr=round(AveExpr,4)) %>%
                        mutate(t=round(t,4)) %>%
-                       mutate(p_value=round(p_value,4)) %>%
-                       mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                       mutate(`p-value`=round(`p-value`,4)) %>%
+                       mutate(`p-adjust` = round(`p-adjust`,4)) %>%
                        mutate(B = round(B,4)) %>%
                        mutate(logP = round(logP,4)), 30),
                 rownames = TRUE,
@@ -7782,9 +7843,6 @@ server <- shinyServer(function(session, input, output) {
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
 
-            names(diff_meta)[4] <- "p_value"
-            names(diff_gene)[4] <- "p_value"
-
             network_res <- sNETlyser(diff_meta, diff_gene, nsize = input$network_nsize)
             
             progress$set(value = 80)
@@ -7855,8 +7913,8 @@ server <- shinyServer(function(session, input, output) {
                   nodes %>%
                            mutate(AveExpr=round(AveExpr,4)) %>%
                            mutate(t=round(t,4)) %>%
-                           mutate(p_value=round(p_value,4)) %>%
-                           mutate(adj.P.Val = round(adj.P.Val,4)) %>%
+                           mutate(`p-value`=round(`p-value`,4)) %>%
+                           mutate(`p-adjust` = round(`p-adjust`,4)) %>%
                            mutate(B = round(B,4)) %>%
                            mutate(logP = round(logP,4)),
                   #30),
@@ -8007,8 +8065,8 @@ server <- shinyServer(function(session, input, output) {
         #             diff_meta <- mlimma(meta_data, group_data)
         #             diff_gene <- mlimma(gene_data, group_data)
         #             
-        #             names(diff_meta)[4] <- "p_value"
-        #             names(diff_gene)[4] <- "p_value"
+        #             names(diff_meta)[4] <- "p-value"
+        #             names(diff_gene)[4] <- "p-value"
         #             
         #             network_res <- sNETlyser(diff_meta, diff_gene, nsize = network_nsize)
         #             
@@ -8287,17 +8345,17 @@ server <- shinyServer(function(session, input, output) {
             diff_meta <- mlimma(meta_data, group_data)
             diff_gene <- mlimma(gene_data, group_data)
             
-            names(diff_meta)[4] <- "p_value"
-            names(diff_gene)[4] <- "p_value"
-            
             diff_metabolite <- diff_meta %>%
-                filter(adj.P.Val < input$diff_network_padj) %>%
+                filter(`p-adjust` < input$diff_network_padj) %>%
                 filter(abs(logFC) > input$diff_network_logfc)
             diff_gene1 <- diff_gene %>%
-                filter(adj.P.Val < input$diff_network_padj) %>%
+                filter(`p-adjust` < input$diff_network_padj) %>%
                 filter(abs(logFC) > input$diff_network_logfc)
             
-            diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+            diff_network_res <- sNETlyser(
+                diff_metabolite,
+                utils::head(diff_gene1, input$diff_network_gene_num)
+            )
             diff_network_res
         })
         
@@ -8361,17 +8419,17 @@ server <- shinyServer(function(session, input, output) {
                     diff_meta <- mlimma(meta_data, group_data)
                     diff_gene <- mlimma(gene_data, group_data)
                     
-                    names(diff_meta)[4] <- "p_value"
-                    names(diff_gene)[4] <- "p_value"
-                    
                     diff_metabolite <- diff_meta %>%
-                        filter(adj.P.Val < input$diff_network_padj) %>%
+                        filter(`p-adjust` < input$diff_network_padj) %>%
                         filter(abs(logFC) > input$diff_network_logfc)
                     diff_gene1 <- diff_gene %>%
-                        filter(adj.P.Val < input$diff_network_padj) %>%
+                        filter(`p-adjust` < input$diff_network_padj) %>%
                         filter(abs(logFC) > input$diff_network_logfc)
                     
-                    diff_network_res <- sNETlyser(diff_metabolite[, 8], diff_gene1[1:input$diff_network_gene_num, 8])
+                    diff_network_res <- sNETlyser(
+                        diff_metabolite,
+                        utils::head(diff_gene1, input$diff_network_gene_num)
+                    )
                     diff_network_res
                 })
                 
@@ -8956,7 +9014,7 @@ server <- shinyServer(function(session, input, output) {
                 
                 all_data_up <- all_data %>%
                     filter(logFC > input$epea_logfc) %>%
-                    filter(adj.P.Val < input$epea_padj)
+                    filter(`p-adjust` < input$epea_padj)
                 result_up <- ePEAlyser(
                     all_data_up$name,
                     out = "Extended",
@@ -8965,7 +9023,7 @@ server <- shinyServer(function(session, input, output) {
                 
                 all_data_down <- all_data %>%
                     filter(logFC < -(input$epea_padj)) %>%
-                    filter(adj.P.Val < input$epea_padj)
+                    filter(`p-adjust` < input$epea_padj)
                 result_down <- ePEAlyser(
                     all_data_down$name,
                     out = "Extended",
@@ -9028,7 +9086,7 @@ server <- shinyServer(function(session, input, output) {
             
             all_data_up <- all_data %>%
                 filter(logFC > input$epea_logfc) %>%
-                filter(adj.P.Val < input$epea_padj)
+                filter(`p-adjust` < input$epea_padj)
             result_up <- ePEAlyser(
                 all_data_up$name,
                 out = "Extended",
@@ -9044,7 +9102,7 @@ server <- shinyServer(function(session, input, output) {
             
             all_data_down <- all_data %>%
                 filter(logFC < -(input$epea_padj)) %>%
-                filter(adj.P.Val < input$epea_padj)
+                filter(`p-adjust` < input$epea_padj)
             result_down <- ePEAlyser(
                 all_data_down$name,
                 out = "Extended",
@@ -9291,14 +9349,14 @@ server <- shinyServer(function(session, input, output) {
             
             diff_meta_up <- diff_meta %>%
                 filter(logFC > input$mpea_logfc) %>%
-                filter(adj.P.Val < input$mpea_padj)
+                filter(`p-adjust` < input$mpea_padj)
             result_up <- ePEAlyser(diff_meta_up$name,
                                          out = "metabolite",
                                          p_cutoff = input$mpea_p_cutoff)
             
             diff_meta_down <- diff_meta %>%
                 filter(logFC < -(input$mpea_padj)) %>%
-                filter(adj.P.Val < input$mpea_padj)
+                filter(`p-adjust` < input$mpea_padj)
             result_down <- ePEAlyser(
                 diff_meta_down$name,
                 out = "metabolite",
@@ -9365,7 +9423,7 @@ server <- shinyServer(function(session, input, output) {
                     
                     diff_meta_up <- diff_meta %>%
                         filter(logFC > input$mpea_logfc) %>%
-                        filter(adj.P.Val < input$mpea_padj)
+                        filter(`p-adjust` < input$mpea_padj)
                     result_up <- ePEAlyser(
                         diff_meta_up$name,
                         out = "metabolite",
@@ -9374,7 +9432,7 @@ server <- shinyServer(function(session, input, output) {
                     
                     diff_meta_down <- diff_meta %>%
                         filter(logFC < -(input$mpea_padj)) %>%
-                        filter(adj.P.Val < input$mpea_padj)
+                        filter(`p-adjust` < input$mpea_padj)
                     result_down <- ePEAlyser(
                         diff_meta_down$name,
                         out = "metabolite",
@@ -9511,14 +9569,14 @@ server <- shinyServer(function(session, input, output) {
             
             diff_gene_up <- diff_gene %>%
                 filter(logFC > input$gpea_logfc) %>%
-                filter(adj.P.Val < input$gpea_padj)
+                filter(`p-adjust` < input$gpea_padj)
             result_up <- ePEAlyser(diff_gene_up$name,
                                          out = "gene",
                                          p_cutoff = input$gpea_p_cutoff)
             
             diff_gene_down <- diff_gene %>%
                 filter(logFC < -(input$gpea_padj)) %>%
-                filter(adj.P.Val < input$gpea_padj)
+                filter(`p-adjust` < input$gpea_padj)
             result_down <- ePEAlyser(
                 diff_gene_down$name,
                 out = "gene",
@@ -9584,7 +9642,7 @@ server <- shinyServer(function(session, input, output) {
                     
                     diff_gene_up <- diff_gene %>%
                         filter(logFC > input$gpea_logfc) %>%
-                        filter(adj.P.Val < input$gpea_padj)
+                        filter(`p-adjust` < input$gpea_padj)
                     result_up <- ePEAlyser(
                         diff_gene_up$name,
                         out = "gene",
@@ -9593,7 +9651,7 @@ server <- shinyServer(function(session, input, output) {
                     
                     diff_gene_down <- diff_gene %>%
                         filter(logFC < -(input$gpea_padj)) %>%
-                        filter(adj.P.Val < input$gpea_padj)
+                        filter(`p-adjust` < input$gpea_padj)
                     result_down <- ePEAlyser(
                         diff_gene_down$name,
                         out = "gene",
@@ -10019,18 +10077,18 @@ server <- shinyServer(function(session, input, output) {
                 
                 diff_gene_increase <-  diff_gene %>%
                     filter(logFC > input$epda_logfc) %>%
-                    filter(adj.P.Val < input$epda_padj)
+                    filter(`p-adjust` < input$epda_padj)
                 diff_gene_decrease <- diff_gene %>%
                     filter(logFC < -(input$epda_logfc)) %>%
-                    filter(adj.P.Val < input$epda_padj)
+                    filter(`p-adjust` < input$epda_padj)
                 
                 diff_meta_increase <- diff_meta %>%
                     filter(logFC > input$epda_logfc) %>%
-                    filter(adj.P.Val < input$epda_padj)
+                    filter(`p-adjust` < input$epda_padj)
                 
                 diff_meta_decrease <- diff_meta %>%
                     filter(logFC < -(input$epda_logfc)) %>%
-                    filter(adj.P.Val < input$epda_padj)
+                    filter(`p-adjust` < input$epda_padj)
                 
                 epda_res <- ePDAlyser(
                     c(
@@ -10090,18 +10148,18 @@ server <- shinyServer(function(session, input, output) {
             
             diff_gene_increase <-  diff_gene %>%
                 filter(logFC > input$epda_logfc) %>%
-                filter(adj.P.Val < input$epda_padj)
+                filter(`p-adjust` < input$epda_padj)
             diff_gene_decrease <- diff_gene %>%
                 filter(logFC < -(input$epda_logfc)) %>%
-                filter(adj.P.Val < input$epda_padj)
+                filter(`p-adjust` < input$epda_padj)
             
             diff_meta_increase <- diff_meta %>%
                 filter(logFC > input$epda_logfc) %>%
-                filter(adj.P.Val < input$epda_padj)
+                filter(`p-adjust` < input$epda_padj)
             
             diff_meta_decrease <- diff_meta %>%
                 filter(logFC < -(input$epda_logfc)) %>%
-                filter(adj.P.Val < input$epda_padj)
+                filter(`p-adjust` < input$epda_padj)
             
             epda_res <- ePDAlyser(
                 c(
@@ -10373,13 +10431,14 @@ server <- shinyServer(function(session, input, output) {
                 "www/demo/esea_result.txt",
                 header = TRUE,
                 sep = "\t",
-                stringsAsFactors = FALSE
+                stringsAsFactors = FALSE,
+                check.names = FALSE
             )
             
             datatable(
                 head(esea_result %>%
-                       mutate(pval=round(pval,4)) %>%
-                       mutate(padj=round(padj,4)) %>%
+                       mutate(`p-value`=round(`p-value`,4)) %>%
+                       mutate(`p-adjust`=round(`p-adjust`,4)) %>%
                        mutate(log2err=round(log2err,4)) %>%
                        mutate(ES=round(ES,4)) %>%
                        mutate(NES=round(NES,4)), 30),
@@ -10500,6 +10559,10 @@ server <- shinyServer(function(session, input, output) {
         }, server = TRUE)
         
         observeEvent(input$esea_submit, {
+            if (is.null(input$esea_pathway) || !nzchar(input$esea_pathway)) {
+                showNotification("Please select a pathway before submitting.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -10556,18 +10619,18 @@ server <- shinyServer(function(session, input, output) {
             progress$set(message = "eSEAlyser analyzing ...", detail = "eSEAlyser analyzing ...")
             
             result_filter <- result %>%
-              dplyr::filter(pval < 0.1) %>%
+              dplyr::filter(`p-value` < 0.1) %>%
               arrange(NES) %>%
               mutate(pathway=factor(pathway,levels=pathway))
             
             progress$set(value = 80)
             progress$set(message = "eSEAlyser visualizing ...", detail = "eSEAlyser visualizing ...")
             
-            p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
+            p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(`p-value`))) +
               geom_bar(stat="identity")+
               scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
               theme_bw()+
-              labs(x=NULL)+
+              labs(x = NULL, fill = "-log10(p-value)")+
               coord_flip()
             
             ggsave(paste0(temp_esea, "/esea_plot.pdf"),p,
@@ -10614,14 +10677,15 @@ server <- shinyServer(function(session, input, output) {
                     paste(temp_esea, "/esea_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
-                    stringsAsFactors = FALSE
+                    stringsAsFactors = FALSE,
+                    check.names = FALSE
                 )
                 
                 datatable(
                     #head(esea_result %>%
                     esea_result %>%
-                           mutate(pval=round(pval,4)) %>%
-                           mutate(padj=round(padj,4)) %>%
+                           mutate(`p-value`=round(`p-value`,4)) %>%
+                           mutate(`p-adjust`=round(`p-adjust`,4)) %>%
                            mutate(log2err=round(log2err,4)) %>%
                            mutate(ES=round(ES,4)) %>%
                            mutate(NES=round(NES,4)),
@@ -11223,7 +11287,8 @@ server <- shinyServer(function(session, input, output) {
                 "www/demo/diff_meta.txt",
                 header = TRUE,
                 sep = "\t",
-                stringsAsFactors = FALSE
+                stringsAsFactors = FALSE,
+                check.names = FALSE
             )
             
             datatable(
@@ -11328,7 +11393,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             # result_filter <- result %>%
-            #     dplyr::filter(pval < 0.1) %>%
+            #     dplyr::filter(`p-value` < 0.1) %>%
             #     arrange(NES) %>%
             #     mutate(pathway=factor(pathway,levels=pathway))
             
@@ -11371,7 +11436,8 @@ server <- shinyServer(function(session, input, output) {
                     paste(temp_diff_meta, "/diff_meta_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
-                    stringsAsFactors = FALSE
+                    stringsAsFactors = FALSE,
+                    check.names = FALSE
                 )
                 
                 datatable(
@@ -11435,7 +11501,7 @@ server <- shinyServer(function(session, input, output) {
                     pageLength = 10,
                     scrollX = TRUE
                 )
-            )
+            ) %>% formatRound(columns = names(meta_data), digits = 8)
         }, server = TRUE)
         
         output$boruta_demo_meta_data_download <- downloadHandler(
@@ -11576,6 +11642,11 @@ server <- shinyServer(function(session, input, output) {
         }, server = TRUE)
         
         observeEvent(input$boruta_submit, {
+            seed <- .mnet_parse_seed(input$boruta_user_seed, default = 2L)
+            if (is.na(seed)) {
+                showNotification("Seed must be a non-negative whole number no larger than 2147483647.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -11607,7 +11678,7 @@ server <- shinyServer(function(session, input, output) {
                 as.data.frame() %>%
                 mutate(group = group)
             
-            result <- ML_Boruta(meta_data1)
+            result <- ML_Boruta(meta_data1, seed = seed)
             
             write.table(
                 result,
@@ -11618,7 +11689,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             # result_filter <- result %>%
-            #     dplyr::filter(pval < 0.1) %>%
+            #     dplyr::filter(`p-value` < 0.1) %>%
             #     arrange(NES) %>%
             #     mutate(pathway=factor(pathway,levels=pathway))
             
@@ -11674,7 +11745,7 @@ server <- shinyServer(function(session, input, output) {
                     pageLength = 10,
                     scrollX = TRUE
                 )
-            )
+            ) %>% formatRound(columns = names(meta_data), digits = 8)
         }, server = TRUE)
         
         output$forest_demo_meta_data_download <- downloadHandler(
@@ -11815,6 +11886,11 @@ server <- shinyServer(function(session, input, output) {
         }, server = TRUE)
         
         observeEvent(input$forest_submit, {
+            seed <- .mnet_parse_seed(input$forest_user_seed, default = 2L)
+            if (is.na(seed)) {
+                showNotification("Seed must be a non-negative whole number no larger than 2147483647.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -11846,7 +11922,7 @@ server <- shinyServer(function(session, input, output) {
                 as.data.frame() %>%
                 mutate(group = group)
             
-            results <- ML_RF(meta_data1)
+            results <- ML_RF(meta_data1, seed = seed)
             result <- results$feature_result
             
             write.table(
@@ -11858,7 +11934,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             # result_filter <- result %>%
-            #     dplyr::filter(pval < 0.1) %>%
+            #     dplyr::filter(`p-value` < 0.1) %>%
             #     arrange(NES) %>%
             #     mutate(pathway=factor(pathway,levels=pathway))
             
@@ -11914,7 +11990,7 @@ server <- shinyServer(function(session, input, output) {
                     pageLength = 10,
                     scrollX = TRUE
                 )
-            )
+            ) %>% formatRound(columns = names(meta_data), digits = 8)
         }, server = TRUE)
         
         output$xgboost_demo_meta_data_download <- downloadHandler(
@@ -12055,6 +12131,11 @@ server <- shinyServer(function(session, input, output) {
         }, server = TRUE)
         
         observeEvent(input$xgboost_submit, {
+            seed <- .mnet_parse_seed(input$xgboost_user_seed, default = 2L)
+            if (is.na(seed)) {
+                showNotification("Seed must be a non-negative whole number no larger than 2147483647.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -12086,8 +12167,7 @@ server <- shinyServer(function(session, input, output) {
                 as.data.frame() %>%
                 mutate(group = group)
             
-            set.seed(2)
-            results <- ML_xgboost(meta_data1)
+            results <- ML_xgboost(meta_data1, seed = seed)
             result <- results$feature_result
             
             write.table(
@@ -12099,7 +12179,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             # result_filter <- result %>%
-            #     dplyr::filter(pval < 0.1) %>%
+            #     dplyr::filter(`p-value` < 0.1) %>%
             #     arrange(NES) %>%
             #     mutate(pathway=factor(pathway,levels=pathway))
             
@@ -12155,7 +12235,7 @@ server <- shinyServer(function(session, input, output) {
                     pageLength = 10,
                     scrollX = TRUE
                 )
-            )
+            ) %>% formatRound(columns = names(meta_data), digits = 8)
         }, server = TRUE)
         
         output$lasso_demo_meta_data_download <- downloadHandler(
@@ -12296,6 +12376,11 @@ server <- shinyServer(function(session, input, output) {
         }, server = TRUE)
         
         observeEvent(input$lasso_submit, {
+            seed <- .mnet_parse_seed(input$lasso_user_seed, default = 0L)
+            if (is.na(seed)) {
+                showNotification("Seed must be a non-negative whole number no larger than 2147483647.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -12327,8 +12412,7 @@ server <- shinyServer(function(session, input, output) {
                 as.data.frame() %>%
                 mutate(group = group)
             
-            set.seed(as.numeric(input$lasso_user_seed))
-            result <- ML_alpha(meta_data1, method = input$lasso_user_method)
+            result <- ML_alpha(meta_data1, method = input$lasso_user_method, seed = seed)
             
             write.table(
                 result,
@@ -12339,7 +12423,7 @@ server <- shinyServer(function(session, input, output) {
             )
             
             # result_filter <- result %>%
-            #     dplyr::filter(pval < 0.1) %>%
+            #     dplyr::filter(`p-value` < 0.1) %>%
             #     arrange(NES) %>%
             #     mutate(pathway=factor(pathway,levels=pathway))
             
@@ -12453,6 +12537,10 @@ server <- shinyServer(function(session, input, output) {
         })
         
         observeEvent(input$time_series_submit, {
+            if (is.null(input$time_series_user_clinical_data_input)) {
+                showNotification("Please upload the clinical data file first.", type = "error")
+                return()
+            }
             progress <- Progress$new(session, min = 1, max = 100)
             on.exit(progress$close())
             progress$set(value = 0)
@@ -12461,18 +12549,25 @@ server <- shinyServer(function(session, input, output) {
             progress$set(value = 10)
             progress$set(message = "Time Series reading datasets ...", detail = "Time Series reading datasets ...")
             
-            clinical_data <- read.table(
+            clinical_data <- read_safely(
                 input$time_series_user_clinical_data_input$datapath,
-                header = T,
+                header = TRUE,
                 sep = "\t",
-                stringsAsFactors = F
+                stringsAsFactors = FALSE
             )
             
             progress$set(value = 80)
             progress$set(message = "Time Series visualizing ...", detail = "Time Series visualizing ...")
             
-            plot <- function() {
-                pCliTS(clinical_index, clinical_index[[3]])
+            time_series_plot <- tryCatch(
+                pCliTS(clinical_data),
+                error = function(e) {
+                    showNotification(conditionMessage(e), type = "error")
+                    NULL
+                }
+            )
+            if (is.null(time_series_plot)) {
+                return()
             }
             
             pdf(
@@ -12481,7 +12576,7 @@ server <- shinyServer(function(session, input, output) {
                 height = input$time_series_plot_height,
                 onefile = FALSE
             )
-            print(plot())
+            print(time_series_plot)
             dev.off()
             
             CairoJPEG(
@@ -12492,7 +12587,7 @@ server <- shinyServer(function(session, input, output) {
                 res = input$time_series_plot_dpi,
                 quality = 100
             )
-            print(plot())
+            print(time_series_plot)
             dev.off()
             
             progress$set(value = 100)
@@ -12526,8 +12621,12 @@ server <- shinyServer(function(session, input, output) {
         }
         
         output$survival_analysis_demo_clinical_data <- renderDT({
-            names(aml)[3] = "group"
-            clinical_data <- aml
+            clinical_data <- read.table(
+                "www/demo/aml.txt",
+                header = TRUE,
+                sep = "\t",
+                stringsAsFactors = FALSE
+            )
             
             datatable(
                 clinical_data,
@@ -12821,7 +12920,8 @@ server <- shinyServer(function(session, input, output) {
                 "www/demo/metcox.txt",
                 header = TRUE,
                 sep = "\t",
-                stringsAsFactors = FALSE
+                stringsAsFactors = FALSE,
+                check.names = FALSE
             )
             
             datatable(
@@ -12928,7 +13028,8 @@ server <- shinyServer(function(session, input, output) {
                     paste(temp_metcox, "/metcox_result.txt", sep = ""),
                     header = TRUE,
                     sep = "\t",
-                    stringsAsFactors = FALSE
+                    stringsAsFactors = FALSE,
+                    check.names = FALSE
                 )
                 
                 datatable(

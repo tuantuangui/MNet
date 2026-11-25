@@ -86,8 +86,8 @@ ePEAlyser <- function(name,
       .data$nOverlap,
       .data$fc,
       .data$zscore,
-      .data$pvalue,
-      .data$adjp,
+      .data[["p-value"]],
+      .data[["p-adjust"]],
       .data$or,
       .data$CIl,
       .data$CIu,
@@ -108,8 +108,8 @@ ePEAlyser <- function(name,
       .data$nOverlap,
       .data$fc,
       .data$zscore,
-      .data$pvalue,
-      .data$adjp,
+      .data[["p-value"]],
+      .data[["p-adjust"]],
       .data$or,
       .data$CIl,
       .data$CIu,
@@ -130,9 +130,9 @@ ePEAlyser <- function(name,
     unique()
   
   result_1 <- result$output %>%
-    dplyr::filter(.data$pvalue < p_cutoff) %>%
+    dplyr::filter(.data[["p-value"]] < p_cutoff) %>%
     dplyr::left_join(kegg_pathway_uniq, by = c("name" = "PATHWAY")) %>%
-    dplyr::arrange(.data$pvalue)
+    dplyr::arrange(.data[["p-value"]])
   
   pathway_hh <- unique(result_1$pathway_type)
   
@@ -155,7 +155,7 @@ ePEAlyser <- function(name,
             "Biosynthesis of other secondary metabolites"="#A6761D",
             "Xenobiotics biodegradation and metabolism"="#666666")
   
-  p1 <- ggplot(result_1, aes(.data$name, -log10(.data$pvalue))) +
+  p1 <- ggplot(result_1, aes(.data$name, -log10(.data[["p-value"]]))) +
     geom_bar(stat = "identity", aes(fill = .data$pathway_type)) +
     scale_fill_manual(
       values = colp,
@@ -164,7 +164,7 @@ ePEAlyser <- function(name,
     ) +
     coord_flip() +
     theme_bw() +
-    labs(x = NULL)
+    labs(x = NULL, y = "-log10(p-value)")
   result$p_barplot <- p1
   return(result)
 }

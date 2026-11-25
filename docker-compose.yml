@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mnet:latest
+    image: hiomics/mnet:latest
     container_name: mnet-shiny
     ports:
       - "3838:3838"

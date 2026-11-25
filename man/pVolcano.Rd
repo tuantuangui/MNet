@@ -7,7 +7,7 @@
 pVolcano(mydata, foldchange_threshold = 1.5, p_threshold = 0.05)
 }
 \arguments{
-\item{mydata}{the result of function "differential_metabolites",have column "Name","Fold_change", "Padj_t"}
+\item{mydata}{the result of \code{DM()}, with columns \code{Name}, \code{Fold_change}, and \code{p-adjust_t}}
 
 \item{foldchange_threshold}{the fold change, default is 1.5,1/1.5}
 

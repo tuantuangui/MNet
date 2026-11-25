@@ -2,21 +2,21 @@
 % Please edit documentation in R/MetCox.R
 \name{MetCox}
 \alias{MetCox}
-\title{The cox analysis about the metabolites}
+\title{Univariate Cox analysis of metabolites}
 \usage{
 MetCox(dat)
 }
 \arguments{
-\item{dat}{A dataframe-like data object containing log-metabolite intensity values, with rows corresponding to samples, and the columns corresponding to the metablites and must containing time and status}
+\item{dat}{A data frame containing numeric \code{time}, binary \code{status} (0=censored, 1=event), and one or more numeric metabolite columns}
 }
 \value{
-result
+A table of coefficient, hazard ratio with 95\% confidence interval, Wald statistic, and p-value for each metabolite
 }
 \description{
-The cox analysis about the metabolites
+Univariate Cox analysis of metabolites
 }
 \examples{
-result <- MetCox(dat_surv)
-result
+A table of coefficient, hazard ratio with 95\% confidence interval, Wald statistic, and p-value for each metabolite <- MetCox(dat_surv)
+A table of coefficient, hazard ratio with 95\% confidence interval, Wald statistic, and p-value for each metabolite
 
 }

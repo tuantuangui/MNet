@@ -63,40 +63,59 @@ library(help=MNet)
 
 ### 2.3 Docker Deployment
 
-MNet can be run in a Docker container without manually installing R and its dependencies.
+MNet runs as a Linux container, so Docker can run it on Linux, macOS, and Windows. On macOS and Windows, use Docker Desktop with Linux containers enabled (Windows commonly uses the WSL 2 backend). The Docker Hub `latest` manifest currently includes `linux/amd64` and `linux/arm64`; Docker selects the matching variant for the host. Windows Server in Windows-container mode is not supported by this Linux image.
 
-**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) (or Docker Desktop).
+**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) or Docker Desktop.
 
-#### Option 1: Pull the pre-built image from Docker Hub
+#### Run the Docker Hub image
 
-**[Docker Hub: https://hub.docker.com/r/hiomics/mnet](https://hub.docker.com/r/hiomics/mnet)**
+**[Docker Hub: hiomics/mnet](https://hub.docker.com/r/hiomics/mnet)**
 
 ```bash
 docker pull hiomics/mnet:latest
 docker run -d --name mnet-shiny -p 3838:3838 hiomics/mnet:latest
 ```
 
-#### Option 2: Build the image locally
+Open <http://localhost:3838/> in your browser.
+
+#### Build and test from this checkout
+
+This builds for the current Docker host architecture and tags the local image the same way as Docker Hub. Rebuild after pulling or checking out the commit you want to test:
 
 ```bash
-docker build -t mnet:latest .
-docker run -d --name mnet-shiny -p 3838:3838 mnet:latest
-```
-
-Or start with Docker Compose:
-
-```bash
+docker compose build --no-cache
 docker compose up -d
 ```
 
-Then open http://localhost:3838/ in your browser.
+To stop and remove the test container:
+
+```bash
+docker compose down
+```
+
+#### Build and publish both Linux architectures
+
+Publishing a multi-platform `latest` tag lets Docker automatically select `linux/amd64` or `linux/arm64` on supported hosts. Sign in to Docker Hub, create a Buildx builder once, then build and push the manifest:
+
+```bash
+docker login
+docker buildx create --name mnet-multiarch --driver docker-container --use
+docker buildx inspect --bootstrap
+docker buildx build --platform linux/amd64,linux/arm64 --tag hiomics/mnet:latest --push .
+```
+
+If the `mnet-multiarch` builder already exists, select it with `docker buildx use mnet-multiarch` instead of creating it again. Confirm the published platforms with:
+
+```bash
+docker buildx imagetools inspect hiomics/mnet:latest
+```
 
 Useful commands:
 
 ```bash
 docker logs -f mnet-shiny   # view logs
 docker stop mnet-shiny      # stop the app
-docker compose down         # stop and remove (compose)
+docker rm mnet-shiny        # remove the stopped container
 ```
 
 ### 2.4 Usage

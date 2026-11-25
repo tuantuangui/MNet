@@ -24,6 +24,7 @@ Imports:
     igraph,
     dnet,
     caret,
+    glmnet,
     xgboost,
     magrittr,
     RColorBrewer,
@@ -67,6 +68,7 @@ VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 biocViews: Metabolomics
 Collate: 
+    'pColumnNames.R'
     'DM.R'
     'ML_Boruta.R'
     'ML_RF.R'

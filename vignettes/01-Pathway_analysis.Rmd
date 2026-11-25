@@ -53,7 +53,7 @@ head(all_dat)
 ## filter the increase differential genes and metabolites
 all_dat1 <- all_dat %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## the increase pathway analysis of both genes and metabolites
 result1 <- ePEAlyser(all_dat1$name, out = "Extended", p_cutoff = 0.01)
@@ -61,7 +61,7 @@ result1 <- ePEAlyser(all_dat1$name, out = "Extended", p_cutoff = 0.01)
 ## filter the decrease differential genes and metabolites
 all_dat2 <- all_dat %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## ePEAlyser performs pathway enrichment analysis of differential metabolites and differential expression genes, utilizing the Extended as a parameter
 result2 <- ePEAlyser(all_dat2$name, out = "Extended", p_cutoff = 0.01)
@@ -81,7 +81,7 @@ Function 'ePEAlyser' with 'metabolite' parameter, investigates metabolic pathway
 ## filter the increase differential metabolites
 diff_meta1 <- diff_meta %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
 result1 <- ePEAlyser(diff_meta1$name, out = "metabolite", p_cutoff =
@@ -90,7 +90,7 @@ result1 <- ePEAlyser(diff_meta1$name, out = "metabolite", p_cutoff =
 ## filter the decrease differential metabolites
 diff_meta2 <- diff_meta %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## ePEAlyser performs pathway enrichment analysis of differential metabolites, utilizing 'metabolite' as a parameter
 result2 <- ePEAlyser(diff_meta2$name, out = "metabolite", p_cutoff =
@@ -111,7 +111,7 @@ Function 'ePEAlyser' with 'gene' parameter, investigates metabolic pathway dysre
 ## filter the increase differential expression genes
 diff_gene1 <- diff_gene %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
 result1 <- ePEAlyser(diff_gene1$name, out = "gene", p_cutoff = 0.1)
@@ -119,7 +119,7 @@ result1 <- ePEAlyser(diff_gene1$name, out = "gene", p_cutoff = 0.1)
 ## filter the decrease differential expression genes
 diff_gene2 <- diff_gene %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## ePEAlyser performs pathway enrichment analysis of differential genes, utilizing 'gene' as a parameter
 result2 <- ePEAlyser(diff_gene2$name, out = "gene", p_cutoff = 0.1)
@@ -144,20 +144,20 @@ Function 'ePDAlyser' with 'Extended' parameter, investigates metabolic pathway d
 
 diff_gene_increase <-  diff_gene %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 diff_gene_decrease <- diff_gene %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## filter the differential metabolites
 
 diff_meta_increase <- diff_meta %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 diff_meta_decrease <- diff_meta %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## the extended pathway differential abundance analysis
 ExtendDAscore_result <- ePDAlyser(
@@ -180,11 +180,11 @@ Function 'ePDAlyser' with 'metabolite' parameter, investigates metabolic pathway
 
 diff_meta_increase <- diff_meta %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 diff_meta_decrease <- diff_meta %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## the metabolite pathway differential abundance analysis
 dascore_result_meta <- ePDAlyser(diff_meta_increase$name,
@@ -205,11 +205,11 @@ Function 'ePDAlyser' with 'gene' parameter, investigates metabolic pathway dysre
 
 diff_gene_increase <- diff_gene %>%
   filter(logFC > 0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 diff_gene_decrease <- diff_gene %>%
   filter(logFC < -0.58) %>%
-  filter(adj.P.Val < 0.05)
+  filter(`p-adjust` < 0.05)
 
 ## the gene pathway differential abundance analysis
 dascore_result_gene <- ePDAlyser(diff_gene_increase$name,
@@ -250,11 +250,11 @@ result <- eSEAlyser(dat, out = "Extended")
 eSEA plot of all the pathway
 ```{r fig.keep='all', p_pSEA_filter, fig.width=10.00, fig.height=6.18, message=FALSE, warning=FALSE}
 result_filter <- result %>%
-  dplyr::filter(pval < 0.1) %>%
+  dplyr::filter(`p-value` < 0.1) %>%
   arrange(NES) %>%
   mutate(pathway=factor(pathway,levels=pathway))
 
-p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(pval))) +
+p <- ggplot(result_filter,aes(pathway,NES,fill=-log10(`p-value`))) +
   geom_bar(stat="identity")+
   scale_fill_gradient(low = "blue", high = "red", na.value = NA)+
   theme_bw()+

@@ -4,10 +4,12 @@
 \alias{ML_Boruta}
 \title{Feature selection using Boruta}
 \usage{
-ML_Boruta(object)
+ML_Boruta(object, seed = 123)
 }
 \arguments{
 \item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
+
+\item{seed}{Random seed for reproducible feature selection}
 }
 \value{
 test

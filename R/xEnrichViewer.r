@@ -4,7 +4,7 @@
 #'
 #' @param eTerm an object of class "eTerm"
 #' @param top_num the number of the top terms (sorted according to 'sortBy' below) will be viewed
-#' @param sortBy which statistics will be used for sorting and viewing gene sets (terms). It can be "adjp" or "fdr" for adjusted p value (FDR), "pvalue" for p value, "zscore" for enrichment z-score, "fc" for enrichment fold change, "nAnno" for the number of sets (terms), "nOverlap" for the number in overlaps, "or" for the odds ratio, and "none" for ordering according to ID of terms
+#' @param sortBy which statistic will be used for sorting. Use "p-adjust" for adjusted p values or "p-value" for nominal p values; legacy values "adjp", "fdr", and "pvalue" remain accepted. Other values are "zscore", "fc", "nAnno", "nOverlap", "or", and "none".
 #' @param decreasing logical to indicate whether to sort in a decreasing order. If it is null, it would be true for "zscore", "nAnno" or "nOverlap"; otherwise it would be false
 #' @param details logical to indicate whether the detailed information of gene sets (terms) is also viewed. By default, it sets to false for no inclusion
 #' @return
@@ -16,8 +16,8 @@
 #'  \item{\code{nOverlap}: number in overlaps}
 #'  \item{\code{fc}: enrichment fold changes}
 #'  \item{\code{zscore}: enrichment z-score}
-#'  \item{\code{pvalue}: nominal p value}
-#'  \item{\code{adjp}: adjusted p value (FDR)}
+#'  \item{\code{p-value}: nominal p value}
+#'  \item{\code{p-adjust}: adjusted p value (FDR) in the returned table; the internal enrichment result still stores this value as \code{adjp}}
 #'  \item{\code{or}: a vector containing odds ratio}
 #'  \item{\code{CIl}: a vector containing lower bound confidence interval for the odds ratio}
 #'  \item{\code{CIu}: a vector containing upper bound confidence interval for the odds ratio}
@@ -38,7 +38,9 @@
 
 xEnrichViewer <- function(eTerm,
                           top_num = 10,
-                          sortBy = c("adjp",
+                          sortBy = c("p-adjust",
+                                     "p-value",
+                                     "adjp",
                                      "fdr",
                                      "pvalue",
                                      "zscore",
@@ -51,38 +53,29 @@ xEnrichViewer <- function(eTerm,
                           details = FALSE)
 {
   sortBy <- match.arg(sortBy)
-  
-  if (sortBy == 'fdr') {
-    sortBy <- 'adjp'
-  }
+  sortBy <- switch(sortBy,
+                   `p-adjust` = "adjp",
+                   `p-value` = "pvalue",
+                   fdr = "adjp",
+                   sortBy)
   
   if (is.null(eTerm)) {
-    warnings("There is no enrichment in the 'eTerm' object.\n")
+    warning("There is no enrichment in the 'eTerm' object.", call. = FALSE)
     return(NULL)
   }
   
   if (methods::is(eTerm, "data.frame")) {
-    warnings("The function apply to a 'data.frame' object.\n")
+    warning("The function applies to a 'data.frame' object.", call. = FALSE)
     
     if (is.null(top_num)) {
       top_num <- nrow(eTerm)
     }
-    if (top_num > nrow(eTerm)) {
-      top_num <- nrow(eTerm)
-    }
-    top_num <- as.integer(top_num)
-    
     tab <- eTerm
     
   } else if (methods::is(eTerm, "eTerm")) {
     if (is.null(top_num)) {
       top_num <- length(eTerm$term_info$id)
     }
-    if (top_num > length(eTerm$term_info$id)) {
-      top_num <- length(eTerm$term_info$id)
-    }
-    top_num <- as.integer(top_num)
-    
     if (dim(eTerm$term_info)[1] == 1) {
       tab <- data.frame(
         name         = as.character(eTerm$term_info$name),
@@ -127,6 +120,18 @@ xEnrichViewer <- function(eTerm,
     
     rownames(tab) <- eTerm$term_info$id
   }
+
+  tab <- .mnet_standardize_p_columns(tab)
+
+  available <- nrow(tab)
+  if (is.null(top_num)) {
+    top_num <- available
+  }
+  if (!is.numeric(top_num) || length(top_num) != 1L || is.na(top_num) ||
+      !is.finite(top_num) || top_num < 0) {
+    stop("`top_num` must be NULL or one non-negative finite number.", call. = FALSE)
+  }
+  top_num <- as.integer(min(top_num, available))
   
   if (details == TRUE) {
     res <- tab[, c(1:14)]
@@ -143,36 +148,36 @@ xEnrichViewer <- function(eTerm,
     }
   }
   
-  adjp <- zscore <- fc <- or <- nAnno <- nOverlap <- NULL
+  pvalue <- adjp <- zscore <- fc <- or <- nAnno <- nOverlap <- NULL
   
   switch(
     sortBy,
     fdr = {
-      res <- res[with(res, order(adjp, -zscore))[1:top_num], ]
+      res <- res[order(res[["p-adjust"]], -res[["zscore"]])[seq_len(top_num)], , drop = FALSE]
     },
     adjp = {
-      res <- res[with(res, order(adjp, -zscore))[1:top_num], ]
+      res <- res[order(res[["p-adjust"]], -res[["zscore"]])[seq_len(top_num)], , drop = FALSE]
     },
     pvalue = {
-      res <- res[with(res, order(pvalue, -zscore))[1:top_num], ]
+      res <- res[order(res[["p-value"]], -res[["zscore"]])[seq_len(top_num)], , drop = FALSE]
     },
     zscore = {
-      res <- res[with(res, order(-zscore, adjp))[1:top_num], ]
+      res <- res[order(-res[["zscore"]], res[["p-adjust"]])[seq_len(top_num)], , drop = FALSE]
     },
     fc = {
-      res <- res[with(res, order(-fc, adjp))[1:top_num], ]
+      res <- res[order(-res[["fc"]], res[["p-adjust"]])[seq_len(top_num)], , drop = FALSE]
     },
     or = {
-      res <- res[with(res, order(-or, adjp))[1:top_num], ]
+      res <- res[order(-res[["or"]], res[["p-adjust"]])[seq_len(top_num)], , drop = FALSE]
     },
     nAnno = {
-      res <- res[with(res, order(-nAnno, adjp, -zscore))[1:top_num], ]
+      res <- res[order(-res[["nAnno"]], res[["p-adjust"]], -res[["zscore"]])[seq_len(top_num)], , drop = FALSE]
     },
     nOverlap = {
-      res <- res[with(res, order(-nOverlap, adjp, -zscore))[1:top_num], ]
+      res <- res[order(-res[["nOverlap"]], res[["p-adjust"]], -res[["zscore"]])[seq_len(top_num)], , drop = FALSE]
     },
     none = {
-      res <- res[order(rownames(res), decreasing = decreasing)[1:top_num], ]
+      res <- res[order(rownames(res), decreasing = decreasing)[seq_len(top_num)], , drop = FALSE]
     }
   )
   
@@ -181,9 +186,10 @@ xEnrichViewer <- function(eTerm,
       res
     )))))
     if (flag) {
-      res <- res[order(as.numeric(rownames(res)), decreasing = decreasing)[1:top_num], ]
+      res <- res[order(as.numeric(rownames(res)), decreasing = decreasing)[seq_len(top_num)], , drop = FALSE]
     }
   }
   
+  res <- .mnet_standardize_p_columns(res)
   res
 }

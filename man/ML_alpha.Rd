@@ -4,12 +4,14 @@
 \alias{ML_alpha}
 \title{Feature selection using lasso or elastic network}
 \usage{
-ML_alpha(object, method = "lasso")
+ML_alpha(object, method = "lasso", seed = 123)
 }
 \arguments{
 \item{object}{A dataframe-like data object containing log-metabolite intensity values, with columns corresponding to metabolites and must containing the group column, and the rows corresponding to the samples}
 
 \item{method}{the feature selection method,default is "lasso", "elastic" is optional}
+
+\item{seed}{Random seed for reproducible resampling}
 }
 \value{
 test

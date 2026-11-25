@@ -12,7 +12,7 @@ mlimma(object, group)
 \item{group}{the data's group}
 }
 \value{
-A dataframe is same with limma's result
+A dataframe with limma's statistics; p-value columns are named \code{p-value} and \code{p-adjust}
 }
 \description{
 Differential Metabolite analysis by limma

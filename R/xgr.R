@@ -38,7 +38,7 @@ xgr <- function(metabolites_keggid,
   output <- eTerm %>%
     MNet::xEnrichViewer(details = TRUE, top_num = 100) %>%
     dplyr::filter(.data$nOverlap > noverlap_cutoff) %>%
-    dplyr::filter(.data$pvalue < p_cutoff) %>%
+    dplyr::filter(.data[["p-value"]] < p_cutoff) %>%
     tibble::as_tibble()
   
   # plot

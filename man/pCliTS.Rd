@@ -4,12 +4,12 @@
 \alias{pCliTS}
 \title{The clinical's time series analysis}
 \usage{
-pCliTS(clinical, marker)
+pCliTS(clinical, marker = NULL)
 }
 \arguments{
-\item{clinical}{the clinical marker of different time, and need included "time","group",maker; "high"and "low" are alternative.}
+\item{clinical}{A data frame with \code{time}, \code{group}, and at least one numeric clinical marker. Optional \code{low} and \code{high} columns add reference lines.}
 
-\item{marker}{the marker of clinical, default is 'marker'}
+\item{marker}{Marker column name. Defaults to the first column other than \code{time}, \code{group}, \code{low}, and \code{high}.}
 }
 \value{
 Figure
