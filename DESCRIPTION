@@ -1,6 +1,6 @@
 Package: MNet
 Type: Package
-Title: MNet
+Title: Metabolic Network-Centered Integrative Analysis
 Version: 1.2.0
 Authors@R: c(
        person("Tuantuan","Gui",email="guituantuan@sjtu.edu.cn",role=c("aut","cre")),
@@ -55,6 +55,10 @@ Imports:
     colourpicker,
     shinyWidgets,
     Cairo
+Remotes:
+    hfang-bristol/supraHex,
+    hfang-bristol/dnet,
+    ltorgo/DMwR2
 Suggests: 
     knitr,
     rmarkdown,

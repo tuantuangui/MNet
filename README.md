@@ -35,27 +35,24 @@ conda install -c conda-forge r-base
 
 ### 2.2 MNet Installation
 
-MNet requires R version 4.0.0 or higher, please see https://cran.r-project.org.
+MNet requires R version 4.0.0 or higher. The `dnet`, `supraHex`, and `DMwR2` dependencies are installed from GitHub; other dependencies are resolved from CRAN and Bioconductor.
 
 MNet is available for all operating systems and can be installed via the Github.
 
 ```R
-if(!require(BiocManager)){
-  install.packages("BiocManager")
-}
+install.packages("BiocManager")
+BiocManager::install("remotes", ask = FALSE, update = FALSE)
 
-if (!require(remotes)) {
-  BiocManager::install("remotes", dependencies=T)
-}
+# Make both CRAN and the matching Bioconductor repositories available to remotes.
+options(repos = BiocManager::repositories())
 
-if (!require(devtools)) {
-  BiocManager::install("devtools", dependencies=T)
-}
+# Install non-CRAN dependencies before MNet. supraHex is a dependency of dnet.
+remotes::install_github("hfang-bristol/supraHex", dependencies = TRUE, upgrade = "never")
+remotes::install_github("hfang-bristol/dnet", dependencies = TRUE, upgrade = "never")
+remotes::install_github("ltorgo/DMwR2", dependencies = TRUE, upgrade = "never")
 
-BiocManager::install("hfang-bristol/dnet", dependencies=T)
-BiocManager::install("tuantuangui/MNet", dependencies=T)
-
-#If the installation of MNet is failed, please install the failed dependency package again, such as if the ERROR is "ERROR: dependencies ‘xxx’ is not available for package ‘MNet’", please install the 'xxx' package again.
+# DESCRIPTION also records these GitHub sources in its Remotes field.
+remotes::install_github("tuantuangui/MNet", dependencies = TRUE, upgrade = "never")
 ```
 
 Check the package 'MNet' successfully installed
@@ -116,9 +113,4 @@ If you have any questions about MNet, please don’t hesitate to email me (guitu
 
 ### 3.1 Frequently Asked Questions
 
-1. Can not install dependent packages dnet  
-If the ERROR is "Error: Failed to install 'dnet' from GitHub: Could not resolve host: api.github.com", please try it again.
-
-```R
-BiocManager::install("hfang-bristol/dnet", dependencies=T)
-```
+1. If installation reports that `dnet`, `supraHex`, or `DMwR2` is unavailable, install the GitHub dependencies in the order shown above, then rerun the MNet installation command. `BiocManager::install()` is for CRAN and Bioconductor packages; use `remotes::install_github()` for these GitHub repositories.
